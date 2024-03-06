@@ -1,6 +1,10 @@
 import { useState, useEffect } from "react";
+import { Api } from '../api/Api.ts';
+// import { FullRequestParams } from "../api/http-client.ts";
 
-const useFetch = (url: string, params: object): any => {
+// const api = new Api({ baseURL: process.env.REACT_APP_BASE_URL});
+
+const useApi = (method: keyof Api, options: []): [any, boolean, any] => {
     const [data, setData] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -11,30 +15,26 @@ const useFetch = (url: string, params: object): any => {
         setIsLoading(true);
         setData(null);
         setError(null);
-        fetch(url, params)
-            .then((res) => {
-                if(!res.ok) {
-                    throw new Error('Request failed! Status: ' + res.status);
-                }
-                return res.json();
-            })
-            .then((respData) => {
-                if (!cancelled) setData(respData);
-            })
-            .catch((e) => {
+        const response = async () => {
+            try {
+                // const result = await api[method](options)
+                // if (!cancelled) setData(result.data);
+            } catch(e: any) {
                 if (!cancelled) setError(e);
-            })
-            .finally(() => {
+            } finally {
                 if (!cancelled) setIsLoading(false);
-            });
-            
+            }
+        }  
+        
+        response();
+
         return () => {
             cancelled = true;
         };
 // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [url]);
+    }, [method]);
 
     return [data, isLoading, error];
 };
 
-export default useFetch;
+export default useApi;

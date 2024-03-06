@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import useFetch from '../../hooks/useFetch.tsx';
 import { IProduct } from '../../types/interfaces/IProduct.ts'
+import useApi from '../../hooks/useApi.tsx';
 
 
 const Product = () => {
   const [products, setProducts] = useState<IProduct[]>([]);
-  const { data, loading, error } = useFetch('/api/products', {});
+  const [data, loading, error]  = useApi('productsList', []);
 
   useEffect(() => {
     if (data) {
