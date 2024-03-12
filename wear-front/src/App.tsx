@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Api } from './api/Api.ts';
+import { LoginForm } from './Components/auth/LoginForm.tsx';
 
 const BASE_URL = 'http://vne.su:8081';
 const api = new Api({baseURL: BASE_URL});
@@ -36,7 +37,7 @@ function App() {
   }, []);
 
   return (
-    <h1>Hi</h1>
+    <LoginForm />
   );
 }
 
