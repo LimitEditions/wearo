@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
-import { Api } from '../api/Api.ts';
-import { IApiResponse } from '../types/interfaces/ApiResponses/IApiResponse.ts';
+import { Api } from '../api/Api';
+import { IApiResponse } from '../types/interfaces/ApiResponses/IApiResponse';
+
 
 
 const api = new Api({ baseURL: 'http://vne.su:8081' });

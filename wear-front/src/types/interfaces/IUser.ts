@@ -1,4 +1,4 @@
-import { UserRole } from "../UserRole.ts";
+import { UserRole } from "../UserRole";
 
 export interface User {
   id: number;

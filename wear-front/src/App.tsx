@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import useApi from './hooks/useApi.tsx';
-import { IAuthCreate } from './types/interfaces/ApiResponses/IAuthCreate.ts';
+import useApi from './hooks/useApi';
+import { IAuthCreate } from './types/interfaces/ApiResponses/IAuthCreate';
 
 
 function App() {
