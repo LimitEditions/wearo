@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Api } from './api/Api.ts';
+import { Api } from './api/Api';
 
 const BASE_URL = 'http://vne.su:8081';
 const api = new Api({baseURL: BASE_URL});

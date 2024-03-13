@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Api } from '../api/Api.ts';
+import { Api } from '../api/Api';
 // import { FullRequestParams } from "../api/http-client.ts";
 
 // const api = new Api({ baseURL: process.env.REACT_APP_BASE_URL});
