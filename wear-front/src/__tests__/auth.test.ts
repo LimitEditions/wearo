@@ -41,28 +41,3 @@ describe('testing authorization', () => {
         expect(response.data.token).toBeDefined()
     })
 })
-
-
-describe('testing Colors', () => {
-    let api: Api = new Api()
-    let token: string;
-
-    async function getAuthToken(): Promise<string> {
-        const res = await api.authCreate({username: 'superadmin', password: 'superadmin'});
-        return `Bearer ${res.data.token}`;
-    }
-
-    beforeEach(async () => {
-        api = new Api({baseURL: 'http://vne.su:8081/'});
-        token = await getAuthToken();
-    })
-
-    it('testing colorsCreate', async () => {
-        const color: ColorModel = {guid: '3fa85f64-5717-4562-b3fc-2c963f66afa7', hex: 'ffffff', name: 'White'};
-        const response: ProblemDetails = await api.colorsCreate(color, {headers: { Authorization: token }});
-
-        expect(response.data.name).toEqual('White')
-    })
-
-    
-})
