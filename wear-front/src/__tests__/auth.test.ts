@@ -41,3 +41,4 @@ describe('testing authorization', () => {
         expect(response.data.token).toBeDefined()
     })
 })
+
