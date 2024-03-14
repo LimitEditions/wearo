@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { IProduct } from '../../types/interfaces/IProduct'
+import { IProduct } from '../../types/interfaces/IProduct';
 import useApi from '../../hooks/useApi';
 
 
