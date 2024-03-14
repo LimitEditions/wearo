@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { IProduct } from '../../types/interfaces/IProduct.ts'
-import useApi from '../../hooks/useApi.tsx';
+import { IProduct } from '../../types/interfaces/IProduct'
+import useApi from '../../hooks/useApi';
 
 
 const Product = () => {
