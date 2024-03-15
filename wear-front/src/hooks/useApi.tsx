@@ -1,38 +1,56 @@
 import { useState, useEffect } from "react";
 import { Api } from '../api/Api';
-// import { FullRequestParams } from "../api/http-client.ts";
+import { IApiResponse } from '../types/interfaces/ApiResponses/IApiResponse';
 
-// const api = new Api({ baseURL: process.env.REACT_APP_BASE_URL});
 
-const useApi = (method: keyof Api, options: []): [any, boolean, any] => {
-    const [data, setData] = useState(null);
+
+const api = new Api({ baseURL: 'http://vne.su:8081' });
+
+const useApi = <T extends keyof Api, Data >(
+  method: T, 
+  params?: any, 
+  config?: any,
+  execute: boolean = false // Флаг выполннеия запроса, по умолчанию false
+): [Data | null, boolean, any] => {
+    const [data, setData] = useState<Data | null>(null);
     const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState(null);
+    const [error, setError] = useState<any>(null);
+
+    // Использование JSON.stringify для стабилизации объектов 
+    // Это необходимо для того, чтобы компонент не ререндерился бесконечное множество раз
+    const paramsString = JSON.stringify(params);
+    const configString = JSON.stringify(config);
 
     useEffect(() => {
-        let cancelled = false;
+        if (execute) { //Проверяем флаг
+            let isMounted = true;
+            setIsLoading(true);
+            const fetchData = async () => {
+                try {
+                    const apiMethod = api[method] as unknown as (params: any, config?: any) => Promise<IApiResponse<Data>>;
+                    // Парсим строки обратно в объекты для выполнения запроса
+                    const result = await apiMethod(JSON.parse(paramsString), config ? JSON.parse(configString): undefined);
+                    if (isMounted) {
+                        setData(result.data);
+                        setIsLoading(false);
+                    }
+                } catch (e) {
+                    if (isMounted) {
+                        setError(e);
+                        setIsLoading(false);
+                    }
+                }
+            };
 
-        setIsLoading(true);
-        setData(null);
-        setError(null);
-        const response = async () => {
-            try {
-                // const result = await api[method](options)
-                // if (!cancelled) setData(result.data);
-            } catch(e: any) {
-                if (!cancelled) setError(e);
-            } finally {
-                if (!cancelled) setIsLoading(false);
-            }
-        }  
-        
-        response();
+            fetchData();
 
-        return () => {
-            cancelled = true;
+            // Очистка эффекта
+            return () => {
+                isMounted = false;
+            };
         };
-// eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [method]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [method, paramsString, configString, execute]);
 
     return [data, isLoading, error];
 };
