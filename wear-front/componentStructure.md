@@ -5,16 +5,6 @@ import React, { FC } from 'react';
 import getStyles from './utils/getStyles';
 import { BlockStyle } from './types/interfaces/Styles';
 
-const headerStyles: BlockStyle = {
-  background: 'bg-gray-500',
-  spacing: 'p-3'
-}
-
-const hStyle: BlockStyle = {
-  text: 'text-white text-center',
-  media: 'sm:text-sm md:text-2xl'
-}
-
 // типизация пропсов
 interface ComponentProps {}
 
@@ -31,6 +21,16 @@ export const Component: FC<ComponentProps> = () => {
     </header>
   );
 }
+
+const headerStyles: BlockStyle = {
+  background: 'bg-gray-500',
+  spacing: 'p-3'
+}
+
+const hStyle: BlockStyle = {
+  text: 'text-white text-center',
+  media: 'sm:text-sm md:text-2xl'
+}
 ```
 
 ### Импорты
@@ -38,6 +38,14 @@ export const Component: FC<ComponentProps> = () => {
 > import getStyles from './utils/getStyles';
 * В каждом компоненте должен быть импорт interface объекта стилей:
 > import { BlockStyle } from './types/interfaces/Styles';
+
+### Содержание компонента
+Компоненты используем функциональные. Для быстрого создания компонента можно использовать сниппет *rafc*. Далее наполняем компонент в следующем порядке:
+1. Все необходиые useState
+2. Другие переменные, для которых не требуется состояние
+3. Используем другие хуки
+4. Обработчики событий (onChange, onClick...)
+5. return - семантическая jsx-разметка.
 
 ### Стилизация
 Если нужно стилизовать html-элемент данного компонента, то сразу после импортов создается объект с типом BlockStyle. Название объекта в формате "tagStyles".
@@ -71,10 +79,3 @@ const hStyle: BlockStyle = {
 ```
 <h1 className={`${getStyles(hStyles)}`}>Hello</h1>
 ```
-### Содержание компонента
-Компоненты используем функциональные. Для быстрого создания компонента можно использовать сниппет *rafc*. Далее наполняем компонент в следующем порядке:
-1. Все необходиые useState
-2. Другие переменные, для которых не требуется состояние
-3. Используем другие хуки
-4. Обработчики событий (onChange, onClick...)
-5. return - семантическая jsx-разметка.

@@ -1,8 +1,85 @@
-import React, { useState } from "react";
-import { BlockStyle } from "../../types/interfaces/Styles";
+import React, { useEffect, useState } from "react";
 import getStyles from "../../utils/getStyles";
-import { Api } from "../../api/Api";
 import { AuthModel, UserType } from "../../api/data-contracts";
+import { BlockStyle } from "../../types/interfaces/IStyles";
+import useApi from "../../hooks/useApi";
+import { IAuthCreate } from "../../types/interfaces/ApiResponses/IAuthCreate";
+
+export const LoginForm = () => {
+  const [user, setUser] = useState({ username: "", password: "" });
+  const [shouldExecute, setShouldExecute] = useState<boolean>(false);
+  const [authData, isLoading, authError] = useApi(
+    "authCreate",
+    user,
+    {},
+    shouldExecute
+  );
+
+  useEffect(() => {
+    if (shouldExecute && (authData || authError)) {
+      if (authData) {
+        const tokendata = authData as IAuthCreate; //дополнительно типизируем данные приходящие с сервера в зависимости от метода обращения
+        localStorage.setItem("token", tokendata.token);
+      }
+      // останавливаем запрос
+      setShouldExecute(false);
+      // очищаем inputs
+      setUser({ username: "", password: "" });
+    }
+  }, [authData, isLoading, authError]);
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    // запускаем запрос
+    setShouldExecute(true);
+  };
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setUser({ ...user, [event.target.name]: event.target.value });
+  };
+
+  return (
+    <>
+      <div className={`${getStyles(containerStyle)}`}>
+        <h1 className={`${getStyles(hStyle)}`}>Log in</h1>
+        <form className={`${getStyles(formStyle)}`} onSubmit={handleSubmit}>
+          <label className={`${getStyles(labelStyle)}`}>
+            <span>Логин:</span>
+            <input
+              type="text"
+              name="username"
+              className={`${getStyles(inpitStyle)}`}
+              value={user.username || ""}
+              onChange={handleChange}
+              required
+            />
+          </label>
+          <label className={`${getStyles(labelStyle)}`}>
+            <span>Пароль:</span>
+            <input
+              type="password"
+              name="password"
+              className={`${getStyles(inpitStyle)}`}
+              value={user.password || ""}
+              onChange={handleChange}
+              required
+            />
+          </label>
+          {authError ? (
+            <span className={`${getStyles(spanErrorStyle)}`}>
+              Неверные учетные данные
+            </span>
+          ) : null}
+          <button type="submit" className={`${getStyles(btnStyle)}`}>
+            Log in
+          </button>
+        </form>
+      </div>
+      {isLoading && <p className={`${getStyles(pStyle)}`}>Loading...</p>}
+      {authData && !authError && <p className={`${getStyles(pStyle)}`}>Авторизация успешно пройдена.</p>}
+    </>
+  );
+};
 
 const containerStyle: BlockStyle = {
   blockSize: "w-1/4",
@@ -40,96 +117,7 @@ const spanErrorStyle: BlockStyle = {
   text: "text-red-500",
 };
 
-const spanStyle: BlockStyle = {
+const pStyle: BlockStyle = {
   text: "text-center",
   spacing: "m-auto my-8",
-};
-
-export const LoginForm = () => {
-  const [user, setUser] = useState<AuthModel>({ username: "", password: "" });
-  const [error, setError] = useState<boolean>(false);
-  const [userType, setUserType] = useState<UserType | undefined>();
-
-  const api = new Api({ baseURL: process.env.REACT_APP_BASE_URL });
-
-  const getUserType = async () => {
-    try {
-      const res = await api.authMeList({
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      });
-      setUserType(res.data.type);
-    } catch (e) {
-      console.error(e);
-    }
-  };
-
-  const auth = async (user: AuthModel) => {
-    setError(false);
-    setUserType(undefined);
-    try {
-      const res = await api.authCreate(user);
-      localStorage.setItem("token", res.data.token);
-      console.log(res);
-      getUserType();
-    } catch (e) {
-      console.error(e);
-      setError(true);
-    } finally {
-      setUser({ username: "", password: "" });
-    }
-  };
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setUser((prev) => {
-      return { ...prev, [event.target.name]: event.target.value };
-    });
-  };
-
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    auth(user);
-  };
-
-  return (
-    <>
-      <div className={`${getStyles(containerStyle)}`}>
-        <h1 className={`${getStyles(hStyle)}`}>Log in</h1>
-        <form className={`${getStyles(formStyle)}`} onSubmit={handleSubmit}>
-          <label className={`${getStyles(labelStyle)}`}>
-            <span>Логин:</span>
-            <input
-              type="text"
-              name="username"
-              className={`${getStyles(inpitStyle)}`}
-              value={user.username || ""}
-              onChange={handleChange}
-              required
-            />
-          </label>
-          <label className={`${getStyles(labelStyle)}`}>
-            <span>Пароль:</span>
-            <input
-              type="password"
-              name="password"
-              className={`${getStyles(inpitStyle)}`}
-              value={user.password || ""}
-              onChange={handleChange}
-              required
-            />
-          </label>
-          {error ? (
-            <span className={`${getStyles(spanErrorStyle)}`}>
-              Неверные учетные данные
-            </span>
-          ) : null}
-          <button type="submit" className={`${getStyles(btnStyle)}`}>
-            Log in
-          </button>
-        </form>
-      </div>
-      {userType ? (
-        <div className={`${getStyles(spanStyle)}`}>Вы вошли как {userType}</div>
-      ) : null}
-    </>
-  );
 };
