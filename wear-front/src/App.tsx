@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import useApi from './hooks/useApi';
 import { IAuthCreate } from './types/interfaces/ApiResponses/IAuthCreate';
 
-
 function App() {
   const [data, isLoading, error] = useApi('authCreate', {
       username: 'admin',
@@ -23,7 +22,9 @@ function App() {
   }, [data, token, isLoading, error])
 
   return (
-    <h1>Hi</h1>
+    <>
+      <h1>Hi</h1>
+    </>
   );
 }
 
