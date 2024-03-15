@@ -17,9 +17,6 @@ function App() {
       setToken(tokendata['token'])
     }
 
-    console.log(token);
-    console.log(isLoading);
-    console.log(error);
   }, [data, token, isLoading, error])
 
   return (
