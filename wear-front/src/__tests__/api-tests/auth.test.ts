@@ -1,6 +1,6 @@
-import { Api } from "../api/Api"
+import { Api } from "../../api/Api"
 import {describe, expect} from '@jest/globals';
-import { AuthModel, ColorModel, ProblemDetails } from "../api/data-contracts";
+import { AuthModel, ColorModel, ProblemDetails } from "../../api/data-contracts";
 
 describe('testing authorization', () => {
     let api: Api = new Api()
