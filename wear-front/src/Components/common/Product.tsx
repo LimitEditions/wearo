@@ -9,7 +9,7 @@ const Product = () => {
 
   useEffect(() => {
     if (data) {
-      setProducts(data);
+      // setProducts(data);
     }
   }, [data]);
 
