@@ -17,10 +17,6 @@ function App() {
       const tokendata = data as IAuthCreate; //дополнительно типизируем данные приходящие с сервера в зависимости от метода обращения
       setToken(tokendata['token'])
     }
-
-    console.log(token);
-    console.log(isLoading);
-    console.log(error);
   }, [data, token, isLoading, error])
 
   return (

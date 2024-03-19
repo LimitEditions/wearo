@@ -31,20 +31,24 @@ const useApi = <T extends keyof Api, Data >(
                     const result = await apiMethod(JSON.parse(paramsString), config ? JSON.parse(configString): undefined);
                     if (isMounted) {
                         setData(result.data);
-                        setError(null)
-                    }
+                        setError(null);
+                    };
                 } catch (e) {
                     if (isMounted) {
                         setError(e);
-                    }
+                    };
                 } finally {
-                    isMounted = false;
                     setIsLoading(false);
-                }
+                };
+
+                // Очистка эффекта
+                return () => {
+                    isMounted = false;
+                };
             };
 
             fetchData();
-        } 
+        };
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [method, paramsString, configString, execute]);
 
