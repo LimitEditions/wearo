@@ -16,16 +16,30 @@ import {
   AuthModel,
   BodyShape,
   BrandModel,
+  BrandModelDataResult,
   BrandRequestModel,
   ClothingCollectionModel,
+  ClothingCollectionModelDataResult,
   ColorModel,
   ColorModelDataResult,
   Coloring,
   CommentModel,
   CommentModelDataResult,
+  CreateBrandModel,
+  CreateClothingCollectionModel,
   CreateColor,
+  CreateColorsModel,
+  CreateCommentModel,
+  CreateLookModel,
+  CreateMaterialModel,
+  CreatePostModel,
+  CreateProductCategoryModel,
   CreateProductFileModel,
+  CreateProductItemModel,
+  CreateProductModel,
   CreateScanModel,
+  CreateTipModel,
+  CreateUserModel,
   FileModel,
   FileType,
   GetBrandRequestsModel,
@@ -51,6 +65,16 @@ import {
   Season,
   TipModel,
   TokenModel,
+  UpdateBrandModel,
+  UpdateCommentModel,
+  UpdateLookModel,
+  UpdateMaterialModel,
+  UpdatePostModel,
+  UpdateProductCategoryModel,
+  UpdateProductItemModel,
+  UpdateProductModel,
+  UpdateTipModel,
+  UpdateUserModel,
   UserModel,
 } from "./data-contracts";
 import { ContentType, HttpClient, RequestParams } from "./http-client";
@@ -66,12 +90,13 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @secure
    */
   authCreate = (data: AuthModel, params: RequestParams = {}) =>
-    this.request<any, ProblemDetails>({
+    this.request<TokenModel, ProblemDetails>({
       path: `/api/Auth`,
       method: "POST",
       body: data,
       secure: true,
       type: ContentType.Json,
+      format: "json",
       ...params,
     });
   /**
@@ -158,7 +183,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
     },
     params: RequestParams = {},
   ) =>
-    this.request<BrandModel, any>({
+    this.request<BrandModelDataResult, any>({
       path: `/api/Brands`,
       method: "GET",
       query: query,
@@ -174,7 +199,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @request POST:/api/Brands
    * @secure
    */
-  brandsCreate = (data: BrandModel, params: RequestParams = {}) =>
+  brandsCreate = (data: CreateBrandModel, params: RequestParams = {}) =>
     this.request<BrandModel, ProblemDetails>({
       path: `/api/Brands`,
       method: "POST",
@@ -192,7 +217,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @request PUT:/api/Brands
    * @secure
    */
-  brandsUpdate = (data: BrandModel, params: RequestParams = {}) =>
+  brandsUpdate = (data: UpdateBrandModel, params: RequestParams = {}) =>
     this.request<BrandModel, ProblemDetails>({
       path: `/api/Brands`,
       method: "PUT",
@@ -306,11 +331,51 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * No description
    *
    * @tags ClothingCollections
+   * @name ClothingCollectionsList
+   * @request GET:/api/ClothingCollections
+   * @secure
+   */
+  clothingCollectionsList = (
+    query?: {
+      Name?: string;
+      Description?: string;
+      /**
+       * Начало периода.
+       * @format date-time
+       */
+      publishDateStart?: string;
+      /**
+       * Конец периода.
+       * @format date-time
+       */
+      publishDateEnd?: string;
+      /** @format uuid */
+      BrandGuid?: string;
+      Season?: Season;
+      /** @format int32 */
+      Page?: number;
+      /** @format int32 */
+      PageSize?: number;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<ClothingCollectionModelDataResult, any>({
+      path: `/api/ClothingCollections`,
+      method: "GET",
+      query: query,
+      secure: true,
+      format: "json",
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags ClothingCollections
    * @name ClothingCollectionsCreate
    * @request POST:/api/ClothingCollections
    * @secure
    */
-  clothingCollectionsCreate = (data: ClothingCollectionModel, params: RequestParams = {}) =>
+  clothingCollectionsCreate = (data: CreateClothingCollectionModel, params: RequestParams = {}) =>
     this.request<ClothingCollectionModel, ProblemDetails>({
       path: `/api/ClothingCollections`,
       method: "POST",
@@ -412,7 +477,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @request POST:/api/Colors
    * @secure
    */
-  colorsCreate = (data: ColorModel, params: RequestParams = {}) =>
+  colorsCreate = (data: CreateColorsModel, params: RequestParams = {}) =>
     this.request<ColorModel, ProblemDetails>({
       path: `/api/Colors`,
       method: "POST",
@@ -432,15 +497,15 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    */
   colorsUpdate = (
     query?: {
-      /** Название цвета */
-      Name?: string;
-      /** Код */
-      Hex?: string;
       /**
        * Идентификатор
        * @format uuid
        */
       Guid?: string;
+      /** Название цвета */
+      Name?: string;
+      /** Код */
+      Hex?: string;
     },
     params: RequestParams = {},
   ) =>
@@ -632,7 +697,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @request POST:/api/Looks
    * @secure
    */
-  looksCreate = (data: LookModel, params: RequestParams = {}) =>
+  looksCreate = (data: CreateLookModel, params: RequestParams = {}) =>
     this.request<LookModel, ProblemDetails>({
       path: `/api/Looks`,
       method: "POST",
@@ -650,7 +715,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @request PUT:/api/Looks
    * @secure
    */
-  looksUpdate = (data: LookModel, params: RequestParams = {}) =>
+  looksUpdate = (data: UpdateLookModel, params: RequestParams = {}) =>
     this.request<LookModel, ProblemDetails>({
       path: `/api/Looks`,
       method: "PUT",
@@ -790,7 +855,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @request POST:/api/Materials
    * @secure
    */
-  materialsCreate = (data: MaterialModel, params: RequestParams = {}) =>
+  materialsCreate = (data: CreateMaterialModel, params: RequestParams = {}) =>
     this.request<MaterialModel, ProblemDetails>({
       path: `/api/Materials`,
       method: "POST",
@@ -808,7 +873,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @request PUT:/api/Materials
    * @secure
    */
-  materialsUpdate = (data: MaterialModel, params: RequestParams = {}) =>
+  materialsUpdate = (data: UpdateMaterialModel, params: RequestParams = {}) =>
     this.request<MaterialModel, ProblemDetails>({
       path: `/api/Materials`,
       method: "PUT",
@@ -887,7 +952,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @request POST:/api/PostCommentsControllers
    * @secure
    */
-  postCommentsControllersCreate = (data: CommentModel, params: RequestParams = {}) =>
+  postCommentsControllersCreate = (data: CreateCommentModel, params: RequestParams = {}) =>
     this.request<CommentModel, ProblemDetails>({
       path: `/api/PostCommentsControllers`,
       method: "POST",
@@ -905,7 +970,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @request PUT:/api/PostCommentsControllers
    * @secure
    */
-  postCommentsControllersUpdate = (data: CommentModel, params: RequestParams = {}) =>
+  postCommentsControllersUpdate = (data: UpdateCommentModel, params: RequestParams = {}) =>
     this.request<CommentModel, ProblemDetails>({
       path: `/api/PostCommentsControllers`,
       method: "PUT",
@@ -992,7 +1057,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @request POST:/api/Posts
    * @secure
    */
-  postsCreate = (data: PostModel, params: RequestParams = {}) =>
+  postsCreate = (data: CreatePostModel, params: RequestParams = {}) =>
     this.request<PostModel, ProblemDetails>({
       path: `/api/Posts`,
       method: "POST",
@@ -1010,7 +1075,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @request PUT:/api/Posts
    * @secure
    */
-  postsUpdate = (data: PostModel, params: RequestParams = {}) =>
+  postsUpdate = (data: UpdatePostModel, params: RequestParams = {}) =>
     this.request<PostModel, ProblemDetails>({
       path: `/api/Posts`,
       method: "PUT",
@@ -1087,7 +1152,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @request POST:/api/ProductCategories
    * @secure
    */
-  productCategoriesCreate = (data: ProductCategoryModel, params: RequestParams = {}) =>
+  productCategoriesCreate = (data: CreateProductCategoryModel, params: RequestParams = {}) =>
     this.request<ProductCategoryModel, ProblemDetails>({
       path: `/api/ProductCategories`,
       method: "POST",
@@ -1105,7 +1170,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @request PUT:/api/ProductCategories
    * @secure
    */
-  productCategoriesUpdate = (data: ProductCategoryModel, params: RequestParams = {}) =>
+  productCategoriesUpdate = (data: UpdateProductCategoryModel, params: RequestParams = {}) =>
     this.request<ProductCategoryModel, ProblemDetails>({
       path: `/api/ProductCategories`,
       method: "PUT",
@@ -1155,7 +1220,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @request POST:/api/ProductItems
    * @secure
    */
-  productItemsCreate = (data: ProductItemModel, params: RequestParams = {}) =>
+  productItemsCreate = (data: CreateProductItemModel, params: RequestParams = {}) =>
     this.request<ProductItemModel, ProblemDetails>({
       path: `/api/ProductItems`,
       method: "POST",
@@ -1173,7 +1238,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @request PUT:/api/ProductItems
    * @secure
    */
-  productItemsUpdate = (data: ProductItemModel, params: RequestParams = {}) =>
+  productItemsUpdate = (data: UpdateProductItemModel, params: RequestParams = {}) =>
     this.request<ProductItemModel, ProblemDetails>({
       path: `/api/ProductItems`,
       method: "PUT",
@@ -1270,7 +1335,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @request POST:/api/Products
    * @secure
    */
-  productsCreate = (data: ProductModel, params: RequestParams = {}) =>
+  productsCreate = (data: CreateProductModel, params: RequestParams = {}) =>
     this.request<ProductModel, ProblemDetails>({
       path: `/api/Products`,
       method: "POST",
@@ -1288,7 +1353,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @request PUT:/api/Products
    * @secure
    */
-  productsUpdate = (data: ProductModel, params: RequestParams = {}) =>
+  productsUpdate = (data: UpdateProductModel, params: RequestParams = {}) =>
     this.request<ProductModel, ProblemDetails>({
       path: `/api/Products`,
       method: "PUT",
@@ -1595,7 +1660,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @request POST:/api/Tips/Products
    * @secure
    */
-  tipsProductsCreate = (data: TipModel, params: RequestParams = {}) =>
+  tipsProductsCreate = (data: CreateTipModel, params: RequestParams = {}) =>
     this.request<TipModel, ProblemDetails>({
       path: `/api/Tips/Products`,
       method: "POST",
@@ -1613,7 +1678,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @request PUT:/api/Tips/Products
    * @secure
    */
-  tipsProductsUpdate = (data: TipModel, params: RequestParams = {}) =>
+  tipsProductsUpdate = (data: UpdateTipModel, params: RequestParams = {}) =>
     this.request<TipModel, ProblemDetails>({
       path: `/api/Tips/Products`,
       method: "PUT",
@@ -1702,7 +1767,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @request POST:/api/Tips/Materials
    * @secure
    */
-  tipsMaterialsCreate = (data: TipModel, params: RequestParams = {}) =>
+  tipsMaterialsCreate = (data: CreateTipModel, params: RequestParams = {}) =>
     this.request<TipModel, ProblemDetails>({
       path: `/api/Tips/Materials`,
       method: "POST",
@@ -1720,7 +1785,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @request PUT:/api/Tips/Materials
    * @secure
    */
-  tipsMaterialsUpdate = (data: TipModel, params: RequestParams = {}) =>
+  tipsMaterialsUpdate = (data: UpdateTipModel, params: RequestParams = {}) =>
     this.request<TipModel, ProblemDetails>({
       path: `/api/Tips/Materials`,
       method: "PUT",
@@ -1832,7 +1897,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @request POST:/api/Users
    * @secure
    */
-  usersCreate = (data: UserModel, params: RequestParams = {}) =>
+  usersCreate = (data: CreateUserModel, params: RequestParams = {}) =>
     this.request<UserModel, any>({
       path: `/api/Users`,
       method: "POST",
@@ -1850,7 +1915,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @request PUT:/api/Users
    * @secure
    */
-  usersUpdate = (data: UserModel, params: RequestParams = {}) =>
+  usersUpdate = (data: UpdateUserModel, params: RequestParams = {}) =>
     this.request<UserModel, ProblemDetails>({
       path: `/api/Users`,
       method: "PUT",

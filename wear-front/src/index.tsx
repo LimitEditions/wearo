@@ -5,13 +5,16 @@ import App from './App';
 import { HashRouter } from 'react-router-dom';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
+import { AuthProvider } from './context/AuthProvider';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <HashRouter>
-    <App />
+    <AuthProvider>
+      <App />
+    </AuthProvider>
   </HashRouter>
 );
 
