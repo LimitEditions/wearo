@@ -3,7 +3,6 @@ import { Api } from '../api/Api';
 import { IApiResponse } from '../types/interfaces/ApiResponses/IApiResponse';
 
 
-
 const api = new Api({ baseURL: 'http://vne.su:8081' });
 
 const useApi = <T extends keyof Api, Data >(
@@ -32,22 +31,23 @@ const useApi = <T extends keyof Api, Data >(
                     const result = await apiMethod(JSON.parse(paramsString), config ? JSON.parse(configString): undefined);
                     if (isMounted) {
                         setData(result.data);
-                        setIsLoading(false);
-                    }
+                        setError(null);
+                    };
                 } catch (e) {
                     if (isMounted) {
                         setError(e);
-                        setIsLoading(false);
-                    }
-                }
+                    };
+                } finally {
+                    setIsLoading(false);
+                };
+
+                // Очистка эффекта
+                return () => {
+                    isMounted = false;
+                };
             };
 
             fetchData();
-
-            // Очистка эффекта
-            return () => {
-                isMounted = false;
-            };
         };
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [method, paramsString, configString, execute]);
