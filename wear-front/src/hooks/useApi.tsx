@@ -3,7 +3,6 @@ import { Api } from '../api/Api';
 import { IApiResponse } from '../types/interfaces/ApiResponses/IApiResponse';
 
 
-
 const api = new Api({ baseURL: 'http://vne.su:8081' });
 
 const useApi = <T extends keyof Api, Data >(
