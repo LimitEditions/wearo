@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import getStyles from "../../utils/getStyles";
-import { AuthModel, UserType } from "../../api/data-contracts";
+import { AuthModel } from "../../api/data-contracts";
 import { BlockStyle } from "../../types/interfaces/IStyles";
 import useApi from "../../hooks/useApi";
 import { IAuthCreate } from "../../types/interfaces/ApiResponses/IAuthCreate";
+import { encrypt } from "../../utils/encryption";
+
 
 export const LoginForm = () => {
-  const [user, setUser] = useState({ username: "", password: "" });
+  const [user, setUser] = useState<AuthModel>({ username: "", password: "" });
   const [shouldExecute, setShouldExecute] = useState<boolean>(false);
   const [authData, isLoading, authError] = useApi(
     "authCreate",
@@ -17,20 +19,20 @@ export const LoginForm = () => {
 
   useEffect(() => {
     if (shouldExecute && (authData || authError)) {
-      if (authData) {
-        const tokendata = authData as IAuthCreate; //дополнительно типизируем данные приходящие с сервера в зависимости от метода обращения
-        localStorage.setItem("token", tokendata.token);
-      }
       // останавливаем запрос
       setShouldExecute(false);
       // очищаем inputs
       setUser({ username: "", password: "" });
-    }
-  }, [authData, isLoading, authError]);
+    };
+    if (authData) {
+      const tokendata = authData as IAuthCreate; //дополнительно типизируем данные приходящие с сервера в зависимости от метода обращения
+      encrypt("token", tokendata.token);
+      encrypt("refreshToken", tokendata.refreshToken);
+    };
+  }, [authData, authError, shouldExecute]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // запускаем запрос
     setShouldExecute(true);
   };
 
