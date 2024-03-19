@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import useApi from './hooks/useApi';
 import { IAuthCreate } from './types/interfaces/ApiResponses/IAuthCreate';
-import { LoginForm } from './Components/auth/LoginForm';
+import { LoginForm } from './Components/common/LoginForm';
 
 
 function App() {

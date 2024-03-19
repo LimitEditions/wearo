@@ -11,7 +11,7 @@ jobs:
           ref: develop
       - name: Install dependencies
         run: npm install
-        working-directory: wear-front
+        # working-directory: wear-front
       - name: Remove old builds
         run: rm -rf build.zip build || true
       - name: Build project
@@ -20,7 +20,8 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          path: wear-front/build
+          # path: wear-front/build
+          path: build
           name: build
   deploy:
     runs-on: ubuntu-latest
