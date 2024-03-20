@@ -1,4 +1,6 @@
+import { IAuthMeList } from "./interfaces/ApiResponses/IAuthMeList";
+
 export type AuthContextType = {
-    isAuthenticated: boolean; // флаг, показывающий, аутентифицирован ли пользователь
-    setAuth: (auth: boolean) => void; // функция для изменения значения isAuthenticated
+    isAuthenticated: IAuthMeList;
+    setAuth: (auth: IAuthMeList) => void;  // функция для изменения значения isAuthenticated
 };
