@@ -1,26 +1,22 @@
-import React, { useEffect, useState } from 'react';
-import useApi from './hooks/useApi';
-import { IAuthCreate } from './types/interfaces/ApiResponses/IAuthCreate';
-import { LoginForm } from './Components/common/LoginForm';
+import React from 'react';
+import { Route, Routes } from 'react-router-dom';
+import { Nav } from './Components/common/Nav';
+import { Home } from './pages/Home';
+import { Login } from './pages/Login';
+import { Profile } from './pages/Profile';
 
 
 function App() {
-  const [data, isLoading, error] = useApi('authCreate', {
-      username: 'admin',
-      password: 'admin'
-  })
-
-  const [token, setToken] = useState<string |null>(null);
-
-  useEffect(() => {
-    if(data) {
-      const tokendata = data as IAuthCreate; //дополнительно типизируем данные приходящие с сервера в зависимости от метода обращения
-      setToken(tokendata['token'])
-    }
-  }, [data, token, isLoading, error])
-
   return (
-    <LoginForm />
+    <>
+      <Nav />
+      <Routes>
+        <Route path='/' element={ <Home /> }/>
+        <Route path='/login' element={ <Login /> }/>
+        <Route path='/profile' element={ <Profile /> }/>
+        <Route path='/*' element="no content"/> {/*Обработка ошибочных запросов */}
+      </Routes>
+    </>
   );
 }
 
