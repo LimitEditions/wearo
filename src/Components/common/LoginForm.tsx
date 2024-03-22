@@ -5,11 +5,13 @@ import { BlockStyle } from "../../types/interfaces/IStyles";
 import useApi from "../../hooks/useApi";
 import { IAuthCreate } from "../../types/interfaces/ApiResponses/IAuthCreate";
 import { encrypt } from "../../utils/encryption";
-
+import { validatePassword, validateUsername } from "../../utils/validation";
 
 export const LoginForm = () => {
   const [user, setUser] = useState<AuthModel>({ username: "", password: "" });
   const [shouldExecute, setShouldExecute] = useState<boolean>(false);
+  const [isValidUserName, setIsValidUserName] = useState<boolean>(true);
+  const [isValidPassword, setIsValidPassword] = useState<boolean>(true);
   const [authData, isLoading, authError] = useApi(
     "authCreate",
     user,
@@ -23,21 +25,40 @@ export const LoginForm = () => {
       setShouldExecute(false);
       // очищаем inputs
       setUser({ username: "", password: "" });
-    };
+    }
     if (authData) {
       const tokendata = authData as IAuthCreate; //дополнительно типизируем данные приходящие с сервера в зависимости от метода обращения
       encrypt("token", tokendata.token);
       encrypt("refreshToken", tokendata.refreshToken);
-    };
+    }
   }, [authData, authError, shouldExecute]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setShouldExecute(true);
+    // проверка валидности логина и пароля
+    if (validateUsername(user.username) && validatePassword(user.password)) {
+      setShouldExecute(true);
+    }
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUser({ ...user, [event.target.name]: event.target.value });
+  };
+
+  // валидация данных после потери фокуса
+  const handleBlur = (event: React.FocusEvent<HTMLInputElement>) => {
+    if (event.target.value === ''){
+      setIsValidPassword(true);
+      return;
+    }
+
+    if (event.target.name === "username") {
+      setIsValidUserName(validateUsername(event.target.value))
+    }
+
+    if (event.target.name === "password") {
+      setIsValidPassword(validatePassword(event.target.value))
+    }
   };
 
   return (
@@ -47,23 +68,36 @@ export const LoginForm = () => {
         <form className={`${getStyles(formStyle)}`} onSubmit={handleSubmit}>
           <label className={`${getStyles(labelStyle)}`}>
             <span>Логин:</span>
+            {!isValidUserName && (
+              <span className={`${getStyles(spanNotValid)}`}>
+                Не должен содержать пробелы и нелатинские буквы
+              </span>
+            )}
             <input
               type="text"
               name="username"
               className={`${getStyles(inpitStyle)}`}
               value={user.username || ""}
               onChange={handleChange}
+              onBlur={handleBlur}
               required
             />
           </label>
           <label className={`${getStyles(labelStyle)}`}>
             <span>Пароль:</span>
+            {!isValidPassword && (
+              <span className={`${getStyles(spanNotValid)}`}>
+                Должен быть не менее 5 символов, без пробелов, может содержать
+                любые латинские буквы, цифры и спец. символы
+              </span>
+            )}
             <input
               type="password"
               name="password"
               className={`${getStyles(inpitStyle)}`}
               value={user.password || ""}
               onChange={handleChange}
+              onBlur={handleBlur}
               required
             />
           </label>
@@ -78,7 +112,9 @@ export const LoginForm = () => {
         </form>
       </div>
       {isLoading && <p className={`${getStyles(pStyle)}`}>Loading...</p>}
-      {authData && !authError && <p className={`${getStyles(pStyle)}`}>Авторизация успешно пройдена.</p>}
+      {authData && !authError && (
+        <p className={`${getStyles(pStyle)}`}>Авторизация успешно пройдена.</p>
+      )}
     </>
   );
 };
@@ -117,6 +153,10 @@ const btnStyle: BlockStyle = {
 
 const spanErrorStyle: BlockStyle = {
   text: "text-red-500",
+};
+
+const spanNotValid: BlockStyle = {
+  text: "text-red-500 text-xs",
 };
 
 const pStyle: BlockStyle = {
