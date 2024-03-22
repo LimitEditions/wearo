@@ -19,7 +19,7 @@ export function validatePassword(password: string | undefined): boolean {
     };
 
     // Проверяем длину пароля, наличие нелатинских букв и пробелов
-    if (password.length < 5 || password.match(/[^A-Za-z0-9_]/) || password.includes(" ")) {
+    if (password.length < 4 || password.match(/[^A-Za-z0-9_]/) || password.includes(" ")) {
         return false;
     }
 
