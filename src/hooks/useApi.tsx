@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { Api } from '../api/Api';
 import { IApiResponse } from '../types/interfaces/ApiResponses/IApiResponse';
+import { IApiError } from "../types/interfaces/IApiError";
+import { AxiosError } from "axios";
 
 
 const api = new Api({ baseURL: 'http://vne.su:8081' });
@@ -10,10 +12,10 @@ const useApi = <T extends keyof Api, Data >(
   params?: any, 
   config?: any,
   execute: boolean = false // Флаг выполннеия запроса, по умолчанию false
-): [Data | null, boolean, any] => {
+): [Data | null, boolean, IApiError | null] => {
     const [data, setData] = useState<Data | null>(null);
     const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState<any>(null);
+    const [error, setError] = useState<IApiError | null>(null);
 
     // Использование JSON.stringify для стабилизации объектов 
     // Это необходимо для того, чтобы компонент не ререндерился бесконечное множество раз
@@ -35,7 +37,8 @@ const useApi = <T extends keyof Api, Data >(
                     };
                 } catch (e) {
                     if (isMounted) {
-                        setError(e);
+                        const axiosError = e as AxiosError | Error;
+                        setError(axiosError);
                     };
                 } finally {
                     setIsLoading(false);
