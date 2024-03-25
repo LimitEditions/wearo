@@ -18,7 +18,6 @@ export const LoginForm = () => {
   );
 
   useEffect(() => {
-    console.log(authError)
     if (shouldExecute && (authData || authError)) {
       // останавливаем запрос
       setShouldExecute(false);
