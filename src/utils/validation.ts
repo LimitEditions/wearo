@@ -1,16 +1,14 @@
 export function validateUsername(username: string | undefined): boolean {
-    // return /\S+@\S+\.\S+/.test(email);
-
     if (!username) {
         return false;
     }
 
-    // Проверяем наличие нелатинских букв или пробелов
-    if (username.match(/[^A-Za-z0-9_]/) || username.includes(" ")) {
-        return false;
+    // логин должен содержать только латинские буквы (большие и маленькие) и/или цифры
+    if (/^[A-Za-z0-9]+$/.test(username)) {
+        return true;
     }
 
-    return true;
+    return false;
 }
 
 export function validatePassword(password: string | undefined): boolean {
@@ -19,9 +17,9 @@ export function validatePassword(password: string | undefined): boolean {
     };
 
     // Проверяем длину пароля, наличие нелатинских букв и пробелов
-    if (password.length < 4 || password.match(/[^A-Za-z0-9_]/) || password.includes(" ")) {
-        return false;
+    if (password.length >= 4 && /^[A-Za-z0-9!@#$%^&*]+$/.test(password)) {
+        return true;
     }
 
-    return true;
+    return false;
 }

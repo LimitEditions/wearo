@@ -10,8 +10,6 @@ import { validatePassword, validateUsername } from "../../utils/validation";
 export const LoginForm = () => {
   const [user, setUser] = useState<AuthModel>({ username: "", password: "" });
   const [shouldExecute, setShouldExecute] = useState<boolean>(false);
-  const [isValidUserName, setIsValidUserName] = useState<boolean>(true);
-  const [isValidPassword, setIsValidPassword] = useState<boolean>(true);
   const [authData, isLoading, authError] = useApi(
     "authCreate",
     user,
@@ -43,21 +41,33 @@ export const LoginForm = () => {
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUser({ ...user, [event.target.name]: event.target.value });
-  };
-
-  // валидация данных после потери фокуса
-  const handleBlur = (event: React.FocusEvent<HTMLInputElement>) => {
-    if (event.target.value === ''){
-      setIsValidPassword(true);
-      return;
-    }
 
     if (event.target.name === "username") {
-      setIsValidUserName(validateUsername(event.target.value))
+      const usernameInput = document.getElementsByName(
+        "username"
+      )[0] as HTMLInputElement;
+      // проверяем валидность логина
+      if (!validateUsername(event.target.value)) {
+        usernameInput.setCustomValidity(
+          "Может содержать только латинские буквы и/или цифры"
+        );
+      } else {
+        usernameInput.setCustomValidity("");
+      }
     }
 
     if (event.target.name === "password") {
-      setIsValidPassword(validatePassword(event.target.value))
+      const passwordInput = document.getElementsByName(
+        "password"
+      )[0] as HTMLInputElement;
+      // проверяем валидность пароля
+      if (!validatePassword(event.target.value)) {
+        passwordInput.setCustomValidity(
+          "Должен быть не менее 4-х символов, может содержать любые латинские буквы, цифры и/или спец. символы (!@#$%^&*)"
+        );
+      } else {
+        passwordInput.setCustomValidity("");
+      }
     }
   };
 
@@ -68,42 +78,29 @@ export const LoginForm = () => {
         <form className={`${getStyles(formStyle)}`} onSubmit={handleSubmit}>
           <label className={`${getStyles(labelStyle)}`}>
             <span>Логин:</span>
-            {!isValidUserName && (
-              <span className={`${getStyles(spanNotValid)}`}>
-                Не должен содержать пробелы и нелатинские буквы
-              </span>
-            )}
             <input
               type="text"
               name="username"
               className={`${getStyles(inpitStyle)}`}
               value={user.username || ""}
               onChange={handleChange}
-              onBlur={handleBlur}
               required
             />
           </label>
           <label className={`${getStyles(labelStyle)}`}>
             <span>Пароль:</span>
-            {!isValidPassword && (
-              <span className={`${getStyles(spanNotValid)}`}>
-                Должен быть не менее 4-х символов, без пробелов, может содержать
-                любые латинские буквы, цифры и спец. символы
-              </span>
-            )}
             <input
               type="password"
               name="password"
               className={`${getStyles(inpitStyle)}`}
               value={user.password || ""}
               onChange={handleChange}
-              onBlur={handleBlur}
               required
             />
           </label>
           {authError ? (
             <span className={`${getStyles(spanErrorStyle)}`}>
-              Неверные учетные данные
+              Неверный логин или пароль
             </span>
           ) : null}
           <button type="submit" className={`${getStyles(btnStyle)}`}>
@@ -153,10 +150,6 @@ const btnStyle: BlockStyle = {
 
 const spanErrorStyle: BlockStyle = {
   text: "text-red-500",
-};
-
-const spanNotValid: BlockStyle = {
-  text: "text-red-500 text-xs",
 };
 
 const pStyle: BlockStyle = {
