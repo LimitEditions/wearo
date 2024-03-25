@@ -3,7 +3,7 @@ import { AuthModel } from "../api/data-contracts";
 import useApi from "../hooks/useApi";
 import { IAuthCreate } from "../types/interfaces/ApiResponses/IAuthCreate";
 import { encrypt } from "../utils/encryption";
-import { validatePassword, validateUsername } from "../utils/validation";
+import { validateWord } from "../utils/validation";
 import getStyles from "../utils/getStyles";
 import { BlockStyle } from "../types/interfaces/IStyles";
 
@@ -16,6 +16,16 @@ export const Login = () => {
     {},
     shouldExecute
   );
+
+  const validateField = (name: keyof AuthModel, message: string): boolean => {
+    const inputElement = document.getElementsByName(name)[0] as HTMLInputElement;
+    const isValid = validateWord(inputElement.value, name);
+    inputElement.setCustomValidity(isValid ? "" : message);
+    if (!isValid) {
+      inputElement.reportValidity();
+    }
+    return isValid;
+  };
 
   useEffect(() => {
     if (shouldExecute && (authData || authError)) {
@@ -33,42 +43,58 @@ export const Login = () => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setShouldExecute(false);
+
     // проверка валидности логина и пароля
-    if (validateUsername(user.username) && validatePassword(user.password)) {
+    // if (validateUsername(user.username) && validatePassword(user.password)) {
+    //   setShouldExecute(true);
+    // };
+    const isValidUsername = validateField(
+      "username",
+      "Может содержать только латинские буквы и/или цифры. Минимальная длина - 4 символа.",
+    );
+
+    const isValidPassword = validateField(
+      "password",
+      "Может содержать любые латинские буквы, цифры и/или спец. символы (!@#$%^&*). Минимальная длина - 4 символа.",
+    );
+
+    if (isValidUsername && isValidPassword) {
       setShouldExecute(true);
-    }
+    };
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUser({ ...user, [event.target.name]: event.target.value });
+    event.target.setCustomValidity("");
 
-    if (event.target.name === "username") {
-      const usernameInput = document.getElementsByName(
-        "username"
-      )[0] as HTMLInputElement;
-      // проверяем валидность логина
-      if (!validateUsername(event.target.value)) {
-        usernameInput.setCustomValidity(
-          "Может содержать только латинские буквы и/или цифры"
-        );
-      } else {
-        usernameInput.setCustomValidity("");
-      }
-    }
+    // if (event.target.name === "username") {
+    //   const usernameInput = document.getElementsByName(
+    //     "username"
+    //   )[0] as HTMLInputElement;
+    //   // проверяем валидность логина
+    //   if (!validateUsername(event.target.value)) {
+    //     usernameInput.setCustomValidity(
+    //       "Может содержать только латинские буквы и/или цифры"
+    //     );
+    //   } else {
+    //     usernameInput.setCustomValidity("");
+    //   }
+    // }
 
-    if (event.target.name === "password") {
-      const passwordInput = document.getElementsByName(
-        "password"
-      )[0] as HTMLInputElement;
-      // проверяем валидность пароля
-      if (!validatePassword(event.target.value)) {
-        passwordInput.setCustomValidity(
-          "Должен быть не менее 4-х символов, может содержать любые латинские буквы, цифры и/или спец. символы (!@#$%^&*)"
-        );
-      } else {
-        passwordInput.setCustomValidity("");
-      }
-    }
+    // if (event.target.name === "password") {
+    //   const passwordInput = document.getElementsByName(
+    //     "password"
+    //   )[0] as HTMLInputElement;
+    //   // проверяем валидность пароля
+    //   if (!validatePassword(event.target.value)) {
+    //     passwordInput.setCustomValidity(
+    //       "Должен быть не менее 4-х символов, может содержать любые латинские буквы, цифры и/или спец. символы (!@#$%^&*)"
+    //     );
+    //   } else {
+    //     passwordInput.setCustomValidity("");
+    //   }
+    // }
   };
 
   return (
