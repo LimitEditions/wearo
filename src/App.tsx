@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import useApi from './hooks/useApi';
 import { IAuthCreate } from './types/interfaces/ApiResponses/IAuthCreate';
-import { LoginForm } from './Components/common/LoginForm';
+import { Login } from './pages/Login';
 
 
 function App() {
@@ -20,7 +20,7 @@ function App() {
   }, [data, token, isLoading, error])
 
   return (
-    <LoginForm />
+    <Login />
   );
 }
 
