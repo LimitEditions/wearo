@@ -6,6 +6,7 @@ import { encrypt } from "../utils/encryption";
 import { validateWord } from "../utils/validation";
 import getStyles from "../utils/getStyles";
 import { BlockStyle } from "../types/interfaces/IStyles";
+import { Link } from "react-router-dom";
 
 export const Login = () => {
   const [user, setUser] = useState<AuthModel>({ username: "", password: "" });
@@ -106,6 +107,8 @@ export const Login = () => {
       {authData && !authError && (
         <p className={`${getStyles(pStyle)}`}>Авторизация успешно пройдена.</p>
       )}
+
+      <Link className={`${getStyles(linkStyle)}`} to="/registration">Зарегистрироваться</Link>
     </>
   );
 };
@@ -150,4 +153,10 @@ const pStyle: BlockStyle = {
   text: "text-center",
   spacing: "m-auto my-8",
 };
+
+const linkStyle: BlockStyle = {
+  text: "text-center text-xl text-pink-700",
+  spacing: "m-auto my-8",
+  container: "block"
+}
 
