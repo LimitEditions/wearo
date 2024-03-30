@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import getStyles from "../utils/getStyles";
 import { AuthModel } from "../api/data-contracts";
-import { BlockStyle } from "../types/interfaces/IStyles";
 import useApi from "../hooks/useApi";
 import { IAuthCreate } from "../types/interfaces/ApiResponses/IAuthCreate";
 import { encrypt } from "../utils/encryption";
-
+import { validateWord } from "../utils/validation";
+import getStyles from "../utils/getStyles";
+import { BlockStyle } from "../types/interfaces/IStyles";
 
 export const Login = () => {
   const [user, setUser] = useState<AuthModel>({ username: "", password: "" });
@@ -17,27 +17,52 @@ export const Login = () => {
     shouldExecute
   );
 
+  const validateField = (name: keyof AuthModel, message: string): boolean => {
+    const inputElement = document.getElementsByName(name)[0] as HTMLInputElement;
+    const isValid = validateWord(inputElement.value, name);
+    inputElement.setCustomValidity(isValid ? "" : message);
+    if (!isValid) {
+      inputElement.reportValidity();
+    }
+    return isValid;
+  };
+
   useEffect(() => {
     if (shouldExecute && (authData || authError)) {
       // останавливаем запрос
       setShouldExecute(false);
       // очищаем inputs
       setUser({ username: "", password: "" });
-    };
+    }
     if (authData) {
       const tokendata = authData as IAuthCreate; //дополнительно типизируем данные приходящие с сервера в зависимости от метода обращения
       encrypt("token", tokendata.token);
       encrypt("refreshToken", tokendata.refreshToken);
-    };
+    }
   }, [authData, authError, shouldExecute]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setShouldExecute(true);
+    setShouldExecute(false);
+
+    const isValidUsername = validateField(
+      "username",
+      "Может содержать только латинские буквы и/или цифры. Минимальная длина - 4 символа.",
+    );
+
+    const isValidPassword = validateField(
+      "password",
+      "Может содержать любые латинские буквы, цифры и/или спец. символы (!@#$%^&*). Минимальная длина - 4 символа.",
+    );
+
+    if (isValidUsername && isValidPassword) {
+      setShouldExecute(true);
+    };
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUser({ ...user, [event.target.name]: event.target.value });
+    event.target.setCustomValidity("");
   };
 
   return (
@@ -69,7 +94,7 @@ export const Login = () => {
           </label>
           {authError ? (
             <span className={`${getStyles(spanErrorStyle)}`}>
-              Неверные учетные данные
+              Неверный логин или пароль
             </span>
           ) : null}
           <button type="submit" className={`${getStyles(btnStyle)}`}>
@@ -78,7 +103,9 @@ export const Login = () => {
         </form>
       </div>
       {isLoading && <p className={`${getStyles(pStyle)}`}>Loading...</p>}
-      {authData && !authError && <p className={`${getStyles(pStyle)}`}>Авторизация успешно пройдена.</p>}
+      {authData && !authError && (
+        <p className={`${getStyles(pStyle)}`}>Авторизация успешно пройдена.</p>
+      )}
     </>
   );
 };
@@ -123,3 +150,4 @@ const pStyle: BlockStyle = {
   text: "text-center",
   spacing: "m-auto my-8",
 };
+

@@ -1,7 +1,19 @@
-export function validateEmail(email: string): boolean {
-    return /\S+@\S+\.\S+/.test(email);
-}
+export type TargetValidationType = 'username' | 'password';
 
-export function validatePassword(password: string): boolean {
-    return password.length >= 8;
-}
+export function validateWord(word: string | undefined, target: TargetValidationType): boolean {
+    if (word && word.length >= 4) {
+        switch(target) {
+            case 'username':
+                if (/^[A-Za-z0-9]+$/.test(word)) {
+                    return true;
+                };
+                break;
+            case 'password':
+                if (/^[A-Za-z0-9!@#$%^&*]+$/.test(word)) {
+                    return true;
+                };
+                break;
+        };
+    };
+    return false;
+};
