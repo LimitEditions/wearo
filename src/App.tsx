@@ -1,8 +1,7 @@
-// import React, { useContext, useEffect, useState } from 'react';
-// import useApi from './hooks/useApi';
-import { LoginForm } from './Components/common/LoginForm';
-import useAuth from './hooks/useAuth'
-// import { retrieve } from './utils/encryption';
+import React, { useEffect, useState } from 'react';
+import useApi from './hooks/useApi';
+import { IAuthCreate } from './types/interfaces/ApiResponses/IAuthCreate';
+import { Login } from './pages/Login';
 
 
 function App() {
@@ -16,7 +15,7 @@ function App() {
   console.log(isAuthenticated, errorAuth)
 
   return (
-    <LoginForm />
+    <Login />
   );
 }
 
