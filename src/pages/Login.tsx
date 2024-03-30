@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { AuthModel } from "../api/data-contracts";
 import useApi from "../hooks/useApi";
 import { IAuthCreate } from "../types/interfaces/ApiResponses/IAuthCreate";
@@ -10,6 +10,8 @@ import { BlockStyle } from "../types/interfaces/IStyles";
 export const Login = () => {
   const [user, setUser] = useState<AuthModel>({ username: "", password: "" });
   const [shouldExecute, setShouldExecute] = useState<boolean>(false);
+  const inputNameRef = useRef<HTMLInputElement>(null);
+  const inputPasswordRef = useRef<HTMLInputElement>(null);
   const [authData, isLoading, authError] = useApi(
     "authCreate",
     user,
@@ -18,13 +20,17 @@ export const Login = () => {
   );
 
   const validateField = (name: keyof AuthModel, message: string): boolean => {
-    const inputElement = document.getElementsByName(name)[0] as HTMLInputElement;
-    const isValid = validateWord(inputElement.value, name);
-    inputElement.setCustomValidity(isValid ? "" : message);
-    if (!isValid) {
-      inputElement.reportValidity();
+    const inputElement =
+      name === "username" ? inputNameRef.current : inputPasswordRef.current;
+    if (inputElement) {
+      const isValid = validateWord(inputElement.value, name);
+      inputElement.setCustomValidity(isValid ? "" : message);
+      if (!isValid) {
+        inputElement.reportValidity();
+      }
+      return isValid;
     }
-    return isValid;
+    return false;
   };
 
   useEffect(() => {
@@ -47,17 +53,17 @@ export const Login = () => {
 
     const isValidUsername = validateField(
       "username",
-      "Может содержать только латинские буквы и/или цифры. Минимальная длина - 4 символа.",
+      "Может содержать только латинские буквы и/или цифры. Минимальная длина - 4 символа."
     );
 
     const isValidPassword = validateField(
       "password",
-      "Может содержать любые латинские буквы, цифры и/или спец. символы (!@#$%^&*). Минимальная длина - 4 символа.",
+      "Может содержать любые латинские буквы, цифры и/или спец. символы (!@#$%^&*). Минимальная длина - 4 символа."
     );
 
     if (isValidUsername && isValidPassword) {
       setShouldExecute(true);
-    };
+    }
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -79,6 +85,7 @@ export const Login = () => {
               value={user.username || ""}
               onChange={handleChange}
               required
+              ref={inputNameRef}
             />
           </label>
           <label className={`${getStyles(labelStyle)}`}>
@@ -90,6 +97,7 @@ export const Login = () => {
               value={user.password || ""}
               onChange={handleChange}
               required
+              ref={inputPasswordRef}
             />
           </label>
           {authError ? (
@@ -150,4 +158,3 @@ const pStyle: BlockStyle = {
   text: "text-center",
   spacing: "m-auto my-8",
 };
-
