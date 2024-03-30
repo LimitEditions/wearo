@@ -5,19 +5,14 @@ import { Login } from './pages/Login';
 
 
 function App() {
-  const [data, isLoading, error] = useApi('authCreate', {
-      username: 'admin',
-      password: 'admin'
-  })
+  // const [data, ,error] = useApi('authRefreshTokenCreate', {body: {
+  //     userGuid: retrieve('userGuid'),
+  //     refreshToken: retrieve('refreshToken')
+  // }}, {}, false)
 
-  const [token, setToken] = useState<string |null>(null);
+  const [isAuthenticated, errorAuth] = useAuth();
 
-  useEffect(() => {
-    if(data) {
-      const tokendata = data as IAuthCreate; //дополнительно типизируем данные приходящие с сервера в зависимости от метода обращения
-      setToken(tokendata['token'])
-    }
-  }, [data, token, isLoading, error])
+  console.log(isAuthenticated, errorAuth)
 
   return (
     <Login />
