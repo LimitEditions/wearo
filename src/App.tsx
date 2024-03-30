@@ -1,21 +1,22 @@
-import React, { useEffect, useState } from 'react';
-import useApi from './hooks/useApi';
-import { IAuthCreate } from './types/interfaces/ApiResponses/IAuthCreate';
+import React from 'react';
+import { Route, Routes } from 'react-router-dom';
+import { Nav } from './Components/common/Nav';
+import { Home } from './pages/Home';
 import { Login } from './pages/Login';
+import { Profile } from './pages/Profile';
 
 
 function App() {
-  // const [data, ,error] = useApi('authRefreshTokenCreate', {body: {
-  //     userGuid: retrieve('userGuid'),
-  //     refreshToken: retrieve('refreshToken')
-  // }}, {}, false)
-
-  const [isAuthenticated, errorAuth] = useAuth();
-
-  console.log(isAuthenticated, errorAuth)
-
   return (
-    <Login />
+    <>
+      <Nav />
+      <Routes>
+        <Route path='/' element={ <Home /> }/>
+        <Route path='/login' element={ <Login /> }/>
+        <Route path='/profile' element={ <Profile /> }/>
+        <Route path='/*' element="no content"/> {/*Обработка ошибочных запросов */}
+      </Routes>
+    </>
   );
 }
 
