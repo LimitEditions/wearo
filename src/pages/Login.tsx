@@ -110,13 +110,12 @@ export const Login = () => {
             Log in
           </button>
         </form>
+        <Link className={`${getStyles(linkStyle)}`} to="/registration">Зарегистрироваться</Link>
       </div>
       {isLoading && <p className={`${getStyles(pStyle)}`}>Loading...</p>}
       {authData && !authError && (
         <p className={`${getStyles(pStyle)}`}>Авторизация успешно пройдена.</p>
       )}
-
-      <Link className={`${getStyles(linkStyle)}`} to="/registration">Зарегистрироваться</Link>
     </>
   );
 };
@@ -161,3 +160,8 @@ const pStyle: BlockStyle = {
   text: "text-center",
   spacing: "m-auto my-8",
 };
+
+const linkStyle: BlockStyle = {
+  text: "text-gray-500 text-xs float-right",
+  spacing: "mt-2"
+}
