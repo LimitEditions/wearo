@@ -1,39 +1,65 @@
-import { useContext, useEffect } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import AuthContext from '../context/AuthProvider';
 import { useNavigate } from 'react-router-dom';
 import { retrieve } from '../utils/encryption';
 import useApi from './useApi';
 import { IAuthMeList } from '../types/interfaces/ApiResponses/IAuthMeList';
+import { isTokenExpired } from '../utils/expirationTime';
+import { dataToLS } from '../utils/dataToLS';
 
 
 const useAuth = () => {
   const { isAuthenticated, setAuth } = useContext(AuthContext);
+  
+  const token = retrieve('token');
+  const tokenExpireIn = retrieve('tokenExpireIn');
+  const refreshToken = retrieve('refreshToken');
+  const refreshTokenExpireIn = retrieve('refreshTokenExpireIn');
+  const userGuid = retrieve('guid');
+
+  const shouldRefresh = isTokenExpired(tokenExpireIn) && !isTokenExpired(refreshTokenExpireIn);
+  const [shouldReq, setShouldReq] = useState<boolean>(false);
   const navigate = useNavigate();
 
-  const [ data, , error] = useApi('authMeList', {
-    headers: {Authorization: `Bearer ${ retrieve('token') }`}
-  }, {}, true);
+  useEffect(() => {
+    if (tokenExpireIn || refreshTokenExpireIn) {
+      setShouldReq(true);
+    } else {
+      navigate('/login');
+    }
+  }, [tokenExpireIn, refreshTokenExpireIn, shouldRefresh, setShouldReq, navigate]);
+
+  
+  const endPoint = shouldRefresh ? 'authRefreshTokenCreate' : 'authMeList';
+  const params = shouldRefresh ? {
+    "userGuid": userGuid,
+    "refreshToken": refreshToken,    
+  } : {
+    headers: {Authorization: `Bearer ${token}`}
+  };
+
+  const [data, isLoading, error] = useApi(endPoint, params, {}, shouldReq);
 
   useEffect(() => {
     if (data) {
-      const dataInfo = data as IAuthMeList; //дополнительно типизируем данные приходящие с сервера в зависимости от метода обращения
-      setAuth({
-        status: true,
-        guid: dataInfo.guid,
-        userName: dataInfo.userName,
-        firstName: dataInfo.firstName,
-        secondName: dataInfo.secondName,
-        type: dataInfo.type
-      });
-    } else if (retrieve('refreshToken')) {
-      return;                       // если токен устарел, а refreshToken еще действующий
-    } else {
-      navigate('login/');           // если оба токена устарели или вообще отсутсвуют
+      if (shouldRefresh) {
+        dataToLS(data);
+        setShouldReq(false);
+      } else {
+        const dataInfo = data as IAuthMeList;
+        setAuth({
+          status: true,
+          username: dataInfo.username,
+          firstName: dataInfo.firstName,
+          secondName: dataInfo.secondName,
+          type: dataInfo.type
+        });
+      }; 
     };
     
-  }, [data, error, setAuth, navigate])
+  }, [data, shouldRefresh, setShouldReq, setAuth])
 
-  return [isAuthenticated, error];  //возврщаем контекс окружения и состояние ошибки на случай запроса обновления токена
+  return [isAuthenticated, isLoading];
 };
 
 export default useAuth;

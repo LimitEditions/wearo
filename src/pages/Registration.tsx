@@ -8,7 +8,7 @@ import { useNavigate } from "react-router";
 
 export const Registration = () => {
   const [user, setUser] = useState<CreateUserModel>({
-    userName: "",
+    username: "",
     password: "",
     firstName: "",
     secondName: "",
@@ -46,7 +46,7 @@ export const Registration = () => {
       // останавливаем запрос
       setShouldExecute(false);
       // очищаем inputs
-      setUser({ userName: "", password: "", firstName: "", secondName: "" });
+      setUser({ username: "", password: "", firstName: "", secondName: "" });
     }
     if (regData) {
         console.log(regData);
@@ -89,7 +89,7 @@ export const Registration = () => {
               type="text"
               name="userName"
               className={`${getStyles(inpitStyle)}`}
-              value={user.userName || ""}
+              value={user.username || ""}
               onChange={handleChange}
               required
               ref={inputNameRef}

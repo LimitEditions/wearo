@@ -1,13 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import { AuthModel } from "../api/data-contracts";
 import useApi from "../hooks/useApi";
-import { IAuthCreate } from "../types/interfaces/ApiResponses/IAuthCreate";
-import { encrypt } from "../utils/encryption";
 import { validateWord } from "../utils/validation";
 import getStyles from "../utils/getStyles";
 import { BlockStyle } from "../types/interfaces/IStyles";
 import { Link } from "react-router-dom";
-import { calculateExpirationTime } from "../utils/expirationTime";
+import { dataToLS } from "../utils/dataToLS";
 
 export const Login = () => {
   const [user, setUser] = useState<AuthModel>({ username: "", password: "" });
@@ -41,18 +39,10 @@ export const Login = () => {
       setShouldExecute(false);
       // очищаем inputs
       setUser({ username: "", password: "" });
-    }
+    };
     if (authData) {
-      const tokenData = authData as IAuthCreate; //дополнительно типизируем данные приходящие с сервера в зависимости от метода обращения
-      // Далее по ключам из объекта tokenData переносим все данные в localStorage
-      // при этом шифруем всю инфу, а времена истечения токенов предварительно переводим в даты
-      Object.keys(tokenData)
-      .forEach(e => {
-        Number.isInteger(tokenData[e]) ? 
-          encrypt(e, calculateExpirationTime(tokenData[e])):
-          encrypt(e, tokenData[e]);
-      });
-    }
+      dataToLS(authData)
+    };
   }, [authData, authError, shouldExecute]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
