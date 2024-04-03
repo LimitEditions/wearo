@@ -7,6 +7,7 @@ import { validateWord } from "../utils/validation";
 import getStyles from "../utils/getStyles";
 import { BlockStyle } from "../types/interfaces/IStyles";
 import { Link } from "react-router-dom";
+import { calculateExpirationTime } from "../utils/expirationTime";
 
 export const Login = () => {
   const [user, setUser] = useState<AuthModel>({ username: "", password: "" });
@@ -42,9 +43,15 @@ export const Login = () => {
       setUser({ username: "", password: "" });
     }
     if (authData) {
-      const tokendata = authData as IAuthCreate; //дополнительно типизируем данные приходящие с сервера в зависимости от метода обращения
-      encrypt("token", tokendata.token);
-      encrypt("refreshToken", tokendata.refreshToken);
+      const tokenData = authData as IAuthCreate; //дополнительно типизируем данные приходящие с сервера в зависимости от метода обращения
+      // Далее по ключам из объекта tokenData переносим все данные в localStorage
+      // при этом шифруем всю инфу, а времена истечения токенов предварительно переводим в даты
+      Object.keys(tokenData)
+      .forEach(e => {
+        Number.isInteger(tokenData[e]) ? 
+          encrypt(e, calculateExpirationTime(tokenData[e])):
+          encrypt(e, tokenData[e]);
+      });
     }
   }, [authData, authError, shouldExecute]);
 

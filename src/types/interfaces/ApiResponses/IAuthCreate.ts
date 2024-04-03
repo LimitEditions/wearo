@@ -1,5 +1,8 @@
 export interface IAuthCreate {
-    token: string,
+    guid: string,
     refreshToken: string,
+    refreshTokenExpireIn: number,
+    token: string,
+    tokenExpireIn: number,
     [key: string]: any
 };
