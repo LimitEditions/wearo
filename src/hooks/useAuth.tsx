@@ -20,7 +20,7 @@ const useAuth = () => {
       setAuth({
         status: true,
         guid: dataInfo.guid,
-        userName: dataInfo.userName,
+        username: dataInfo.username,
         firstName: dataInfo.firstName,
         secondName: dataInfo.secondName,
         type: dataInfo.type

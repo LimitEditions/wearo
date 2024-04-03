@@ -8,12 +8,13 @@ import { useNavigate } from "react-router";
 
 export const Registration = () => {
   const [user, setUser] = useState<CreateUserModel>({
-    userName: "",
+    username: "",
     password: "",
     firstName: "",
     secondName: "",
   });
   const [shouldExecute, setShouldExecute] = useState<boolean>(false);
+  const [shouldExecuteUser, setShouldExecuteUser] = useState<boolean>(false);
   const inputNameRef = useRef<HTMLInputElement>(null);
   const inputPasswordRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate()
@@ -23,13 +24,19 @@ export const Registration = () => {
     {},
     shouldExecute
   );
+  const [userData, isLoadingUser, userError] = useApi(
+    "usersCheckDetail",
+    user.username,
+    {},
+    shouldExecuteUser
+  );
 
   const validateField = (
-    name: "userName" | "password",
+    name: "username" | "password",
     message: string
   ): boolean => {
     const inputElement =
-      name === "userName" ? inputNameRef.current : inputPasswordRef.current;
+      name === "username" ? inputNameRef.current : inputPasswordRef.current;
     if (inputElement) {
       const isValid = validateWord(inputElement.value, name);
       inputElement.setCustomValidity(isValid ? "" : message);
@@ -46,7 +53,7 @@ export const Registration = () => {
       // останавливаем запрос
       setShouldExecute(false);
       // очищаем inputs
-      setUser({ userName: "", password: "", firstName: "", secondName: "" });
+      setUser({ username: "", password: "", firstName: "", secondName: "" });
     }
     if (regData) {
         console.log(regData);
@@ -54,12 +61,25 @@ export const Registration = () => {
     }
   }, [regData, regError, shouldExecute]);
 
+  useEffect(() => {
+    if (shouldExecuteUser && (typeof(userData) === 'boolean' || userError)) {
+      setShouldExecuteUser(false);
+    }
+    if (typeof(userData) === 'boolean') {
+      const inputElement = inputNameRef.current;
+      if (inputElement) {
+        inputElement.setCustomValidity(userData ? "" : 'Пользователь с таким именем уже существует.');
+        inputElement.reportValidity();
+      }
+    }
+  }, [userData, userError, shouldExecuteUser]);
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setShouldExecute(false);
 
     const isValidUsername = validateField(
-      "userName",
+      "username",
       "Может содержать только латинские буквы и/или цифры. Минимальная длина - 4 символа."
     );
 
@@ -78,6 +98,13 @@ export const Registration = () => {
     event.target.setCustomValidity("");
   };
 
+  const handleBlur = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setShouldExecuteUser(false);
+    if (event.target.value){
+      setShouldExecuteUser(true)
+    }
+  }
+
   return (
     <>
       <div className={`${getStyles(containerStyle)}`}>
@@ -87,10 +114,11 @@ export const Registration = () => {
             <span>Логин:</span>
             <input
               type="text"
-              name="userName"
+              name="username"
               className={`${getStyles(inpitStyle)}`}
-              value={user.userName || ""}
+              value={user.username || ""}
               onChange={handleChange}
+              onBlur={handleBlur}
               required
               ref={inputNameRef}
             />
@@ -140,7 +168,7 @@ export const Registration = () => {
       )}
       {regError ? (
         <span className={`${getStyles(spanErrorStyle)}`}>
-          Пользователь с таким именем уже существует.
+          Ошибка регистрации. Повторите попытку позже.
         </span>
       ) : null}
     </>

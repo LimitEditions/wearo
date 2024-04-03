@@ -70,17 +70,14 @@ export enum BodyShape {
 }
 
 /** Бренд */
-export interface Brand {
-  /**
-   * Идентификатор БД
-   * @format int64
-   */
-  id?: number;
+export interface BrandModel {
   /**
    * Идентификатор
    * @format uuid
    */
   guid?: string;
+  /** Отметка удаления */
+  isDeleted?: boolean;
   /**
    * Дата создания
    * @format date-time
@@ -91,32 +88,6 @@ export interface Brand {
    * @format date-time
    */
   updateDT?: string;
-  /** Отметка удаления */
-  isDeleted?: boolean;
-  /** Название бренда */
-  name?: string;
-  /** Некое описание */
-  description?: string;
-  /** Красивое описание */
-  descriptionRichContent?: string | null;
-  /**
-   * Лого
-   * @format uuid
-   */
-  photo?: string | null;
-  /** Ссылка на сайт */
-  link?: string | null;
-  /** Продукты компнии */
-  products?: Product[] | null;
-}
-
-/** Бренд */
-export interface BrandModel {
-  /**
-   * Идентификатор
-   * @format uuid
-   */
-  guid?: string;
   /** Название бренда */
   name?: string;
   /** Некое описание */
@@ -152,6 +123,18 @@ export interface BrandRequestModel {
    * @format uuid
    */
   guid?: string;
+  /** Отметка удаления */
+  isDeleted?: boolean;
+  /**
+   * Дата создания
+   * @format date-time
+   */
+  createDT?: string;
+  /**
+   * Дата обнавления
+   * @format date-time
+   */
+  updateDT?: string;
   /** Название бренда */
   name?: string;
   /** Некое описание */
@@ -176,8 +159,23 @@ export interface BrandRequestModel {
    * @format uuid
    */
   userGuid?: string;
+  /** Коментарий */
+  comment?: string | null;
   /** Пользователь */
   user?: UserModel;
+  /** Приложенные файлы */
+  files?: FileModel[] | null;
+}
+
+/** Результат чтения данных. */
+export interface BrandRequestModelDataResult {
+  /**
+   * Общее количество найденных элементов.
+   * @format int32
+   */
+  total?: number;
+  /** Данные. */
+  data?: BrandRequestModel[];
 }
 
 /** Коллекция одежды */
@@ -187,6 +185,18 @@ export interface ClothingCollectionModel {
    * @format uuid
    */
   guid?: string;
+  /** Отметка удаления */
+  isDeleted?: boolean;
+  /**
+   * Дата создания
+   * @format date-time
+   */
+  createDT?: string;
+  /**
+   * Дата обнавления
+   * @format date-time
+   */
+  updateDT?: string;
   /** Бренд */
   brand?: BrandModel;
   /** Список продуктов */
@@ -226,6 +236,18 @@ export interface ClothingPartyModel {
    * @format uuid
    */
   guid?: string;
+  /** Отметка удаления */
+  isDeleted?: boolean;
+  /**
+   * Дата создания
+   * @format date-time
+   */
+  createDT?: string;
+  /**
+   * Дата обнавления
+   * @format date-time
+   */
+  updateDT?: string;
   /** Продукт */
   product?: ProductModel;
   /** Единицы продуктов */
@@ -244,18 +266,14 @@ export interface ClothingPartyModel {
   origin?: string;
 }
 
-/** Цвет */
-export interface Color {
-  /**
-   * Идентификатор БД
-   * @format int64
-   */
-  id?: number;
+export interface ColorModel {
   /**
    * Идентификатор
    * @format uuid
    */
   guid?: string;
+  /** Отметка удаления */
+  isDeleted?: boolean;
   /**
    * Дата создания
    * @format date-time
@@ -266,20 +284,6 @@ export interface Color {
    * @format date-time
    */
   updateDT?: string;
-  /** Отметка удаления */
-  isDeleted?: boolean;
-  /** Название цвета */
-  name?: string;
-  /** Код */
-  hex?: string;
-}
-
-export interface ColorModel {
-  /**
-   * Идентификатор
-   * @format uuid
-   */
-  guid?: string;
   /** Название цвета */
   name?: string;
   /** Код */
@@ -314,6 +318,18 @@ export interface CommentModel {
    * @format uuid
    */
   guid?: string;
+  /** Отметка удаления */
+  isDeleted?: boolean;
+  /**
+   * Дата создания
+   * @format date-time
+   */
+  createDT?: string;
+  /**
+   * Дата обнавления
+   * @format date-time
+   */
+  updateDT?: string;
   /** Пользователь */
   user?: UserModel;
   /**
@@ -360,6 +376,27 @@ export interface CreateBrandModel {
   link?: string | null;
 }
 
+/** Бренд */
+export interface CreateBrandRequestModel {
+  /** Название бренда */
+  name?: string;
+  /** Некое описание */
+  description?: string;
+  /** Красивое описание */
+  descriptionRichContent?: string;
+  /**
+   * Лого
+   * @format uuid
+   */
+  photo?: string | null;
+  /** Ссылка на сайт */
+  link?: string | null;
+  /** Коментарий */
+  comment?: string;
+  /** Файлы */
+  files?: string[] | null;
+}
+
 /** Коллекция одежды */
 export interface CreateClothingCollectionModel {
   /** Наименование */
@@ -377,13 +414,6 @@ export interface CreateClothingCollectionModel {
    */
   brandGuid?: string;
   season?: Season;
-}
-
-export interface CreateColor {
-  /** @format uuid */
-  id?: string;
-  /** @format uuid */
-  colorId?: string;
 }
 
 /** Цвет */
@@ -455,6 +485,19 @@ export interface CreateProductCategoryModel {
   parentCategoryGuid?: string | null;
 }
 
+export interface CreateProductColor {
+  /**
+   * ИД продукта
+   * @format uuid
+   */
+  id?: string;
+  /**
+   * ИД цвета
+   * @format uuid
+   */
+  colorId?: string;
+}
+
 export interface CreateProductFileModel {
   /**
    * Ид продукта
@@ -501,6 +544,25 @@ export interface CreateProductItemModel {
    * @format uuid
    */
   clothingPartyGuid?: string | null;
+}
+
+/** Материал продукта */
+export interface CreateProductMaterialModel {
+  /**
+   * Продукт
+   * @format uuid
+   */
+  productGuid?: string;
+  /**
+   * Материал
+   * @format uuid
+   */
+  materialGuid?: string;
+  /**
+   * Доля в издеелии
+   * @format double
+   */
+  share?: number;
 }
 
 /** Продукт */
@@ -551,7 +613,7 @@ export interface CreateTipModel {
 /** Модель создания пользователя */
 export interface CreateUserModel {
   /** UserName */
-  userName?: string;
+  username?: string;
   /** Пароль пользователя */
   password?: string;
   /** Имя */
@@ -567,6 +629,18 @@ export interface FileModel {
    * @format uuid
    */
   guid?: string;
+  /** Отметка удаления */
+  isDeleted?: boolean;
+  /**
+   * Дата создания
+   * @format date-time
+   */
+  createDT?: string;
+  /**
+   * Дата обнавления
+   * @format date-time
+   */
+  updateDT?: string;
   /**
    * Позиция файла
    * @format int64
@@ -593,21 +667,6 @@ export enum FileType {
   Webm = "Webm",
 }
 
-/** Запрос на поиск "запросов" */
-export interface GetBrandRequestsModel {
-  name?: string | null;
-  description?: string | null;
-  /** @format int32 */
-  page?: number;
-  /** @format int32 */
-  pageSize?: number;
-  /** @format uuid */
-  userGuid?: string | null;
-  status?: RequestStatus;
-  /** @format uuid */
-  updateUser?: string | null;
-}
-
 /** Совместимость вещей */
 export interface LookModel {
   /**
@@ -615,6 +674,18 @@ export interface LookModel {
    * @format uuid
    */
   guid?: string;
+  /** Отметка удаления */
+  isDeleted?: boolean;
+  /**
+   * Дата создания
+   * @format date-time
+   */
+  createDT?: string;
+  /**
+   * Дата обнавления
+   * @format date-time
+   */
+  updateDT?: string;
   /** Наименование */
   name?: string;
   /** @format double */
@@ -648,6 +719,18 @@ export interface LookProductModel {
    * @format uuid
    */
   guid?: string;
+  /** Отметка удаления */
+  isDeleted?: boolean;
+  /**
+   * Дата создания
+   * @format date-time
+   */
+  createDT?: string;
+  /**
+   * Дата обнавления
+   * @format date-time
+   */
+  updateDT?: string;
   /** Совместимость вещей */
   look?: LookModel;
   /** Продукт */
@@ -671,6 +754,18 @@ export interface LookTagModel {
    * @format uuid
    */
   guid?: string;
+  /** Отметка удаления */
+  isDeleted?: boolean;
+  /**
+   * Дата создания
+   * @format date-time
+   */
+  createDT?: string;
+  /**
+   * Дата обнавления
+   * @format date-time
+   */
+  updateDT?: string;
   /** Совместимость вещей */
   look?: LookModel;
   /**
@@ -690,17 +785,14 @@ export enum LookTagType {
 }
 
 /** Материал */
-export interface Material {
-  /**
-   * Идентификатор БД
-   * @format int64
-   */
-  id?: number;
+export interface MaterialModel {
   /**
    * Идентификатор
    * @format uuid
    */
   guid?: string;
+  /** Отметка удаления */
+  isDeleted?: boolean;
   /**
    * Дата создания
    * @format date-time
@@ -711,21 +803,6 @@ export interface Material {
    * @format date-time
    */
   updateDT?: string;
-  /** Отметка удаления */
-  isDeleted?: boolean;
-  /** Название бренда */
-  name?: string;
-  /** Некое описание */
-  description?: string;
-}
-
-/** Материал */
-export interface MaterialModel {
-  /**
-   * Идентификатор
-   * @format uuid
-   */
-  guid?: string;
   /** Название бренда */
   name?: string;
   /** Некое описание */
@@ -739,6 +816,18 @@ export interface PostModel {
    * @format uuid
    */
   guid?: string;
+  /** Отметка удаления */
+  isDeleted?: boolean;
+  /**
+   * Дата создания
+   * @format date-time
+   */
+  createDT?: string;
+  /**
+   * Дата обнавления
+   * @format date-time
+   */
+  updateDT?: string;
   /** Текст */
   text?: string;
   /**
@@ -773,18 +862,15 @@ export interface ProblemDetails {
   [key: string]: any;
 }
 
-/** Продукт */
-export interface Product {
-  /**
-   * Идентификатор БД
-   * @format int64
-   */
-  id?: number;
+/** Тип одежды */
+export interface ProductCategoryModel {
   /**
    * Идентификатор
    * @format uuid
    */
   guid?: string;
+  /** Отметка удаления */
+  isDeleted?: boolean;
   /**
    * Дата создания
    * @format date-time
@@ -795,51 +881,6 @@ export interface Product {
    * @format date-time
    */
   updateDT?: string;
-  /** Отметка удаления */
-  isDeleted?: boolean;
-  /** Название продукта */
-  name?: string;
-  /** Описание */
-  description?: string;
-  /**
-   * Бренд
-   * @format uuid
-   */
-  brandGuid?: string;
-  /** Бренд */
-  brand?: Brand;
-  /** Советы */
-  tips?: ProductTip[] | null;
-  /** Снимки товара */
-  photos?: ProductFileLink[] | null;
-  /** Доступные цвета */
-  colors?: ProductColor[] | null;
-  /** Комментарии */
-  comments?: ProductComment[] | null;
-  coloring?: Coloring;
-  status?: ProductStatus;
-  /** Состав вещи */
-  composition?: ProductMaterial[] | null;
-  season?: Season;
-  /**
-   * Ид коллекции
-   * @format uuid
-   */
-  collectionGuid?: string | null;
-  /**
-   * Категория вещи
-   * @format uuid
-   */
-  categoryGuid?: string;
-}
-
-/** Тип одежды */
-export interface ProductCategoryModel {
-  /**
-   * Идентификатор
-   * @format uuid
-   */
-  guid?: string;
   /** Наименование */
   name?: string;
   /** Описание */
@@ -868,18 +909,14 @@ export interface ProductCategoryModelDataResult {
   data?: ProductCategoryModel[];
 }
 
-/** Цвет продукта */
-export interface ProductColor {
-  /**
-   * Идентификатор БД
-   * @format int64
-   */
-  id?: number;
+export interface ProductColorModel {
   /**
    * Идентификатор
    * @format uuid
    */
   guid?: string;
+  /** Отметка удаления */
+  isDeleted?: boolean;
   /**
    * Дата создания
    * @format date-time
@@ -890,30 +927,6 @@ export interface ProductColor {
    * @format date-time
    */
   updateDT?: string;
-  /** Отметка удаления */
-  isDeleted?: boolean;
-  /**
-   * Продукт
-   * @format uuid
-   */
-  productGuid?: string;
-  /**
-   * Цвет
-   * @format uuid
-   */
-  colorGuid?: string;
-  /** Продукт */
-  product?: Product;
-  /** Цвет */
-  color?: Color;
-}
-
-export interface ProductColorModel {
-  /**
-   * Идентификатор
-   * @format uuid
-   */
-  guid?: string;
   /**
    * Продукт
    * @format uuid
@@ -929,105 +942,6 @@ export interface ProductColorModel {
   color?: ColorModel;
 }
 
-/** Отзвы на вещь */
-export interface ProductComment {
-  /**
-   * Идентификатор БД
-   * @format int64
-   */
-  id?: number;
-  /**
-   * Идентификатор
-   * @format uuid
-   */
-  guid?: string;
-  /**
-   * Дата создания
-   * @format date-time
-   */
-  createDT?: string;
-  /**
-   * Дата обнавления
-   * @format date-time
-   */
-  updateDT?: string;
-  /** Отметка удаления */
-  isDeleted?: boolean;
-  /**
-   * От пользователя
-   * @format uuid
-   */
-  userGuid?: string;
-  /** Текст */
-  text?: string;
-  /**
-   * Продукт
-   * @format uuid
-   */
-  productGuid?: string;
-  /** Продукт */
-  product?: Product;
-  /** Пользователь */
-  user?: User;
-  /** Отсканированно */
-  isScanned?: boolean;
-  /** Нравится ли */
-  isLike?: boolean | null;
-}
-
-/** Ссылка на файл */
-export interface ProductFileLink {
-  /**
-   * Идентификатор БД
-   * @format int64
-   */
-  id?: number;
-  /**
-   * Идентификатор
-   * @format uuid
-   */
-  guid?: string;
-  /**
-   * Дата создания
-   * @format date-time
-   */
-  createDT?: string;
-  /**
-   * Дата обнавления
-   * @format date-time
-   */
-  updateDT?: string;
-  /** Отметка удаления */
-  isDeleted?: boolean;
-  /**
-   * Позиция файла
-   * @format int64
-   */
-  position?: number;
-  fileType?: FileType;
-  /**
-   * Продут
-   * @format uuid
-   */
-  productGuid?: string;
-  /**
-   * Цвет
-   * @format uuid
-   */
-  colorGuid?: string | null;
-  /**
-   * Ид Файла
-   * @format uuid
-   */
-  fileGuid?: string;
-  /** Файлик */
-  file?: VneFile;
-  /** Продукт */
-  product?: Product;
-  /** Цвет продукта */
-  color?: ProductColor;
-}
-
 /** Конкретное изделие */
 export interface ProductItemModel {
   /**
@@ -1035,6 +949,18 @@ export interface ProductItemModel {
    * @format uuid
    */
   guid?: string;
+  /** Отметка удаления */
+  isDeleted?: boolean;
+  /**
+   * Дата создания
+   * @format date-time
+   */
+  createDT?: string;
+  /**
+   * Дата обнавления
+   * @format date-time
+   */
+  updateDT?: string;
   uniqeCode?: string;
   /**
    * Продукт
@@ -1066,17 +992,14 @@ export interface ProductItemModel {
 }
 
 /** Материал продукта */
-export interface ProductMaterial {
-  /**
-   * Идентификатор БД
-   * @format int64
-   */
-  id?: number;
+export interface ProductMaterialModel {
   /**
    * Идентификатор
    * @format uuid
    */
   guid?: string;
+  /** Отметка удаления */
+  isDeleted?: boolean;
   /**
    * Дата создания
    * @format date-time
@@ -1087,36 +1010,6 @@ export interface ProductMaterial {
    * @format date-time
    */
   updateDT?: string;
-  /** Отметка удаления */
-  isDeleted?: boolean;
-  /**
-   * Продукт
-   * @format uuid
-   */
-  productGuid?: string;
-  /**
-   * Материал
-   * @format uuid
-   */
-  materialGuid?: string;
-  /**
-   * Доля в издеелии
-   * @format double
-   */
-  share?: number;
-  /** Продукт */
-  product?: Product;
-  /** Материал */
-  material?: Material;
-}
-
-/** Материал продукта */
-export interface ProductMaterialModel {
-  /**
-   * Идентификатор
-   * @format uuid
-   */
-  guid?: string;
   /**
    * Продукт
    * @format uuid
@@ -1145,6 +1038,18 @@ export interface ProductMeasurementModel {
    * @format uuid
    */
   guid?: string;
+  /** Отметка удаления */
+  isDeleted?: boolean;
+  /**
+   * Дата создания
+   * @format date-time
+   */
+  createDT?: string;
+  /**
+   * Дата обнавления
+   * @format date-time
+   */
+  updateDT?: string;
   /**
    * Размер, по которому будет произведена группировка
    * @format int32
@@ -1170,6 +1075,18 @@ export interface ProductModel {
    * @format uuid
    */
   guid?: string;
+  /** Отметка удаления */
+  isDeleted?: boolean;
+  /**
+   * Дата создания
+   * @format date-time
+   */
+  createDT?: string;
+  /**
+   * Дата обнавления
+   * @format date-time
+   */
+  updateDT?: string;
   /** Название продукта */
   name?: string;
   /** Описание */
@@ -1223,91 +1140,6 @@ export enum ProductStatus {
   Discontinued = "Discontinued",
 }
 
-/** Советы по одежде */
-export interface ProductTip {
-  /**
-   * Идентификатор БД
-   * @format int64
-   */
-  id?: number;
-  /**
-   * Идентификатор
-   * @format uuid
-   */
-  guid?: string;
-  /**
-   * Дата создания
-   * @format date-time
-   */
-  createDT?: string;
-  /**
-   * Дата обнавления
-   * @format date-time
-   */
-  updateDT?: string;
-  /** Отметка удаления */
-  isDeleted?: boolean;
-  /** Текст */
-  text?: string;
-  /**
-   * Продукт к которому относится совет
-   * @format uuid
-   */
-  productGuid?: string;
-  /** Файлы совета */
-  files?: ProductTipFileLink[] | null;
-  /** Продукт */
-  product?: Product;
-  /** Наименование */
-  name?: string | null;
-}
-
-/** Ссылка на файл */
-export interface ProductTipFileLink {
-  /**
-   * Идентификатор БД
-   * @format int64
-   */
-  id?: number;
-  /**
-   * Идентификатор
-   * @format uuid
-   */
-  guid?: string;
-  /**
-   * Дата создания
-   * @format date-time
-   */
-  createDT?: string;
-  /**
-   * Дата обнавления
-   * @format date-time
-   */
-  updateDT?: string;
-  /** Отметка удаления */
-  isDeleted?: boolean;
-  /**
-   * Позиция файла
-   * @format int64
-   */
-  position?: number;
-  fileType?: FileType;
-  /**
-   * Совет
-   * @format uuid
-   */
-  tipGuid?: string;
-  /** Файлик */
-  file?: VneFile;
-  /** Советы по одежде */
-  tip?: ProductTip;
-  /**
-   * Ид Файла
-   * @format uuid
-   */
-  fileGuid?: string;
-}
-
 export interface RefreshModel {
   /**
    * ид юзера
@@ -1316,6 +1148,12 @@ export interface RefreshModel {
   userGuid?: string;
   /** токен */
   refreshToken?: string;
+}
+
+export interface RejectRequestModel {
+  /** @format uuid */
+  guid?: string;
+  comment?: string;
 }
 
 export enum RequestStatus {
@@ -1331,6 +1169,18 @@ export interface ScanModel {
    * @format uuid
    */
   guid?: string;
+  /** Отметка удаления */
+  isDeleted?: boolean;
+  /**
+   * Дата создания
+   * @format date-time
+   */
+  createDT?: string;
+  /**
+   * Дата обнавления
+   * @format date-time
+   */
+  updateDT?: string;
   /** Пользователь */
   user?: UserModel;
   /** Конкретное изделие */
@@ -1374,6 +1224,18 @@ export interface TipModel {
    * @format uuid
    */
   guid?: string;
+  /** Отметка удаления */
+  isDeleted?: boolean;
+  /**
+   * Дата создания
+   * @format date-time
+   */
+  createDT?: string;
+  /**
+   * Дата обнавления
+   * @format date-time
+   */
+  updateDT?: string;
   /** Текст */
   text?: string;
   /** @format uuid */
@@ -1391,6 +1253,8 @@ export interface TokenModel {
   refreshToken?: string;
   /** @format int32 */
   refreshTokenExpireIn?: number;
+  /** @format uuid */
+  guid?: string;
 }
 
 /** Бренд */
@@ -1568,7 +1432,7 @@ export interface UpdateUserModel {
   /** Пароль пользователя */
   password?: string | null;
   /** UserName */
-  userName?: string;
+  username?: string;
   /** Имя */
   firstName?: string | null;
   /** Фамилия */
@@ -1577,17 +1441,14 @@ export interface UpdateUserModel {
 }
 
 /** Пользователь */
-export interface User {
-  /**
-   * Идентификатор БД
-   * @format int64
-   */
-  id?: number;
+export interface UserModel {
   /**
    * Идентификатор
    * @format uuid
    */
   guid?: string;
+  /** Отметка удаления */
+  isDeleted?: boolean;
   /**
    * Дата создания
    * @format date-time
@@ -1598,33 +1459,8 @@ export interface User {
    * @format date-time
    */
   updateDT?: string;
-  /** Отметка удаления */
-  isDeleted?: boolean;
   /** UserName */
-  userName?: string;
-  /** Имя */
-  firstName?: string | null;
-  /** Фамилия */
-  secondName?: string | null;
-  /** Пароль пользователя */
-  password?: string;
-  type?: UserType;
-  /**
-   * Бренд-работодатель
-   * @format uuid
-   */
-  brandGuid?: string | null;
-}
-
-/** Пользователь */
-export interface UserModel {
-  /**
-   * Идентификатор
-   * @format uuid
-   */
-  guid?: string;
-  /** UserName */
-  userName?: string;
+  username?: string;
   /** Имя */
   firstName?: string | null;
   /** Фамилия */
@@ -1638,35 +1474,4 @@ export enum UserType {
   BrandSeller = "BrandSeller",
   Admin = "Admin",
   SuperAdmin = "SuperAdmin",
-}
-
-/** Файлик */
-export interface VneFile {
-  /**
-   * Идентификатор БД
-   * @format int64
-   */
-  id?: number;
-  /**
-   * Идентификатор
-   * @format uuid
-   */
-  guid?: string;
-  /**
-   * Дата создания
-   * @format date-time
-   */
-  createDT?: string;
-  /**
-   * Дата обнавления
-   * @format date-time
-   */
-  updateDT?: string;
-  /** Отметка удаления */
-  isDeleted?: boolean;
-  /** Путь к файлу */
-  path?: string;
-  /** Наименование */
-  name?: string | null;
-  fileType?: FileType;
 }

@@ -18,6 +18,7 @@ import {
   BrandModel,
   BrandModelDataResult,
   BrandRequestModel,
+  BrandRequestModelDataResult,
   ClothingCollectionModel,
   ClothingCollectionModelDataResult,
   ColorModel,
@@ -26,23 +27,24 @@ import {
   CommentModel,
   CommentModelDataResult,
   CreateBrandModel,
+  CreateBrandRequestModel,
   CreateClothingCollectionModel,
-  CreateColor,
   CreateColorsModel,
   CreateCommentModel,
   CreateLookModel,
   CreateMaterialModel,
   CreatePostModel,
   CreateProductCategoryModel,
+  CreateProductColor,
   CreateProductFileModel,
   CreateProductItemModel,
+  CreateProductMaterialModel,
   CreateProductModel,
   CreateScanModel,
   CreateTipModel,
   CreateUserModel,
   FileModel,
   FileType,
-  GetBrandRequestsModel,
   LookModel,
   LookModelDataResult,
   MaterialModel,
@@ -53,13 +55,14 @@ import {
   ProductCategoryModelDataResult,
   ProductColorModel,
   ProductItemModel,
-  ProductMaterial,
   ProductMaterialModel,
   ProductMeasurementModel,
   ProductModel,
   ProductModelDataResult,
   ProductStatus,
   RefreshModel,
+  RejectRequestModel,
+  RequestStatus,
   ScanModel,
   ScanModelDataResult,
   Season,
@@ -104,6 +107,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags Auth
    * @name AuthMeList
+   * @summary Получить информацию по авторизированному пользователю
    * @request GET:/api/Auth/Me
    * @secure
    */
@@ -120,6 +124,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags Auth
    * @name AuthRefreshTokenCreate
+   * @summary Обновить токен
    * @request POST:/api/Auth/RefreshToken
    * @secure
    */
@@ -138,6 +143,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags Brands
    * @name BrandsDetail
+   * @summary Получение бренда по идентификатору
    * @request GET:/api/Brands/{id}
    * @secure
    */
@@ -154,6 +160,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags Brands
    * @name BrandsDelete
+   * @summary Удаление бренда
    * @request DELETE:/api/Brands/{id}
    * @secure
    */
@@ -169,6 +176,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags Brands
    * @name BrandsList
+   * @summary Поиск брендов по фильтрам
    * @request GET:/api/Brands
    * @secure
    */
@@ -196,6 +204,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags Brands
    * @name BrandsCreate
+   * @summary Создание нового бренда
    * @request POST:/api/Brands
    * @secure
    */
@@ -214,6 +223,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags Brands
    * @name BrandsUpdate
+   * @summary Редактирование информации по бренду
    * @request PUT:/api/Brands
    * @secure
    */
@@ -232,11 +242,12 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags Brands
    * @name BrandsRequestsCreate
+   * @summary Создание запроса на создание бренда
    * @request POST:/api/Brands/Requests
    * @secure
    */
-  brandsRequestsCreate = (data: BrandModel, params: RequestParams = {}) =>
-    this.request<BrandModel, ProblemDetails>({
+  brandsRequestsCreate = (data: CreateBrandRequestModel, params: RequestParams = {}) =>
+    this.request<BrandRequestModel, ProblemDetails>({
       path: `/api/Brands/Requests`,
       method: "POST",
       body: data,
@@ -246,20 +257,36 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
       ...params,
     });
   /**
-   * No description
-   *
-   * @tags Brands
-   * @name BrandsRequestsList
-   * @request GET:/api/Brands/Requests
-   * @secure
-   */
-  brandsRequestsList = (data: GetBrandRequestsModel, params: RequestParams = {}) =>
-    this.request<BrandRequestModel, any>({
+ * No description
+ *
+ * @tags Brands
+ * @name BrandsRequestsList
+ * @summary Поиск запросов на создание брендов по фильтрам
+Если пользователь не админ, то вернёт только его заявки
+ * @request GET:/api/Brands/Requests
+ * @secure
+ */
+  brandsRequestsList = (
+    query?: {
+      /** @format uuid */
+      UserGuid?: string;
+      Status?: RequestStatus;
+      /** @format uuid */
+      UpdateUser?: string;
+      Name?: string;
+      Description?: string;
+      /** @format int32 */
+      Page?: number;
+      /** @format int32 */
+      PageSize?: number;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<BrandRequestModelDataResult, any>({
       path: `/api/Brands/Requests`,
       method: "GET",
-      body: data,
+      query: query,
       secure: true,
-      type: ContentType.Json,
       format: "json",
       ...params,
     });
@@ -268,26 +295,48 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags Brands
    * @name BrandsRequestsUpdate
-   * @request PUT:/api/Brands/Requests/{id}
+   * @summary Отклонить заявку на бренд
+   * @request PUT:/api/Brands/Requests
    * @secure
    */
-  brandsRequestsUpdate = (id: string, params: RequestParams = {}) =>
+  brandsRequestsUpdate = (data: RejectRequestModel, params: RequestParams = {}) =>
     this.request<void, ProblemDetails>({
-      path: `/api/Brands/Requests/${id}`,
+      path: `/api/Brands/Requests`,
       method: "PUT",
+      body: data,
       secure: true,
+      type: ContentType.Json,
       ...params,
     });
   /**
    * No description
    *
    * @tags Brands
-   * @name BrandsRequestsCreate2
-   * @request POST:/api/Brands/Requests/{id}
-   * @originalName brandsRequestsCreate
-   * @duplicate
+   * @name BrandsRequestsDetail
+   * @summary Запросить запрос на создание бренда
+   * @request GET:/api/Brands/Requests/{guid}
    * @secure
    */
+  brandsRequestsDetail = (guid: string, params: RequestParams = {}) =>
+    this.request<BrandRequestModel, ProblemDetails>({
+      path: `/api/Brands/Requests/${guid}`,
+      method: "GET",
+      secure: true,
+      format: "json",
+      ...params,
+    });
+  /**
+ * No description
+ *
+ * @tags Brands
+ * @name BrandsRequestsCreate2
+ * @summary Одобрить заявку на создание бренда
+При этом заявитель станет админом нового бренда
+ * @request POST:/api/Brands/Requests/{id}
+ * @originalName brandsRequestsCreate
+ * @duplicate
+ * @secure
+ */
   brandsRequestsCreate2 = (id: string, params: RequestParams = {}) =>
     this.request<BrandModel, ProblemDetails>({
       path: `/api/Brands/Requests/${id}`,
@@ -1269,6 +1318,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags Products
    * @name ProductsDetail
+   * @summary Получить конкретный продукт
    * @request GET:/api/Products/{id}
    * @secure
    */
@@ -1285,6 +1335,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags Products
    * @name ProductsList
+   * @summary Поиск продуктов по фильтрам
    * @request GET:/api/Products
    * @secure
    */
@@ -1332,6 +1383,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags Products
    * @name ProductsCreate
+   * @summary Создать продукт
    * @request POST:/api/Products
    * @secure
    */
@@ -1350,6 +1402,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags Products
    * @name ProductsUpdate
+   * @summary Редактировать продукт
    * @request PUT:/api/Products
    * @secure
    */
@@ -1368,12 +1421,16 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags Products
    * @name ProductsDelete
+   * @summary Удалить продукт
    * @request DELETE:/api/Products
    * @secure
    */
   productsDelete = (
     query?: {
-      /** @format uuid */
+      /**
+       * ИД продукта
+       * @format uuid
+       */
       id?: string;
     },
     params: RequestParams = {},
@@ -1390,10 +1447,11 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags Products
    * @name ProductsColorsCreate
+   * @summary Добавить цвет к файлу
    * @request POST:/api/Products/Colors
    * @secure
    */
-  productsColorsCreate = (data: CreateColor, params: RequestParams = {}) =>
+  productsColorsCreate = (data: CreateProductColor, params: RequestParams = {}) =>
     this.request<ProductColorModel, ProblemDetails>({
       path: `/api/Products/Colors`,
       method: "POST",
@@ -1408,12 +1466,13 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags Products
    * @name ProductsColorsDelete
-   * @request DELETE:/api/Products/colors/{productColorId}
+   * @summary Отвязать цвет от продукта
+   * @request DELETE:/api/Products/Colors/{productColorId}
    * @secure
    */
   productsColorsDelete = (productColorId: string, params: RequestParams = {}) =>
     this.request<void, ProblemDetails>({
-      path: `/api/Products/colors/${productColorId}`,
+      path: `/api/Products/Colors/${productColorId}`,
       method: "DELETE",
       secure: true,
       ...params,
@@ -1423,6 +1482,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags Products
    * @name ProductsFilesCreate
+   * @summary Привязать файл к продукту
    * @request POST:/api/Products/files
    * @secure
    */
@@ -1441,6 +1501,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags Products
    * @name ProductsFilesDelete
+   * @summary Отвязать файл
    * @request DELETE:/api/Products/files/{id}
    * @secure
    */
@@ -1456,10 +1517,11 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags Products
    * @name ProductsMaterialsCreate
+   * @summary Добавить к продукту один из материалов
    * @request POST:/api/Products/Materials
    * @secure
    */
-  productsMaterialsCreate = (data: ProductMaterial, params: RequestParams = {}) =>
+  productsMaterialsCreate = (data: CreateProductMaterialModel, params: RequestParams = {}) =>
     this.request<ProductMaterialModel, ProblemDetails>({
       path: `/api/Products/Materials`,
       method: "POST",
@@ -1474,13 +1536,17 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags Products
    * @name ProductsMaterialsDelete
+   * @summary Удалить связку продукта с материалом
    * @request DELETE:/api/Products/Materials/{productColorId}
    * @secure
    */
   productsMaterialsDelete = (
     productColorId: string,
     query?: {
-      /** @format uuid */
+      /**
+       * Ид связи
+       * @format uuid
+       */
       productMaterialId?: string;
     },
     params: RequestParams = {},
@@ -1497,6 +1563,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags Products
    * @name ProductsMeasurementsCreate
+   * @summary Добавить к продукту измерение
    * @request POST:/api/Products/Measurements
    * @secure
    */
@@ -1515,6 +1582,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags Products
    * @name ProductsMeasurementsDelete
+   * @summary Удалить измерение вещи
    * @request DELETE:/api/Products/Measurements/{productMeasurementId}
    * @secure
    */
@@ -1871,20 +1939,14 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags Users
    * @name UsersCheckDetail
-   * @request GET:/api/Users/Check/{name}
+   * @summary Проверка свободен ли никнейм
+   * @request GET:/api/Users/Check/{username}
    * @secure
    */
-  usersCheckDetail = (
-    name: string,
-    query?: {
-      username?: string;
-    },
-    params: RequestParams = {},
-  ) =>
+  usersCheckDetail = (username: string, params: RequestParams = {}) =>
     this.request<boolean, any>({
-      path: `/api/Users/Check/${name}`,
+      path: `/api/Users/Check/${username}`,
       method: "GET",
-      query: query,
       secure: true,
       format: "json",
       ...params,
