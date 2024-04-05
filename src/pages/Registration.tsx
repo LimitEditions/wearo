@@ -100,7 +100,7 @@ export const Registration = () => {
 
   const handleBlur = (event: React.ChangeEvent<HTMLInputElement>) => {
     setShouldExecuteUser(false);
-    if (event.target.value){
+    if (event.target.value && validateWord(event.target.value, 'username')){
       setShouldExecuteUser(true)
     }
   }
