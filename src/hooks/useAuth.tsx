@@ -26,7 +26,7 @@ const useAuth = () => {
       setShouldReq(true);
     } else {
       navigate('/login');
-    }
+    };
   }, [tokenExpireIn, refreshTokenExpireIn, shouldRefresh, setShouldReq, navigate]);
 
   
@@ -41,10 +41,12 @@ const useAuth = () => {
   const [data, isLoading, error] = useApi(endPoint, params, {}, shouldReq);
 
   useEffect(() => {
-    if (data) {
-      if (shouldRefresh) {
+    if (data || error) {
+      if (data && shouldRefresh) {
         dataToLS(data);
         setShouldReq(false);
+      } else if (error) {
+        navigate('/login');
       } else {
         const dataInfo = data as IAuthMeList;
         setAuth({
@@ -57,9 +59,9 @@ const useAuth = () => {
       }; 
     };
     
-  }, [data, shouldRefresh, setShouldReq, setAuth])
+  }, [data, error, shouldRefresh, setShouldReq, setAuth, navigate])
 
-  return [isAuthenticated, isLoading];
+  return {isAuthenticated, isLoading};
 };
 
 export default useAuth;

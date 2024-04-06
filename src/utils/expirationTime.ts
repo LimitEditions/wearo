@@ -7,7 +7,7 @@ export function calculateExpirationTime(timeInSec: number): Date {
     return expirationTime;
 };
 
-export function isTokenExpired(expirationTime: Date): boolean {
+export function isTokenExpired(expirationTime: string): boolean {
     const currentTime = new Date();
-    return expirationTime < currentTime;
+    return new Date(expirationTime) < currentTime;
 };
