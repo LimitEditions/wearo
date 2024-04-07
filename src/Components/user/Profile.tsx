@@ -1,10 +1,10 @@
 import React from 'react'
-import ProfileItem from '../Components/buyer/ProfileItem';
-import getStyles from '../utils/getStyles';
-import { BlockStyle } from '../types/interfaces/IStyles';
-import { Button } from '../Components/common/Button';
+import ProfileItem from './ProfileItem';
+import getStyles from '../../utils/getStyles';
+import { BlockStyle } from '../../types/interfaces/IStyles';
+import { Button } from '../common/Button';
 import { Outlet, useOutletContext } from 'react-router-dom';
-import { IAuthMeList } from '../types/interfaces/ApiResponses/IAuthMeList';
+import { IAuthMeList } from '../../types/interfaces/ApiResponses/IAuthMeList';
 
 export const Profile = () => {
   const isAuthenticated = useOutletContext() as IAuthMeList;
