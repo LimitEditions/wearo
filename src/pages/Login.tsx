@@ -4,7 +4,7 @@ import useApi from "../hooks/useApi";
 import { validateWord } from "../utils/validation";
 import getStyles from "../utils/getStyles";
 import { BlockStyle } from "../types/interfaces/IStyles";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { dataToLS } from "../utils/dataToLS";
 
 export const Login = () => {
@@ -12,6 +12,8 @@ export const Login = () => {
   const [shouldExecute, setShouldExecute] = useState<boolean>(false);
   const inputNameRef = useRef<HTMLInputElement>(null);
   const inputPasswordRef = useRef<HTMLInputElement>(null);
+  const navigate = useNavigate();
+  
   const [authData, isLoading, authError] = useApi(
     "authCreate",
     user,
@@ -41,9 +43,10 @@ export const Login = () => {
       setUser({ username: "", password: "" });
     };
     if (authData) {
-      dataToLS(authData)
+      dataToLS(authData);
+      navigate('/');
     };
-  }, [authData, authError, shouldExecute]);
+  }, [authData, authError, shouldExecute, navigate]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -61,7 +64,7 @@ export const Login = () => {
 
     if (isValidUsername && isValidPassword) {
       setShouldExecute(true);
-    }
+    };
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {

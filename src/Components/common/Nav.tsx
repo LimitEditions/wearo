@@ -1,17 +1,32 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { BlockStyle } from '../../types/interfaces/IStyles'
 import getStyles from '../../utils/getStyles';
 import { Link } from 'react-router-dom';
+import { UserType } from '../../api/data-contracts';
+import { navContent } from '../../utils/navContent';
+import { INavItem } from '../../types/NavContentType';
 
 
-export const Nav = () => {
+export const Nav: React.FC<{type: UserType | undefined}> = ({ type }) => {
+  const [data, setData] = useState<INavItem[]>([]);
+ 
+  useEffect(() => {
+    if (type === 'Admin' || type === 'SuperAdmin') {
+      setData(navContent.Admin);
+    } else if (type === 'BrandAdmin' || type === 'BrandSeller') {
+      setData(navContent.BrandAdmin);
+    } else {
+      setData(navContent.User);
+    };
+  }, [type, data, setData]);
+
   return (
-    <nav className={getStyles(navStyle)}>        
-      <Link to="/scan">Сканирование</Link>
-      <Link to="/posts">События</Link>
-      <Link to="/wardrobe">Мой гардероб</Link>
+    <nav className={getStyles(navStyle)}>     
+      {data.map(e => {
+        return <Link key={e.path} to={e.path}>{e.name}</Link>
+      })}   
     </nav>
-  )
+  );
 };
 
 const navStyle: BlockStyle = {
