@@ -1,12 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
-import { AuthModel } from "../api/data-contracts";
-import useApi from "../hooks/useApi";
-import { IAuthCreate } from "../types/interfaces/ApiResponses/IAuthCreate";
-import { encrypt } from "../utils/encryption";
-import { validateWord } from "../utils/validation";
-import getStyles from "../utils/getStyles";
-import { BlockStyle } from "../types/interfaces/IStyles";
+import { AuthModel } from "../../api/data-contracts";
+import useApi from "../../hooks/useApi";
+import { IAuthCreate } from "../../types/interfaces/ApiResponses/IAuthCreate";
+import { encrypt } from "../../utils/encryption";
+import { validateWord } from "../../utils/validation";
+import getStyles from "../../utils/getStyles";
+import { BlockStyle } from "../../types/interfaces/IStyles";
 import { Link } from "react-router-dom";
+import { Button } from "../common/Button";
 
 export const Login = () => {
   const [user, setUser] = useState<AuthModel>({ username: "", password: "" });
@@ -74,11 +75,10 @@ export const Login = () => {
 
   return (
     <>
-      <div className={`${getStyles(containerStyle)}`}>
-        <h1 className={`${getStyles(hStyle)}`}>Log in</h1>
+      <div>
+        <h1 className={`${getStyles(hStyle)}`}>Вход</h1>
         <form className={`${getStyles(formStyle)}`} onSubmit={handleSubmit}>
-          <label className={`${getStyles(labelStyle)}`}>
-            <span>Логин:</span>
+          <label>
             <input
               type="text"
               name="username"
@@ -87,10 +87,10 @@ export const Login = () => {
               onChange={handleChange}
               required
               ref={inputNameRef}
+              placeholder="Введите логин"
             />
           </label>
           <label className={`${getStyles(labelStyle)}`}>
-            <span>Пароль:</span>
             <input
               type="password"
               name="password"
@@ -99,6 +99,7 @@ export const Login = () => {
               onChange={handleChange}
               required
               ref={inputPasswordRef}
+              placeholder="Введите пароль"
             />
           </label>
           {authError ? (
@@ -106,11 +107,8 @@ export const Login = () => {
               Неверный логин или пароль
             </span>
           ) : null}
-          <button type="submit" className={`${getStyles(btnStyle)}`}>
-            Log in
-          </button>
+          <Button title="Войти" type="submit"/>
         </form>
-        <Link className={`${getStyles(linkStyle)}`} to="/registration">Зарегистрироваться</Link>
       </div>
       {isLoading && <p className={`${getStyles(pStyle)}`}>Loading...</p>}
       {authData && !authError && (
@@ -120,36 +118,25 @@ export const Login = () => {
   );
 };
 
-const containerStyle: BlockStyle = {
-  blockSize: "w-1/4",
-  spacing: "m-auto mt-8 px-6 py-8",
-  background: "bg-gray-100",
-  transitionsAnimation: "shadow-lg",
-};
-
 const hStyle: BlockStyle = {
-  text: "text-center text-xl",
+  text: "text-center text-2xl",
   spacing: "pb-4",
 };
 
 const formStyle: BlockStyle = {
-  container: "flex flex-col gap-6",
+  container: "flex flex-col gap-3",
 };
 
 const labelStyle: BlockStyle = {
-  container: "flex flex-col gap-2",
+  spacing: 'mb-3'
 };
 
 const inpitStyle: BlockStyle = {
-  spacing: "p-2",
-};
-
-const btnStyle: BlockStyle = {
-  text: "text-white",
-  background: "bg-black",
-  spacing: "py-2 px-4",
-  container: "self-center",
-  border: "rounded-3xl",
+  spacing: "py-2 px-5",
+  background: 'bg-gray-200',
+  border: 'rounded-3xl',
+  text: 'placeholder-gray-700',
+  blockSize: 'w-full'
 };
 
 const spanErrorStyle: BlockStyle = {
@@ -161,7 +148,3 @@ const pStyle: BlockStyle = {
   spacing: "m-auto my-8",
 };
 
-const linkStyle: BlockStyle = {
-  text: "text-gray-500 text-xs float-right",
-  spacing: "mt-2"
-}

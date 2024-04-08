@@ -10,7 +10,7 @@ export const Nav = () => {
         <h3 className={`${getStyles(logoStyle)}`}>Wear-client</h3>
         <div className={`${getStyles(linksStyle)}`}>
             <Link to="/">Home</Link>
-            <Link to="/login">Login</Link>
+            <Link to="/auth">Login</Link>
             <Link to="/profile">Profile</Link>
         </div>
     </nav>
