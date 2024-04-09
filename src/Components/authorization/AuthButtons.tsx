@@ -7,8 +7,8 @@ import getStyles from '../../utils/getStyles'
 export const AuthButtons = () => {
   return (
     <div className={`${getStyles(divStyle)}`}>
-        <Button link={<Link to="/login">Войти</Link>}/>
-        <Button link={<Link to="/registration">Зарегистрироваться</Link>}/>
+        <Button showButton={true} link={<Link to="/login">Войти</Link>}/>
+        <Button showButton={true} link={<Link to="/registration">Зарегистрироваться</Link>}/>
     </div>
   )
 }

@@ -107,7 +107,7 @@ export const Login = () => {
               Неверный логин или пароль
             </span>
           ) : null}
-          <Button title="Войти" type="submit"/>
+          <Button showButton={true} text="Войти" type="submit"/>
         </form>
       </div>
       {isLoading && <p className={`${getStyles(pStyle)}`}>Loading...</p>}

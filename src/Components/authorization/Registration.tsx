@@ -159,7 +159,8 @@ export const Registration = () => {
             />
           </label>
           <Button
-            title="Зарегистироваться"
+            showButton={true}
+            text="Зарегистироваться"
             type={'submit'}
           />
         </form>
