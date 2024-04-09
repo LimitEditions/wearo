@@ -89,7 +89,7 @@ export const Registration = () => {
       "Может содержать любые латинские буквы, цифры и/или спец. символы (!@#$%^&*). Минимальная длина - 4 символа."
     );
 
-    if (isValidUsername && isValidPassword) {
+    if (isValidUsername && isValidPassword && userData) {
       setShouldExecute(true);
     }
   };
@@ -108,7 +108,7 @@ export const Registration = () => {
 
   return (
     <>
-      <div className={`${getStyles(containerStyle)}`}>
+      <div>
         <h1 className={`${getStyles(hStyle)}`}>Регистрация</h1>
         <form className={`${getStyles(formStyle)}`} onSubmit={handleSubmit}>
           <label>
@@ -176,13 +176,6 @@ export const Registration = () => {
       ) : null}
     </>
   );
-};
-
-const containerStyle: BlockStyle = {
-  // blockSize: "w-1/4",
-  // spacing: "m-auto mt-8 mb-10 px-6 py-8",
-  // background: "bg-gray-100",
-  // transitionsAnimation: "shadow-lg",
 };
 
 const hStyle: BlockStyle = {

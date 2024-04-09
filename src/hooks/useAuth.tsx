@@ -25,7 +25,7 @@ const useAuth = () => {
     if (tokenExpireIn || refreshTokenExpireIn) {
       setShouldReq(true);
     } else {
-      navigate('/login');
+      navigate('/auth');
     };
   }, [tokenExpireIn, refreshTokenExpireIn, shouldRefresh, setShouldReq, navigate]);
 
@@ -46,7 +46,7 @@ const useAuth = () => {
         dataToLS(data);
         setShouldReq(false);
       } else if (error) {
-        navigate('/login');
+        navigate('/auth');
       } else {
         const dataInfo = data as IAuthMeList;
         setAuth({
