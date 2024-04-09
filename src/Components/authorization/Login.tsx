@@ -6,14 +6,17 @@ import { encrypt } from "../../utils/encryption";
 import { validateWord } from "../../utils/validation";
 import getStyles from "../../utils/getStyles";
 import { BlockStyle } from "../../types/interfaces/IStyles";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "../common/Button";
+import { dataToLS } from "../../utils/dataToLS";
 
 export const Login = () => {
   const [user, setUser] = useState<AuthModel>({ username: "", password: "" });
   const [shouldExecute, setShouldExecute] = useState<boolean>(false);
   const inputNameRef = useRef<HTMLInputElement>(null);
   const inputPasswordRef = useRef<HTMLInputElement>(null);
+  const navigate = useNavigate();
+  
   const [authData, isLoading, authError] = useApi(
     "authCreate",
     user,
@@ -41,13 +44,12 @@ export const Login = () => {
       setShouldExecute(false);
       // очищаем inputs
       setUser({ username: "", password: "" });
-    }
+    };
     if (authData) {
-      const tokendata = authData as IAuthCreate; //дополнительно типизируем данные приходящие с сервера в зависимости от метода обращения
-      encrypt("token", tokendata.token);
-      encrypt("refreshToken", tokendata.refreshToken);
-    }
-  }, [authData, authError, shouldExecute]);
+      dataToLS(authData);
+      navigate('/');
+    };
+  }, [authData, authError, shouldExecute, navigate]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -65,7 +67,7 @@ export const Login = () => {
 
     if (isValidUsername && isValidPassword) {
       setShouldExecute(true);
-    }
+    };
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
