@@ -29,13 +29,13 @@ export const RegistrationForm = ({
     if (shouldExecuteUser && (typeof userData === "boolean" || userError)) {
       setShouldExecuteUser(false);
     }
-    // if (typeof(userData) === 'boolean' && inputNameRef) {
-    //   const inputElement = inputNameRef.current;
-    //   if (inputNameRef) {
-    //     inputNameRef.setCustomValidity(userData ? "" : 'Пользователь с таким именем уже существует.');
-    //     inputElement.reportValidity();
-    //   }
-    // }
+    if (typeof(userData) === 'boolean'&& inputNameRef && inputNameRef.current) {
+      const inputElement = inputNameRef.current;
+      if (inputNameRef) {
+        inputElement.setCustomValidity(userData ? "" : 'Пользователь с таким именем уже существует.');
+        inputElement.reportValidity();
+      }
+    }
   }, [userData, userError, shouldExecuteUser]);
 
   const handleBlur = (event: React.ChangeEvent<HTMLInputElement>) => {
