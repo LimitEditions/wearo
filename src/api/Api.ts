@@ -41,10 +41,12 @@ import {
   CreateProductMaterialModel,
   CreateProductModel,
   CreateScanModel,
+  CreateSubscriptionModel,
   CreateTipModel,
   CreateUserModel,
   FileModel,
   FileType,
+  FilterType,
   LookModel,
   LookModelDataResult,
   MaterialModel,
@@ -66,6 +68,8 @@ import {
   ScanModel,
   ScanModelDataResult,
   Season,
+  SubscriptionModel,
+  SubscriptionModelDataResult,
   TipModel,
   TokenModel,
   UpdateBrandModel,
@@ -172,22 +176,35 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
       ...params,
     });
   /**
-   * No description
-   *
-   * @tags Brands
-   * @name BrandsList
-   * @summary Поиск брендов по фильтрам
-   * @request GET:/api/Brands
-   * @secure
-   */
+ * No description
+ *
+ * @tags Brands
+ * @name BrandsList
+ * @summary Поиск брендов по фильтрам
+Для неадминов возвращает не удалённые записи
+ * @request GET:/api/Brands
+ * @secure
+ */
   brandsList = (
     query?: {
+      /** Наименование */
       Name?: string;
+      /** Описание */
       Description?: string;
-      /** @format int32 */
+      /**
+       * Номер страницы (по умолчанию = 1).
+       * @format int32
+       */
       Page?: number;
-      /** @format int32 */
+      /**
+       * Размер страницы (по умолчанию = 25).
+       * @format int32
+       */
       PageSize?: number;
+      /** Поле, по которому происходит сортировка */
+      SortMember?: string;
+      /** Направление сортировки - по возрастанию */
+      Ascending?: boolean;
     },
     params: RequestParams = {},
   ) =>
@@ -268,17 +285,46 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
  */
   brandsRequestsList = (
     query?: {
-      /** @format uuid */
+      /**
+       * Заявитель
+       * @format uuid
+       */
       UserGuid?: string;
+      /** Статус заявки */
       Status?: RequestStatus;
-      /** @format uuid */
+      /**
+       * Редактировший
+       * @format uuid
+       */
       UpdateUser?: string;
+      /**
+       * Начало периода.
+       * @format date-time
+       */
+      createDtStart?: string;
+      /**
+       * Конец периода.
+       * @format date-time
+       */
+      createDtEnd?: string;
+      /** Наименование */
       Name?: string;
+      /** Описание */
       Description?: string;
-      /** @format int32 */
+      /**
+       * Номер страницы (по умолчанию = 1).
+       * @format int32
+       */
       Page?: number;
-      /** @format int32 */
+      /**
+       * Размер страницы (по умолчанию = 25).
+       * @format int32
+       */
       PageSize?: number;
+      /** Поле, по которому происходит сортировка */
+      SortMember?: string;
+      /** Направление сортировки - по возрастанию */
+      Ascending?: boolean;
     },
     params: RequestParams = {},
   ) =>
@@ -350,6 +396,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags ClothingCollections
    * @name ClothingCollectionsDetail
+   * @summary Запрос коллекции
    * @request GET:/api/ClothingCollections/{id}
    * @secure
    */
@@ -381,6 +428,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags ClothingCollections
    * @name ClothingCollectionsList
+   * @summary Поиск коллекций
    * @request GET:/api/ClothingCollections
    * @secure
    */
@@ -401,10 +449,20 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
       /** @format uuid */
       BrandGuid?: string;
       Season?: Season;
-      /** @format int32 */
+      /**
+       * Номер страницы (по умолчанию = 1).
+       * @format int32
+       */
       Page?: number;
-      /** @format int32 */
+      /**
+       * Размер страницы (по умолчанию = 25).
+       * @format int32
+       */
       PageSize?: number;
+      /** Поле, по которому происходит сортировка */
+      SortMember?: string;
+      /** Направление сортировки - по возрастанию */
+      Ascending?: boolean;
     },
     params: RequestParams = {},
   ) =>
@@ -421,6 +479,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags ClothingCollections
    * @name ClothingCollectionsCreate
+   * @summary Создание коллекции
    * @request POST:/api/ClothingCollections
    * @secure
    */
@@ -457,6 +516,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags Colors
    * @name ColorsDetail
+   * @summary Получить цвет по ид
    * @request GET:/api/Colors/{id}
    * @secure
    */
@@ -469,13 +529,15 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
       ...params,
     });
   /**
-   * No description
-   *
-   * @tags Colors
-   * @name ColorsDelete
-   * @request DELETE:/api/Colors/{id}
-   * @secure
-   */
+ * No description
+ *
+ * @tags Colors
+ * @name ColorsDelete
+ * @summary Удалить цвет
+Доступ только супер-админам
+ * @request DELETE:/api/Colors/{id}
+ * @secure
+ */
   colorsDelete = (id: string, params: RequestParams = {}) =>
     this.request<void, ProblemDetails>({
       path: `/api/Colors/${id}`,
@@ -488,6 +550,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags Colors
    * @name ColorsList
+   * @summary Поиск цветов по параметрам
    * @request GET:/api/Colors
    * @secure
    */
@@ -507,6 +570,10 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
        * @format int32
        */
       PageSize?: number;
+      /** Поле, по которому происходит сортировка */
+      SortMember?: string;
+      /** Направление сортировки - по возрастанию */
+      Ascending?: boolean;
     },
     params: RequestParams = {},
   ) =>
@@ -519,13 +586,15 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
       ...params,
     });
   /**
-   * No description
-   *
-   * @tags Colors
-   * @name ColorsCreate
-   * @request POST:/api/Colors
-   * @secure
-   */
+ * No description
+ *
+ * @tags Colors
+ * @name ColorsCreate
+ * @summary Создание цвета
+Доступно админам
+ * @request POST:/api/Colors
+ * @secure
+ */
   colorsCreate = (data: CreateColorsModel, params: RequestParams = {}) =>
     this.request<ColorModel, ProblemDetails>({
       path: `/api/Colors`,
@@ -537,13 +606,15 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
       ...params,
     });
   /**
-   * No description
-   *
-   * @tags Colors
-   * @name ColorsUpdate
-   * @request PUT:/api/Colors
-   * @secure
-   */
+ * No description
+ *
+ * @tags Colors
+ * @name ColorsUpdate
+ * @summary Редактирование цвета
+Доступ только админам сайта
+ * @request PUT:/api/Colors
+ * @secure
+ */
   colorsUpdate = (
     query?: {
       /**
@@ -571,6 +642,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags Files
    * @name FilesDetail
+   * @summary Получить файл
    * @request GET:/api/Files/{id}
    * @secure
    */
@@ -587,6 +659,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags Files
    * @name FilesDelete
+   * @summary Удаление файлов
    * @request DELETE:/api/Files/{id}
    * @secure
    */
@@ -603,24 +676,22 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags Files
    * @name FilesCreate
+   * @summary Загрузка файла
    * @request POST:/api/Files
    * @secure
    */
   filesCreate = (
     data: {
-      /** @format binary */
-      File?: File;
-    },
-    query?: {
       Name?: string;
       Type?: FileType;
+      /** @format binary */
+      File?: File;
     },
     params: RequestParams = {},
   ) =>
     this.request<string, ProblemDetails>({
       path: `/api/Files`,
       method: "POST",
-      query: query,
       body: data,
       secure: true,
       type: ContentType.FormData,
@@ -632,6 +703,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags Files
    * @name FilesPartialUpdate
+   * @summary Метод пока не закончен
    * @request PATCH:/api/Files/{type}/{field}/{id}
    * @secure
    */
@@ -657,6 +729,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags Looks
    * @name LooksDetail
+   * @summary Получить образ по ИД
    * @request GET:/api/Looks/{id}
    * @secure
    */
@@ -673,6 +746,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags Looks
    * @name LooksDelete
+   * @summary Удаление образа
    * @request DELETE:/api/Looks/{id}
    * @secure
    */
@@ -688,6 +762,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags Looks
    * @name LooksList
+   * @summary Поиск образов по параметрам
    * @request GET:/api/Looks
    * @secure
    */
@@ -727,6 +802,10 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
        * @format int32
        */
       PageSize?: number;
+      /** Поле, по которому происходит сортировка */
+      SortMember?: string;
+      /** Направление сортировки - по возрастанию */
+      Ascending?: boolean;
     },
     params: RequestParams = {},
   ) =>
@@ -743,6 +822,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags Looks
    * @name LooksCreate
+   * @summary Публикация образа
    * @request POST:/api/Looks
    * @secure
    */
@@ -761,6 +841,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags Looks
    * @name LooksUpdate
+   * @summary Обновление образа
    * @request PUT:/api/Looks
    * @secure
    */
@@ -779,6 +860,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags Looks
    * @name LooksFileCreate
+   * @summary Добавление файла к образу
    * @request POST:/api/Looks/File
    * @secure
    */
@@ -797,6 +879,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags Looks
    * @name LooksProductCreate
+   * @summary Добавление продукта к образу
    * @request POST:/api/Looks/Product
    * @secure
    */
@@ -815,6 +898,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags Looks
    * @name LooksTagCreate
+   * @summary Добавление тега к образу
    * @request POST:/api/Looks/Tag
    * @secure
    */
@@ -833,6 +917,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags Materials
    * @name MaterialsDetail
+   * @summary Получить материал по ид
    * @request GET:/api/Materials/{id}
    * @secure
    */
@@ -849,6 +934,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags Materials
    * @name MaterialsDelete
+   * @summary Удалить материал
    * @request DELETE:/api/Materials/{id}
    * @secure
    */
@@ -864,17 +950,21 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags Materials
    * @name MaterialsList
+   * @summary Поиск материалов по фильтру
    * @request GET:/api/Materials
    * @secure
    */
   materialsList = (
     query?: {
-      /** Начало строки. Опционально. */
-      nameStartFrom?: string;
-      /** Конец строки. Опционально. */
-      nameEndWith?: string;
-      /** Часть строки. Опционально. */
-      nameContains?: string;
+      /** Тело фильтра */
+      nameBody?: string;
+      /** Тип фильтра */
+      nameType?: FilterType;
+      /**
+       * Продукт
+       * @format uuid
+       */
+      ProductGuid?: string;
       /**
        * Номер страницы (по умолчанию = 1).
        * @format int32
@@ -885,6 +975,10 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
        * @format int32
        */
       PageSize?: number;
+      /** Поле, по которому происходит сортировка */
+      SortMember?: string;
+      /** Направление сортировки - по возрастанию */
+      Ascending?: boolean;
     },
     params: RequestParams = {},
   ) =>
@@ -901,6 +995,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags Materials
    * @name MaterialsCreate
+   * @summary Создать материал
    * @request POST:/api/Materials
    * @secure
    */
@@ -919,6 +1014,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags Materials
    * @name MaterialsUpdate
+   * @summary Обновить материал
    * @request PUT:/api/Materials
    * @secure
    */
@@ -937,6 +1033,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags PostCommentsControllers
    * @name PostCommentsControllersDetail
+   * @summary Получить по ид
    * @request GET:/api/PostCommentsControllers/{id}
    * @secure
    */
@@ -968,6 +1065,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags PostCommentsControllers
    * @name PostCommentsControllersList
+   * @summary Поиск коментов
    * @request GET:/api/PostCommentsControllers
    * @secure
    */
@@ -998,6 +1096,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags PostCommentsControllers
    * @name PostCommentsControllersCreate
+   * @summary Создание комментария
    * @request POST:/api/PostCommentsControllers
    * @secure
    */
@@ -1016,6 +1115,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags PostCommentsControllers
    * @name PostCommentsControllersUpdate
+   * @summary Модель редактирования коммента
    * @request PUT:/api/PostCommentsControllers
    * @secure
    */
@@ -1034,6 +1134,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags Posts
    * @name PostsDetail
+   * @summary Получить по ид
    * @request GET:/api/Posts/{id}
    * @secure
    */
@@ -1050,6 +1151,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags Posts
    * @name PostsDelete
+   * @summary Удаление поста
    * @request DELETE:/api/Posts/{id}
    * @secure
    */
@@ -1065,6 +1167,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags Posts
    * @name PostsList
+   * @summary Поиск постов
    * @request GET:/api/Posts
    * @secure
    */
@@ -1103,6 +1206,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags Posts
    * @name PostsCreate
+   * @summary Создание поста
    * @request POST:/api/Posts
    * @secure
    */
@@ -1121,6 +1225,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags Posts
    * @name PostsUpdate
+   * @summary Редактирование поста
    * @request PUT:/api/Posts
    * @secure
    */
@@ -1135,13 +1240,15 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
       ...params,
     });
   /**
-   * No description
-   *
-   * @tags ProductCategories
-   * @name ProductCategoriesDetail
-   * @request GET:/api/ProductCategories/{id}
-   * @secure
-   */
+ * No description
+ *
+ * @tags ProductCategories
+ * @name ProductCategoriesDetail
+ * @summary Получить категорию по ИД
+Придёт вместе с детьми и родителем
+ * @request GET:/api/ProductCategories/{id}
+ * @secure
+ */
   productCategoriesDetail = (id: string, params: RequestParams = {}) =>
     this.request<ProductCategoryModel, ProblemDetails>({
       path: `/api/ProductCategories/${id}`,
@@ -1155,6 +1262,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags ProductCategories
    * @name ProductCategoriesDelete
+   * @summary Удалить категорию
    * @request DELETE:/api/ProductCategories/{id}
    * @secure
    */
@@ -1170,6 +1278,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags ProductCategories
    * @name ProductCategoriesList
+   * @summary Поиск категорий по параметрам
    * @request GET:/api/ProductCategories
    * @secure
    */
@@ -1198,6 +1307,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags ProductCategories
    * @name ProductCategoriesCreate
+   * @summary Публикация новой продуктовой категории
    * @request POST:/api/ProductCategories
    * @secure
    */
@@ -1216,6 +1326,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags ProductCategories
    * @name ProductCategoriesUpdate
+   * @summary Редактировать категорию
    * @request PUT:/api/ProductCategories
    * @secure
    */
@@ -1250,6 +1361,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags ProductItems
    * @name ProductItemsDelete
+   * @summary Удалить единицы одежды
    * @request DELETE:/api/ProductItems/{id}
    * @secure
    */
@@ -1266,6 +1378,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags ProductItems
    * @name ProductItemsCreate
+   * @summary Создание единицы продукта
    * @request POST:/api/ProductItems
    * @secure
    */
@@ -1284,6 +1397,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags ProductItems
    * @name ProductItemsUpdate
+   * @summary Редактирование единицы продукта
    * @request PUT:/api/ProductItems
    * @secure
    */
@@ -1294,22 +1408,6 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
       body: data,
       secure: true,
       type: ContentType.Json,
-      format: "json",
-      ...params,
-    });
-  /**
-   * No description
-   *
-   * @tags ProductItems
-   * @name ProductItemsPartialUpdate
-   * @request PATCH:/api/ProductItems/{code}
-   * @secure
-   */
-  productItemsPartialUpdate = (code: string, params: RequestParams = {}) =>
-    this.request<ProductItemModel, ProblemDetails>({
-      path: `/api/ProductItems/${code}`,
-      method: "PATCH",
-      secure: true,
       format: "json",
       ...params,
     });
@@ -1367,6 +1465,10 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
        * @format int32
        */
       PageSize?: number;
+      /** Поле, по которому происходит сортировка */
+      SortMember?: string;
+      /** Направление сортировки - по возрастанию */
+      Ascending?: boolean;
     },
     params: RequestParams = {},
   ) =>
@@ -1537,24 +1639,13 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @tags Products
    * @name ProductsMaterialsDelete
    * @summary Удалить связку продукта с материалом
-   * @request DELETE:/api/Products/Materials/{productColorId}
+   * @request DELETE:/api/Products/Materials/{productMaterialId}
    * @secure
    */
-  productsMaterialsDelete = (
-    productColorId: string,
-    query?: {
-      /**
-       * Ид связи
-       * @format uuid
-       */
-      productMaterialId?: string;
-    },
-    params: RequestParams = {},
-  ) =>
+  productsMaterialsDelete = (productMaterialId: string, params: RequestParams = {}) =>
     this.request<void, ProblemDetails>({
-      path: `/api/Products/Materials/${productColorId}`,
+      path: `/api/Products/Materials/${productMaterialId}`,
       method: "DELETE",
-      query: query,
       secure: true,
       ...params,
     });
@@ -1598,6 +1689,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags Scans
    * @name ScansDetail
+   * @summary Получить скан по ИД
    * @request GET:/api/Scans/{id}
    * @secure
    */
@@ -1614,6 +1706,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags Scans
    * @name ScansList
+   * @summary Поиск сканирований по ИД
    * @request GET:/api/Scans
    * @secure
    */
@@ -1675,7 +1768,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags Scans
    * @name ScansCreate
-   * @summary Создать модель сканирования
+   * @summary Создать запись сканирования
    * @request POST:/api/Scans
    * @secure
    */
@@ -1692,8 +1785,86 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
   /**
    * No description
    *
+   * @tags Subscriptions
+   * @name SubscriptionsList
+   * @summary Поиск подписок
+   * @request GET:/api/Subscriptions
+   * @secure
+   */
+  subscriptionsList = (
+    query?: {
+      /**
+       * Ид юзера
+       * @format uuid
+       */
+      UserGuid?: string;
+      /**
+       * Ид бренда
+       * @format uuid
+       */
+      BrandGuid?: string;
+      /**
+       * Номер страницы (по умолчанию = 1).
+       * @format int32
+       */
+      Page?: number;
+      /**
+       * Размер страницы (по умолчанию = 25).
+       * @format int32
+       */
+      PageSize?: number;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<SubscriptionModelDataResult, ProblemDetails>({
+      path: `/api/Subscriptions`,
+      method: "GET",
+      query: query,
+      secure: true,
+      format: "json",
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags Subscriptions
+   * @name SubscriptionsCreate
+   * @summary Создание подписки
+   * @request POST:/api/Subscriptions
+   * @secure
+   */
+  subscriptionsCreate = (data: CreateSubscriptionModel, params: RequestParams = {}) =>
+    this.request<SubscriptionModel, ProblemDetails>({
+      path: `/api/Subscriptions`,
+      method: "POST",
+      body: data,
+      secure: true,
+      type: ContentType.Json,
+      format: "json",
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags Subscriptions
+   * @name SubscriptionsDelete
+   * @summary Удаление подписки
+   * @request DELETE:/api/Subscriptions/{id}
+   * @secure
+   */
+  subscriptionsDelete = (id: string, params: RequestParams = {}) =>
+    this.request<void, ProblemDetails>({
+      path: `/api/Subscriptions/${id}`,
+      method: "DELETE",
+      secure: true,
+      ...params,
+    });
+  /**
+   * No description
+   *
    * @tags Tips
    * @name TipsProductsDetail
+   * @summary Получить совет по продукту
    * @request GET:/api/Tips/Products/{id}
    * @secure
    */
@@ -1710,6 +1881,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags Tips
    * @name TipsProductsDelete
+   * @summary Удаление продуктового совета
    * @request DELETE:/api/Tips/Products/{id}
    * @secure
    */
@@ -1725,6 +1897,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags Tips
    * @name TipsProductsCreate
+   * @summary Создание совета для продукта
    * @request POST:/api/Tips/Products
    * @secure
    */
@@ -1743,6 +1916,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags Tips
    * @name TipsProductsUpdate
+   * @summary Редактирование совета продукта
    * @request PUT:/api/Tips/Products
    * @secure
    */
@@ -1761,6 +1935,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags Tips
    * @name TipsProductsFilesCreate
+   * @summary Добавить файл к совету
    * @request POST:/api/Tips/Products/Files/{id}
    * @secure
    */
@@ -1779,6 +1954,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags Tips
    * @name TipsProductsFilesDelete
+   * @summary Отвязать файл от совета
    * @request DELETE:/api/Tips/Products/Files
    * @secure
    */
@@ -1801,6 +1977,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags Tips
    * @name TipsMaterialsDetail
+   * @summary Получить совет по материалу по ИД
    * @request GET:/api/Tips/Materials/{id}
    * @secure
    */
@@ -1817,6 +1994,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags Tips
    * @name TipsMaterialsDelete
+   * @summary Удалить совет по материалу
    * @request DELETE:/api/Tips/Materials/{id}
    * @secure
    */
@@ -1850,6 +2028,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags Tips
    * @name TipsMaterialsUpdate
+   * @summary Редактировать совет по материалу
    * @request PUT:/api/Tips/Materials
    * @secure
    */
@@ -1886,12 +2065,16 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags Tips
    * @name TipsMaterialsFilesDelete
+   * @summary Удалить файл совета по материалу
    * @request DELETE:/api/Tips/Materials/Files
    * @secure
    */
   tipsMaterialsFilesDelete = (
     query?: {
-      /** @format uuid */
+      /**
+       * ИД
+       * @format uuid
+       */
       id?: string;
     },
     params: RequestParams = {},
@@ -1908,6 +2091,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags Users
    * @name UsersDetail
+   * @summary Получить юзера по ИД
    * @request GET:/api/Users/{id}
    * @secure
    */
@@ -1924,6 +2108,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags Users
    * @name UsersDelete
+   * @summary Удалить пользователя
    * @request DELETE:/api/Users/{id}
    * @secure
    */
@@ -1956,6 +2141,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags Users
    * @name UsersCreate
+   * @summary Создать нового пользователя
    * @request POST:/api/Users
    * @secure
    */
@@ -1974,6 +2160,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags Users
    * @name UsersUpdate
+   * @summary Редактирование пользователя
    * @request PUT:/api/Users
    * @secure
    */
