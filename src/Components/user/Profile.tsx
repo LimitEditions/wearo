@@ -5,6 +5,7 @@ import { BlockStyle } from '../../types/interfaces/IStyles';
 import { Button } from '../common/Button';
 import { Outlet, useOutletContext } from 'react-router-dom';
 import { IAuthMeList } from '../../types/interfaces/ApiResponses/IAuthMeList';
+import { LogOut } from '../common/LogOut';
 
 export const Profile = () => {
   const isAuthenticated = useOutletContext() as IAuthMeList;
@@ -33,6 +34,8 @@ export const Profile = () => {
           <div>+7 (000) 000-00-00</div>
         </ProfileItem>
         <ProfileItem path="/settings/password">Пароль</ProfileItem>
+        
+        <LogOut show={true} />
 
         <Button 
           showButton={true} 

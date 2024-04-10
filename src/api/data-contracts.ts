@@ -103,6 +103,8 @@ export interface BrandModel {
   link?: string | null;
   /** Продукты компнии */
   products?: ProductModel[] | null;
+  /** Коллекции одежды */
+  collections?: ClothingCollectionModel[] | null;
 }
 
 /** Результат чтения данных. */
@@ -446,11 +448,19 @@ export interface CreateCommentModel {
 export interface CreateLookModel {
   /** Наименование */
   name?: string;
-  /** @format double */
+  /**
+   * Рост модели
+   * @format double
+   */
   modelHeight?: number | null;
-  /** @format double */
+  /**
+   * Ширина модели
+   * @format double
+   */
   modelWidth?: number | null;
   modelShape?: BodyShape;
+  /** Набор файлов */
+  files?: string[] | null;
 }
 
 /** Материал */
@@ -528,7 +538,7 @@ export interface CreateProductItemModel {
    * Продукт
    * @format uuid
    */
-  productGuid?: string;
+  productGuid?: string | null;
   /**
    * Пользователь-владелец
    * @format uuid
@@ -575,7 +585,7 @@ export interface CreateProductModel {
   status?: ProductStatus;
   season?: Season;
   /**
-   * Бренд
+   * Бренд ИД
    * @format uuid
    */
   brandGuid?: string;
@@ -595,6 +605,20 @@ export interface CreateScanModel {
   /** @format uuid */
   userGuid?: string | null;
   code?: string;
+}
+
+/** Подписка на бренд */
+export interface CreateSubscriptionModel {
+  /**
+   * Юзер
+   * @format uuid
+   */
+  userGuid?: string;
+  /**
+   * Бренд
+   * @format uuid
+   */
+  brandGuid?: string;
 }
 
 /** Советы */
@@ -667,6 +691,12 @@ export enum FileType {
   Webm = "Webm",
 }
 
+export enum FilterType {
+  StartsWith = "StartsWith",
+  EndsWith = "EndsWith",
+  Contains = "Contains",
+}
+
 /** Совместимость вещей */
 export interface LookModel {
   /**
@@ -688,9 +718,15 @@ export interface LookModel {
   updateDT?: string;
   /** Наименование */
   name?: string;
-  /** @format double */
+  /**
+   * Рост модели
+   * @format double
+   */
   modelHeight?: number | null;
-  /** @format double */
+  /**
+   * Ширина модели
+   * @format double
+   */
   modelWidth?: number | null;
   modelShape?: BodyShape;
   /** Продукт */
@@ -966,7 +1002,7 @@ export interface ProductItemModel {
    * Продукт
    * @format uuid
    */
-  productGuid?: string;
+  productGuid?: string | null;
   /**
    * Пользователь-владелец
    * @format uuid
@@ -1092,22 +1128,10 @@ export interface ProductModel {
   /** Описание */
   description?: string;
   /**
-   * Бренд
+   * Бренд ИД
    * @format uuid
    */
   brandGuid?: string;
-  /** Советы */
-  tips?: TipModel[] | null;
-  /** Снимки товара */
-  photos?: FileModel[] | null;
-  /** Бренд */
-  brand?: BrandModel;
-  /** Доступные цвета */
-  colors?: ProductColorModel[] | null;
-  /** Комментарии */
-  comments?: CommentModel[] | null;
-  /** Состав вещи */
-  composition?: ProductMaterialModel[] | null;
   coloring?: Coloring;
   status?: ProductStatus;
   season?: Season;
@@ -1121,6 +1145,24 @@ export interface ProductModel {
    * @format uuid
    */
   categoryGuid?: string;
+  /** Бренд */
+  brand?: BrandModel;
+  /** Коллекция одежды */
+  collection?: ClothingCollectionModel;
+  /** Тип одежды */
+  category?: ProductCategoryModel;
+  /** Советы */
+  tips?: TipModel[] | null;
+  /** Снимки товара */
+  photos?: FileModel[] | null;
+  /** Доступные цвета */
+  colors?: ProductColorModel[] | null;
+  /** Комментарии */
+  comments?: CommentModel[] | null;
+  /** Состав вещи */
+  composition?: ProductMaterialModel[] | null;
+  /** Измерения вещи */
+  measurement?: ProductMeasurementModel[] | null;
 }
 
 /** Результат чтения данных. */
@@ -1217,6 +1259,52 @@ export enum Season {
   ResortCruise = "ResortCruise",
 }
 
+/** Подписка на бренд */
+export interface SubscriptionModel {
+  /**
+   * Идентификатор
+   * @format uuid
+   */
+  guid?: string;
+  /** Отметка удаления */
+  isDeleted?: boolean;
+  /**
+   * Дата создания
+   * @format date-time
+   */
+  createDT?: string;
+  /**
+   * Дата обнавления
+   * @format date-time
+   */
+  updateDT?: string;
+  /** Пользователь */
+  user?: UserModel;
+  /** Бренд */
+  brand?: BrandModel;
+  /**
+   * Юзер
+   * @format uuid
+   */
+  userGuid?: string;
+  /**
+   * Бренд
+   * @format uuid
+   */
+  brandGuid?: string;
+}
+
+/** Результат чтения данных. */
+export interface SubscriptionModelDataResult {
+  /**
+   * Общее количество найденных элементов.
+   * @format int32
+   */
+  total?: number;
+  /** Данные. */
+  data?: SubscriptionModel[];
+}
+
 /** Советы по одежде */
 export interface TipModel {
   /**
@@ -1303,9 +1391,15 @@ export interface UpdateLookModel {
   guid?: string;
   /** Наименование */
   name?: string;
-  /** @format double */
+  /**
+   * Рост модели
+   * @format double
+   */
   modelHeight?: number | null;
-  /** @format double */
+  /**
+   * Ширина модели
+   * @format double
+   */
   modelWidth?: number | null;
   modelShape?: BodyShape;
 }
@@ -1388,7 +1482,7 @@ export interface UpdateProductModel {
   status?: ProductStatus;
   season?: Season;
   /**
-   * Бренд
+   * Бренд ИД
    * @format uuid
    */
   brandGuid?: string;
@@ -1469,6 +1563,7 @@ export interface UserModel {
 }
 
 export enum UserType {
+  Unauthorized = "Unauthorized",
   User = "User",
   BrandAdmin = "BrandAdmin",
   BrandSeller = "BrandSeller",

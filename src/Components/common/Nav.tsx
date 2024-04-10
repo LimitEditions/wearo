@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { BlockStyle } from '../../types/interfaces/IStyles'
 import getStyles from '../../utils/getStyles';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { UserType } from '../../api/data-contracts';
 import { navContent } from '../../utils/navContent';
 import { INavItem } from '../../types/NavContentType';
 
 
 export const Nav: React.FC<{type: UserType | undefined}> = ({ type }) => {
+  const location = useLocation();
+  const [showNav, setShowNav] = useState<boolean>(true);
   const [data, setData] = useState<INavItem[]>([]);
  
   useEffect(() => {
+    setShowNav(true)
     if (type === 'Admin' || type === 'SuperAdmin') {
       setData(navContent.Admin);
     } else if (type === 'BrandAdmin' || type === 'BrandSeller') {
@@ -18,14 +21,20 @@ export const Nav: React.FC<{type: UserType | undefined}> = ({ type }) => {
     } else {
       setData(navContent.User);
     };
-  }, [type, data, setData]);
+
+    if (location.pathname === '/login') {
+      setShowNav(false);
+    };
+  }, [type, data, setData, location]);
 
   return (
-    <nav className={getStyles(navStyle)}>     
+    <>
+      {showNav && <nav className={getStyles(navStyle)}>     
       {data.map(e => {
         return <Link key={e.path} to={e.path}>{e.name}</Link>
       })}   
-    </nav>
+    </nav>}
+    </>
   );
 };
 
