@@ -4,7 +4,6 @@ export interface IButtonProps {
     showButton: boolean;
     onClick?: () => void;
     styles?: BlockStyle;
-    text?: string;
-    link?: React.ReactNode;
+    text: string;
     type?: 'submit' | 'button';
 };

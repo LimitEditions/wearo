@@ -3,7 +3,7 @@ import { BlockStyle } from '../../types/interfaces/IStyles';
 import getStyles from '../../utils/getStyles';
 import { IButtonProps } from '../../types/interfaces/IButtonProps';
 
-export const Button: React.FC<IButtonProps> = ({ showButton, text, link, onClick, type = 'button', styles }) => {
+export const Button: React.FC<IButtonProps> = ({ showButton, text, onClick, type = 'button', styles }) => {
   return (
     <>
       {showButton && (
@@ -12,7 +12,7 @@ export const Button: React.FC<IButtonProps> = ({ showButton, text, link, onClick
       onClick={onClick}
       type={type}
     >
-      {text ? text : link}
+      {text}
     </button> 
     )} 
     </>
