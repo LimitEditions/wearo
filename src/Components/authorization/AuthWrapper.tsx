@@ -1,7 +1,7 @@
 import React from 'react'
 import { BlockStyle } from '../../types/interfaces/IStyles';
 import getStyles from '../../utils/getStyles';
-import { IAuthWrapperProps } from '../../types/interfaces/IAuthWrapper';
+import { IAuthWrapperProps } from '../../types/interfaces/componentsProps/IAuthWrapperProps';
 
 export const AuthWrapper = ({children} : IAuthWrapperProps) => {
   return (

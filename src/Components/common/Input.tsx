@@ -1,7 +1,7 @@
 import React, { LegacyRef } from "react";
 import getStyles from "../../utils/getStyles";
 import { BlockStyle } from "../../types/interfaces/IStyles";
-import { IInputProps } from "../../types/interfaces/IInputProps";
+import { IInputProps } from "../../types/interfaces/componentsProps/IInputProps";
 
 export const Input = ({
   type = "text",

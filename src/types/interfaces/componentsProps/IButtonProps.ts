@@ -1,4 +1,4 @@
-import { BlockStyle } from "./IStyles";
+import { BlockStyle } from "../IStyles";
 
 export interface IButtonProps {
     showButton: boolean;

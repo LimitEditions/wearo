@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import useApi from "../../../hooks/useApi";
 import { validateWord } from "../../../utils/validation";
 import { dataToLS } from "../../../utils/dataToLS";
-import { IwithAuthLogicProps } from "../../../types/interfaces/IwithAuthLogicProps";
+import { IwithAuthLogicProps } from "../../../types/interfaces/componentsProps/IwithAuthLogicProps";
 
 export const withAuthLogic = ({
   Component,

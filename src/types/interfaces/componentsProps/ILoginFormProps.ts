@@ -1,7 +1,7 @@
 import { LegacyRef } from "react";
-import { AuthModel } from "../../api/data-contracts";
-import { IAuthCreate } from "./ApiResponses/IAuthCreate";
-import { IApiError } from "./IApiError";
+import { AuthModel } from "../../../api/data-contracts";
+import { IAuthCreate } from "../ApiResponses/IAuthCreate";
+import { IApiError } from "../IApiError";
 
 export interface IloginFormProps {
     user: AuthModel,

@@ -1,7 +1,7 @@
 import React from 'react';
 import { BlockStyle } from '../../types/interfaces/IStyles';
 import getStyles from '../../utils/getStyles';
-import { IButtonProps } from '../../types/interfaces/IButtonProps';
+import { IButtonProps } from '../../types/interfaces/componentsProps/IButtonProps';
 
 export const Button: React.FC<IButtonProps> = ({ showButton, text, onClick, type = 'button', styles }) => {
   return (

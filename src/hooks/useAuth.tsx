@@ -25,7 +25,7 @@ const useAuth = () => {
     if (tokenExpireIn || refreshTokenExpireIn) {
       setShouldReq(true);
     } else {
-      navigate('/auth');
+      // navigate('/auth');
     };
   }, [tokenExpireIn, refreshTokenExpireIn, shouldRefresh, setShouldReq, navigate]);
 

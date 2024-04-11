@@ -2,7 +2,7 @@ import React from "react";
 import { BlockStyle } from "../../types/interfaces/IStyles";
 import getStyles from "../../utils/getStyles";
 import { Button } from "../common/Button";
-import { IloginFormProps } from "../../types/interfaces/ILoginFormProps";
+import { IloginFormProps } from "../../types/interfaces/componentsProps/ILoginFormProps";
 import { Input } from "../common/Input";
 
 export const LoginForm = ({

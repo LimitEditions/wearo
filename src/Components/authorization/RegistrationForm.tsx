@@ -4,7 +4,7 @@ import { BlockStyle } from "../../types/interfaces/IStyles";
 import useApi from "../../hooks/useApi";
 import { validateWord } from "../../utils/validation";
 import { Button } from "../common/Button";
-import { IRegistrationFormProps } from "../../types/interfaces/IRegistrationForm";
+import { IRegistrationFormProps } from "../../types/interfaces/componentsProps/IRegistrationFormProps";
 import { Input } from "../common/Input";
 
 export const RegistrationForm = ({

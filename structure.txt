@@ -57,6 +57,13 @@
 │   │   │   ├── IApiResponse.ts              # Обобщенный ответ с сервера, содержащий поле data
 │   │   │   ├── IAuthCreate.ts               # Ответ по запросу authCreate
 │   │   │   └── IAuthMeList.ts               # -//- authMeList(сгенерированный интерфейс UserModel расширенный полем status)
+│   │   ├── componentsProps      # Интерфейсы пропсов компонентов
+│   │   │   ├── IAuthWrapperProps.ts         # Интерфейс пропсов для компонента AuthWrapper
+│   │   │   ├── IButtonProps.ts              # Интерфейс пропсов для компонента Button
+│   │   │   ├── IInputProps.ts               # Интерфейс пропсов для компонента Input
+│   │   │   ├── ILoginFormProps.ts           # Интерфейс пропсов для компонента LoginForm
+│   │   │   ├── IRegistrationFormProps.ts    # Интерфейс пропсов для компонента RegistrationForm
+│   │   │   └── IwithAuthLogicProps.ts       # Интерфейс пропсов для хока withAuthLogic
 │   │   ├── IApiError.ts         # Интерфейс ошибки, которая может возникнуть при обращении к серверу
 │   │   ├── IButtonProps.ts      # Интерфейс пропсов для кнопки
 │   │   ├── IProduct.ts          # Интерфейс продукта
