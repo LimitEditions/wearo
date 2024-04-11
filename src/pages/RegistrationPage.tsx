@@ -1,20 +1,16 @@
-import React, { useRef } from 'react'
-import { AuthWrapper } from '../Components/authorization/AuthWrapper'
-import { Registration } from '../Components/authorization/Registration'
-import { withAuthLogic } from '../Components/authorization/withAuthLogic';
-import { RegistrationForm } from '../Components/authorization/RegistrationForm';
+import React from "react";
+import { AuthWrapper } from "../Components/authorization/AuthWrapper";
+import { withAuthLogic } from "../Components/authorization/withAuthLogic";
+import { RegistrationForm } from "../Components/authorization/RegistrationForm";
 
 export const RegistrationPage = () => {
-  const initialUser = {
-    username: "",
-    password: "",
-    firstName: "",
-    secondName: "",
-  };
-  const RegistrationWithLogic = withAuthLogic({ Component: RegistrationForm, type: 'reg', initialUser });
+  const RegistrationWithLogic = withAuthLogic({
+    Component: RegistrationForm,
+    type: "reg",
+  });
   return (
     <AuthWrapper>
-      <RegistrationWithLogic/>
+      <RegistrationWithLogic />
     </AuthWrapper>
-  )
-}
+  );
+};

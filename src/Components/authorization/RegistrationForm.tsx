@@ -16,6 +16,7 @@ export const RegistrationForm = ({
   data,
   error,
   isLoading,
+  changeIsUniqueUsername,
 }: IRegistrationFormProps) => {
   const [shouldExecuteUser, setShouldExecuteUser] = useState<boolean>(false);
   const [userData, isLoadingUser, userError] = useApi(
@@ -29,7 +30,8 @@ export const RegistrationForm = ({
     if (shouldExecuteUser && (typeof userData === "boolean" || userError)) {
       setShouldExecuteUser(false);
     }
-    if (typeof(userData) === 'boolean'&& inputNameRef && inputNameRef.current) {
+    if (typeof(userData) === 'boolean' && inputNameRef && inputNameRef.current) {
+      changeIsUniqueUsername(userData)
       const inputElement = inputNameRef.current;
       if (inputNameRef) {
         inputElement.setCustomValidity(userData ? "" : 'Пользователь с таким именем уже существует.');
@@ -44,6 +46,7 @@ export const RegistrationForm = ({
       setShouldExecuteUser(true);
     }
   };
+
   return (
     <>
       <div>

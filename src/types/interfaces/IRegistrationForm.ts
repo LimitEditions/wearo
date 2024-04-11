@@ -10,5 +10,6 @@ export interface IRegistrationFormProps {
     inputPasswordRef:  LegacyRef<HTMLInputElement> | undefined,
     data: UserModel,
     error: IApiError,
-    isLoading: boolean
+    isLoading: boolean,
+    changeIsUniqueUsername: (value: boolean) => void
 }

@@ -8,11 +8,20 @@ import { IwithAuthLogicProps } from "../../types/interfaces/IwithAuthLogicProps"
 export const withAuthLogic = ({
   Component,
   type,
-  initialUser,
-  isUniqueName = true,
-}: IwithAuthLogicProps) => {
+}
+: IwithAuthLogicProps) => {
   const HocComponent = ({ ...props }) => {
+    const initialUser =
+      type === "login"
+        ? { username: "", password: "" }
+        : {
+            username: "",
+            password: "",
+            firstName: "",
+            secondName: "",
+          };
     const [user, setUser] = useState(initialUser);
+    const [isUniqueUsername, setIsUniqueUsername] = useState<boolean>();
     const [shouldExecute, setShouldExecute] = useState<boolean>(false);
     const inputNameRef = useRef<HTMLInputElement>(null);
     const inputPasswordRef = useRef<HTMLInputElement>(null);
@@ -69,7 +78,13 @@ export const withAuthLogic = ({
         "Может содержать любые латинские буквы, цифры и/или спец. символы (!@#$%^&*). Минимальная длина - 4 символа."
       );
 
-      if (isValidUsername && isValidPassword && isUniqueName) {
+      const isValidValues = isValidUsername && isValidPassword;
+
+      if (type === "reg" && isValidValues && isUniqueUsername) {
+        setShouldExecute(true);
+      }
+
+      if (type === "login" && isValidValues) {
         setShouldExecute(true);
       }
     };
@@ -77,6 +92,10 @@ export const withAuthLogic = ({
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
       setUser({ ...user, [event.target.name]: event.target.value });
       event.target.setCustomValidity("");
+    };
+
+    const changeIsUniqueUsername = (value: boolean) => {
+      setIsUniqueUsername(value);
     };
 
     return (
@@ -91,6 +110,7 @@ export const withAuthLogic = ({
           data={data}
           error={error}
           isLoading={isLoading}
+          changeIsUniqueUsername={changeIsUniqueUsername}
         />
       </>
     );
