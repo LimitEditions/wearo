@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import useApi from "../../hooks/useApi";
-import { validateWord } from "../../utils/validation";
-import { dataToLS } from "../../utils/dataToLS";
-import { IwithAuthLogicProps } from "../../types/interfaces/IwithAuthLogicProps";
+import useApi from "../../../hooks/useApi";
+import { validateWord } from "../../../utils/validation";
+import { dataToLS } from "../../../utils/dataToLS";
+import { IwithAuthLogicProps } from "../../../types/interfaces/IwithAuthLogicProps";
 
 export const withAuthLogic = ({
   Component,

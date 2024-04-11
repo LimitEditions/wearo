@@ -1,12 +1,9 @@
-import React, { Children, ReactNode } from 'react'
+import React from 'react'
 import { BlockStyle } from '../../types/interfaces/IStyles';
 import getStyles from '../../utils/getStyles';
+import { IAuthWrapperProps } from '../../types/interfaces/IAuthWrapper';
 
-interface AuthWrapperProps {
-    children: ReactNode
-}
-
-export const AuthWrapper = ({children} : AuthWrapperProps) => {
+export const AuthWrapper = ({children} : IAuthWrapperProps) => {
   return (
     <div className={`${getStyles(divStyle)}`}>
         <h1 className={`${getStyles(h1Style)}`}>Wear</h1>
