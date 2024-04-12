@@ -2,7 +2,7 @@ import React from "react";
 import { BlockStyle } from "../../types/interfaces/IStyles";
 import getStyles from "../../utils/getStyles";
 import { Button } from "../common/Button";
-import { IloginFormProps } from "../../types/interfaces/componentsProps/ILoginFormProps";
+import { ILoginFormProps } from "../../types/interfaces/componentsProps/IFormProps";
 import { Input } from "../common/Input";
 
 export const LoginForm = ({
@@ -14,7 +14,7 @@ export const LoginForm = ({
   data,
   error,
   isLoading,
-}: IloginFormProps) => {
+}: ILoginFormProps) => {
   return (
     <>
       <div>
@@ -44,7 +44,7 @@ export const LoginForm = ({
               Неверный логин или пароль
             </span>
           ) : null}
-          <Button showButton={true} text="Войти" type="submit" />
+          <Button showButton={true} type="submit">Войти</Button>
         </form>
       </div>
       {isLoading && <p className={`${getStyles(pStyle)}`}>Loading...</p>}

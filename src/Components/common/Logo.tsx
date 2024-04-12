@@ -27,14 +27,13 @@ export const Logo = () => {
         showButton={showProfileButton}
         onClick={handleProfileClick}
         styles={btnProfile}
-        text=''
       />
       <Button 
         showButton={showBackButton}
         onClick={handleBackClick}
-        styles={btnBack}
-        text='<'
-      />
+        styles={btnBack}>
+          {'<'}
+      </Button>
 
       <h1>WEAR</h1>
     </div>

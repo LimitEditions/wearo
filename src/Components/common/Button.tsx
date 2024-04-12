@@ -3,18 +3,14 @@ import { BlockStyle } from '../../types/interfaces/IStyles';
 import getStyles from '../../utils/getStyles';
 import { IButtonProps } from '../../types/interfaces/componentsProps/IButtonProps';
 
-export const Button: React.FC<IButtonProps> = ({ showButton, text, onClick, type = 'button', styles }) => {
+export const Button: React.FC<IButtonProps> = ({ showButton, styles, children, ...props }) => {
+  if (!showButton) { return null };
+
   return (
     <>
-      {showButton && (
-      <button
-      className={styles ? getStyles(styles) : getStyles(buttonStyle)}
-      onClick={onClick}
-      type={type}
-    >
-      {text}
-    </button> 
-    )} 
+      <button className={styles ? getStyles(styles) : getStyles(buttonStyle)} {...props}>
+        {children}
+      </button> 
     </>
   );
 };

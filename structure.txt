@@ -45,7 +45,8 @@
 │   └── AuthProvider.tsx         # Компонент для хранеения и изменения переменной isAuth
 ├── hooks                        # Папка для пользовательских хуков
 │   ├── useApi.tsx               # Хук для обращения к серверу
-│   └── useAuth.tsx              # Хук для аутентификации
+│   ├── useAuth.tsx              # Хук для аутентификации
+│   └── IUniqueUsername.tsx      # Хук проверки уникальности именю пользователя
 ├── pages                        # Папка для страниц
 │   ├── Authorization.tsx        # Страница с кнопками для входа или регистрации
 │   ├── Home.tsx                 # Домашняя страница
@@ -61,18 +62,16 @@
 │   │   │   ├── IAuthWrapperProps.ts         # Интерфейс пропсов для компонента AuthWrapper
 │   │   │   ├── IButtonProps.ts              # Интерфейс пропсов для компонента Button
 │   │   │   ├── IInputProps.ts               # Интерфейс пропсов для компонента Input
-│   │   │   ├── ILoginFormProps.ts           # Интерфейс пропсов для компонента LoginForm
-│   │   │   ├── IRegistrationFormProps.ts    # Интерфейс пропсов для компонента RegistrationForm
+│   │   │   ├── IFormProps.ts                # Интерфейс пропсов для компонентов LoginForm и RegistrationForm
 │   │   │   └── IwithAuthLogicProps.ts       # Интерфейс пропсов для хока withAuthLogic
 │   │   ├── IApiError.ts         # Интерфейс ошибки, которая может возникнуть при обращении к серверу
 │   │   ├── IButtonProps.ts      # Интерфейс пропсов для кнопки
 │   │   ├── IProduct.ts          # Интерфейс продукта
 │   │   ├── IProfileItem.ts      # Интерфейс составляющей профиля пользователя
 │   │   ├── IStyles.ts           # Интерфейс стилей для элемента
-│   │   └── IUser.ts             # Интерфейс пользователя
+│   │   └── IUniqueUsername.ts   # Интерфейс для хука useUniqueUsername
 │   ├── AuthContextType.ts       # Тип для контекста провайдера
-│   ├── NavContentType.ts        # Тип содержимого навигационной панели (включает в себя интерфейс для навигационной ссылки)
-│   └── UserRoleType.ts          # Перечисление ролей пользователя
+│   └── NavContentType.ts        # Тип содержимого навигационной панели (включает в себя интерфейс для навигационной ссылки)
 └── utils                        # Папка для утилит
 │   ├── dataToLS.ts              # Утилиты для обработки данных перед внесением в localStorage
 │   ├── encryption.ts            # Утилиты для шифрования данных (+ внесение в localStorage)

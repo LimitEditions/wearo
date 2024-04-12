@@ -6,23 +6,17 @@ import getStyles from '../../utils/getStyles'
 
 export const AuthButtons = () => {
   const navigate = useNavigate();
-  const navToLogin = () => {
-    navigate('/login')
-  }
-  const navToRegistration = () => {
-    navigate('/registration')
-  }
 
   return (
     <div className={`${getStyles(divStyle)}`}>
-        <Button showButton={true} text='Войти' onClick={navToLogin}/>
-        <Button showButton={true} text='Зарегистрироваться' onClick={navToRegistration}/>
+        <Button showButton={true} onClick={() => navigate('/login')}>Войти</Button>
+        <Button showButton={true} onClick={() => navigate('/registration')}>Зарегистрироваться</Button>
     </div>
-  )
-}
+  );
+};
 
 const divStyle: BlockStyle = {
     blockSize: 'w-full',
     container: 'flex flex-col',
     spacing: 'gap-3 mt-5'
-}
+};

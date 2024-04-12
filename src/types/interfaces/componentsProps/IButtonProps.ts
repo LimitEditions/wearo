@@ -1,9 +1,6 @@
 import { BlockStyle } from "../IStyles";
 
-export interface IButtonProps {
+export interface IButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     showButton: boolean;
-    onClick?: () => void;
     styles?: BlockStyle;
-    text: string;
-    type?: 'submit' | 'button';
 };

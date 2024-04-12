@@ -1,4 +1,4 @@
-import React, { LegacyRef } from "react";
+import React from "react";
 import getStyles from "../../utils/getStyles";
 import { BlockStyle } from "../../types/interfaces/IStyles";
 import { IInputProps } from "../../types/interfaces/componentsProps/IInputProps";
