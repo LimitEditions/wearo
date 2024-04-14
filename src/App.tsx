@@ -40,7 +40,7 @@ function App() {
             <Route path='scans' element={<div>scans</div>} />
           </Route>
         </Route>
-        <Route path='/*' element="no content"/> {/*Обработка ошибочных запросов */}
+        <Route path='/*' element="no content"/> Обработка ошибочных запросов
       </Routes>
       <Nav type={ role }/>
     </>

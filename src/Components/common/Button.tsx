@@ -18,7 +18,7 @@ export const Button: React.FC<IButtonProps> = ({ showButton, styles, children, .
 const buttonStyle: BlockStyle = {
   blockSize: "w-full",
   background: "bg-gray-500",
-  spacing: 'p-2',
+  spacing: 'p-2 mt-2',
   text: 'text-white',
   border: 'rounded-3xl'
 };

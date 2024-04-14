@@ -4,11 +4,11 @@ import { withAuthLogic } from '../Components/common/hoc/withAuthLogic'
 import { LoginForm } from '../Components/authorization/LoginForm'
 
 export const LoginPage = () => {
-  const LoginWithLogic = withAuthLogic({ Component: LoginForm, type: 'login'});
+  const LoginWithLogic = withAuthLogic({ Component: LoginForm, type: 'login' });
 
   return (
     <AuthWrapper>
       <LoginWithLogic />
     </AuthWrapper>
   );
-}
+};
