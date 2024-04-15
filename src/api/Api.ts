@@ -31,6 +31,7 @@ import {
   CreateClothingCollectionModel,
   CreateColorsModel,
   CreateCommentModel,
+  CreateFileProductModel,
   CreateLookModel,
   CreateMaterialModel,
   CreatePostModel,
@@ -45,6 +46,7 @@ import {
   CreateTipModel,
   CreateUserModel,
   FileModel,
+  FileProductModel,
   FileType,
   FilterType,
   LookModel,
@@ -83,6 +85,8 @@ import {
   UpdateTipModel,
   UpdateUserModel,
   UserModel,
+  UserModelDataResult,
+  UserType,
 } from "./data-contracts";
 import { ContentType, HttpClient, RequestParams } from "./http-client";
 
@@ -647,11 +651,10 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @secure
    */
   filesDetail = (id: string, params: RequestParams = {}) =>
-    this.request<FileModel, ProblemDetails>({
+    this.request<void, ProblemDetails>({
       path: `/api/Files/${id}`,
       method: "GET",
       secure: true,
-      format: "json",
       ...params,
     });
   /**
@@ -667,6 +670,31 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
     this.request<FileModel, ProblemDetails>({
       path: `/api/Files/${id}`,
       method: "DELETE",
+      secure: true,
+      format: "json",
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags Files
+   * @name FilesModelDetail
+   * @summary Получить файл
+   * @request GET:/api/Files/{id}/Model
+   * @secure
+   */
+  filesModelDetail = (
+    id: string,
+    query?: {
+      /** @default false */
+      includeProducts?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<FileModel, ProblemDetails>({
+      path: `/api/Files/${id}/Model`,
+      method: "GET",
+      query: query,
       secure: true,
       format: "json",
       ...params,
@@ -720,6 +748,42 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
       path: `/api/Files/${type}/${field}/${id}`,
       method: "PATCH",
       query: query,
+      secure: true,
+      format: "json",
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags Files
+   * @name FilesProductsCreate
+   * @summary Привязать ссылку на продукт к файлу
+   * @request POST:/api/Files/Products
+   * @secure
+   */
+  filesProductsCreate = (data: CreateFileProductModel, params: RequestParams = {}) =>
+    this.request<FileProductModel, ProblemDetails>({
+      path: `/api/Files/Products`,
+      method: "POST",
+      body: data,
+      secure: true,
+      type: ContentType.Json,
+      format: "json",
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags Files
+   * @name FilesProductsDelete
+   * @summary Удаление файлов
+   * @request DELETE:/api/Files/Products/{id}
+   * @secure
+   */
+  filesProductsDelete = (id: string, params: RequestParams = {}) =>
+    this.request<FileModel, ProblemDetails>({
+      path: `/api/Files/Products/${id}`,
+      method: "DELETE",
       secure: true,
       format: "json",
       ...params,
@@ -1549,7 +1613,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags Products
    * @name ProductsColorsCreate
-   * @summary Добавить цвет к файлу
+   * @summary Добавить цвет к продукту
    * @request POST:/api/Products/Colors
    * @secure
    */
@@ -2123,15 +2187,47 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * No description
    *
    * @tags Users
-   * @name UsersCheckDetail
-   * @summary Проверка свободен ли никнейм
-   * @request GET:/api/Users/Check/{username}
+   * @name UsersList
+   * @summary Получить юзеров по фильтру
+   * @request GET:/api/Users
    * @secure
    */
-  usersCheckDetail = (username: string, params: RequestParams = {}) =>
-    this.request<boolean, any>({
-      path: `/api/Users/Check/${username}`,
+  usersList = (
+    query?: {
+      /** login */
+      Username?: string;
+      /** Имя */
+      FirstName?: string;
+      /** Фамилия */
+      SecondName?: string;
+      /** Тип пользователя */
+      Types?: UserType[];
+      /**
+       * Ид бренда
+       * @format uuid
+       */
+      BrandGuid?: string;
+      /**
+       * Номер страницы (по умолчанию = 1).
+       * @format int32
+       */
+      Page?: number;
+      /**
+       * Размер страницы (по умолчанию = 25).
+       * @format int32
+       */
+      PageSize?: number;
+      /** Поле, по которому происходит сортировка */
+      SortMember?: string;
+      /** Направление сортировки - по возрастанию */
+      Ascending?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<UserModelDataResult, ProblemDetails>({
+      path: `/api/Users`,
       method: "GET",
+      query: query,
       secure: true,
       format: "json",
       ...params,
@@ -2171,6 +2267,23 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
       body: data,
       secure: true,
       type: ContentType.Json,
+      format: "json",
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags Users
+   * @name UsersCheckDetail
+   * @summary Проверка свободен ли никнейм
+   * @request GET:/api/Users/Check/{username}
+   * @secure
+   */
+  usersCheckDetail = (username: string, params: RequestParams = {}) =>
+    this.request<boolean, any>({
+      path: `/api/Users/Check/${username}`,
+      method: "GET",
+      secure: true,
       format: "json",
       ...params,
     });

@@ -9,6 +9,9 @@ import { Wardrobe } from './Components/user/Wardrobe';
 import { Profile } from './Components/user/Profile';
 import useAuth from './hooks/useAuth';
 import { UserType } from './api/data-contracts';
+import { SuperadminSettingsPage } from './Components/superadmin/SuperadminSettingsPage';
+import { AddAdminPage } from './Components/superadmin/AddAdminPage';
+import { EmployeeDetails } from './Components/common/EmployeeDetails';
 
 
 function App() {
@@ -29,6 +32,11 @@ function App() {
         <Route path='/' element={ <Home /> }/>
         <Route path='/login' element={ <Login /> }/>
         <Route path='/registration' element={ <Registration /> }/>
+        {role === 'SuperAdmin' && <Route path='/options'>
+          <Route index element={ <SuperadminSettingsPage/> } /> 
+          <Route path='addadmin' element={ <AddAdminPage /> }/>
+          <Route path="admin/:id" element={<EmployeeDetails />} />
+        </Route>}
         <Route path='/wardrobe' element={ <Wardrobe isAuthenticated={ info.isAuthenticated }/> }>
           <Route index element={<div>Welcome to the Wardrobe!</div>} /> {/* Отображается, когда нет других совпадений */}
           <Route path='profile' >

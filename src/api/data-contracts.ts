@@ -444,6 +444,29 @@ export interface CreateCommentModel {
   entityGuid?: string;
 }
 
+export interface CreateFileProductModel {
+  /**
+   * Гуид файла
+   * @format uuid
+   */
+  fileGuid?: string;
+  /**
+   * Гуид продукта
+   * @format uuid
+   */
+  productGuid?: string;
+  /**
+   * Относительная позиция по оси Х
+   * @format double
+   */
+  x?: number;
+  /**
+   * Относительная позиция по оси У
+   * @format double
+   */
+  y?: number;
+}
+
 /** Совместимость вещей */
 export interface CreateLookModel {
   /** Наименование */
@@ -523,7 +546,7 @@ export interface CreateProductFileModel {
    * Ид цвета
    * @format uuid
    */
-  colorGuid?: string | null;
+  productColorGuid?: string | null;
   /**
    * Позиция файла
    * @format int64
@@ -548,7 +571,7 @@ export interface CreateProductItemModel {
    * Цвет
    * @format uuid
    */
-  colorGuid?: string | null;
+  productColorGuid?: string | null;
   /**
    * Ид партии одежды
    * @format uuid
@@ -676,6 +699,49 @@ export interface FileModel {
    * @format uuid
    */
   fileGuid?: string;
+  /** Ссылки на продукты */
+  products?: FileProductModel[] | null;
+}
+
+/** Отображение файла на изображении */
+export interface FileProductModel {
+  /**
+   * Идентификатор
+   * @format uuid
+   */
+  guid?: string;
+  /** Отметка удаления */
+  isDeleted?: boolean;
+  /**
+   * Дата создания
+   * @format date-time
+   */
+  createDT?: string;
+  /**
+   * Дата обнавления
+   * @format date-time
+   */
+  updateDT?: string;
+  /**
+   * Гуид файла
+   * @format uuid
+   */
+  fileGuid?: string;
+  /**
+   * Гуид продукта
+   * @format uuid
+   */
+  productGuid?: string;
+  /**
+   * Относительная позиция по оси Х
+   * @format double
+   */
+  x?: number;
+  /**
+   * Относительная позиция по оси У
+   * @format double
+   */
+  y?: number;
 }
 
 export enum FileType {
@@ -1012,12 +1078,12 @@ export interface ProductItemModel {
   product?: ProductModel;
   /** Пользователь */
   user?: UserModel;
-  color?: ColorModel;
+  color?: ProductColorModel;
   /**
    * Цвет
    * @format uuid
    */
-  colorGuid?: string | null;
+  productColorGuid?: string | null;
   /** Партия одежды */
   clothingParty?: ClothingPartyModel;
   /**
@@ -1560,6 +1626,17 @@ export interface UserModel {
   /** Фамилия */
   secondName?: string | null;
   type?: UserType;
+}
+
+/** Результат чтения данных. */
+export interface UserModelDataResult {
+  /**
+   * Общее количество найденных элементов.
+   * @format int32
+   */
+  total?: number;
+  /** Данные. */
+  data?: UserModel[];
 }
 
 export enum UserType {
