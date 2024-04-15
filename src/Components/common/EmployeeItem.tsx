@@ -27,6 +27,7 @@ const containerStyle: BlockStyle = {
   spacing: "px-2 py-4",
   border: "border-t border-gray-200",
   container: "flex justify-between",
+  hover: 'cursor-pointer'
 };
 
 const h3Style: BlockStyle = {

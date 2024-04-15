@@ -1,5 +1,7 @@
+import { Api } from "../../../api/Api";
+
 export interface IDeletePopupProps {
     title: string,
-    apiMethod: string,
+    apiMethod: keyof Api<unknown>,
     handleClose: () => void
 }

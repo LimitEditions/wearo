@@ -1,24 +1,65 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { IDeletePopupProps } from "../../types/interfaces/componentsProps/IDeletePopupProps";
 import { Button } from "./Button";
 import { BlockStyle } from "../../types/interfaces/IStyles";
 import getStyles from "../../utils/getStyles";
+import { SuccessfulPopup } from "./SuccessfulPopup";
+import useApi from "../../hooks/useApi";
+import { retrieve } from "../../utils/encryption";
+import { useParams } from "react-router-dom";
 
 export const DeletePopup = ({
   apiMethod,
   handleClose,
   title,
 }: IDeletePopupProps) => {
+  const [isSuccessful, setIsSuccessful] = useState<boolean>(false);
+  const [shouldExequte, setShouldExequte] = useState<boolean>(false)
+  const { id } = useParams();
+  const [data, isLoading, dataError] = useApi(
+    apiMethod,
+    id,
+    { headers: { Authorization: `Bearer ${retrieve("token")}` } },
+    shouldExequte
+  );
+
+  useEffect(() => {
+    if (shouldExequte && (data === '' || dataError)){
+        setShouldExequte(false)
+    }
+      if (data === '' && !dataError) {
+        setIsSuccessful(true);
+      }
+  }, [data, isLoading, dataError]);
+
+  const handleClick = () => {
+    setShouldExequte(true);
+  };
+
   return (
     <>
-    <div className={getStyles(divStyle)}></div>
-      <div className={getStyles(containerStyle)}>
-        <h3 className={getStyles(h3Style)}>{title}</h3>
-          <Button showButton={true} styles={buttonStyle} onClick={handleClose}>
-            Отменить
-          </Button>
-          <Button showButton={true}>Удалить</Button>
-      </div>
+      {!isSuccessful && (
+        <>
+          <div className={getStyles(divStyle)}></div>
+          <div className={getStyles(containerStyle)}>
+            <h3 className={getStyles(h3Style)}>{title}</h3>
+            <Button
+              showButton={true}
+              styles={buttonStyle}
+              onClick={handleClose}
+            >
+              Отменить
+            </Button>
+            <Button showButton={true} onClick={handleClick}>
+              Удалить
+            </Button>
+          </div>
+        </>
+      )}
+      {isSuccessful && (
+        <SuccessfulPopup message={"Администратор удален"} />
+      )}
+      {dataError && <div>Возникла ошибка, повторите позже.</div>}
     </>
   );
 };
@@ -48,7 +89,7 @@ const buttonStyle: BlockStyle = {
 };
 
 const divStyle: BlockStyle = {
-    container: "fixed inset-0 z-5",
-    blockSize: 'w-full h-full',
-    background: 'bg-black bg-opacity-70'
-}
+  container: "fixed inset-0 z-5",
+  blockSize: "w-full h-full",
+  background: "bg-black bg-opacity-70",
+};
