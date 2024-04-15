@@ -12,7 +12,7 @@ export function validate(word: string , target: string | null | undefined): bool
 export const validateField = (value: string, name: CreateUserModel[keyof CreateUserModel]) => {
     let message = '';
 
-    if (value && value.length >= 4) {
+    if (value?.length >= 4) {
         if (!validate(value, name)) {
             message = name === "password" ? 
             "Может содержать любые латинские буквы, цифры и/или спец. символы (!@#$%^&*)." :
