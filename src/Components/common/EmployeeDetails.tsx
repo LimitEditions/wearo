@@ -1,27 +1,56 @@
-import React, { useEffect } from 'react'
-import { useParams } from 'react-router-dom';
-import useApi from '../../hooks/useApi';
-import { retrieve } from '../../utils/encryption';
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import useApi from "../../hooks/useApi";
+import { retrieve } from "../../utils/encryption";
+import { UserModel } from "../../api/data-contracts";
+import { SectionsTitle } from "./SectionsTitle";
+import { EmployeeInfo } from "./EmployeeInfo";
 
 export const EmployeeDetails = () => {
+  const [user, setUser] = useState<UserModel>();
   const { id } = useParams();
-  const token = retrieve('token');
+  const token = retrieve("token");
   const [data, isLoading, dataError] = useApi(
     "usersDetail",
-    'b5c5f220-e408-4394-b97b-115a1270e000',
-    {headers: {Authorization: `Bearer ${token}`}},
+    id,
+    { headers: { Authorization: `Bearer ${token}` } },
     true
   );
 
   useEffect(() => {
-    if (data || dataError) {
-      console.log(data);
+    if (data) {
+      setUser(data);
     }
+  }, [data, isLoading, dataError]);
 
-  }, [data, isLoading, dataError])
-
-  
   return (
-    <div>Employee</div>
-  )
-}
+    <>
+      <SectionsTitle
+        needsClose={false}
+        title={"Администратор"}
+        needBottomSpasing={true}
+      />
+      {user && (
+        <>
+          <EmployeeInfo
+            needArrow={false}
+            title={"Имя"}
+            value={user.firstName}
+          />
+          <EmployeeInfo
+            needArrow={false}
+            title={"Фамилия"}
+            value={user.secondName}
+          />
+          <EmployeeInfo
+            needArrow={false}
+            title={"Логин"}
+            value={user.username}
+          />
+        </>
+      )}
+      {isLoading && <div>Загрузка...</div>}
+      {dataError && <div>Ошибка загрузки данных</div>}
+    </>
+  );
+};

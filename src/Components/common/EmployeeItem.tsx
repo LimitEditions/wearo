@@ -25,7 +25,7 @@ const containerStyle: BlockStyle = {
   blockSize: "w-full",
   background: "bg-gray-100",
   spacing: "px-2 py-4",
-  border: "border-t border-gray-300",
+  border: "border-t border-gray-200",
   container: "flex justify-between",
 };
 

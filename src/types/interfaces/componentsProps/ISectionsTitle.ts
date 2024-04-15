@@ -1,4 +1,6 @@
 export interface ISectionsTitle {
     title: string,
-    needsClose: boolean
+    needsClose: boolean,
+    needTopSpasing?: boolean,
+    needBottomSpasing?: boolean
 }
