@@ -4,11 +4,11 @@ import useApi from "../../hooks/useApi";
 import { retrieve } from "../../utils/encryption";
 import { UserModel } from "../../api/data-contracts";
 import { SectionsTitle } from "./SectionsTitle";
-import { EmployeeInfo } from "./EmployeeInfo";
 import { Button } from "./Button";
 import { BlockStyle } from "../../types/interfaces/IStyles";
 import getStyles from "../../utils/getStyles";
 import { DeletePopup } from "./DeletePopup";
+import { EmployeeInfoList } from "./EmployeeInfoList";
 
 export const EmployeeDetails = () => {
   const [user, setUser] = useState<UserModel>();
@@ -34,7 +34,7 @@ export const EmployeeDetails = () => {
 
   const handleClose = () => {
     setIsOpenPopup(false);
-  };
+  }
 
   return (
     <div className={getStyles(containerStyle)}>
@@ -45,21 +45,7 @@ export const EmployeeDetails = () => {
       />
       {user && (
         <>
-          <EmployeeInfo
-            needArrow={false}
-            title={"Имя"}
-            value={user.firstName}
-          />
-          <EmployeeInfo
-            needArrow={false}
-            title={"Фамилия"}
-            value={user.secondName}
-          />
-          <EmployeeInfo
-            needArrow={false}
-            title={"Логин"}
-            value={user.username}
-          />
+          <EmployeeInfoList user={user}/>
           <div className={getStyles(divStyle)}>
             <Button showButton={true} onClick={handleClick}>
               Удалить
@@ -67,13 +53,11 @@ export const EmployeeDetails = () => {
           </div>
         </>
       )}
-      {isOpenPopup && (
-        <DeletePopup
+        {isOpenPopup && <DeletePopup
           apiMethod={"usersDelete"}
           handleClose={handleClose}
           title={"Вы уверены, что хотите удалить сотрудника?"}
-        />
-      )}
+        />}
       {isLoading && <div>Загрузка...</div>}
       {dataError && <div>Ошибка загрузки данных</div>}
     </div>

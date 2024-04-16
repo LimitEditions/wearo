@@ -18,9 +18,9 @@ export const SuccessfulPopup = ({message}: {message: string}) => {
         };
       }, []);
 
+      if (!isShow) return null
   return (
     <>
-    {isShow && (<>
       <div className={getStyles(divStyle)}></div>
       <div className={getStyles(containerStyle)}>
         <svg
@@ -47,7 +47,6 @@ export const SuccessfulPopup = ({message}: {message: string}) => {
         </svg>
         <h3 className={getStyles(h3Style)}>{message}</h3>
       </div>
-    </>)}
     </>
   );
 };

@@ -11,6 +11,7 @@ export const SectionsTitle = ({
   needBottomSpasing = false,
 }: ISectionsTitle) => {
   const getContainerStyles = () => {
+    // подбираем нужные стили в зависимости от того, нужна ли кнопка закрытия и отступ сверху/снизу
     const baseStyles = needsClose
       ? getStyles(containerWithClose)
       : getStyles(containerWithoutClose);
