@@ -9,7 +9,6 @@
 │   └── Id.ts                    # Интерфейс для уникальных идентификаторов
 ├── Components                   # Папка для компонентов
 |   ├── authorization            # Компоненты для форм авторизации и регистрации
-|   |   ├── AuthButtons.tsx                 # Копки "Войти" и "Зарегистрироваться"
 |   |   ├── AuthWrapper.tsx                 # Обертка с логотипом для страниц авторизации и регистрации
 |   |   ├── LoginForm.tsx                   # Форма авторизации
 |   |   └── RegistrationForm.tsx            # Форма регистрации
@@ -32,6 +31,7 @@
 │   │   ├── Footer.tsx                      # Футер (информация о компании-разработчике)
 │   │   ├── Header.tsx                      # Хедер (навигация)
 │   │   ├── Input.txt                       # Инпут
+│   │   ├── InputsList.txt                  # Компонент для рендера нескольких инпутов
 │   │   ├── Logo.tsx                        # Логотип (с кнопками)
 │   │   ├── Nav.tsx                         # Навигационная панель
 │   │   └── Product.tsx                     # Компонент продукта
@@ -59,9 +59,9 @@
 │   │   │   ├── IAuthCreate.ts               # Ответ по запросу authCreate
 │   │   │   └── IAuthMeList.ts               # -//- authMeList(сгенерированный интерфейс UserModel расширенный полем status)
 │   │   ├── componentsProps      # Интерфейсы пропсов компонентов
-│   │   │   ├── IAuthWrapperProps.ts         # Интерфейс пропсов для компонента AuthWrapper
 │   │   │   ├── IButtonProps.ts              # Интерфейс пропсов для компонента Button
 │   │   │   ├── IInputProps.ts               # Интерфейс пропсов для компонента Input
+│   │   │   ├── IInputsListProps.ts          # Интерфейс пропсов для компонента InputsList
 │   │   │   ├── IFormProps.ts                # Интерфейс пропсов для компонентов LoginForm и RegistrationForm
 │   │   │   └── IwithAuthLogicProps.ts       # Интерфейс пропсов для хока withAuthLogic
 │   │   ├── IApiError.ts         # Интерфейс ошибки, которая может возникнуть при обращении к серверу

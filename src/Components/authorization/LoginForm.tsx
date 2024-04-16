@@ -3,7 +3,7 @@ import { BlockStyle } from "../../types/interfaces/IStyles";
 import getStyles from "../../utils/getStyles";
 import { Button } from "../common/Button";
 import { ILoginFormProps } from "../../types/interfaces/componentsProps/IFormProps";
-import { AuthInputsList } from "./AuthInputsList";
+import { InputsList } from "../common/InputsList";
 
 export const LoginForm = ({
   user,
@@ -23,8 +23,8 @@ export const LoginForm = ({
   }, [setRefs]);
 
   const formData = [
-    {'name': 'username', 'placeholder': 'логин', 'value': username, 'ref': nameRef},
-    {'name': 'password', 'type': 'password', 'placeholder': 'пароль', 'value': password, 'ref': passwordRef},
+    {'name': 'username', 'placeholder': 'логин', 'value': username, 'ref': nameRef, onChange: onChange},
+    {'name': 'password', 'type': 'password', 'placeholder': 'пароль', 'value': password, 'ref': passwordRef, onChange: onChange},
   ]
 
   return (
@@ -32,7 +32,7 @@ export const LoginForm = ({
       <div>
         <h1 className={getStyles(hStyle)}>Вход</h1>
         <form className={getStyles(formStyle)} onSubmit={onSubmit}>
-          <AuthInputsList formData={formData} onChange={onChange}/>
+          <InputsList formData={formData} />
           {error ? (
             <span className={getStyles(spanErrorStyle)}>
               Неверный логин или пароль

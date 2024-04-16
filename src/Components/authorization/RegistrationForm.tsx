@@ -5,7 +5,7 @@ import { validateField } from "../../utils/validation";
 import { Button } from "../common/Button";
 import { IRegistrationFormProps } from "../../types/interfaces/componentsProps/IFormProps";
 import useApi from "../../hooks/useApi";
-import { AuthInputsList } from "./AuthInputsList";
+import { InputsList } from "../common/InputsList";
 
 export const RegistrationForm = ({
   user,
@@ -71,10 +71,10 @@ export const RegistrationForm = ({
   };
 
   const formData = [
-    {'name': 'username', 'placeholder': 'логин', 'value': username, 'onBlur': handleBlur, 'ref': nameRef},
-    {'name': 'password', 'type': 'password', 'placeholder': 'пароль', 'value': password, 'ref': passwordRef},
-    {'name': 'firstName', 'placeholder': 'имя', 'value': firstName || undefined, 'ref': firstNameRef},
-    {'name': 'secondName', 'placeholder': 'фамилию', 'value': secondName || undefined, 'ref': secondNameRef},
+    {'name': 'username', 'placeholder': 'логин', 'value': username, 'onBlur': handleBlur, 'ref': nameRef, onChange: onChange},
+    {'name': 'password', 'type': 'password', 'placeholder': 'пароль', 'value': password, 'ref': passwordRef, onChange: onChange},
+    {'name': 'firstName', 'placeholder': 'имя', 'value': firstName || undefined, 'ref': firstNameRef, onChange: onChange},
+    {'name': 'secondName', 'placeholder': 'фамилию', 'value': secondName || undefined, 'ref': secondNameRef, onChange: onChange},
   ]
 
   return (
@@ -82,7 +82,7 @@ export const RegistrationForm = ({
       <div>
         <h1 className={getStyles(hStyle)}>Регистрация</h1>
         <form className={getStyles(formStyle)} onSubmit={onSubmit}>
-          <AuthInputsList formData={formData} onChange={onChange}/>
+          <InputsList formData={formData} />
           <Button showButton={true} type={"submit"}>Зарегистироваться</Button>
         </form>
       </div>

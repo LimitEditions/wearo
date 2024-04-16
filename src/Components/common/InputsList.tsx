@@ -1,11 +1,10 @@
 import React from "react";
-import { IAuthInputsListProps } from "../../types/interfaces/componentsProps/IAuthInputsListProps";
-import { Input } from "../common/Input";
+import { IInputsListProps } from "../../types/interfaces/componentsProps/IInputsListProps";
+import { Input } from "./Input";
 
-export const AuthInputsList = ({
-  formData,
-  onChange,
-}: IAuthInputsListProps) => {
+export const InputsList = ({
+  formData
+}: IInputsListProps) => {
   return (
     <>
       {formData.map((el) => {
@@ -13,7 +12,7 @@ export const AuthInputsList = ({
           <label key={el.name}>
             <Input
               name={el.name}
-              onChange={onChange}
+              onChange={el.onChange}
               placeholder={`Введите ${el.placeholder}`}
               value={el.value || ""}
               type={el.type || "text"}
