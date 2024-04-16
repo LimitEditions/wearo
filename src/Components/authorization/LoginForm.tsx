@@ -3,7 +3,7 @@ import { BlockStyle } from "../../types/interfaces/IStyles";
 import getStyles from "../../utils/getStyles";
 import { Button } from "../common/Button";
 import { ILoginFormProps } from "../../types/interfaces/componentsProps/IFormProps";
-import { Input } from "../common/Input";
+import { AuthInputsList } from "./AuthInputsList";
 
 export const LoginForm = ({
   user,
@@ -22,27 +22,17 @@ export const LoginForm = ({
     setRefs([nameRef, passwordRef]);
   }, [setRefs]);
 
+  const formData = [
+    {'name': 'username', 'placeholder': 'логин', 'value': username, 'ref': nameRef},
+    {'name': 'password', 'type': 'password', 'placeholder': 'пароль', 'value': password, 'ref': passwordRef},
+  ]
+
   return (
     <>
       <div>
         <h1 className={getStyles(hStyle)}>Вход</h1>
         <form className={getStyles(formStyle)} onSubmit={onSubmit}>
-          {/* следующую запись тоже можно оформить в виде компонента, принимающего на вход массив */}
-        {[
-            {'name': 'username', 'placeholder': 'логин', 'value': username, 'ref': nameRef},
-            {'name': 'password', 'type': 'password', 'placeholder': 'пароль', 'value': password, 'ref': passwordRef},
-          ].map(input => {
-            return <label key={input.name}>
-              <Input
-                name={input.name}
-                onChange={onChange}
-                placeholder={`Введите ${input.placeholder}`}
-                value={input.value || ''}
-                type={input.type || 'text'}
-                refLink={input.ref} 
-              />
-            </label>
-          })}
+          <AuthInputsList formData={formData} onChange={onChange}/>
           {error ? (
             <span className={getStyles(spanErrorStyle)}>
               Неверный логин или пароль

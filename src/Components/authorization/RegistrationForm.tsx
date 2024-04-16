@@ -4,8 +4,8 @@ import { BlockStyle } from "../../types/interfaces/IStyles";
 import { validateField } from "../../utils/validation";
 import { Button } from "../common/Button";
 import { IRegistrationFormProps } from "../../types/interfaces/componentsProps/IFormProps";
-import { Input } from "../common/Input";
 import useApi from "../../hooks/useApi";
+import { AuthInputsList } from "./AuthInputsList";
 
 export const RegistrationForm = ({
   user,
@@ -70,30 +70,19 @@ export const RegistrationForm = ({
     };
   };
 
+  const formData = [
+    {'name': 'username', 'placeholder': 'логин', 'value': username, 'onBlur': handleBlur, 'ref': nameRef},
+    {'name': 'password', 'type': 'password', 'placeholder': 'пароль', 'value': password, 'ref': passwordRef},
+    {'name': 'firstName', 'placeholder': 'имя', 'value': firstName || undefined, 'ref': firstNameRef},
+    {'name': 'secondName', 'placeholder': 'фамилию', 'value': secondName || undefined, 'ref': secondNameRef},
+  ]
+
   return (
     <>
       <div>
         <h1 className={getStyles(hStyle)}>Регистрация</h1>
         <form className={getStyles(formStyle)} onSubmit={onSubmit}>
-          {[
-            {'name': 'username', 'placeholder': 'логин', 'value': username, 'blur': handleBlur, 'ref': nameRef},
-            {'name': 'password', 'type': 'password', 'placeholder': 'пароль', 'value': password, 'ref': passwordRef},
-            {'name': 'firstName', 'placeholder': 'имя', 'value': firstName, 'ref': firstNameRef},
-            {'name': 'secondName', 'placeholder': 'фамилию', 'value': secondName, 'ref': secondNameRef},
-          ].map(input => {
-            return <label key={input.name}>
-              <Input
-                name={input.name}
-                onChange={onChange}
-                placeholder={`Введите ${input.placeholder}`}
-                value={input.value || ''}
-                type={input.type || 'text'} // Добавляем type, с дефолтом 'text'
-                onBlur={input.blur} // Добавляем onBlur, если есть
-                refLink={input.ref}
-                required={true} 
-              />
-            </label>
-          })}
+          <AuthInputsList formData={formData} onChange={onChange}/>
           <Button showButton={true} type={"submit"}>Зарегистироваться</Button>
         </form>
       </div>
