@@ -11,7 +11,7 @@ const info = {
   userName: '',
   firstName: null,
   secondName: null,
-  type: UserType.User,
+  type: UserType.Unauthorized,
 };
 
 const AuthContext = createContext<AuthContextType>({

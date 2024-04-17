@@ -1,12 +1,14 @@
 import React from 'react'
 import { Outlet } from 'react-router-dom'
-import { IAuthMeList } from '../../types/interfaces/ApiResponses/IAuthMeList';
+import useAuth from '../../hooks/useAuth';
 
 
-export const Wardrobe: React.FC<{ isAuthenticated: IAuthMeList }> = ({ isAuthenticated }) => {
+export const Wardrobe: React.FC = () => {
+  const info = useAuth();
+
   return (
     <>
-      <Outlet context={ isAuthenticated }/> {/* Место для рендера дочерних компонентов */}
+      <Outlet context={ info }/> {/* Место для рендера дочерних компонентов */}
     </>
   );
 };
