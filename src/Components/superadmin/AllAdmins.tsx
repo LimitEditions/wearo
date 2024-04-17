@@ -5,7 +5,6 @@ import { Button } from "../common/Button";
 import { BlockStyle } from "../../types/interfaces/IStyles";
 import getStyles from "../../utils/getStyles";
 import { useNavigate } from "react-router-dom";
-import { UserType } from "../../api/data-contracts";
 
 export const AllAdmins = () => {
   const navigate = useNavigate();

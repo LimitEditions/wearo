@@ -25,8 +25,7 @@ export const AdminsList = () => {
 
   return (
     <>
-      {admins &&
-        admins.data &&
+      {admins?.data &&
         admins.data.map((el) => {
           if (!el.isDeleted) {
             return (
