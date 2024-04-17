@@ -31,6 +31,7 @@
 │   │   ├── InputsList.txt                  # Компонент для рендера нескольких инпутов
 │   │   ├── Logo.tsx                        # Логотип (с кнопками)
 │   │   ├── LogOut.tsx                      # Кнопка выйти (со своей логикой)
+│   │   ├── Modal.tsx                       # Всплывающее окно
 │   │   ├── Nav.tsx                         # Навигационная панель
 │   │   └── Product.tsx                     # Компонент продукта
 │   ├── user                                # Компоненты для покупателей
@@ -56,9 +57,10 @@
 │   │   │   └── IAuthMeList.ts               # -//- authMeList(сгенерированный интерфейс UserModel расширенный полем status)
 │   │   ├── componentsProps      # Интерфейсы пропсов компонентов
 │   │   │   ├── IButtonProps.ts              # Интерфейс пропсов для компонента Button
+│   │   │   ├── IFormProps.ts                # Интерфейс пропсов для компонентов LoginForm и RegistrationForm
 │   │   │   ├── IInputProps.ts               # Интерфейс пропсов для компонента Input
 │   │   │   ├── IInputsListProps.ts          # Интерфейс пропсов для компонента InputsList
-│   │   │   ├── IFormProps.ts                # Интерфейс пропсов для компонентов LoginForm и RegistrationForm
+│   │   │   ├── IModalProps.ts               # Интерфейс пропсов для всплывающих окон
 │   │   │   └── IwithAuthLogicProps.ts       # Интерфейс пропсов для хока withAuthLogic
 │   │   ├── IApiError.ts         # Интерфейс ошибки, которая может возникнуть при обращении к серверу
 │   │   ├── IButtonProps.ts      # Интерфейс пропсов для кнопки
