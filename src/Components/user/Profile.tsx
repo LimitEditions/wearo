@@ -40,8 +40,9 @@ export const Profile = () => {
         <Button 
           showButton={true} 
           onClick={() => {/* логика открытия своего бренда */}}
-          styles={btnBrand} 
-          text={'Открыть свой бренд'} />
+          styles={btnBrand}>
+            Открыть свой бренд
+        </Button>
       </div>
       <Outlet />
     </>
