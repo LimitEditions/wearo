@@ -7,6 +7,7 @@ import { IRegistrationFormProps } from "../../types/interfaces/componentsProps/I
 import useApi from "../../hooks/useApi";
 import { InputsList } from "../common/InputsList";
 import { Info } from "../common/Info";
+import { Modal } from "../common/Modal";
 
 export const RegistrationForm = ({
   user,
@@ -16,8 +17,10 @@ export const RegistrationForm = ({
   data,
   error,
   isLoading,
+  modal,
 }: IRegistrationFormProps) => {
   const { username, password, firstName, secondName } = user;
+  const { mod, setMod, navigate } = modal;
 
   const nameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
@@ -89,6 +92,21 @@ export const RegistrationForm = ({
       </div>
       <Info showInfo={isLoading} msg="Loading..." style={getStyles(pStyle)} />
       <Info showInfo={error ? true: false} msg="Ошибка регистрации." style={getStyles(spanErrorStyle)} />
+      <Modal isOpen={mod} 
+            setIsOpen={setMod} 
+            title='Registration comleted successfully'
+            // case2: modal  
+            // additionalStyles={{
+            //   spacing: 'p-0', container: 'fixed w-full overflow-y-auto flex bottom-0 h-1/3 '
+            // }}
+            >
+          <Button showButton={true} 
+                  type='button' 
+                  styles={btnStyle} 
+                  onClick={() => {setMod(false); navigate("/login");}}>
+                    Got it, thanks!
+          </Button>
+      </Modal>
     </>
   );
 };
@@ -111,4 +129,13 @@ const spanErrorStyle: BlockStyle = {
 const pStyle: BlockStyle = {
   text: "text-center",
   spacing: "m-auto my-8",
+};
+
+const btnStyle: BlockStyle = {
+  container: 'flex justify-center rounded-md',
+  border: 'border border-transparent',
+  background: 'bg-blue-100',
+  spacing: ' px-4 py-2',
+  text: 'text-sm font-medium text-blue-900',
+  transitionsAnimation: 'hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2'
 };
