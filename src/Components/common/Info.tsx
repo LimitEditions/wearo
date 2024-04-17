@@ -13,3 +13,4 @@ export const Info = ({
         <p className={style}>{msg}</p>
     );
 };
+

@@ -30,13 +30,12 @@ export const Logo = () => {
         showButton={showProfileButton}
         onClick={handleProfileClick}
         styles={btnProfile}
-      ></Button>
-      <Button
+      />
+      <Button 
         showButton={showBackButton}
         onClick={handleBackClick}
-        styles={btnBack}
-      >
-        {"<"}
+        styles={btnBack}>
+          {'<'}
       </Button>
       {/* <LogOut show={isAuthenticated.type !== UserType.User}/> */}
 

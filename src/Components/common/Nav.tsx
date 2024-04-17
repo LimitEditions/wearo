@@ -7,13 +7,13 @@ import { navContent } from '../../utils/navContent';
 import { INavItem } from '../../types/NavContentType';
 
 
-export const Nav: React.FC<{type: UserType | undefined}> = ({ type }) => {
+export const Nav: React.FC<{ type: UserType }> = ({ type }) => {
   const location = useLocation();
   const [showNav, setShowNav] = useState<boolean>(true);
   const [data, setData] = useState<INavItem[]>([]);
  
   useEffect(() => {
-    setShowNav(true)
+    setShowNav(true);
     if (type === 'Admin' || type === 'SuperAdmin') {
       setData(navContent.Admin);
     } else if (type === 'BrandAdmin' || type === 'BrandSeller') {
@@ -22,7 +22,7 @@ export const Nav: React.FC<{type: UserType | undefined}> = ({ type }) => {
       setData(navContent.User);
     };
 
-    if (location.pathname === '/login') {
+    if (location.pathname === '/login' || location.pathname === '/registration') {
       setShowNav(false);
     };
   }, [type, data, setData, location]);

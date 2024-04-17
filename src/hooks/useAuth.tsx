@@ -25,7 +25,7 @@ const useAuth = () => {
     if (tokenExpireIn || refreshTokenExpireIn) {
       setShouldReq(true);
     } else {
-      navigate('/login');
+      // navigate('/auth');
     };
   }, [tokenExpireIn, refreshTokenExpireIn, shouldRefresh, setShouldReq, navigate]);
 
@@ -38,7 +38,7 @@ const useAuth = () => {
     headers: {Authorization: `Bearer ${token}`}
   };
 
-  const [data, isLoading, error] = useApi(endPoint, params, {}, shouldReq);
+  const [data, , error] = useApi(endPoint, params, {}, shouldReq);
 
   useEffect(() => {
     if (data || error) {
@@ -46,7 +46,7 @@ const useAuth = () => {
         dataToLS(data);
         setShouldReq(false);
       } else if (error) {
-        navigate('/login');
+        navigate('/auth');
       } else {
         const dataInfo = data as IAuthMeList;
         setAuth({
@@ -61,7 +61,7 @@ const useAuth = () => {
     
   }, [data, error, shouldRefresh, setShouldReq, setAuth, navigate])
 
-  return {isAuthenticated, isLoading};
+  return isAuthenticated;
 };
 
 export default useAuth;
