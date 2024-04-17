@@ -5,20 +5,22 @@ import { IInputProps } from "../../types/interfaces/componentsProps/IInputProps"
 
 export const Input = ({
   name,
+  type,
+  placeholder,  
   value,
   onChange,
   onBlur,
   refLink,
-  placeholder,
 }: IInputProps) => {
   return (
     <input
       name={name}
+      type={type}
+      placeholder={placeholder}
       value={value}
       onChange={onChange}
       onBlur={onBlur}
       ref={refLink}
-      placeholder={placeholder}
       className={getStyles(inpitStyle)}
     />
   );

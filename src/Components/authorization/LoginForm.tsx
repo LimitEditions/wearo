@@ -4,6 +4,8 @@ import getStyles from "../../utils/getStyles";
 import { Button } from "../common/Button";
 import { ILoginFormProps } from "../../types/interfaces/componentsProps/IFormProps";
 import { InputsList } from "../common/InputsList";
+import { Info } from "../common/Info";
+import { IFormData } from "../../types/interfaces/componentsProps/IInputsListProps";
 
 export const LoginForm = ({
   user,
@@ -25,7 +27,7 @@ export const LoginForm = ({
   const formData = [
     {'name': 'username', 'placeholder': 'логин', 'value': username, 'ref': nameRef, onChange: onChange},
     {'name': 'password', 'type': 'password', 'placeholder': 'пароль', 'value': password, 'ref': passwordRef, onChange: onChange},
-  ]
+  ] as IFormData[];
 
   return (
     <>
@@ -33,18 +35,11 @@ export const LoginForm = ({
         <h1 className={getStyles(hStyle)}>Вход</h1>
         <form className={getStyles(formStyle)} onSubmit={onSubmit}>
           <InputsList formData={formData} />
-          {error ? (
-            <span className={getStyles(spanErrorStyle)}>
-              Неверный логин или пароль
-            </span>
-          ) : null}
+          <Info showInfo={error ? true: false} msg='Неверный логин или пароль' style={getStyles(spanErrorStyle)} />
           <Button showButton={true} type="submit">Войти</Button>
         </form>
       </div>
-      {isLoading && <p className={getStyles(pStyle)}>Loading...</p>}
-      {data && !error && (
-        <p className={getStyles(pStyle)}>Авторизация успешно пройдена.</p>
-      )}
+      <Info showInfo={isLoading} msg="Loading..." style={getStyles(pStyle)} />
     </>
   );
 };

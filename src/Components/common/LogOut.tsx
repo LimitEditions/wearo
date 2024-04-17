@@ -15,8 +15,7 @@ export const LogOut: React.FC<{show: boolean}> = ({show}) => {
         <Button
         showButton={show}
         onClick={logOut}
-        styles={logOutStyle}
-        text='Выйти'/>
+        styles={logOutStyle}>Выйти</Button>
     );
 };
 

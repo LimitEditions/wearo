@@ -6,6 +6,7 @@ import { Button } from "../common/Button";
 import { IRegistrationFormProps } from "../../types/interfaces/componentsProps/IFormProps";
 import useApi from "../../hooks/useApi";
 import { InputsList } from "../common/InputsList";
+import { Info } from "../common/Info";
 
 export const RegistrationForm = ({
   user,
@@ -86,17 +87,8 @@ export const RegistrationForm = ({
           <Button showButton={true} type={"submit"}>Зарегистироваться</Button>
         </form>
       </div>
-
-      {/* {следующий блок необходимо выделить в отдельный компоенент в будущем} */}
-      {isLoading && <p className={getStyles(pStyle)}>Loading...</p>}
-      {data && !error && (
-        <p className={getStyles(pStyle)}>Авторизация успешно пройдена.</p>
-      )}
-      {error ? (
-        <span className={getStyles(spanErrorStyle)}>
-          Ошибка регистрации. Повторите попытку позже.
-        </span>
-      ) : null}
+      <Info showInfo={isLoading} msg="Loading..." style={getStyles(pStyle)} />
+      <Info showInfo={error ? true: false} msg="Ошибка регистрации." style={getStyles(spanErrorStyle)} />
     </>
   );
 };

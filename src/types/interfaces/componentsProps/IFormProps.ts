@@ -7,7 +7,7 @@ interface IFormProps<TUser, TData> {
     user: TUser,
     onSubmit: () => void,
     onChange: () => void,
-    setRefs: any;
+    setRefs: (event: React.RefObject<HTMLInputElement>[]) => void;
     data: TData,
     error: IApiError,
     isLoading: boolean,

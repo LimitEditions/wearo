@@ -1,10 +1,10 @@
 import React from "react";
-import { IInputsListProps } from "../../types/interfaces/componentsProps/IInputsListProps";
+import { IFormData } from "../../types/interfaces/componentsProps/IInputsListProps";
 import { Input } from "./Input";
 
 export const InputsList = ({
   formData
-}: IInputsListProps) => {
+}: {formData: IFormData[]}) => {
   return (
     <>
       {formData.map((el) => {
@@ -12,12 +12,12 @@ export const InputsList = ({
           <label key={el.name}>
             <Input
               name={el.name}
-              onChange={el.onChange}
+              type={el.type || "text"}
               placeholder={`Введите ${el.placeholder}`}
               value={el.value || ""}
-              type={el.type || "text"}
-              refLink={el.ref}
+              onChange={el.onChange}
               onBlur={el.onBlur}
+              refLink={el.ref}
             />
           </label>
         );
