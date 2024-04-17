@@ -39,11 +39,12 @@ export const Nav: React.FC<{ type: UserType }> = ({ type }) => {
 };
 
 const navStyle: BlockStyle = {
-  blockSize: "w-1/5 fixed bottom-5 left-1/2",
+  blockSize: "fixed bottom-0 left-1/2 w-full h-auto",
   container: "flex justify-between",
   spacing: "p-2",
   border: "box-border border-2 border-gray-300 rounded-md",
   transitionsAnimation: "transform -translate-x-1/2",
   background: "bg-gray-200 shadow-md",
-  text: "text-sm"
+  text: "text-sm",
+  media: 'sm:w-1/4'
 }; 
