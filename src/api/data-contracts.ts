@@ -667,6 +667,7 @@ export interface CreateUserModel {
   firstName?: string | null;
   /** Фамилия */
   secondName?: string | null;
+  type?: UserType;
 }
 
 /** Ссылка на файл */

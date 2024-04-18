@@ -776,7 +776,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags Files
    * @name FilesProductsDelete
-   * @summary Удаление файлов
+   * @summary Удаление привязки продукта к файлу
    * @request DELETE:/api/Files/Products/{id}
    * @secure
    */
