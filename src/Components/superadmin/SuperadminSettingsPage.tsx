@@ -14,5 +14,6 @@ export const SuperadminSettingsPage: React.FC = () => {
 }
 
 const containerStyle: BlockStyle = {
-    background: 'bg-gray-100'
+    background: 'bg-gray-100',
+    spacing: 'pb-10'
 }
