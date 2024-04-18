@@ -27,6 +27,9 @@ export const withAuthLogic = ({ Component, type }: IwithAuthLogicProps) => {
     const [data, isLoading, error] = useApi(apiMethod, user, {}, shouldExecute);
     const navigate = useNavigate();
 
+    // модальное окно
+    const [mod, setMod] = useState<boolean>(false);
+
     useEffect(() => {
       if (shouldExecute && (data || error)) {
         setShouldExecute(false);
@@ -35,7 +38,7 @@ export const withAuthLogic = ({ Component, type }: IwithAuthLogicProps) => {
             dataToLS(data);
             navigate("/");
           } else {
-            navigate("/login");
+            setMod(true);
           };
         };
       };
@@ -79,6 +82,7 @@ export const withAuthLogic = ({ Component, type }: IwithAuthLogicProps) => {
         data={data}
         error={error}
         isLoading={isLoading}
+        modal={{mod, setMod, navigate}}
       />
     );
   });
