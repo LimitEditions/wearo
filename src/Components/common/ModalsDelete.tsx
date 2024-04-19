@@ -8,13 +8,14 @@ import { useNavigate, useParams } from "react-router-dom";
 import { retrieve } from "../../utils/encryption";
 import useApi from "../../hooks/useApi";
 import { SuccessfulContent } from "./SuccessfulContent";
+import { Info } from "./Info";
 
 export const ModalsDelete = ({
   apiMethod,
   isOpen1,
   setIsOpen1,
   messageSuccess,
-  messageSure
+  messageSure,
 }: IModalsDeleteProps) => {
   const [isOpen2, setIsOpen2] = useState(false);
   const [shouldExequte, setShouldExequte] = useState<boolean>();
@@ -49,20 +50,31 @@ export const ModalsDelete = ({
   };
 
   return (
-    <Modal isOpen={isOpen1} setIsOpen={setIsOpen1}>
-      <h3 className={getStyles(h3Style)}>{messageSure}</h3>
-      <div className={getStyles(div1Style)}>
-        <Button showButton={true} onClick={() => setIsOpen1(false)} styles={buttonStyle}>
-          Отмена
-        </Button>
-        <Button showButton={true} onClick={handleClick}>
-          Удалить
-        </Button>
-      </div>
-      <Modal isOpen={isOpen2} setIsOpen={setIsOpen2}>
-        <SuccessfulContent message={messageSuccess}/>
+    <>
+      <Modal isOpen={isOpen1} setIsOpen={setIsOpen1}>
+        <h3 className={getStyles(h3Style)}>{messageSure}</h3>
+        <div className={getStyles(div1Style)}>
+          <Button
+            showButton={true}
+            onClick={() => setIsOpen1(false)}
+            styles={buttonStyle}
+          >
+            Отмена
+          </Button>
+          <Button showButton={true} onClick={handleClick}>
+            Удалить
+          </Button>
+        </div>
+        <Modal isOpen={isOpen2} setIsOpen={setIsOpen2}>
+          <SuccessfulContent message={messageSuccess} />
+        </Modal>
       </Modal>
-    </Modal>
+      <Info
+        msg="Ошибка запроса, повторите позже."
+        showInfo={!!dataError}
+        style=""
+      />
+    </>
   );
 };
 
@@ -72,16 +84,16 @@ const div1Style: BlockStyle = {
 };
 
 const buttonStyle: BlockStyle = {
-    blockSize: "w-full",
-    background: "bg-white",
-    spacing: "p-2 mb-3",
-    text: "text-gray-500",
-    border: "rounded-3xl border-gray-500 border",
-  };
+  blockSize: "w-full",
+  background: "bg-white",
+  spacing: "p-2 mb-3",
+  text: "text-gray-500",
+  border: "rounded-3xl border-gray-500 border",
+};
 
-  const h3Style: BlockStyle = {
-    container: "block",
-    blockSize: "w-3/4",
-    spacing: "m-auto py-4",
-    text: "text-center text-black text-base",
-  };
+const h3Style: BlockStyle = {
+  container: "block",
+  blockSize: "w-3/4",
+  spacing: "m-auto py-4",
+  text: "text-center text-black text-base",
+};
