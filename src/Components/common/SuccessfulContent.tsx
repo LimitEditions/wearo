@@ -3,25 +3,9 @@ import getStyles from "../../utils/getStyles";
 import { BlockStyle } from "../../types/interfaces/IStyles";
 import { useNavigate } from "react-router-dom";
 
-export const SuccessfulPopup = ({message}: {message: string}) => {
-    const [isShow, setIsShow] = useState<boolean>(true);
-    const navigate = useNavigate();
-
-    useEffect(() => {
-        const timer = setTimeout(() => {
-          setIsShow(false);
-          navigate(-1)
-        }, 2000);
-    
-        return () => {
-          clearTimeout(timer);
-        };
-      }, []);
-
-      if (!isShow) return null
+export const SuccessfulContent = ({message}: {message: string}) => {
   return (
     <>
-      <div className={getStyles(divStyle)}></div>
       <div className={getStyles(containerStyle)}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -54,21 +38,10 @@ export const SuccessfulPopup = ({message}: {message: string}) => {
 const containerStyle: BlockStyle = {
     background: "bg-white",
     blockSize: "w-3/4 max-w-96",
-    container: "fixed top-1/2 left-1/2 z-10 flex flex-col items-center gap-3",
-    transitionsAnimation: "-translate-x-1/2 -translate-y-1/2",
-    border: "rounded-2xl",
-    spacing: "py-12 px-9",
+    container: "flex flex-col items-center gap-3",
+    spacing: 'm-auto py-5'
   };
 
   const h3Style: BlockStyle = {
-    // container: "block",
-    // blockSize: "w-3/4",
-    // spacing: "m-auto py-9",
-    text: "text-center text-base",
+    text: "text-center text-base text-black",
   };
-
-  const divStyle: BlockStyle = {
-    container: "fixed inset-0 z-5",
-    blockSize: 'w-full h-full',
-    background: 'bg-black bg-opacity-70'
-}

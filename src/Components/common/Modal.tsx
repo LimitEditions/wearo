@@ -78,6 +78,5 @@ const titleStyle: BlockStyle = {
 };
 
 const contentStyle: BlockStyle = {
-    spacing: 'mt-2',
     text: 'text-sm text-gray-500',
 };

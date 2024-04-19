@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import useApi from '../../hooks/useApi';
 import { retrieve } from '../../utils/encryption';
 import { Button } from '../common/Button';
-import { SuccessfulPopup } from '../common/SuccessfulPopup';
+// import { SuccessfulPopup } from '../common/SuccessfulPopup';
 import { Info } from '../common/Info';
 
 export const ApproveRequest = () => {
@@ -32,7 +32,7 @@ export const ApproveRequest = () => {
             <Button showButton={true} onClick={() => setShouldExecuteApprove(true)}>
             Одобрить
         </Button>
-        {showPopup && <SuccessfulPopup message='Заявка успешно одобрена'/>}
+        {/* {showPopup && <SuccessfulPopup message='Заявка успешно одобрена'/>} */}
         <Info msg='Ошибка запроса' showInfo={!!dataError} style=''/>
         </>
   )

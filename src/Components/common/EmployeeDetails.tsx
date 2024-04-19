@@ -7,8 +7,8 @@ import { SectionsTitle } from "./SectionsTitle";
 import { Button } from "./Button";
 import { BlockStyle } from "../../types/interfaces/IStyles";
 import getStyles from "../../utils/getStyles";
-import { DeletePopup } from "./DeletePopup";
 import { EmployeeInfoList } from "./EmployeeInfoList";
+import { ModalsDelete } from "./ModalsDelete";
 
 export const EmployeeDetails = () => {
   const [user, setUser] = useState<UserModel>();
@@ -32,10 +32,6 @@ export const EmployeeDetails = () => {
     setIsOpenPopup(true);
   };
 
-  const handleClose = () => {
-    setIsOpenPopup(false);
-  }
-
   return (
     <div className={getStyles(containerStyle)}>
       <SectionsTitle
@@ -45,7 +41,7 @@ export const EmployeeDetails = () => {
       />
       {user && (
         <>
-          <EmployeeInfoList user={user}/>
+          <EmployeeInfoList user={user} />
           <div className={getStyles(divStyle)}>
             <Button showButton={true} onClick={handleClick}>
               Удалить
@@ -53,11 +49,14 @@ export const EmployeeDetails = () => {
           </div>
         </>
       )}
-        {isOpenPopup && <DeletePopup
-          apiMethod={"usersDelete"}
-          handleClose={handleClose}
-          title={"Вы уверены, что хотите удалить сотрудника?"}
-        />}
+      <ModalsDelete
+        apiMethod="usersDelete"
+        isOpen1={isOpenPopup}
+        setIsOpen1={setIsOpenPopup}
+        messageSure="Вы уверены, что хотите удалить сотрудника"
+        messageSuccess="Сотрудник удален"
+      />
+
       {isLoading && <div>Загрузка...</div>}
       {dataError && <div>Ошибка загрузки данных</div>}
     </div>
@@ -66,7 +65,7 @@ export const EmployeeDetails = () => {
 
 const containerStyle: BlockStyle = {
   background: "bg-gray-100",
-  blockSize: "min-h-screen"
+  blockSize: "min-h-screen",
 };
 
 const divStyle: BlockStyle = {
