@@ -8,7 +8,10 @@ import useApi from "../../hooks/useApi";
 import { InputsList } from "../common/InputsList";
 import { Info } from "../common/Info";
 import { Modal } from "../common/Modal";
+import { SuccessfulContent } from "../common/SuccessfulContent";
+import { UserRegistrationForm } from "./UserRegistrationForm";
 
+// Компонент будет создавать либо форму для регистрации user, либо для регистрации нового admin
 export const RegistrationForm = ({
   user,
   onSubmit,
@@ -18,6 +21,7 @@ export const RegistrationForm = ({
   error,
   isLoading,
   modal,
+  type
 }: IRegistrationFormProps) => {
   const { username, password, firstName, secondName } = user;
   const { mod, setMod, navigate } = modal;
@@ -83,41 +87,14 @@ export const RegistrationForm = ({
 
   return (
     <>
-      <div>
-        <h1 className={getStyles(hStyle)}>Регистрация</h1>
-        <form className={getStyles(formStyle)} onSubmit={onSubmit}>
-          <InputsList formData={formData} />
-          <Button showButton={true} type={"submit"}>Зарегистироваться</Button>
-        </form>
-      </div>
+      {type === 'reg' && <UserRegistrationForm formData={formData} onSubmit={onSubmit} />}
       <Info showInfo={isLoading} msg="Loading..." style={getStyles(pStyle)} />
       <Info showInfo={error ? true: false} msg="Ошибка регистрации." style={getStyles(spanErrorStyle)} />
-      <Modal isOpen={mod} 
-            setIsOpen={setMod} 
-            title='Registration comleted successfully'
-            // case2: modal  
-            // additionalStyles={{
-            //   spacing: 'p-0', container: 'fixed w-full overflow-y-auto flex bottom-0 h-1/3 '
-            // }}
-            >
-          <Button showButton={true} 
-                  type='button' 
-                  styles={btnStyle} 
-                  onClick={() => {setMod(false); navigate("/login");}}>
-                    Got it, thanks!
-          </Button>
+      <Modal isOpen={mod} setIsOpen={setMod}>
+        <SuccessfulContent message={type === "reg" ? "Регистрация прошла успешно!" : "Администратор создан."} />
       </Modal>
     </>
   );
-};
-
-const hStyle: BlockStyle = {
-  text: "text-center text-2xl",
-  spacing: "pb-4",
-};
-
-const formStyle: BlockStyle = {
-  container: `flex flex-col gap-3`,
 };
 
 const spanErrorStyle: BlockStyle = {
@@ -129,13 +106,4 @@ const spanErrorStyle: BlockStyle = {
 const pStyle: BlockStyle = {
   text: "text-center",
   spacing: "m-auto my-8",
-};
-
-const btnStyle: BlockStyle = {
-  container: 'flex justify-center rounded-md',
-  border: 'border border-transparent',
-  background: 'bg-blue-100',
-  spacing: ' px-4 py-2',
-  text: 'text-sm font-medium text-blue-900',
-  transitionsAnimation: 'hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2'
 };

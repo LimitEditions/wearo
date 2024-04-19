@@ -4,6 +4,7 @@ import useApi from "../../../hooks/useApi";
 import { validateField } from "../../../utils/validation";
 import { dataToLS } from "../../../utils/dataToLS";
 import { IwithAuthLogicProps } from "../../../types/interfaces/componentsProps/IwithAuthLogicProps";
+import { UserType } from "../../../api/data-contracts";
 
 
 export const withAuthLogic = ({ Component, type }: IwithAuthLogicProps) => {
@@ -12,7 +13,8 @@ export const withAuthLogic = ({ Component, type }: IwithAuthLogicProps) => {
     const initialUser = useMemo(() => ({
       username: "",
       password: "",
-      ...(type !== "login" && { firstName: "", secondName: "" })
+      ...(type !== "login" && { firstName: "", secondName: "" }),
+      ...(type === "createAdmin" && { type: UserType.Admin})
     }), []);
 
     // задаем переменную для хранения ссылок на инпуты
@@ -39,6 +41,10 @@ export const withAuthLogic = ({ Component, type }: IwithAuthLogicProps) => {
             navigate("/");
           } else {
             setMod(true);
+            const timer = setTimeout(() => {
+              setMod(false);
+              type === 'reg' ? navigate('/login') : navigate(-1)
+            }, 2000);
           };
         };
       };
@@ -83,6 +89,7 @@ export const withAuthLogic = ({ Component, type }: IwithAuthLogicProps) => {
         error={error}
         isLoading={isLoading}
         modal={{mod, setMod, navigate}}
+        type={type}
       />
     );
   });
