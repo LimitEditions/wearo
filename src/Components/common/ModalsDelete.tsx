@@ -32,7 +32,7 @@ export const ModalsDelete = ({
     if (shouldExequte && (data === "" || dataError)) {
       setShouldExequte(false);
       if (data === "" && !dataError) {
-        // setIsOpen1(false);
+        setIsOpen1(false);
         setIsOpen2(true);
         const timer = setTimeout(() => {
           setIsOpen1(false);
@@ -65,10 +65,10 @@ export const ModalsDelete = ({
             Удалить
           </Button>
         </div>
-        <Modal isOpen={isOpen2} setIsOpen={setIsOpen2}>
+      </Modal>
+      <Modal isOpen={isOpen2} setIsOpen={setIsOpen2}>
           <SuccessfulContent message={messageSuccess} />
         </Modal>
-      </Modal>
       <Info
         msg="Ошибка запроса, повторите позже."
         showInfo={!!dataError}
