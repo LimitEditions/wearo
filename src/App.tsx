@@ -2,14 +2,13 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { Nav } from './Components/common/Nav';
 import { Home } from './pages/Home';
-import { LoginPage } from './pages/LoginPage';
-import { RegistrationPage } from './pages/RegistrationPage';
 import { Logo } from './Components/common/Logo';
-import { Wardrobe } from './Components/user/Wardrobe';
-import { Profile } from './Components/user/Profile';
 import AuthContext from './context/AuthProvider';
 import { UserType } from './api/data-contracts';
 import { Authorization } from './pages/Authorization';
+import { BlockStyle } from './types/interfaces/IStyles';
+import getStyles from './utils/getStyles';
+import { WardrobePage } from './pages/WardrobePage';
 
 
 function App() {
@@ -21,27 +20,23 @@ function App() {
   }, [isAuthenticated]);
 
   return (
-    <>
+    <div className={getStyles(mainStyle)}>
       <Logo />
       <Routes>
         <Route path='/' element={ <Home /> }/>
-        <Route path='/auth' element={ <Authorization /> }/>
-        <Route path='/login' element={ <LoginPage /> }/>
-        <Route path='/registration' element={ <RegistrationPage /> }/>
-        <Route path='/wardrobe' element={ <Wardrobe /> }>
-          <Route index element={<div>Welcome to the Wardrobe!</div>} /> {/* Отображается, когда нет других совпадений */}
-          <Route path='profile' >
-            <Route index element={ <Profile/> } /> 
-            <Route path='favorites' element={<div>favorites</div>} />
-            <Route path='subscriptions' element={<div>subscriptions</div>} />
-            <Route path='scans' element={<div>scans</div>} />
-          </Route>
-        </Route>
+        <Route path='/auth/*' element={ <Authorization /> }/>
+        <Route path='/wardrobe/*' element={ <WardrobePage /> }/>
         <Route path='/*' element="no content"/> Обработка ошибочных запросов
       </Routes>
       <Nav type={ role as UserType}/>
-    </>
+    </div>
   );
 };
 
 export default App;
+
+const mainStyle: BlockStyle = {
+  container: 'min-h-screen',
+  spacing: 'pb-20'
+};
+

@@ -1,14 +1,14 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import ProfileItem from './ProfileItem';
 import getStyles from '../../utils/getStyles';
 import { BlockStyle } from '../../types/interfaces/IStyles';
 import { Button } from '../common/Button';
-import { Outlet, useOutletContext } from 'react-router-dom';
-import { IAuthMeList } from '../../types/interfaces/ApiResponses/IAuthMeList';
+import { Outlet } from 'react-router-dom';
 import { LogOut } from '../common/LogOut';
+import AuthContext from '../../context/AuthProvider';
 
 export const Profile = () => {
-  const isAuthenticated = useOutletContext() as IAuthMeList;
+  const { isAuthenticated } = useContext(AuthContext);
 
   return (
     <>

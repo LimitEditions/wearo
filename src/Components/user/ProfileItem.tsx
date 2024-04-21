@@ -1,17 +1,16 @@
 import React from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { IProfileItem } from '../../types/interfaces/IProfileItem';
 import { BlockStyle } from '../../types/interfaces/IStyles';
 import getStyles from '../../utils/getStyles';
 
 const ProfileItem: React.FC<IProfileItem> = ({ path, children }) => {
-  const location = useLocation();
   const navigate = useNavigate();
 
   return (
     <div
         className={getStyles(profItStyle)} 
-        onClick={() => navigate(location.pathname + path)}>
+        onClick={() => navigate(`.${path}`)}>
       {children}
       <span className={getStyles(angleStyle)}>{'>'}</span>
     </div>
