@@ -5,6 +5,7 @@ import { validateField } from "../../../utils/validation";
 import { dataToLS } from "../../../utils/dataToLS";
 import { IwithAuthLogicProps } from "../../../types/interfaces/componentsProps/IwithAuthLogicProps";
 import { UserType } from "../../../api/data-contracts";
+import { retrieve } from "../../../utils/encryption";
 
 
 export const withAuthLogic = ({ Component, type }: IwithAuthLogicProps) => {
@@ -25,8 +26,10 @@ export const withAuthLogic = ({ Component, type }: IwithAuthLogicProps) => {
     const [shouldExecute, setShouldExecute] = useState<boolean>(false);
     // метод: авторизация/регистрация
     const apiMethod = type === "login" ? "authCreate" : "usersCreate";
+    // Добавляем токен, если создается админ
+    const headers = type === 'createAdmin' ? { headers: { Authorization: `Bearer ${retrieve("token")}` } } : {}
 
-    const [data, isLoading, error] = useApi(apiMethod, user, {}, shouldExecute);
+    const [data, isLoading, error] = useApi(apiMethod, user, headers, shouldExecute);
     const navigate = useNavigate();
 
     // модальное окно

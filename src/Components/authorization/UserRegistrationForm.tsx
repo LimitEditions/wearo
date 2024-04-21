@@ -10,7 +10,7 @@ export const UserRegistrationForm = ({onSubmit, formData}: {onSubmit: () => void
     <div>
         <h1 className={getStyles(hStyle)}>Регистрация</h1>
         <form className={getStyles(formStyle)} onSubmit={onSubmit}>
-          <InputsList formData={formData} />
+          <InputsList formData={formData} needLabel={false}/>
           <Button showButton={true} type={"submit"}>Зарегистироваться</Button>
         </form>
       </div>

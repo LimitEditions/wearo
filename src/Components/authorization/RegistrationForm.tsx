@@ -10,6 +10,7 @@ import { Info } from "../common/Info";
 import { Modal } from "../common/Modal";
 import { SuccessfulContent } from "../common/SuccessfulContent";
 import { UserRegistrationForm } from "./UserRegistrationForm";
+import { CreateAdminForm } from "../superadmin/CreateAdminForm";
 
 // Компонент будет создавать либо форму для регистрации user, либо для регистрации нового admin
 export const RegistrationForm = ({
@@ -79,15 +80,16 @@ export const RegistrationForm = ({
   };
 
   const formData = [
-    {'name': 'username', 'placeholder': 'логин', 'value': username, 'onBlur': handleBlur, 'ref': nameRef, onChange: onChange},
-    {'name': 'password', 'type': 'password', 'placeholder': 'пароль', 'value': password, 'ref': passwordRef, onChange: onChange},
-    {'name': 'firstName', 'placeholder': 'имя', 'value': firstName || undefined, 'ref': firstNameRef, onChange: onChange},
-    {'name': 'secondName', 'placeholder': 'фамилию', 'value': secondName || undefined, 'ref': secondNameRef, onChange: onChange},
+    {'name': 'username', 'placeholder': 'логин', 'value': username, 'onBlur': handleBlur, 'ref': nameRef, onChange: onChange, labelName: 'Логин'},
+    {'name': 'password', 'type': 'password', 'placeholder': 'пароль', 'value': password, 'ref': passwordRef, onChange: onChange, labelName: 'Пароль'},
+    {'name': 'firstName', 'placeholder': 'имя', 'value': firstName || undefined, 'ref': firstNameRef, onChange: onChange, labelName: 'Имя'},
+    {'name': 'secondName', 'placeholder': 'фамилию', 'value': secondName || undefined, 'ref': secondNameRef, onChange: onChange, labelName: 'Фамилия'},
   ]
 
   return (
     <>
       {type === 'reg' && <UserRegistrationForm formData={formData} onSubmit={onSubmit} />}
+      {type === 'createAdmin' && <CreateAdminForm formData={formData} onSubmit={onSubmit} />}
       <Info showInfo={isLoading} msg="Loading..." style={getStyles(pStyle)} />
       <Info showInfo={error ? true: false} msg="Ошибка регистрации." style={getStyles(spanErrorStyle)} />
       <Modal isOpen={mod} setIsOpen={setMod}>
