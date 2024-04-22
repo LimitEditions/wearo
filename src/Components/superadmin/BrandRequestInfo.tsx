@@ -4,7 +4,6 @@ import { useParams } from "react-router-dom";
 import { BrandRequestModel } from "../../api/data-contracts";
 import useApi from "../../hooks/useApi";
 import { retrieve } from "../../utils/encryption";
-import { Photo } from "../common/Photo";
 import { BlockStyle } from "../../types/interfaces/IStyles";
 import getStyles from "../../utils/getStyles";
 import { BrandsRequestInfoList } from "../common/BrandsRequestInfoList";
@@ -26,10 +25,10 @@ export const BrandRequestInfo = () => {
       setBrandInfo(data);
     }
   }, [data, isLoading, dataError]);
+
   return (
     <div className={getStyles(divStyle)}>
       <SectionsTitle needsClose={true} title="Заявка на открытие бренда" />
-      {/* {brandInfo?.photo && <Photo id={brandInfo?.photo} styles={getStyles(imgStyle)}/>} */}
       {brandInfo && (
         <>
           <BrandsRequestInfoList info={brandInfo} />

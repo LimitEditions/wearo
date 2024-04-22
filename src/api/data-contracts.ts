@@ -1094,6 +1094,17 @@ export interface ProductItemModel {
   clothingPartyGuid?: string | null;
 }
 
+/** Результат чтения данных. */
+export interface ProductItemModelDataResult {
+  /**
+   * Общее количество найденных элементов.
+   * @format int32
+   */
+  total?: number;
+  /** Данные. */
+  data?: ProductItemModel[];
+}
+
 /** Материал продукта */
 export interface ProductMaterialModel {
   /**

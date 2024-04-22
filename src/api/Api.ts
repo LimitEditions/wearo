@@ -59,6 +59,7 @@ import {
   ProductCategoryModelDataResult,
   ProductColorModel,
   ProductItemModel,
+  ProductItemModelDataResult,
   ProductMaterialModel,
   ProductMeasurementModel,
   ProductModel,
@@ -1433,6 +1434,57 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
     this.request<ProductItemModel, ProblemDetails>({
       path: `/api/ProductItems/${id}`,
       method: "DELETE",
+      secure: true,
+      format: "json",
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags ProductItems
+   * @name ProductItemsList
+   * @summary Поиск едениц изделий
+   * @request GET:/api/ProductItems
+   * @secure
+   */
+  productItemsList = (
+    query?: {
+      /**
+       * ИД продукта
+       * @format uuid
+       */
+      ProductGuid?: string;
+      /**
+       * ИД пользователя-владельца
+       * @format uuid
+       */
+      UserGuid?: string;
+      /**
+       * ИД партии
+       * @format uuid
+       */
+      ClothingPartyGuid?: string;
+      /**
+       * Номер страницы (по умолчанию = 1).
+       * @format int32
+       */
+      Page?: number;
+      /**
+       * Размер страницы (по умолчанию = 25).
+       * @format int32
+       */
+      PageSize?: number;
+      /** Поле, по которому происходит сортировка */
+      SortMember?: string;
+      /** Направление сортировки - по возрастанию */
+      Ascending?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<ProductItemModelDataResult, any>({
+      path: `/api/ProductItems`,
+      method: "GET",
+      query: query,
       secure: true,
       format: "json",
       ...params,
