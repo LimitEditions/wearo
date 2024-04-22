@@ -19,6 +19,7 @@ import { UsersPage } from './Components/superadmin/UsersPage';
 import { BrandsPage } from './Components/superadmin/BrandsPage';
 import { PostsPage } from './Components/superadmin/PostsPage';
 import { BrandRequestInfo } from './Components/superadmin/BrandRequestInfo';
+import { UserInfo } from './Components/superadmin/UserInfo';
 
 
 function App() {
@@ -47,6 +48,7 @@ function App() {
           <Route path='requests' element={ <BrandsRequestsPage /> }/>
           <Route path="requests/:id" element={<BrandRequestInfo />} />
           <Route path="users" element={<UsersPage />} />
+          <Route path="users/:id" element={<UserInfo />} />
           <Route path="brands" element={<BrandsPage />} />
           <Route path="posts" element={<PostsPage />} />
         </Route>} 
