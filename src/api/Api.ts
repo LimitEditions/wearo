@@ -2304,14 +2304,15 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
       ...params,
     });
   /**
-   * No description
-   *
-   * @tags Users
-   * @name UsersUpdate
-   * @summary Редактирование пользователя
-   * @request PUT:/api/Users
-   * @secure
-   */
+ * No description
+ *
+ * @tags Users
+ * @name UsersUpdate
+ * @summary Редактирование пользователя
+Адммин бренда может назначать обычных пользователей своими сотрудниками
+ * @request PUT:/api/Users
+ * @secure
+ */
   usersUpdate = (data: UpdateUserModel, params: RequestParams = {}) =>
     this.request<UserModel, ProblemDetails>({
       path: `/api/Users`,

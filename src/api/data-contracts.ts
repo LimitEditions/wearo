@@ -668,6 +668,11 @@ export interface CreateUserModel {
   /** Фамилия */
   secondName?: string | null;
   type?: UserType;
+  /**
+   * ИД аватара
+   * @format uuid
+   */
+  mainAvatarGuid?: string | null;
 }
 
 /** Ссылка на файл */
@@ -1610,6 +1615,43 @@ export interface UpdateUserModel {
   /** Фамилия */
   secondName?: string | null;
   type?: UserType;
+  /**
+   * ИД аватара
+   * @format uuid
+   */
+  mainAvatarGuid?: string | null;
+  /** Номер телефона */
+  phone?: string | null;
+  /** Электронная почта */
+  email?: string | null;
+  /** Id Тг */
+  telegramId?: string | null;
+  /** Id Вк */
+  vkId?: string | null;
+  /** Флаги доступности */
+  flags?: UserInfoFlags;
+}
+
+/** Флаги доступности */
+export enum UserInfoFlags {
+  Secret = "Secret",
+  ShowPhone = "ShowPhone",
+  ShowEmail = "ShowEmail",
+  ShowTelegram = "ShowTelegram",
+  ShowVkId = "ShowVkId",
+  ShowAll = "ShowAll",
+}
+
+/** Информация о пользователе */
+export interface UserInfoModel {
+  /** Номер телефона */
+  phone?: string | null;
+  /** Электронная почта */
+  email?: string | null;
+  /** Id Тг */
+  telegramId?: string | null;
+  /** Id Вк */
+  vkId?: string | null;
 }
 
 /** Пользователь */
@@ -1638,6 +1680,13 @@ export interface UserModel {
   /** Фамилия */
   secondName?: string | null;
   type?: UserType;
+  /** Информация о пользователе */
+  userInfo?: UserInfoModel;
+  /**
+   * ИД аватара
+   * @format uuid
+   */
+  mainAvatarGuid?: string | null;
 }
 
 /** Результат чтения данных. */
@@ -1654,8 +1703,8 @@ export interface UserModelDataResult {
 export enum UserType {
   Unauthorized = "Unauthorized",
   User = "User",
-  BrandAdmin = "BrandAdmin",
   BrandSeller = "BrandSeller",
+  BrandAdmin = "BrandAdmin",
   Admin = "Admin",
   SuperAdmin = "SuperAdmin",
 }

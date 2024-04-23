@@ -34,7 +34,7 @@ export const Modal = ({isOpen, setIsOpen, title, children, additionalStyles}: IM
                         leaveFrom="opacity-100 scale-100"
                         leaveTo="opacity-0 scale-95"
                     >
-                        <Dialog.Panel className={additionalStyles? getStyles(panelStyle): getStyles(panelStyle) + ' max-w-md'}>
+                        <Dialog.Panel className={additionalStyles? getStyles(panelStyle): getStyles(panelStyle) + ' max-w-md rounded-b-2xl'}>
                             <Dialog.Title as="h3" className={getStyles(titleStyle)}>
                                 {title}
                             </Dialog.Title>
@@ -66,7 +66,7 @@ const containerStyle: BlockStyle = {
 
 const panelStyle: BlockStyle = {
     blockSize: 'w-full transform overflow-hidden',
-    container: 'rounded-2xl',
+    container: 'rounded-t-2xl',
     spacing: 'p-6',
     background: 'bg-white',
     text: 'text-left align-middle',
@@ -78,5 +78,6 @@ const titleStyle: BlockStyle = {
 };
 
 const contentStyle: BlockStyle = {
+    spacing: 'mt-2',
     text: 'text-sm text-gray-500',
 };

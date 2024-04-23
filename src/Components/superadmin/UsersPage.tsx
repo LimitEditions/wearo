@@ -29,7 +29,7 @@ export const UsersPage = () => {
         return {
           title: item.username || "",
           path: `/control/users/${item.guid}`,
-          photoId: null,
+          photoId: item.mainAvatarGuid,
           needPhoto: true,
           photoStyles: getStyles(imgStyle),
         };
@@ -61,7 +61,8 @@ const pStyle: BlockStyle = {
 };
 
 const imgStyle: BlockStyle = {
-  blockSize: "w-7",
+  blockSize: "w-7 h-7 object-cover",
+  border: 'rounded-3xl'
 };
 
 const divStyle: BlockStyle = {
