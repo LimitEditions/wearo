@@ -9,6 +9,7 @@ import { Info } from "../common/Info";
 import { Input } from "../common/Input";
 import getStyles from "../../utils/getStyles";
 import { SuccessfulContent } from "../common/SuccessfulContent";
+import { useSwipeable } from 'react-swipeable';
 
 export const RejectReques = () => {
   // Флаг отправки запроса на сервер
@@ -21,7 +22,7 @@ export const RejectReques = () => {
     useState<boolean>(false);
   const [comment, setComment] = useState<string>("");
   const { id } = useParams();
-  const modalRef = useRef<HTMLDivElement>(null);
+  // const modalRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const [dataReject, isLoading, dataError] = useApi(
     "brandsRequestsUpdate",
@@ -49,21 +50,14 @@ export const RejectReques = () => {
     }
   }, [dataReject, isLoading, dataError]);
 
-  useEffect(() => {
-    if (showModal) {
-      // Обработка клика по любому другому месту кроме модального окна
-      const handleOutsideClick = (e: MouseEvent) => {
-        if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
-          setShowModal(false);
-        }
-      };
-      document.addEventListener("click", handleOutsideClick);
+  const handlers = useSwipeable({
+    onSwipedDown: () => setShowModal(false),
+    trackMouse: true, // для отслеживания свайпа мышью
+    delta: 50, // максимальное расстояние свайпа, чтоб сработало событие
+    // preventScrollOnSwipe: true, // останавливает прокрутку заднего фона
+    // preventDefaultTouchmoveEvent: true // предотвращает стандартное поведение при свайпе
+  });
 
-      return () => {
-        document.removeEventListener("click", handleOutsideClick);
-      };
-    }
-  }, []);
 
   return (
     <>
@@ -74,9 +68,9 @@ export const RejectReques = () => {
       >
         Отклонить
       </Button>
-      {/* Оборачиваем модалку в div, чтобы отслеживать клик в другое место, в будущем вынести это в отдельный компонент */}
-      <div ref={modalRef}>
+      {/* <div {...handlers} className={getStyles(divModalStyle)}> */}
         <Modal
+        {...handlers}
           isOpen={showModal}
           setIsOpen={setShowModal}
           title="Укажите причину отказа"
@@ -88,7 +82,6 @@ export const RejectReques = () => {
             onChange={(e) => {
               setComment(e.target.value);
             }}
-            required
           />
           <div className={getStyles(divStyle)}>
             <Button
@@ -100,7 +93,7 @@ export const RejectReques = () => {
             </Button>
           </div>
         </Modal>
-      </div>
+      {/* </div> */}
       <Modal isOpen={showSuccessfulModal} setIsOpen={setShowSuccessfulModal}>
         <SuccessfulContent message="Заявка успешно отклонена" />
       </Modal>
@@ -127,3 +120,7 @@ const divStyle: BlockStyle = {
   spacing: "m-auto mt-8",
   blockSize: "w-3/4",
 };
+
+const divModalStyle: BlockStyle = {
+  blockSize: 'min-h-1/3'
+}

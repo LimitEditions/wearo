@@ -32,7 +32,7 @@ export const ItemsList: React.FC<IItemsListProps> = ({ items }) => {
 };
 
 const containerStyle: BlockStyle = {
-  blockSize: "min-h-screen",
+  // blockSize: "min-h-screen",
   background: "bg-gray-100",
 };
 

@@ -27,7 +27,7 @@ export const UsersPage = () => {
   const items = users?.data
     ? users?.data.map((item) => {
         return {
-          title: item.username || "",
+          title: item.firstName || "Имя не указано",
           path: `/control/users/${item.guid}`,
           photoId: item.mainAvatarGuid,
           needPhoto: true,
@@ -40,18 +40,18 @@ export const UsersPage = () => {
     <>
       <SectionsTitle title="Пользователи" needsClose={true} />
       <div className={getStyles(divStyle)}>
-      {items && <ItemsList items={items} />}
-      <Info
-        msg="Загружаем пользователей..."
-        showInfo={isLoading}
-        style={getStyles(pStyle)}
-      />
-      <Info
-        msg="Ошибка запроса, повторите позже."
-        showInfo={!!dataError}
-        style={getStyles(pStyle)}
-      />
-    </div>
+        {items && <ItemsList items={items} />}
+        <Info
+          msg="Загружаем пользователей..."
+          showInfo={isLoading}
+          style={getStyles(pStyle)}
+        />
+        <Info
+          msg="Ошибка запроса, повторите позже."
+          showInfo={!!dataError}
+          style={getStyles(pStyle)}
+        />
+      </div>
     </>
   );
 };
@@ -62,10 +62,11 @@ const pStyle: BlockStyle = {
 
 const imgStyle: BlockStyle = {
   blockSize: "w-7 h-7 object-cover",
-  border: 'rounded-3xl'
+  border: "rounded-3xl",
 };
 
 const divStyle: BlockStyle = {
-  spacing: 'pb-10',
-  background: 'bg-gray-100'
-}
+  blockSize: "min-h-screen",
+  spacing: "pb-10",
+  background: "bg-gray-100",
+};

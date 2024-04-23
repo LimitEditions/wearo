@@ -20,6 +20,11 @@ import { BrandsPage } from './Components/superadmin/BrandsPage';
 import { PostsPage } from './Components/superadmin/PostsPage';
 import { BrandRequestInfo } from './Components/superadmin/BrandRequestInfo';
 import { UserInfo } from './Components/superadmin/UserInfo';
+import { EditAvatarAndName } from './Components/common/EditAvatarAndName';
+import { UserFavoritesPage } from './Components/common/UserFavoritesPage';
+import { UserSubscriptionsPage } from './Components/common/UserSubscriptionsPage';
+import { UserScansPage } from './Components/common/UserScansPage';
+import { EditUserInfo } from './Components/superadmin/EditUserInfo';
 
 
 function App() {
@@ -49,6 +54,11 @@ function App() {
           <Route path="requests/:id" element={<BrandRequestInfo />} />
           <Route path="users" element={<UsersPage />} />
           <Route path="users/:id" element={<UserInfo />} />
+          <Route path="users/:id/editavatar" element={<EditAvatarAndName />} />
+          <Route path="users/:id/favorites" element={<UserFavoritesPage />} />
+          <Route path="users/:id/subscriptions" element={<UserSubscriptionsPage />} />
+          <Route path="users/:id/scans" element={<UserScansPage />} />
+          <Route path="users/:id/edit" element={<EditUserInfo />} />
           <Route path="brands" element={<BrandsPage />} />
           <Route path="posts" element={<PostsPage />} />
         </Route>} 
