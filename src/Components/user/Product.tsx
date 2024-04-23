@@ -13,26 +13,23 @@ import moment from 'moment';
 
 
 const Product = () => {
-  const { id } = useParams()
+  const { id } = useParams();
   const [data, isLoading, error] = useApi<'productsDetail', ProductModel>(
     'productsDetail', id, {}, true
   );
 
-
+  
   return (
     <div className={getStyles(containerStyle)}>
       <Info showInfo={isLoading} msg='Загружаю...' style={getStyles(infoStyle)}/>
       <Info showInfo={error ? true: false} msg='Ошибка!' style={getStyles(errorStyle)}/>
       {data &&
       <>
-      <div>
-        <span>{data?.brand?.name}</span>
-        <span>{data?.brand?.photo}</span>
-      </div>
       <Photos photos={data?.photos} />
-      <div>Оригинальность</div>
+      <div>{data.name}<span></span></div>
       <div className={getStyles(descStyle)}>
         <span className='block'>{data?.description}</span>
+        <ProfileItem path={`./../brand/${data.brandGuid}`}>Название бренда</ProfileItem>
         {data?.colors?.map(color => (
           <span key={color.guid} className={getStyles(colorStyle)}>
             {color.color?.name}
@@ -54,9 +51,11 @@ const Product = () => {
         Дата сканирования: 
         <span> {data?.createDT ? moment(data.createDT).format('DD.MM.YYYY') : 'Дата неизвестна'}</span>
       </div>
-      <ProfileItem path='/comments'>Отзывы</ProfileItem>
-      <ProfileItem path='/collection'>Коллекция</ProfileItem>
-      <ProfileItem path='/buy_item'>Купить изделие</ProfileItem>
+      <div>
+        <ProfileItem path='/comments'>Отзывы</ProfileItem>
+        <ProfileItem path='/collection'>Коллекция</ProfileItem>
+        <ProfileItem path='/buy_item'>Купить изделие</ProfileItem>
+      </div>
       <Button showButton={true}>Оставить отзыв</Button>
       </>}
       
@@ -69,7 +68,7 @@ export default Product;
 
 const containerStyle: BlockStyle = {
   container: 'w-full sm:w-1/4',
-  spacing: 'px-2 space-y-6',
+  spacing: 'px-2 space-y-7',
 };
 
 const infoStyle: BlockStyle = {
@@ -104,5 +103,5 @@ const compositionStyle: BlockStyle = {
 }
 
 const materialStyle: BlockStyle = {
-  container: 'block'
+  // container: 'block'
 }

@@ -25,14 +25,14 @@ export const WardrobePage = () => {
 
     return (
         <>
-            <Routes>
+          <Routes>
             <Route index element={<Wardrobe productsList={ productsList }/>} />
             <Route path='/profile/*' element={<Profile />} />
             <Route path='/product/:id/' element={<Product />} />
             <Route path='/product/:id/comments' element={<>Комментарии</>} />
             <Route path='/product/:id/collection' element={<>Коллекция</>} />
             <Route path='/product/:id/buy_item' element={<>Покупка изделия</>} />
-            </Routes>
+          </Routes>
         </>
     );
 };

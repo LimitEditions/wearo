@@ -21,10 +21,10 @@ export default ProfileItem;
 
 const profItStyle: BlockStyle = {
     blockSize: "flex-col items-center max-w-md relative",
-    border: "p-3 border border-gray-300 rounded-lg",
+    border: "p-2 border-t border-gray-300 ",
     hover: "cursor-pointer hover:bg-gray-50",
-    spacing: "my-2",
-    text: "text-sm",
+    spacing: 'my-1 mx-0',
+    text: "text-md",
 };
 
 const angleStyle: BlockStyle = {
