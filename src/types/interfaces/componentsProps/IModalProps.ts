@@ -5,5 +5,6 @@ export interface IModalProps {
     setIsOpen: (event: boolean) => void;
     title?: string,
     children: React.ReactNode,
-    additionalStyles?: BlockStyle
+    additionalStyles?: BlockStyle,
+    swipeable: boolean,
 };

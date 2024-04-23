@@ -95,6 +95,7 @@ export const RegistrationForm = ({
       <Modal isOpen={mod} 
             setIsOpen={setMod} 
             title='Registration comleted successfully'
+            swipeable={false}
             // case2: modal  
             // additionalStyles={{
             //   spacing: 'p-0', container: 'fixed w-full overflow-y-auto flex bottom-0 h-1/3 '
