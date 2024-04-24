@@ -23,7 +23,6 @@ export const BrandsRequestsPage = () => {
   useEffect(() => {
     if (data) {
       setRequests(data);
-      console.log(requests?.data);
     }
   }, [data, isLoading, dataError]);
 
