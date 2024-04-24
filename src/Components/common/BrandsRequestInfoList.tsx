@@ -5,17 +5,15 @@ import { getDate } from "../../utils/getDate";
 import { DownloadFile } from "./DownloadFile";
 import { BlockStyle } from "../../types/interfaces/IStyles";
 import getStyles from "../../utils/getStyles";
+import { AvatarAndName } from "./AvatarAndName";
 
 export const BrandsRequestInfoList = ({
   info,
 }: {
   info: BrandRequestModel;
 }) => {
+
   const requestInfo = [
-    {
-      infoTitle: "Название бренда",
-      value: info.name,
-    },
     {
       infoTitle: "Описание",
       value: info.description,
@@ -55,14 +53,7 @@ export const BrandsRequestInfoList = ({
   ];
   return (
     <>
-      <div className={getStyles(containerStyle)}>
-        <h3 className={getStyles(h3Style)}>Фото компании</h3>
-        {info?.photo ? (
-          <DownloadFile id={info.photo} name="Фото компании" />
-        ) : (
-          <span>Фото отсутствует</span>
-        )}
-      </div>
+      <AvatarAndName name={info.name} photoId={info.photo}/>
       {requestInfo.map((el) => {
         return (
           <EmployeeInfo
