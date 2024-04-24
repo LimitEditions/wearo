@@ -51,7 +51,7 @@ export const ModalsDelete = ({
 
   return (
     <>
-      <Modal isOpen={isOpen1} setIsOpen={setIsOpen1}>
+      <Modal isOpen={isOpen1} setIsOpen={setIsOpen1} swipeable={false}>
         <h3 className={getStyles(h3Style)}>{messageSure}</h3>
         <div className={getStyles(div1Style)}>
           <Button
@@ -66,7 +66,7 @@ export const ModalsDelete = ({
           </Button>
         </div>
       </Modal>
-      <Modal isOpen={isOpen2} setIsOpen={setIsOpen2}>
+      <Modal isOpen={isOpen2} setIsOpen={setIsOpen2} swipeable={false}>
           <SuccessfulContent message={messageSuccess} />
         </Modal>
       <Info

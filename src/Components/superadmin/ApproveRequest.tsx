@@ -40,7 +40,7 @@ export const ApproveRequest = () => {
       <Button showButton={true} onClick={() => setShouldExecuteApprove(true)}>
         Одобрить
       </Button>
-      <Modal isOpen={showModal} setIsOpen={setShowModal}>
+      <Modal isOpen={showModal} setIsOpen={setShowModal} swipeable={false}>
         <SuccessfulContent message="Заявка успешно одобрена" />
       </Modal>
       <Info msg="Ошибка запроса" showInfo={!!dataError} style="" />

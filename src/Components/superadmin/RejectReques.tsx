@@ -9,7 +9,6 @@ import { Info } from "../common/Info";
 import { Input } from "../common/Input";
 import getStyles from "../../utils/getStyles";
 import { SuccessfulContent } from "../common/SuccessfulContent";
-import { useSwipeable } from 'react-swipeable';
 
 export const RejectReques = () => {
   // Флаг отправки запроса на сервер
@@ -50,15 +49,6 @@ export const RejectReques = () => {
     }
   }, [dataReject, isLoading, dataError]);
 
-  const handlers = useSwipeable({
-    onSwipedDown: () => setShowModal(false),
-    trackMouse: true, // для отслеживания свайпа мышью
-    delta: 50, // максимальное расстояние свайпа, чтоб сработало событие
-    // preventScrollOnSwipe: true, // останавливает прокрутку заднего фона
-    // preventDefaultTouchmoveEvent: true // предотвращает стандартное поведение при свайпе
-  });
-
-
   return (
     <>
       <Button
@@ -68,13 +58,12 @@ export const RejectReques = () => {
       >
         Отклонить
       </Button>
-      {/* <div {...handlers} className={getStyles(divModalStyle)}> */}
         <Modal
-        {...handlers}
           isOpen={showModal}
           setIsOpen={setShowModal}
           title="Укажите причину отказа"
           additionalStyles={additionalStyles}
+          swipeable={true}
         >
           <Input
             placeholder="Комментарий"
@@ -93,8 +82,7 @@ export const RejectReques = () => {
             </Button>
           </div>
         </Modal>
-      {/* </div> */}
-      <Modal isOpen={showSuccessfulModal} setIsOpen={setShowSuccessfulModal}>
+      <Modal isOpen={showSuccessfulModal} setIsOpen={setShowSuccessfulModal} swipeable={false}>
         <SuccessfulContent message="Заявка успешно отклонена" />
       </Modal>
       <Info msg="Ошибка запроса" showInfo={!!dataError} style="" />

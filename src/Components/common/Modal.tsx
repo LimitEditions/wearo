@@ -1,11 +1,36 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { BlockStyle } from '../../types/interfaces/IStyles';
 import getStyles from '../../utils/getStyles';
 import { IModalProps } from '../../types/interfaces/componentsProps/IModalProps';
+import { useSwipeable } from 'react-swipeable';
 
 
-export const Modal = ({isOpen, setIsOpen, title, children, additionalStyles}: IModalProps) => {
+export const Modal = ({isOpen, setIsOpen, title, children, additionalStyles, swipeable}: IModalProps) => {
+    const [positionY, setPositionY] = useState(0);  // Для отслеживания позиции по оси Y
+
+    const handlers = useSwipeable({
+        onSwiping: (eventData) => {
+            setPositionY(eventData.deltaY); // Обновление позиции по мере свайпа
+        },
+        onSwiped: (eventData) => {
+            if (eventData.deltaY > 100) { // Если свайп достаточно длинный, закрыть модальное окно
+                setIsOpen(false);
+            };
+            // Ставим таймер, чтобы не видеть возврат окна в исходное положение на странице
+            setTimeout(() => {
+                setPositionY(0); // Сброс позиции после завершения свайпа
+            }, 300)
+            
+        },
+        trackMouse: true
+    });
+
+    const modalStyle = {
+        transform: `translateY(${positionY}px)`,
+        transition: positionY === 0 ? 'transform 0.2s ease-out' : 'none'
+    };
+
 
     return (
         <Transition appear show={isOpen} as={Fragment}>
@@ -13,21 +38,21 @@ export const Modal = ({isOpen, setIsOpen, title, children, additionalStyles}: IM
                 {/* анимация затемнения фона */}
                 <Transition.Child
                     as={Fragment}
-                    enter="ease-out duration-300"
+                    enter="ease-out duration-700"
                     enterFrom="opacity-0"
                     enterTo="opacity-100"
-                    leave="ease-in duration-200"
+                    leave="ease-in duration-300"
                     leaveFrom="opacity-100"
                     leaveTo="opacity-0"
                 >
                     <div className={getStyles(backgroundStyle)} />
                 </Transition.Child>
 
-                <div className={getStyles(additionalStyles? additionalStyles: containerStyle)} >
+                <div className={getStyles(additionalStyles? additionalStyles: containerStyle)} {...(swipeable? handlers: {})} style={modalStyle}>
                     {/* анимация появления и исчезновения окна */}
                     <Transition.Child
                         as={Fragment}
-                        enter="ease-out duration-300"
+                        enter="ease-out duration-500"
                         enterFrom="opacity-0 scale-95"
                         enterTo="opacity-100 scale-100"
                         leave="ease-in duration-200"

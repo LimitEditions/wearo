@@ -92,7 +92,7 @@ export const RegistrationForm = ({
       {type === 'createAdmin' && <CreateAdminForm formData={formData} onSubmit={onSubmit} />}
       <Info showInfo={isLoading} msg="Loading..." style={getStyles(pStyle)} />
       <Info showInfo={error ? true: false} msg="Ошибка регистрации." style={getStyles(spanErrorStyle)} />
-      <Modal isOpen={mod} setIsOpen={setMod}>
+      <Modal isOpen={mod} setIsOpen={setMod} swipeable={false}>
         <SuccessfulContent message={type === "reg" ? "Регистрация прошла успешно!" : "Администратор создан."} />
       </Modal>
     </>
