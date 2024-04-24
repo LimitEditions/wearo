@@ -4,10 +4,10 @@ import AuthContext from '../../context/AuthProvider';
 
 
 const ProtectedRoute: React.FC<{children: JSX.Element}> = ({ children }) => {
-    const { isAuthenticated } = useContext(AuthContext);
+    const { isAuth } = useContext(AuthContext);
     const location = useLocation();
 
-    if (isAuthenticated.status) {
+    if (isAuth.status) {
         // Если пользователь авторизован, перенаправляем его с страниц регистрации или логина
         // на главную страницу или страницу профиля, например
         return <Navigate to="/" state={{ from: location }} replace />;

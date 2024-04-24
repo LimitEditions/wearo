@@ -1,10 +1,8 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { Nav } from './Components/common/Nav';
 import { Home } from './pages/Home';
 import { Logo } from './Components/common/Logo';
-import AuthContext from './context/AuthProvider';
-import { UserType } from './api/data-contracts';
 import { Authorization } from './pages/Authorization';
 import { BlockStyle } from './types/interfaces/IStyles';
 import getStyles from './utils/getStyles';
@@ -13,12 +11,6 @@ import { Brand } from './Components/user/Brand';
 
 
 function App() {
-  const { isAuthenticated } = useContext(AuthContext);
-  const [role, setRole] = useState<UserType>();
-
-  useEffect(() => {
-    setRole(isAuthenticated.type as UserType);
-  }, [isAuthenticated]);
 
   return (
     <div className={getStyles(mainStyle)}>
@@ -30,7 +22,7 @@ function App() {
         <Route path='/brand/:id/' element={<Brand />} />
         <Route path='/*' element="no content"/> Обработка ошибочных запросов
       </Routes>
-      <Nav type={ role as UserType}/>
+      <Nav />
     </div>
   );
 };

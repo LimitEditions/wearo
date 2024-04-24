@@ -10,7 +10,7 @@ import { TokenModel } from '../api/data-contracts';
 
 
 const useAuth = () => {
-  const { isAuthenticated, setAuth } = useContext(AuthContext);
+  const { isAuth, setAuth } = useContext(AuthContext);
   
   const token = retrieve('token');
   const tokenExpireIn = retrieve('tokenExpireIn');
@@ -64,7 +64,7 @@ const useAuth = () => {
     };
   }, [data, error, shouldReq, setAuth, navigate])
 
-  return isAuthenticated;
+  return isAuth;
 };
 
 export default useAuth;

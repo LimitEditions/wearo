@@ -16,12 +16,10 @@ export const WardrobePage = () => {
     );
 
     useEffect(() => {
-
-        if(data && !error) {
-          setProductsList(data.data || [])
-        };
-        
-      }, [data, error, productsList])
+      if(data && !error) {
+        setProductsList(data.data || [])
+      };
+    }, [data, error, productsList])
 
     return (
         <>

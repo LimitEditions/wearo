@@ -36,7 +36,7 @@ export const withAuthLogic = ({ Component, type }: IwithAuthLogicProps) => {
         if (data) {
           if (type === "login") {
             dataToLS(data);
-            navigate("/");
+            navigate("/wardrobe");
           } else {
             setMod(true);
           };

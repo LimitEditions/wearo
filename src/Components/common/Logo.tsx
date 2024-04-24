@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import { BlockStyle } from '../../types/interfaces/IStyles';
 import getStyles from '../../utils/getStyles';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { showBtn } from '../../utils/showBtn';
+import { showEl } from '../../utils/showEl';
 import { Button } from './Button';
 // import AuthContext from '../../context/AuthProvider';
 // import { LogOut } from './LogOut';
@@ -15,7 +15,7 @@ export const Logo = () => {
   // const { isAuthenticated } = useContext(AuthContext);
 
   const showBackButton = /^\/wardrobe\/.*/.test(location.pathname);
-  const showProfileButton = showBtn(['/wardrobe'] ,location.pathname);
+  const showProfileButton = showEl(['/wardrobe'] ,location.pathname);
 
   const handleBackClick = () => {
     navigate(-1);
