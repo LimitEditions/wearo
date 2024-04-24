@@ -53,7 +53,7 @@ export interface AuthModel {
 }
 
 export enum BodyPart {
-  Chest = "Chest",
+  Bust = "Bust",
   Hip = "Hip",
   Waist = "Waist",
 }
@@ -503,6 +503,11 @@ export interface CreatePostModel {
   brandGuid?: string;
   /** Текст */
   text?: string;
+  /**
+   * Файл
+   * @format uuid
+   */
+  fileGuid?: string | null;
 }
 
 /** Тип одежды */
@@ -917,6 +922,43 @@ export interface MaterialModel {
   description?: string;
 }
 
+export enum MeasurementUnits {
+  ValueСentimeter = "Сentimeter",
+  Millimeter = "Millimeter",
+  Meter = "Meter",
+}
+
+/** Дополнительные файлы к посту */
+export interface PostFileModel {
+  /**
+   * Идентификатор
+   * @format uuid
+   */
+  guid?: string;
+  /** Отметка удаления */
+  isDeleted?: boolean;
+  /**
+   * Дата создания
+   * @format date-time
+   */
+  createDT?: string;
+  /**
+   * Дата обнавления
+   * @format date-time
+   */
+  updateDT?: string;
+  /**
+   * Ид поста
+   * @format uuid
+   */
+  postGuid?: string;
+  /**
+   * Ид файла
+   * @format uuid
+   */
+  fileGuid?: string;
+}
+
 /** Публикация */
 export interface PostModel {
   /**
@@ -943,10 +985,19 @@ export interface PostModel {
    * @format uuid
    */
   brandGuid?: string;
+  /**
+   * Файл
+   * @format uuid
+   */
+  fileGuid?: string | null;
   /** Бренд */
   brand?: BrandModel;
   /** Комментарии */
   comments?: CommentModel[] | null;
+  /** Ссылка на файл */
+  file?: FileModel;
+  /** Дополнительные файлы */
+  extraFiles?: PostFileModel[] | null;
 }
 
 /** Результат чтения данных. */
@@ -1169,11 +1220,8 @@ export interface ProductMeasurementModel {
    * @format date-time
    */
   updateDT?: string;
-  /**
-   * Размер, по которому будет произведена группировка
-   * @format int32
-   */
-  size?: number;
+  /** Размер, по которому будет произведена группировка */
+  size?: string;
   /**
    * Продукт
    * @format uuid
@@ -1185,6 +1233,7 @@ export interface ProductMeasurementModel {
    */
   measurement?: number;
   part?: BodyPart;
+  unit?: MeasurementUnits;
 }
 
 /** Продукт */
@@ -1514,6 +1563,11 @@ export interface UpdatePostModel {
   brandGuid?: string;
   /** Текст */
   text?: string;
+  /**
+   * Файл
+   * @format uuid
+   */
+  fileGuid?: string | null;
 }
 
 /** Тип одежды */

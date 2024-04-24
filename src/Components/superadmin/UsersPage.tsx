@@ -12,7 +12,7 @@ export const UsersPage = () => {
   const [users, setUsers] = useState<UserModelDataResult>();
   const [data, isLoading, dataError] = useApi(
     "usersList",
-    { Types: UserType.User, PageSize: 100 },
+    { Types: UserType.User, PageSize: 100, IsDeleted: false },
     { headers: { Authorization: `Bearer ${retrieve("token")}` } },
     true
   );

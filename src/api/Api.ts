@@ -2273,6 +2273,28 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
       SortMember?: string;
       /** Направление сортировки - по возрастанию */
       Ascending?: boolean;
+      /**
+       * Начало периода.
+       * @format date-time
+       */
+      createDtStart?: string;
+      /**
+       * Конец периода.
+       * @format date-time
+       */
+      createDtEnd?: string;
+      /**
+       * Начало периода.
+       * @format date-time
+       */
+      updateDtStart?: string;
+      /**
+       * Конец периода.
+       * @format date-time
+       */
+      updateDtEnd?: string;
+      /** Отметка удаления */
+      IsDeleted?: boolean;
     },
     params: RequestParams = {},
   ) =>
