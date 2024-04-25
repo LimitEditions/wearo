@@ -7,5 +7,6 @@ export interface IModalsDeleteProps {
     // Сообщение формата "Вы уверены, что хотите удалить ....
     messageSure: string, 
     // Сообщение об успехе какого-то действия
-    messageSuccess: string
+    messageSuccess: string,
+    idForDelete?: string
 }

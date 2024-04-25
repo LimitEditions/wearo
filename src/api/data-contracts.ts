@@ -9,6 +9,24 @@
  * ---------------------------------------------------------------
  */
 
+export interface AddExtraFileToPostModel {
+  /**
+   * Ид Файла
+   * @format uuid
+   */
+  fileGuid?: string;
+  /**
+   * Ид поста
+   * @format uuid
+   */
+  postGuid?: string;
+  /**
+   * Номер
+   * @format int32
+   */
+  order?: number;
+}
+
 export interface AddFileToLookModel {
   /**
    * Ид файла
@@ -957,6 +975,11 @@ export interface PostFileModel {
    * @format uuid
    */
   fileGuid?: string;
+  /**
+   * Порядковый номер
+   * @format int32
+   */
+  order?: number;
 }
 
 /** Публикация */

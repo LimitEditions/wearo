@@ -10,6 +10,7 @@
  */
 
 import {
+  AddExtraFileToPostModel,
   AddFileToLookModel,
   AddProductToLookModel,
   AddTagToLookModel,
@@ -52,6 +53,7 @@ import {
   LookModel,
   LookModelDataResult,
   MaterialModel,
+  PostFileModel,
   PostModel,
   PostModelDataResult,
   ProblemDetails,
@@ -1302,6 +1304,48 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
       secure: true,
       type: ContentType.Json,
       format: "json",
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags Posts
+   * @name PostsFilesCreate
+   * @summary Добавить файл к посту
+   * @request POST:/api/Posts/Files
+   * @secure
+   */
+  postsFilesCreate = (data: AddExtraFileToPostModel, params: RequestParams = {}) =>
+    this.request<PostFileModel, ProblemDetails>({
+      path: `/api/Posts/Files`,
+      method: "POST",
+      body: data,
+      secure: true,
+      type: ContentType.Json,
+      format: "json",
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags Posts
+   * @name PostsFilesDelete
+   * @summary Отвязать файл от поста
+   * @request DELETE:/api/Posts/Files
+   * @secure
+   */
+  postsFilesDelete = (
+    query?: {
+      /** @format uuid */
+      id?: string;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<void, ProblemDetails>({
+      path: `/api/Posts/Files`,
+      method: "DELETE",
+      query: query,
+      secure: true,
       ...params,
     });
   /**

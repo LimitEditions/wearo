@@ -16,6 +16,7 @@ export const ModalsDelete = ({
   setIsOpen1,
   messageSuccess,
   messageSure,
+  idForDelete
 }: IModalsDeleteProps) => {
   const [isOpen2, setIsOpen2] = useState(false);
   const [shouldExequte, setShouldExequte] = useState<boolean>();
@@ -23,7 +24,7 @@ export const ModalsDelete = ({
   const navigate = useNavigate();
   const [data, isLoading, dataError] = useApi(
     apiMethod,
-    id,
+    idForDelete ? idForDelete : id,
     { headers: { Authorization: `Bearer ${retrieve("token")}` } },
     shouldExequte
   );
