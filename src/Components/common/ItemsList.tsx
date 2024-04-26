@@ -9,14 +9,14 @@ import { Photo } from "./Photo";
 // Компонент для рендера списка элементов (название чего-то и стрелка вправо). Либо с картинкой, либо без.
 export const ItemsList: React.FC<IItemsListProps> = ({ items }) => {
   const navigate = useNavigate();
-  const handleClick = (path: string) => {
-    navigate(path);
+  const handleClick = (path: string, state: any) => {
+    navigate(path, {state: state});
   };
   return (
     <div className={getStyles(containerStyle)}>
       {items.map((el) => {
         return (
-          <ItemWithArrow onClick={() => handleClick(el.path)} key={el.path}>
+          <ItemWithArrow onClick={() => handleClick(el.path, el.state)} key={el.path}>
             <div className={getStyles(divStyle)}>
               {/* Если нужно, добавляем фото */}
               {el.needPhoto && (

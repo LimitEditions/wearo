@@ -51,6 +51,7 @@ export const UserInfo = () => {
           title: "Настройки",
           path: `/control/users/${user.guid}/edit`,
           needPhoto: false,
+          state: user
         },
       ]
     : null;

@@ -3,7 +3,8 @@ type Item = {
     path: string,
     photoId?: string | undefined | null,
     needPhoto?: boolean,
-    photoStyles?: string
+    photoStyles?: string,
+    state?: any
 }
 
 export interface IItemsListProps {
