@@ -18,7 +18,7 @@ export const UserSubscriptionsPage = () => {
   const { id } = useParams();
   const [data, isLoading, dataError] = useApi(
     "subscriptionsList",
-    { PageSize: 100, UserGuid: id },
+    { PageSize: 100, UserGuid: id, IsDeleted: false },
     { headers: { Authorization: `Bearer ${retrieve("token")}` } },
     true
   );

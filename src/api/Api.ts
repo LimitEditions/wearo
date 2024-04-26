@@ -35,6 +35,7 @@ import {
   CreateFileProductModel,
   CreateLookModel,
   CreateMaterialModel,
+  CreateMessageModel,
   CreatePostModel,
   CreateProductCategoryModel,
   CreateProductColor,
@@ -53,6 +54,8 @@ import {
   LookModel,
   LookModelDataResult,
   MaterialModel,
+  MessageModel,
+  MessageModelDataResult,
   PostFileModel,
   PostModel,
   PostModelDataResult,
@@ -81,6 +84,7 @@ import {
   UpdateCommentModel,
   UpdateLookModel,
   UpdateMaterialModel,
+  UpdateMessageModel,
   UpdatePostModel,
   UpdateProductCategoryModel,
   UpdateProductItemModel,
@@ -212,6 +216,28 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
       SortMember?: string;
       /** Направление сортировки - по возрастанию */
       Ascending?: boolean;
+      /**
+       * Начало периода.
+       * @format date-time
+       */
+      createDtStart?: string;
+      /**
+       * Конец периода.
+       * @format date-time
+       */
+      createDtEnd?: string;
+      /**
+       * Начало периода.
+       * @format date-time
+       */
+      updateDtStart?: string;
+      /**
+       * Конец периода.
+       * @format date-time
+       */
+      updateDtEnd?: string;
+      /** Отметка удаления */
+      IsDeleted?: boolean;
     },
     params: RequestParams = {},
   ) =>
@@ -332,6 +358,18 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
       SortMember?: string;
       /** Направление сортировки - по возрастанию */
       Ascending?: boolean;
+      /**
+       * Начало периода.
+       * @format date-time
+       */
+      updateDtStart?: string;
+      /**
+       * Конец периода.
+       * @format date-time
+       */
+      updateDtEnd?: string;
+      /** Отметка удаления */
+      IsDeleted?: boolean;
     },
     params: RequestParams = {},
   ) =>
@@ -1098,15 +1136,15 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
   /**
    * No description
    *
-   * @tags PostCommentsControllers
-   * @name PostCommentsControllersDetail
+   * @tags Messages
+   * @name MessagesDetail
    * @summary Получить по ид
-   * @request GET:/api/PostCommentsControllers/{id}
+   * @request GET:/api/Messages/{id}
    * @secure
    */
-  postCommentsControllersDetail = (id: string, params: RequestParams = {}) =>
-    this.request<CommentModel, ProblemDetails>({
-      path: `/api/PostCommentsControllers/${id}`,
+  messagesDetail = (id: string, params: RequestParams = {}) =>
+    this.request<MessageModel, ProblemDetails>({
+      path: `/api/Messages/${id}`,
       method: "GET",
       secure: true,
       format: "json",
@@ -1115,14 +1153,15 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
   /**
    * No description
    *
-   * @tags PostCommentsControllers
-   * @name PostCommentsControllersDelete
-   * @request DELETE:/api/PostCommentsControllers/{id}
+   * @tags Messages
+   * @name MessagesDelete
+   * @summary Удаление сообщения
+   * @request DELETE:/api/Messages/{id}
    * @secure
    */
-  postCommentsControllersDelete = (id: string, params: RequestParams = {}) =>
+  messagesDelete = (id: string, params: RequestParams = {}) =>
     this.request<void, ProblemDetails>({
-      path: `/api/PostCommentsControllers/${id}`,
+      path: `/api/Messages/${id}`,
       method: "DELETE",
       secure: true,
       ...params,
@@ -1130,13 +1169,153 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
   /**
    * No description
    *
-   * @tags PostCommentsControllers
-   * @name PostCommentsControllersList
-   * @summary Поиск коментов
-   * @request GET:/api/PostCommentsControllers
+   * @tags Messages
+   * @name MessagesList
+   * @summary Поиск сообщений
+   * @request GET:/api/Messages
    * @secure
    */
-  postCommentsControllersList = (
+  messagesList = (
+    query?: {
+      /**
+       * От пользователя
+       * @format uuid
+       */
+      FromUserGuid?: string;
+      /**
+       * Пользователю
+       * @format uuid
+       */
+      ToUserGuid?: string;
+      /** Запрашивать новые */
+      Unreaded?: boolean;
+      /** Поле, по которому происходит сортировка */
+      SortMember?: string;
+      /** Направление сортировки - по возрастанию */
+      Ascending?: boolean;
+      /**
+       * Номер страницы (по умолчанию = 1).
+       * @format int32
+       */
+      Page?: number;
+      /**
+       * Размер страницы (по умолчанию = 25).
+       * @format int32
+       */
+      PageSize?: number;
+      /**
+       * Начало периода.
+       * @format date-time
+       */
+      createDtStart?: string;
+      /**
+       * Конец периода.
+       * @format date-time
+       */
+      createDtEnd?: string;
+      /**
+       * Начало периода.
+       * @format date-time
+       */
+      updateDtStart?: string;
+      /**
+       * Конец периода.
+       * @format date-time
+       */
+      updateDtEnd?: string;
+      /** Отметка удаления */
+      IsDeleted?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<MessageModelDataResult, ProblemDetails>({
+      path: `/api/Messages`,
+      method: "GET",
+      query: query,
+      secure: true,
+      format: "json",
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags Messages
+   * @name MessagesCreate
+   * @summary Отправка сообщений
+   * @request POST:/api/Messages
+   * @secure
+   */
+  messagesCreate = (data: CreateMessageModel, params: RequestParams = {}) =>
+    this.request<MessageModel, ProblemDetails>({
+      path: `/api/Messages`,
+      method: "POST",
+      body: data,
+      secure: true,
+      type: ContentType.Json,
+      format: "json",
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags Messages
+   * @name MessagesUpdate
+   * @summary Редактирование поста
+   * @request PUT:/api/Messages
+   * @secure
+   */
+  messagesUpdate = (data: UpdateMessageModel, params: RequestParams = {}) =>
+    this.request<MessageModel, ProblemDetails>({
+      path: `/api/Messages`,
+      method: "PUT",
+      body: data,
+      secure: true,
+      type: ContentType.Json,
+      format: "json",
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags PostComments
+   * @name PostCommentsDetail
+   * @summary Получить по ид
+   * @request GET:/api/PostComments/{id}
+   * @secure
+   */
+  postCommentsDetail = (id: string, params: RequestParams = {}) =>
+    this.request<CommentModel, ProblemDetails>({
+      path: `/api/PostComments/${id}`,
+      method: "GET",
+      secure: true,
+      format: "json",
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags PostComments
+   * @name PostCommentsDelete
+   * @request DELETE:/api/PostComments/{id}
+   * @secure
+   */
+  postCommentsDelete = (id: string, params: RequestParams = {}) =>
+    this.request<void, ProblemDetails>({
+      path: `/api/PostComments/${id}`,
+      method: "DELETE",
+      secure: true,
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags PostComments
+   * @name PostCommentsList
+   * @summary Поиск коментов
+   * @request GET:/api/PostComments
+   * @secure
+   */
+  postCommentsList = (
     query?: {
       /** @format uuid */
       UserGuid?: string;
@@ -1151,7 +1330,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
     params: RequestParams = {},
   ) =>
     this.request<CommentModelDataResult, any>({
-      path: `/api/PostCommentsControllers`,
+      path: `/api/PostComments`,
       method: "GET",
       query: query,
       secure: true,
@@ -1161,15 +1340,15 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
   /**
    * No description
    *
-   * @tags PostCommentsControllers
-   * @name PostCommentsControllersCreate
+   * @tags PostComments
+   * @name PostCommentsCreate
    * @summary Создание комментария
-   * @request POST:/api/PostCommentsControllers
+   * @request POST:/api/PostComments
    * @secure
    */
-  postCommentsControllersCreate = (data: CreateCommentModel, params: RequestParams = {}) =>
+  postCommentsCreate = (data: CreateCommentModel, params: RequestParams = {}) =>
     this.request<CommentModel, ProblemDetails>({
-      path: `/api/PostCommentsControllers`,
+      path: `/api/PostComments`,
       method: "POST",
       body: data,
       secure: true,
@@ -1180,15 +1359,15 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
   /**
    * No description
    *
-   * @tags PostCommentsControllers
-   * @name PostCommentsControllersUpdate
+   * @tags PostComments
+   * @name PostCommentsUpdate
    * @summary Модель редактирования коммента
-   * @request PUT:/api/PostCommentsControllers
+   * @request PUT:/api/PostComments
    * @secure
    */
-  postCommentsControllersUpdate = (data: UpdateCommentModel, params: RequestParams = {}) =>
+  postCommentsUpdate = (data: UpdateCommentModel, params: RequestParams = {}) =>
     this.request<CommentModel, ProblemDetails>({
-      path: `/api/PostCommentsControllers`,
+      path: `/api/PostComments`,
       method: "PUT",
       body: data,
       secure: true,
@@ -1973,6 +2152,32 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
        * @format int32
        */
       PageSize?: number;
+      /** Поле, по которому происходит сортировка */
+      SortMember?: string;
+      /** Направление сортировки - по возрастанию */
+      Ascending?: boolean;
+      /**
+       * Начало периода.
+       * @format date-time
+       */
+      createDtStart?: string;
+      /**
+       * Конец периода.
+       * @format date-time
+       */
+      createDtEnd?: string;
+      /**
+       * Начало периода.
+       * @format date-time
+       */
+      updateDtStart?: string;
+      /**
+       * Конец периода.
+       * @format date-time
+       */
+      updateDtEnd?: string;
+      /** Отметка удаления */
+      IsDeleted?: boolean;
     },
     params: RequestParams = {},
   ) =>

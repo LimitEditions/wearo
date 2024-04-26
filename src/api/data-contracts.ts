@@ -512,6 +512,36 @@ export interface CreateMaterialModel {
   description?: string;
 }
 
+export interface CreateMessageModel {
+  /**
+   * От пользователя
+   * @format uuid
+   */
+  fromUserGuid?: string;
+  /**
+   * К пользователю
+   * @format uuid
+   */
+  toUserGuid?: string;
+  /**
+   * Приложенный файл
+   * @format uuid
+   */
+  fileGuid?: string | null;
+  /** Текст */
+  text?: string | null;
+  /**
+   * Группирующий гуид
+   * @format uuid
+   */
+  groupId?: string | null;
+  /**
+   * Время прочтения
+   * @format date-time
+   */
+  readDt?: string | null;
+}
+
 /** Публикация */
 export interface CreatePostModel {
   /**
@@ -722,6 +752,8 @@ export interface FileModel {
    * @format int64
    */
   position?: number;
+  /** Наименование */
+  name?: string | null;
   fileType?: FileType;
   /**
    * Ид Файла
@@ -944,6 +976,65 @@ export enum MeasurementUnits {
   ValueСentimeter = "Сentimeter",
   Millimeter = "Millimeter",
   Meter = "Meter",
+}
+
+/** Сообщение одного пользователя другому */
+export interface MessageModel {
+  /**
+   * Идентификатор
+   * @format uuid
+   */
+  guid?: string;
+  /** Отметка удаления */
+  isDeleted?: boolean;
+  /**
+   * Дата создания
+   * @format date-time
+   */
+  createDT?: string;
+  /**
+   * Дата обнавления
+   * @format date-time
+   */
+  updateDT?: string;
+  /**
+   * От пользователя
+   * @format uuid
+   */
+  fromUserGuid?: string;
+  /**
+   * К пользователю
+   * @format uuid
+   */
+  toUserGuid?: string;
+  /**
+   * Приложенный файл
+   * @format uuid
+   */
+  fileGuid?: string | null;
+  /** Текст */
+  text?: string | null;
+  /**
+   * Группирующий гуид
+   * @format uuid
+   */
+  groupId?: string | null;
+  /**
+   * Время прочтения
+   * @format date-time
+   */
+  readDt?: string | null;
+}
+
+/** Результат чтения данных. */
+export interface MessageModelDataResult {
+  /**
+   * Общее количество найденных элементов.
+   * @format int32
+   */
+  total?: number;
+  /** Данные. */
+  data?: MessageModel[];
 }
 
 /** Дополнительные файлы к посту */
@@ -1570,6 +1661,22 @@ export interface UpdateMaterialModel {
   name?: string;
   /** Некое описание */
   description?: string;
+}
+
+/** Модель обновления сообщения */
+export interface UpdateMessageModel {
+  /**
+   * Ид
+   * @format uuid
+   */
+  guid?: string;
+  /**
+   * Приложенный файл
+   * @format uuid
+   */
+  fileGuid?: string | null;
+  /** Текст */
+  text?: string | null;
 }
 
 /** Публикация */

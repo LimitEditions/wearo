@@ -12,7 +12,7 @@ export const BrandsPage = () => {
   const [brands, setBrands] = useState<BrandModelDataResult>();
   const [data, isLoading, dataError] = useApi(
     "brandsList",
-    { PageSize: 100 },
+    { PageSize: 100, IsDeleted: false},
     { headers: { Authorization: `Bearer ${retrieve("token")}` } },
     true
   );
