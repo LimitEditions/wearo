@@ -68,7 +68,7 @@ export const BrandsRequestInfoList = ({
         <h3 className={getStyles(h3Style)}>Файлы компании</h3>
         {info?.files ? (
           info.files.map((el: FileModel) => {
-            return <DownloadFile id={el.fileGuid} name="Файл" />
+            return <DownloadFile id={el.fileGuid} />
           })
         ) : (
           <span>Файлы отсутствуют</span>

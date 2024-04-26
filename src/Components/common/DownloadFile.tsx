@@ -1,14 +1,29 @@
 import React, { useEffect, useState } from "react";
 import { BlockStyle } from "../../types/interfaces/IStyles";
 import getStyles from "../../utils/getStyles";
+import { FileModel } from "../../api/data-contracts";
+import useApi from "../../hooks/useApi";
+import { retrieve } from "../../utils/encryption";
 
 export const DownloadFile = ({
   id,
-  name,
 }: {
   id: string | undefined;
-  name: string;
 }) => {
+  const [file, setFile] = useState<FileModel>();
+  const [data, isLoading, dataError] = useApi(
+    "filesModelDetail",
+    id,
+    { headers: { Authorization: `Bearer ${retrieve("token")}` } },
+    true
+  );
+
+  useEffect(() => {
+    if (data) {
+      setFile(data);
+    }
+  }, [data, isLoading, dataError]);
+
   if (!id) return null;
   return (
     <div className={getStyles(givStyle)}>
@@ -42,7 +57,7 @@ export const DownloadFile = ({
         />
       </svg>
       <a href={`http://vne.su:8081/api/Files/${id}`} download>
-        {name}
+        {file?.name || 'Название не указано'}
       </a>
     </div>
   );
