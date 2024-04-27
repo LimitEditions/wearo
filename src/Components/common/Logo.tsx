@@ -1,21 +1,20 @@
-import React, { useContext } from 'react'
+import React, { useState } from 'react'
 import { BlockStyle } from '../../types/interfaces/IStyles';
 import getStyles from '../../utils/getStyles';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { showEl } from '../../utils/showEl';
 import { Button } from './Button';
-// import AuthContext from '../../context/AuthProvider';
-// import { LogOut } from './LogOut';
-// import { UserType } from '../../api/data-contracts';
+import { SearchInput } from './SearchInput';
 
 
 export const Logo = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  // const { isAuthenticated } = useContext(AuthContext);
+  const [showInput, setShowInput] = useState<boolean>(false)
 
   const showBackButton = /^\/wardrobe\/.*/.test(location.pathname);
   const showProfileButton = showEl(['/wardrobe'] ,location.pathname);
+  const showSearchButton = showEl(['/posts'] ,location.pathname);
 
   const handleBackClick = () => {
     navigate(-1);
@@ -25,6 +24,10 @@ export const Logo = () => {
     navigate(`${location.pathname}/profile`);
   };
 
+  const handleSearchClick = () => {
+    setShowInput(prevState => !prevState);
+  };
+ 
   return (
     <div className={getStyles(logoStyle)}>
       <Button 
@@ -39,18 +42,24 @@ export const Logo = () => {
           {'<'}
       </Button>
 
-      {/* <LogOut show={isAuthenticated.type !== UserType.User}/> */}
+      <Button 
+        showButton={showSearchButton && !showInput}
+        onClick={handleSearchClick}
+        styles={btnSearch}>
+      </Button>
 
-      <h1>WEAR</h1>
+      <SearchInput show={showInput} setShow={handleSearchClick}/>
+
+      {!showInput && <h1>WEAR</h1>}
     </div>
   );
 };
 
 const logoStyle: BlockStyle = {
-    blockSize: "h-[50px] ralative",
-    spacing: "py-2",
-    background: "bg-gray-300 shadow-md",
-    text: "text-center tracking-wider text-lg",
+  blockSize: "h-[50px] ralative",
+  spacing: "py-2",
+  background: "bg-gray-300 shadow-md",
+  text: "text-center tracking-wider text-lg",
 };
 
 const btnProfile: BlockStyle = {
@@ -62,4 +71,10 @@ const btnProfile: BlockStyle = {
 const btnBack: BlockStyle = {
   blockSize: "absolute",
   spacing: "left-1",
+};
+
+const btnSearch: BlockStyle = {
+  blockSize: "absolute opacity-40",
+  spacing: "right-2",
+  background: "bg-[url('https://www.pngall.com/wp-content/uploads/15/Search-Bar-PNG.png')] bg-no-repeat bg-center bg-contain h-10 w-10"
 };
