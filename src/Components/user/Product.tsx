@@ -41,14 +41,14 @@ const Product = () => {
         Происхождение
       </div>
       <div className={getStyles(compositionStyle)}>
-        <h3>Состав ткани:</h3>
+        <p>Состав ткани:</p>
         {data?.composition?.map(material => (
           <span key={material.guid} className={getStyles(materialStyle)}>{material.material?.name} {material.share} %</span>
         ))}
       </div>
       <Tips tips={data?.tips as TipModel[]}/>
       <div>
-        Дата сканирования: 
+        <p>Дата сканирования:</p> 
         <span> {data?.createDT ? moment(data.createDT).format('DD.MM.YYYY') : 'Дата неизвестна'}</span>
       </div>
       <div>
@@ -99,7 +99,8 @@ const originStyle: BlockStyle = {
 }
 
 const compositionStyle: BlockStyle = {
-  spacing: 'space-y-2'
+  spacing: 'space-y-2 space-x-3',
+  text: 'text-sm'
 }
 
 const materialStyle: BlockStyle = {

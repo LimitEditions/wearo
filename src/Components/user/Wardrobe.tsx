@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom';
 
 export const Wardrobe = ({productsList}: {productsList: ProductModel[] }) => {
   const navigate = useNavigate();
-  
   return (
     <div>
         Welcome to the Wardrobe!

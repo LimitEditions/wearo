@@ -8,6 +8,7 @@ import { BlockStyle } from './types/interfaces/IStyles';
 import getStyles from './utils/getStyles';
 import { WardrobePage } from './pages/WardrobePage';
 import { Brand } from './Components/user/Brand';
+import { PostsPage } from './pages/PostsPage';
 
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
         <Route path='/' element={ <Home /> }/>
         <Route path='/auth/*' element={ <Authorization /> }/>
         <Route path='/wardrobe/*' element={ <WardrobePage /> }/>
+        <Route path='/posts/*' element={ <PostsPage /> }/>
         <Route path='/brand/:id/' element={<Brand />} />
         <Route path='/*' element="no content"/> Обработка ошибочных запросов
       </Routes>
