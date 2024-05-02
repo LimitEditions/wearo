@@ -1,9 +1,11 @@
 import React from 'react'
 import { UserModel } from '../../api/data-contracts'
-import { getDate } from '../../utils/getDate'
 import { EmployeeInfo } from '../common/EmployeeInfo'
 
 export const UserInfoList = ({info} : {info: UserModel}) => {
+  // Использование библиотеки moment для форматирования даты
+  const moment = require('moment');
+  
     const infoList = [
         {
             infoTitle: "Фамилия",
@@ -31,7 +33,7 @@ export const UserInfoList = ({info} : {info: UserModel}) => {
           },
           {
             infoTitle: "Дата регистрации",
-            value: getDate(info.createDT),
+            value: moment(info.createDT).format('DD.MM.YYYY'),
           },
     ]
   return (

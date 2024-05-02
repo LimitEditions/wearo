@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { SectionsTitle } from "../common/SectionsTitle";
-import useApi from "../../hooks/useApi";
+import { SectionsTitle } from "../Components/common/SectionsTitle";
+import useApi from "../hooks/useApi";
 import {
   BrandRequestModelDataResult,
   RequestStatus,
-} from "../../api/data-contracts";
-import { retrieve } from "../../utils/encryption";
-import { ItemsList } from "../common/ItemsList";
-import { BlockStyle } from "../../types/interfaces/IStyles";
-import { Info } from "../common/Info";
-import getStyles from "../../utils/getStyles";
+} from "../api/data-contracts";
+import { retrieve } from "../utils/encryption";
+import { ItemsList } from "../Components/common/ItemsList";
+import { BlockStyle } from "../types/interfaces/IStyles";
+import { Info } from "../Components/common/Info";
+import getStyles from "../utils/getStyles";
 
 export const BrandsRequestsPage = () => {
   const [requests, setRequests] = useState<BrandRequestModelDataResult>();

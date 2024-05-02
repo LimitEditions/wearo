@@ -1,8 +1,8 @@
 import React from 'react'
-import { AllAdmins } from './AllAdmins'
-import getStyles from '../../utils/getStyles'
-import { BlockStyle } from '../../types/interfaces/IStyles'
-import { SuperadminInfo } from './SuperadminInfo'
+import { AllAdmins } from '../Components/superadmin/AllAdmins'
+import getStyles from '../utils/getStyles'
+import { BlockStyle } from '../types/interfaces/IStyles'
+import { SuperadminInfo } from '../Components/superadmin/SuperadminInfo'
 
 export const SuperadminSettingsPage: React.FC = () => {
   return (

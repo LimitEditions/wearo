@@ -1,7 +1,6 @@
 import React from "react";
 import { BrandRequestModel, FileModel } from "../../api/data-contracts";
 import { EmployeeInfo } from "./EmployeeInfo";
-import { getDate } from "../../utils/getDate";
 import { DownloadFile } from "./DownloadFile";
 import { BlockStyle } from "../../types/interfaces/IStyles";
 import getStyles from "../../utils/getStyles";
@@ -12,6 +11,8 @@ export const BrandsRequestInfoList = ({
 }: {
   info: BrandRequestModel;
 }) => {
+  // использование библиотеки для форматирования даты
+  const moment = require('moment');
 
   const requestInfo = [
     {
@@ -44,11 +45,11 @@ export const BrandsRequestInfoList = ({
     },
     {
       infoTitle: "Дата регистрации заявителя",
-      value: getDate(info.user?.createDT),
+      value: moment(info.user?.createDT).format('DD.MM.YYYY'),
     },
     {
       infoTitle: "Дата регистрации заявки",
-      value: getDate(info.createDT),
+      value: moment(info.createDT).format('DD.MM.YYYY'),
     },
   ];
   return (

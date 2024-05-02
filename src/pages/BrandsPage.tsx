@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import useApi from '../../hooks/useApi';
-import { BrandModelDataResult } from '../../api/data-contracts';
-import { retrieve } from '../../utils/encryption';
-import getStyles from '../../utils/getStyles';
-import { BlockStyle } from '../../types/interfaces/IStyles';
-import { SectionsTitle } from '../common/SectionsTitle';
-import { ItemsList } from '../common/ItemsList';
-import { Info } from '../common/Info';
+import useApi from '../hooks/useApi';
+import { BrandModelDataResult } from '../api/data-contracts';
+import { retrieve } from '../utils/encryption';
+import getStyles from '../utils/getStyles';
+import { BlockStyle } from '../types/interfaces/IStyles';
+import { SectionsTitle } from '../Components/common/SectionsTitle';
+import { ItemsList } from '../Components/common/ItemsList';
+import { Info } from '../Components/common/Info';
 
 export const BrandsPage = () => {
   const [brands, setBrands] = useState<BrandModelDataResult>();

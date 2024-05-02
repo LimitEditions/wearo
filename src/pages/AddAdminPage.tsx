@@ -1,9 +1,9 @@
 import React from "react";
-import { SectionsTitle } from "../common/SectionsTitle";
-import { withAuthLogic } from "../common/hoc/withAuthLogic";
-import { RegistrationForm } from "../authorization/RegistrationForm";
-import { BlockStyle } from "../../types/interfaces/IStyles";
-import getStyles from "../../utils/getStyles";
+import { SectionsTitle } from "../Components/common/SectionsTitle";
+import { withAuthLogic } from "../Components/common/hoc/withAuthLogic";
+import { RegistrationForm } from "../Components/authorization/RegistrationForm";
+import { BlockStyle } from "../types/interfaces/IStyles";
+import getStyles from "../utils/getStyles";
 
 export const AddAdminPage = () => {
   const RegistrationWithLogic = withAuthLogic({

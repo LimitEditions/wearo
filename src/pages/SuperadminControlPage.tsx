@@ -1,5 +1,5 @@
 import React from "react";
-import { ItemsList } from "../common/ItemsList";
+import { ItemsList } from "../Components/common/ItemsList";
 
 export const SuperadminControlPage = () => {
   const items = [

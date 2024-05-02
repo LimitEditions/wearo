@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { UserModelDataResult, UserType } from "../../api/data-contracts";
-import useApi from "../../hooks/useApi";
-import { retrieve } from "../../utils/encryption";
-import { SectionsTitle } from "../common/SectionsTitle";
-import { ItemsList } from "../common/ItemsList";
-import { Info } from "../common/Info";
-import { BlockStyle } from "../../types/interfaces/IStyles";
-import getStyles from "../../utils/getStyles";
+import { UserModelDataResult, UserType } from "../api/data-contracts";
+import useApi from "../hooks/useApi";
+import { retrieve } from "../utils/encryption";
+import { SectionsTitle } from "../Components/common/SectionsTitle";
+import { ItemsList } from "../Components/common/ItemsList";
+import { Info } from "../Components/common/Info";
+import { BlockStyle } from "../types/interfaces/IStyles";
+import getStyles from "../utils/getStyles";
 
 export const UsersPage = () => {
   const [users, setUsers] = useState<UserModelDataResult>();
