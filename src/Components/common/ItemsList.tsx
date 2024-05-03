@@ -18,7 +18,7 @@ export const ItemsList: React.FC<IItemsListProps> = ({ items }) => {
     <div className={getStyles(containerStyle)}>
       {items.map((el) => {
         return (
-          <ItemWithArrow onClick={() => handleClick(el.path, el.state)} key={el.path}>
+          <ItemWithArrow onClick={() => handleClick(el.path, el.state)} key={el.path + new Date()}>
             <div className={getStyles(divStyle)}>
               {/* Если нужно, добавляем фото */}
               {el.needPhoto && (

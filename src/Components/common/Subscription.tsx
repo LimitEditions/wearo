@@ -17,8 +17,6 @@ export const Subscription = ({
   subId: string | undefined;
   brandId: string | undefined;
 }) => {
-  const [photoId, setPhotoId] = useState<string | undefined | null>();
-  const [brandName, setBrandName] = useState<string>();
   const [brandInfo, setBrandInfo] = useState<BrandModel>();
   // Флаг открытия окна удаления подписки
   const [mod, setMod] = useState<boolean>(false)
@@ -35,20 +33,16 @@ export const Subscription = ({
     if (data) {
       setBrandInfo(data);
     }
-    if (brandInfo) {
-      setBrandName(brandInfo.name);
-      setPhotoId(brandInfo.photo);
-    }
   }, [data, isLoading, dataError, brandInfo]);
 
   if (!subId || !brandId) return null;
   return (
     <>
-      {brandName && photoId && (
+      {brandInfo && (
         <div className={getStyles(containerStyle)}>
           <div className={getStyles(divStyle)}>
-            <Photo id={photoId} styles={getStyles(imgStyle)} alt='Логотип бренда'/>
-            <span className={getStyles(spanStyle)}>{brandName}</span>
+            <Photo id={brandInfo.photo} styles={getStyles(imgStyle)} alt='Логотип бренда'/>
+            <span className={getStyles(spanStyle)}>{brandInfo.name}</span>
           </div>
           {/* По нажатию на кнопку отмены подписки появляется окно с кнопками Удалить и Отменить */}
           <Button showButton={true} styles={btnStyle} onClick={() => setMod(true)}>Отменить подписку</Button>

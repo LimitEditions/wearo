@@ -7,38 +7,43 @@ import {
 import { EmployeeItem } from "../common/EmployeeItem";
 import useApi from "../../hooks/useApi";
 import { retrieve } from "../../utils/encryption";
+import { Info } from "../common/Info";
+import { getEmployeePosition } from "../../utils/getEmployeePosition";
 
-export const AdminsList = () => {
-  const [admins, setAdmins] = useState<UserModelDataResult>();
+export const EmployeeList = ({userType} : {userType: UserType}) => {
+  // Должность сотрудника
+  const position = getEmployeePosition(userType)
+  const [employee, setEmployee] = useState<UserModelDataResult>();
   // Запрос на получение списка админов
   const [data, isLoading, dataError] = useApi(
     "usersList",
-    { Types: UserType.Admin },
+    { Types: userType },
     { headers: { Authorization: `Bearer ${retrieve("token")}` } },
     true
   );
 
   useEffect(() => {
       if (data) {
-        setAdmins(data);
+        setEmployee(data);
       }
   }, [data, isLoading, dataError]);
 
   return (
     <>
-      {admins?.data?.map((el) => {
+      {employee?.data?.map((el) => {
           if (!el.isDeleted) {
             return (
               <EmployeeItem
                 key={el.guid}
                 firstName={el.firstName}
                 id={el.guid}
+                position={position}
               />
             );
           }
         })}
-        {dataError && <div>Ошибка получения данных об администраторах</div>}
-        {isLoading && <div>Загрузка...</div>}
+        <Info msg="Ошибка получения данных" showInfo={!!dataError} style=""/>
+        <Info msg="Загрузка..." showInfo={isLoading} style=""/>
     </>
   );
 };
