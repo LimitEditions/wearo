@@ -2,6 +2,8 @@ import React from 'react'
 import { UserModel } from '../../api/data-contracts'
 import { EmployeeInfo } from './EmployeeInfo'
 
+// Компонент создает массив с информацией о пользователе, передает их в EmployeeInfo. 
+// Каждое поле без стрелки для перехода на другую страницу
 export const EmployeeInfoList = ({user}: {user: UserModel}) => {
     const userData = [
         {

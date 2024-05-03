@@ -10,6 +10,9 @@ import { Input } from "../common/Input";
 import getStyles from "../../utils/getStyles";
 import { SuccessfulContent } from "../common/SuccessfulContent";
 
+// Кнопка отклонения заявки на бренд. По нажатию на кнопку всплывает нижнее модальное окно, 
+// где можно указать комментарий. Если в модальном окне нажать на Отклонить, то в случае 
+// успешного запроса отображается окно, сообщающее об успехе.
 export const RejectReques = () => {
   // Флаг отправки запроса на сервер
   const [shouldExecuteReject, setShouldExecuteReject] =
@@ -21,7 +24,6 @@ export const RejectReques = () => {
     useState<boolean>(false);
   const [comment, setComment] = useState<string>("");
   const { id } = useParams();
-  // const modalRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const [dataReject, isLoading, dataError] = useApi(
     "brandsRequestsUpdate",

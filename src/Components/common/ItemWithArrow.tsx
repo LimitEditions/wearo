@@ -2,13 +2,13 @@ import React from 'react'
 import { IItemWithArrowProps } from '../../types/interfaces/componentsProps/IItemWithArrowProps'
 import { BlockStyle } from '../../types/interfaces/IStyles';
 import getStyles from '../../utils/getStyles';
-import { ArrowLeftSvg } from './ArrowLeftSvg';
+import { ArrowRight } from './ArrowRight';
 
 export const ItemWithArrow: React.FC<IItemWithArrowProps> = ({children, onClick}) => {
   return (
     <div className={getStyles(containerStyle)} onClick={onClick}>
       {children}
-      <ArrowLeftSvg />
+      <ArrowRight />
     </div>
   )
 }

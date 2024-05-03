@@ -9,6 +9,7 @@ import { BlockStyle } from "../../types/interfaces/IStyles";
 import getStyles from "../../utils/getStyles";
 import { ModalsDelete } from "./ModalsDelete";
 
+// Отображение конкретной подписки: логотип бренда с названием, а также кнопка для отмены подписки
 export const Subscription = ({
   subId,
   brandId,
@@ -19,8 +20,10 @@ export const Subscription = ({
   const [photoId, setPhotoId] = useState<string | undefined | null>();
   const [brandName, setBrandName] = useState<string>();
   const [brandInfo, setBrandInfo] = useState<BrandModel>();
+  // Флаг открытия окна удаления подписки
   const [mod, setMod] = useState<boolean>(false)
 
+  // Получаем данные о бренде, на который подписан пользователь
   const [data, isLoading, dataError] = useApi(
     "brandsDetail",
     brandId,
@@ -44,9 +47,10 @@ export const Subscription = ({
       {brandName && photoId && (
         <div className={getStyles(containerStyle)}>
           <div className={getStyles(divStyle)}>
-            <Photo id={photoId} styles={getStyles(imgStyle)} />
+            <Photo id={photoId} styles={getStyles(imgStyle)} alt='Логотип бренда'/>
             <span className={getStyles(spanStyle)}>{brandName}</span>
           </div>
+          {/* По нажатию на кнопку отмены подписки появляется окно с кнопками Удалить и Отменить */}
           <Button showButton={true} styles={btnStyle} onClick={() => setMod(true)}>Отменить подписку</Button>
         </div>
       )}

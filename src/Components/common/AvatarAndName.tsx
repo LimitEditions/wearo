@@ -3,6 +3,7 @@ import { Photo } from "./Photo";
 import { BlockStyle } from "../../types/interfaces/IStyles";
 import getStyles from "../../utils/getStyles";
 
+// Компонент для создания круглой аватарки/логотипа с именем/названием
 export const AvatarAndName = ({
   photoId,
   name,
@@ -13,7 +14,7 @@ export const AvatarAndName = ({
   return (
     <>
       <div className={getStyles(divStyle)}>
-        <Photo id={photoId} styles={getStyles(imgStyle)} />
+        <Photo id={photoId} styles={getStyles(imgStyle)} alt="Аватар пользователя"/>
         <span>{name ? name : "Имя не указано"}</span>
       </div>
     </>

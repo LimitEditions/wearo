@@ -7,9 +7,13 @@ import { Info } from "../common/Info";
 import { Modal } from "../common/Modal";
 import { SuccessfulContent } from "../common/SuccessfulContent";
 
+// Кнопка одобрения заявки на создание бренда.
+// По клику на кнопку отображается модальное окно, сообщающее об успешном одобрении заявки.
 export const ApproveRequest = () => {
+  // Флаг для отправки запроса на одобрение заявки.
   const [shouldExecuteApprove, setShouldExecuteApprove] =
     useState<boolean>(false);
+  // Флаг отображения модального окна
   const [showModal, setShowModal] = useState<boolean>(false);
   const { id } = useParams();
   const navigate = useNavigate();
@@ -24,6 +28,7 @@ export const ApproveRequest = () => {
     if (shouldExecuteApprove && (dataApprove || dataError)) {
       setShouldExecuteApprove(false);
       if (dataApprove) {
+        // При успешном запросе сообщаеи об этом в модальном окне, а через 2 секунды закрываем его и возвращаемся на страницу назад
         setShowModal(true);
         const timer = setTimeout(() => {
           setShowModal(false);

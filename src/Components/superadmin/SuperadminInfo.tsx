@@ -4,6 +4,7 @@ import { retrieve } from '../../utils/encryption';
 import useApi from '../../hooks/useApi';
 import { UserModel } from '../../api/data-contracts';
 import { EmployeeInfoList } from '../common/EmployeeInfoList';
+import { Info } from '../common/Info';
 
 export const SuperadminInfo = () => {
   const [user, setUser] = useState<UserModel>();
@@ -23,7 +24,7 @@ export const SuperadminInfo = () => {
     <>
       <SectionsTitle needsClose={false} title='Настройки' needTopSpasing={true} />
       {user && <EmployeeInfoList user={user}/>}
-      {dataError && <div>Не удалось получить данные</div>}
+      <Info msg='Не удалось получить данные.' showInfo={!!dataError} style=''/>
     </>
   )
 }

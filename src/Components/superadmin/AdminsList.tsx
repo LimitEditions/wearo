@@ -10,6 +10,7 @@ import { retrieve } from "../../utils/encryption";
 
 export const AdminsList = () => {
   const [admins, setAdmins] = useState<UserModelDataResult>();
+  // Запрос на получение списка админов
   const [data, isLoading, dataError] = useApi(
     "usersList",
     { Types: UserType.Admin },
@@ -25,8 +26,7 @@ export const AdminsList = () => {
 
   return (
     <>
-      {admins?.data &&
-        admins.data.map((el) => {
+      {admins?.data?.map((el) => {
           if (!el.isDeleted) {
             return (
               <EmployeeItem

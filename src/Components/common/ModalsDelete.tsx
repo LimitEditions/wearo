@@ -18,10 +18,12 @@ export const ModalsDelete = ({
   messageSure,
   idForDelete
 }: IModalsDeleteProps) => {
+  // Флаг для отображения окна, сообзающего об успехе
   const [isOpen2, setIsOpen2] = useState(false);
   const [shouldExequte, setShouldExequte] = useState<boolean>();
   const { id } = useParams();
   const navigate = useNavigate();
+  // Здесь в параметр запроса передаем id либо из адресной строки, либо из пропса
   const [data, isLoading, dataError] = useApi(
     apiMethod,
     idForDelete ? idForDelete : id,
@@ -31,9 +33,12 @@ export const ModalsDelete = ({
 
   useEffect(() => {
     if (shouldExequte && (data === "" || dataError)) {
+      // Останавливаем запрос
       setShouldExequte(false);
       if (data === "" && !dataError) {
+        // Закрываем первое окно "Уверены, что хотите удалить..."
         setIsOpen1(false);
+        // В случае успешного запроса показываем на 2 секунды второе окно, которое сообщает об успехе
         setIsOpen2(true);
         const timer = setTimeout(() => {
           setIsOpen1(false);
@@ -47,11 +52,13 @@ export const ModalsDelete = ({
   }, [data, isLoading, dataError]);
 
   const handleClick = () => {
+    // Отправляем запрос на удаление
     setShouldExequte(true);
   };
 
   return (
     <>
+    {/* Первое окно с кнопками Удалить и Отменить */}
       <Modal isOpen={isOpen1} setIsOpen={setIsOpen1} swipeable={false}>
         <h3 className={getStyles(h3Style)}>{messageSure}</h3>
         <div className={getStyles(div1Style)}>
@@ -67,6 +74,8 @@ export const ModalsDelete = ({
           </Button>
         </div>
       </Modal>
+      
+      {/* Второе окно, сообзающее об успехе */}
       <Modal isOpen={isOpen2} setIsOpen={setIsOpen2} swipeable={false}>
           <SuccessfulContent message={messageSuccess} />
         </Modal>

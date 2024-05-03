@@ -4,6 +4,7 @@ import getStyles from '../../utils/getStyles'
 import { ApproveRequest } from './ApproveRequest'
 import { RejectReques } from './RejectReques'
 
+// Кнопки для одобрения или отклонения заявки
 export const RequestButtons = () => {
   return (
     <div className={getStyles(divStyle)}>

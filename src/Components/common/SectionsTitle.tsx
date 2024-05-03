@@ -4,6 +4,7 @@ import { BlockStyle } from "../../types/interfaces/IStyles";
 import getStyles from "../../utils/getStyles";
 import { CloseBtn } from "./CloseBtn";
 
+// Компонент для создания названия раздела. 
 export const SectionsTitle = ({
   title,
   needsClose,

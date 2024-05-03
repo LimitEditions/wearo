@@ -55,6 +55,7 @@ export const BrandsRequestInfoList = ({
   return (
     <>
       <AvatarAndName name={info.name} photoId={info.photo}/>
+      {/* Список текстовой информации - название поля и его значение */}
       {requestInfo.map((el) => {
         return (
           <EmployeeInfo
@@ -67,9 +68,10 @@ export const BrandsRequestInfoList = ({
       })}
       <div className={getStyles(containerStyle)}>
         <h3 className={getStyles(h3Style)}>Файлы компании</h3>
+        {/* При наличии прикрепленных файлов отображаем ссылки для их скачивания */}
         {info?.files ? (
           info.files.map((el: FileModel) => {
-            return <DownloadFile id={el.fileGuid} />
+            return <DownloadFile id={el.fileGuid} key={el.fileGuid}/>
           })
         ) : (
           <span>Файлы отсутствуют</span>

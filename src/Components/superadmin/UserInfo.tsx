@@ -15,8 +15,10 @@ import { AvatarAndName } from "../common/AvatarAndName";
 
 export const UserInfo = () => {
   const [user, setUser] = useState<UserModel>();
+  // Флаг для открытия окна удаления пользователя
   const [mod, setMod] = useState<boolean>(false);
   const { id } = useParams();
+  // Запрос для получения информации о пользователе
   const [data, isLoading, dataError] = useApi(
     "usersDetail",
     id,
@@ -70,6 +72,7 @@ export const UserInfo = () => {
               name={user.firstName}
               photoId={user.mainAvatarGuid}
             />
+            {/* Разделы Избранное, Подписки, Сканирования, настройки. Каждый со стрелкой вправо и с переходом на страницу */}
             <ItemsList items={items} />
             <div className={getStyles(divStyle)}>
               <UserInfoList info={user} />

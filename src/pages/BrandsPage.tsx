@@ -10,6 +10,7 @@ import { Info } from '../Components/common/Info';
 
 export const BrandsPage = () => {
   const [brands, setBrands] = useState<BrandModelDataResult>();
+  // Запрос на получение списка брендов
   const [data, isLoading, dataError] = useApi(
     "brandsList",
     { PageSize: 100, IsDeleted: false},
@@ -30,6 +31,7 @@ export const BrandsPage = () => {
           path: `/control/brands/${item.guid}`,
           photoId: item.photo,
           needPhoto: true,
+          alt: 'Логотип бренда',
           photoStyles: getStyles(imgStyle),
         };
       })

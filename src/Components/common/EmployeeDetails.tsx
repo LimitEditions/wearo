@@ -9,9 +9,11 @@ import { BlockStyle } from "../../types/interfaces/IStyles";
 import getStyles from "../../utils/getStyles";
 import { EmployeeInfoList } from "./EmployeeInfoList";
 import { ModalsDelete } from "./ModalsDelete";
+import { Info } from "./Info";
 
 export const EmployeeDetails = () => {
   const [user, setUser] = useState<UserModel>();
+  // Флаг для открытия модалки удаления сотрудника
   const [isOpenPopup, setIsOpenPopup] = useState<boolean>(false);
   const { id } = useParams();
   const token = retrieve("token");
@@ -29,6 +31,7 @@ export const EmployeeDetails = () => {
   }, [data, isLoading, dataError]);
 
   const handleClick = () => {
+    // По нажатию на кнопку Удалить открывается модальное окно "Точно ли хотите удалить" с кнопками удаления и отмены
     setIsOpenPopup(true);
   };
 
@@ -41,6 +44,7 @@ export const EmployeeDetails = () => {
       />
       {user && (
         <>
+        {/* Информация о пользователе */}
           <EmployeeInfoList user={user} />
           <div className={getStyles(divStyle)}>
             <Button showButton={true} onClick={handleClick}>
@@ -57,8 +61,8 @@ export const EmployeeDetails = () => {
         messageSuccess="Сотрудник удален"
       />
 
-      {isLoading && <div>Загрузка...</div>}
-      {dataError && <div>Ошибка загрузки данных</div>}
+      <Info msg="Загрузка..." showInfo={isLoading} style=""/>
+      <Info msg="Ошибка загрузки данных" showInfo={!!dataError} style=""/>
     </div>
   );
 };

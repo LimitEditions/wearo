@@ -6,7 +6,8 @@ import { BlockStyle } from "../types/interfaces/IStyles";
 import getStyles from "../utils/getStyles";
 
 export const AddAdminPage = () => {
-  const RegistrationWithLogic = withAuthLogic({
+  // Форму для создания админа оборачиваем в HOC, добавляющий базовую логику регистрации пользователя
+  const CreateAdmin = withAuthLogic({
     Component: RegistrationForm,
     type: "createAdmin",
   });
@@ -14,7 +15,7 @@ export const AddAdminPage = () => {
     <>
       <SectionsTitle needsClose={true} title="Добавить администратора" />
       <div className={getStyles(divStyle)}>
-        <RegistrationWithLogic />
+        <CreateAdmin />
       </div>
     </>
   );

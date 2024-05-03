@@ -10,6 +10,7 @@ import getStyles from "../utils/getStyles";
 
 export const UsersPage = () => {
   const [users, setUsers] = useState<UserModelDataResult>();
+  // Запрос на получение списка неудаленных пользователей
   const [data, isLoading, dataError] = useApi(
     "usersList",
     { Types: UserType.User, PageSize: 100, IsDeleted: false },
@@ -24,6 +25,7 @@ export const UsersPage = () => {
     }
   }, [data, isLoading, dataError]);
 
+  // Список пользователей с аватаркой, именем, по клику будет осуществлен переход на страницу с подробной информацией о пользователе
   const items = users?.data
     ? users?.data.map((item) => {
         return {
@@ -31,6 +33,7 @@ export const UsersPage = () => {
           path: `/control/users/${item.guid}`,
           photoId: item.mainAvatarGuid,
           needPhoto: true,
+          alt: 'Аватар пользователя',
           photoStyles: getStyles(imgStyle),
         };
       })

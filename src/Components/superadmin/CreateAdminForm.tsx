@@ -14,6 +14,7 @@ export const CreateAdminForm = ({
 }) => {
   return (
     <form className={getStyles(formStyle)} onSubmit={onSubmit}>
+      {/* Создаем список инпутов, для ввода необходимой информации для создания админа */}
       <InputsList formData={formData} needLabel={true} />
       <div className={getStyles(divStyle)}>
         <Button showButton={true} type={"submit"} onClick={onSubmit}>

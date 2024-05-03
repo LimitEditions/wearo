@@ -13,6 +13,7 @@ import getStyles from "../utils/getStyles";
 
 export const BrandsRequestsPage = () => {
   const [requests, setRequests] = useState<BrandRequestModelDataResult>();
+  // Запрос на получение заявок на создание бренда
   const [data, isLoading, dataError] = useApi(
     "brandsRequestsList",
     { Status: RequestStatus.New, PageSize: 100 },
@@ -26,6 +27,7 @@ export const BrandsRequestsPage = () => {
     }
   }, [data, isLoading, dataError]);
 
+  // Список заявок, по клику на конкретную заявку открывается страница с подробной информацией
   const items = requests?.data
     ? requests?.data.map((item) => {
         return { title: item.name || '', path: `/control/requests/${item.guid}` };

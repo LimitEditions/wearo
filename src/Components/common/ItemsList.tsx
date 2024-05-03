@@ -9,6 +9,8 @@ import { Photo } from "./Photo";
 // Компонент для рендера списка элементов (название чего-то и стрелка вправо). Либо с картинкой, либо без.
 export const ItemsList: React.FC<IItemsListProps> = ({ items }) => {
   const navigate = useNavigate();
+  // По клику осуществляется переход на конкретную страницу, при наличии передается некий state,
+  // например, это может быть информация о пользователе, чтобы избежать повторного запроса
   const handleClick = (path: string, state: any) => {
     navigate(path, {state: state});
   };
@@ -20,7 +22,7 @@ export const ItemsList: React.FC<IItemsListProps> = ({ items }) => {
             <div className={getStyles(divStyle)}>
               {/* Если нужно, добавляем фото */}
               {el.needPhoto && (
-                <Photo id={el?.photoId} styles={el.photoStyles || ""} />
+                <Photo id={el?.photoId} styles={el.photoStyles || ""} alt={el.alt || 'Фотография'}/>
               )}
               <h2 className={getStyles(h2Style)}>{el.title}</h2>
             </div>

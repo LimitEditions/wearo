@@ -2,6 +2,7 @@ import React from "react";
 import { IFormData } from "../../types/interfaces/componentsProps/IInputsListProps";
 import { Input } from "./Input";
 
+// Компонент для отображеня списка инпутов, при необходимости с названием инпута в label
 export const InputsList = ({
   formData, needLabel
 }: {formData: IFormData[], needLabel: boolean}) => {
