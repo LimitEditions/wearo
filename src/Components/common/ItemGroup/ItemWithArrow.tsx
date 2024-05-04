@@ -1,8 +1,8 @@
 import React from 'react'
-import { IItemWithArrowProps } from '../../types/interfaces/componentsProps/IItemWithArrowProps'
-import { BlockStyle } from '../../types/interfaces/IStyles';
-import getStyles from '../../utils/getStyles';
-import { ArrowRight } from './ArrowRight';
+import { IItemWithArrowProps } from '../../../types/interfaces/componentsProps/IItemWithArrowProps'
+import { BlockStyle } from '../../../types/interfaces/IStyles';
+import getStyles from '../../../utils/getStyles';
+import { ArrowRight } from '../ArrowRight';
 
 export const ItemWithArrow: React.FC<IItemWithArrowProps> = ({children, onClick}) => {
   return (

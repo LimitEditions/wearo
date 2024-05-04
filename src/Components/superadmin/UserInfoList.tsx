@@ -1,6 +1,6 @@
 import React from 'react'
 import { UserModel } from '../../api/data-contracts'
-import { EmployeeInfo } from '../common/EmployeeInfo'
+import { EmployeeInfo } from '../common/EmployeeGroup/EmployeeInfo'
 
 export const UserInfoList = ({info} : {info: UserModel}) => {
   // Использование библиотеки moment для форматирования даты

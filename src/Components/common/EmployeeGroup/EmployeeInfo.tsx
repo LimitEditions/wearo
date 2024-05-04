@@ -1,8 +1,8 @@
 import React from 'react'
-import { IEmployeeInfoProps } from '../../types/interfaces/componentsProps/IEmployeeInfoProps'
-import { BlockStyle } from '../../types/interfaces/IStyles';
-import getStyles from '../../utils/getStyles';
-import { ArrowRight } from './ArrowRight';
+import { IEmployeeInfoProps } from '../../../types/interfaces/componentsProps/IEmployeeInfoProps'
+import { BlockStyle } from '../../../types/interfaces/IStyles';
+import getStyles from '../../../utils/getStyles';
+import { ArrowRight } from '../ArrowRight';
 
 // В левой части компонента отображается назване поля (например, имя) и под ним значение
 // В правой части компонента в зависимости от пропса needArrow будет отображаться стрелка вправо

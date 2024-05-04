@@ -3,7 +3,7 @@ import { SectionsTitle } from '../common/SectionsTitle'
 import { retrieve } from '../../utils/encryption';
 import useApi from '../../hooks/useApi';
 import { UserModel } from '../../api/data-contracts';
-import { EmployeeInfoList } from '../common/EmployeeInfoList';
+import { EmployeeInfoList } from '../common/EmployeeGroup/EmployeeInfoList';
 import { Info } from '../common/Info';
 
 export const SuperadminInfo = () => {

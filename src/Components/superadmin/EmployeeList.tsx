@@ -4,7 +4,7 @@ import {
   UserModelDataResult,
   UserType,
 } from "../../api/data-contracts";
-import { EmployeeItem } from "../common/EmployeeItem";
+import { EmployeeItem } from "../common/EmployeeGroup/EmployeeItem";
 import useApi from "../../hooks/useApi";
 import { retrieve } from "../../utils/encryption";
 import { Info } from "../common/Info";

@@ -6,7 +6,9 @@ import { BlockStyle } from "../../types/interfaces/IStyles";
 export const SuccessfulContent = ({message}: {message: string}) => {
   return (
     <>
-      <div className={getStyles(containerStyle)}>
+      {/* здесь нужен tabIndex, так как внутри модалки не оказывается ни единого фокусируемого дом-элемента
+      и в консоль падает "There are no focusable elements inside the <FocusTrap />" */}
+      <div className={getStyles(containerStyle)} tabIndex={0}>
         <img src="/images/successful.png" alt="Галочка"/>
         <h3 className={getStyles(h3Style)}>{message}</h3>
       </div>

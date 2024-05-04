@@ -1,6 +1,6 @@
 import React from 'react'
 
-export const BrandInfo = () => {
+export const BrandInfoPage = () => {
   return (
     <div>BrandInfo</div>
   )

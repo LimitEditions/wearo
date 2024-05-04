@@ -1,10 +1,10 @@
 import React from "react";
 import { BrandRequestModel, FileModel } from "../../api/data-contracts";
-import { EmployeeInfo } from "./EmployeeInfo";
-import { DownloadFile } from "./DownloadFile";
+import { EmployeeInfo } from "../common/EmployeeGroup/EmployeeInfo";
+import { DownloadFile } from "../common/DownloadFile";
 import { BlockStyle } from "../../types/interfaces/IStyles";
 import getStyles from "../../utils/getStyles";
-import { AvatarAndName } from "./AvatarAndName";
+import { AvatarAndName } from "../common/AvatarAndName";
 
 export const BrandsRequestInfoList = ({
   info,

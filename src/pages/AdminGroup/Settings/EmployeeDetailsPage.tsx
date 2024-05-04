@@ -1,33 +1,30 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import useApi from "../../hooks/useApi";
-import { retrieve } from "../../utils/encryption";
-import { UserModel } from "../../api/data-contracts";
-import { SectionsTitle } from "./SectionsTitle";
-import { Button } from "./Button";
-import { BlockStyle } from "../../types/interfaces/IStyles";
-import getStyles from "../../utils/getStyles";
-import { EmployeeInfoList } from "./EmployeeInfoList";
-import { ModalsDelete } from "./ModalsDelete";
-import { Info } from "./Info";
+import useApi from "../../../hooks/useApi";
+import { retrieve } from "../../../utils/encryption";
+import { UserModel } from "../../../api/data-contracts";
+import { SectionsTitle } from "../../../Components/common/SectionsTitle";
+import { Button } from "../../../Components/common/Button";
+import { BlockStyle } from "../../../types/interfaces/IStyles";
+import getStyles from "../../../utils/getStyles";
+import { EmployeeInfoList } from "../../../Components/common/EmployeeGroup/EmployeeInfoList";
+import { ModalsDelete } from "../../../Components/common/ModalsDelete";
+import { Info } from "../../../Components/common/Info";
 
-export const EmployeeDetails = () => {
+export const EmployeeDetailsPage = () => {
   const [user, setUser] = useState<UserModel>();
   // Флаг для открытия модалки удаления сотрудника
   const [isOpenPopup, setIsOpenPopup] = useState<boolean>(false);
   const { id } = useParams();
-  const token = retrieve("token");
-  const [data, isLoading, dataError] = useApi(
+  const [data, isLoading, dataError] = useApi<"usersDetail", UserModel>(
     "usersDetail",
     id,
-    { headers: { Authorization: `Bearer ${token}` } },
+    { headers: { Authorization: `Bearer ${retrieve("token")}` } },
     true
   );
 
   useEffect(() => {
-    if (data) {
-      setUser(data);
-    }
+    setUser(data as UserModel);
   }, [data, isLoading, dataError]);
 
   const handleClick = () => {

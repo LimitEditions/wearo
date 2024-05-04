@@ -1,5 +1,5 @@
 import React from 'react'
-import { UserModel } from '../../api/data-contracts'
+import { UserModel } from '../../../api/data-contracts'
 import { EmployeeInfo } from './EmployeeInfo'
 
 // Компонент создает массив с информацией о пользователе, передает их в EmployeeInfo. 

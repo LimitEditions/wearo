@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { UserModelDataResult, UserType } from "../api/data-contracts";
-import useApi from "../hooks/useApi";
-import { retrieve } from "../utils/encryption";
-import { SectionsTitle } from "../Components/common/SectionsTitle";
-import { ItemsList } from "../Components/common/ItemsList";
-import { Info } from "../Components/common/Info";
-import { BlockStyle } from "../types/interfaces/IStyles";
-import getStyles from "../utils/getStyles";
+import { UserModelDataResult, UserType } from "../../../../api/data-contracts";
+import useApi from "../../../../hooks/useApi";
+import { retrieve } from "../../../../utils/encryption";
+import { SectionsTitle } from "../../../../Components/common/SectionsTitle";
+import { ItemsList } from "../../../../Components/common/ItemGroup/ItemsList";
+import { Info } from "../../../../Components/common/Info";
+import { BlockStyle } from "../../../../types/interfaces/IStyles";
+import getStyles from "../../../../utils/getStyles";
+import { Route, Routes } from "react-router-dom";
+import { UserInfo } from "./UserInfoPage";
+
 
 export const UsersPage = () => {
   const [users, setUsers] = useState<UserModelDataResult>();
@@ -21,9 +24,9 @@ export const UsersPage = () => {
   useEffect(() => {
     if (data) {
       setUsers(data);
-      console.log(users?.data);
+      // console.log(users?.data);
     }
-  }, [data, isLoading, dataError]);
+  }, [data, isLoading, dataError, users]);
 
   // Список пользователей с аватаркой, именем, по клику будет осуществлен переход на страницу с подробной информацией о пользователе
   const items = users?.data
@@ -41,20 +44,27 @@ export const UsersPage = () => {
 
   return (
     <>
-      <SectionsTitle title="Пользователи" needsClose={true} />
-      <div className={getStyles(divStyle)}>
-        {items && <ItemsList items={items} />}
-        <Info
-          msg="Загружаем пользователей..."
-          showInfo={isLoading}
-          style={getStyles(pStyle)}
-        />
-        <Info
-          msg="Ошибка запроса, повторите позже."
-          showInfo={!!dataError}
-          style={getStyles(pStyle)}
-        />
-      </div>
+      <Routes>
+        <Route index element={
+          <>
+            <SectionsTitle title="Пользователи" needsClose={true} />
+            <div className={getStyles(divStyle)}>
+              {items && <ItemsList items={items} />}
+              <Info
+                msg="Загружаем пользователей..."
+                showInfo={isLoading}
+                style={getStyles(pStyle)}
+              />
+              <Info
+                msg="Ошибка запроса, повторите позже."
+                showInfo={!!dataError}
+                style={getStyles(pStyle)}
+              />
+            </div>
+          </>
+        }/>
+        <Route path=":id/*" element={<UserInfo />} />
+      </Routes>
     </>
   );
 };

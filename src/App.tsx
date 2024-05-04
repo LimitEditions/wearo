@@ -9,22 +9,10 @@ import { Wardrobe } from './Components/user/Wardrobe';
 import { Profile } from './Components/user/Profile';
 import AuthContext from './context/AuthProvider';
 import { UserType } from './api/data-contracts';
-import { SuperadminSettingsPage } from './pages/SuperadminSettingsPage';
+import { SettingsPage } from './pages/AdminGroup/Settings/SettingsPage';
 import { Authorization } from './pages/Authorization';
-import { AddAdminPage } from './pages/AddAdminPage';
-import { EmployeeDetails } from './Components/common/EmployeeDetails';
-import { SuperadminControlPage } from './pages/SuperadminControlPage';
-import { BrandsRequestsPage } from './pages/BrandsRequestsPage';
-import { UsersPage } from './pages/UsersPage';
-import { BrandsPage } from './pages/BrandsPage';
-import { PostsPage } from './pages/PostsPage';
-import { BrandRequestInfo } from './Components/superadmin/BrandRequestInfo';
-import { UserInfo } from './Components/superadmin/UserInfo';
-import { UserFavoritesPage } from './pages/UserFavoritesPage';
-import { UserSubscriptionsPage } from './Components/common/UserSubscriptionsPage';
-import { UserScansPage } from './Components/common/UserScansPage';
-import { EditUserInfo } from './Components/superadmin/EditUserInfo';
-import { BrandInfo } from './Components/superadmin/BrandInfo';
+import { ControlPage } from './pages/AdminGroup/Control/ControlPage';
+
 
 
 function App() {
@@ -43,25 +31,9 @@ function App() {
         <Route path='/auth' element={ <Authorization /> }/>
         <Route path='/login' element={ <LoginPage /> }/>
         <Route path='/registration' element={ <RegistrationPage /> }/>
-        {role === 'SuperAdmin' && <Route path='/options'>
-          <Route index element={ <SuperadminSettingsPage/> } /> 
-          <Route path='addadmin' element={ <AddAdminPage /> }/>
-          <Route path="admin/:id" element={<EmployeeDetails />} />
-        </Route>}
-        {role === 'SuperAdmin' && <Route path='/control'>
-          <Route index element={ <SuperadminControlPage/> } /> 
-          <Route path='requests' element={ <BrandsRequestsPage /> }/>
-          <Route path="requests/:id" element={<BrandRequestInfo />} />
-          <Route path="users" element={<UsersPage />} />
-          <Route path="users/:id" element={<UserInfo />} />
-          <Route path="users/:id/favorites" element={<UserFavoritesPage />} />
-          <Route path="users/:id/subscriptions" element={<UserSubscriptionsPage />} />
-          <Route path="users/:id/scans" element={<UserScansPage />} />
-          <Route path="users/:id/edit" element={<EditUserInfo />} />
-          <Route path="brands" element={<BrandsPage />} />
-          <Route path="brands/:id" element={<BrandInfo />} />
-          <Route path="posts" element={<PostsPage />} />
-        </Route>} 
+        <Route path='/options/*' element={ <SettingsPage /> }/>
+        <Route path='/control/*' element={ <ControlPage /> }/>
+        
         <Route path='/wardrobe' element={ <Wardrobe /> }>
           <Route index element={<div>Welcome to the Wardrobe!</div>} /> {/* Отображается, когда нет других совпадений */}
           <Route path='profile' >

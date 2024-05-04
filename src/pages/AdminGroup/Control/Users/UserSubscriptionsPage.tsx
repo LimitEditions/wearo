@@ -2,15 +2,15 @@ import React, { useEffect, useState } from "react";
 import {
   SubscriptionModel,
   SubscriptionModelDataResult,
-} from "../../api/data-contracts";
-import useApi from "../../hooks/useApi";
-import { retrieve } from "../../utils/encryption";
-import { Subscription } from "./Subscription";
-import { Info } from "./Info";
+} from "../../../../api/data-contracts";
+import useApi from "../../../../hooks/useApi";
+import { retrieve } from "../../../../utils/encryption";
+import { Subscription } from "../../../../Components/common/Subscription";
+import { Info } from "../../../../Components/common/Info";
 import { useParams } from "react-router-dom";
-import { SectionsTitle } from "./SectionsTitle";
-import { BlockStyle } from "../../types/interfaces/IStyles";
-import getStyles from "../../utils/getStyles";
+import { SectionsTitle } from "../../../../Components/common/SectionsTitle";
+import { BlockStyle } from "../../../../types/interfaces/IStyles";
+import getStyles from "../../../../utils/getStyles";
 
 export const UserSubscriptionsPage = () => {
   const [subscriptions, setSubscriptions] =

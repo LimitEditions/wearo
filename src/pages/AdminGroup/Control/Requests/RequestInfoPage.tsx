@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { SectionsTitle } from "../common/SectionsTitle";
+import { SectionsTitle } from "../../../../Components/common/SectionsTitle";
 import { useParams } from "react-router-dom";
-import { BrandRequestModel } from "../../api/data-contracts";
-import useApi from "../../hooks/useApi";
-import { retrieve } from "../../utils/encryption";
-import { BlockStyle } from "../../types/interfaces/IStyles";
-import getStyles from "../../utils/getStyles";
-import { BrandsRequestInfoList } from "../common/BrandsRequestInfoList";
-import { RequestButtons } from "./RequestButtons";
-import { Info } from "../common/Info";
+import { BrandRequestModel } from "../../../../api/data-contracts";
+import useApi from "../../../../hooks/useApi";
+import { retrieve } from "../../../../utils/encryption";
+import { BlockStyle } from "../../../../types/interfaces/IStyles";
+import getStyles from "../../../../utils/getStyles";
+import { BrandsRequestInfoList } from "../../../../Components/superadmin/BrandsRequestInfoList";
+import { RequestButtons } from "../../../../Components/superadmin/RequestButtons";
+import { Info } from "../../../../Components/common/Info";
 
-export const BrandRequestInfo = () => {
+export const RequestInfoPage = () => {
   const [brandInfo, setBrandInfo] = useState<BrandRequestModel>();
   const { id } = useParams();
   // Запрос на получение информации о конкретной заявки на создание бренда

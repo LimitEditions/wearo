@@ -10,7 +10,7 @@ import { UserType } from "../../api/data-contracts";
 export const AllAdmins = () => {
   const navigate = useNavigate();
   const handleClick = () => {
-    navigate("/options/addadmin");
+    navigate("./addadmin");
   };
 
   return (

@@ -1,10 +1,10 @@
 import React from "react";
-import { IItemsListProps } from "../../types/interfaces/componentsProps/IItemsListProps";
+import { IItemsListProps } from "../../../types/interfaces/componentsProps/IItemsListProps";
 import { ItemWithArrow } from "./ItemWithArrow";
 import { useNavigate } from "react-router-dom";
-import { BlockStyle } from "../../types/interfaces/IStyles";
-import getStyles from "../../utils/getStyles";
-import { Photo } from "./Photo";
+import { BlockStyle } from "../../../types/interfaces/IStyles";
+import getStyles from "../../../utils/getStyles";
+import { Photo } from "../Photo";
 
 // Компонент для рендера списка элементов (название чего-то и стрелка вправо). Либо с картинкой, либо без.
 export const ItemsList: React.FC<IItemsListProps> = ({ items }) => {

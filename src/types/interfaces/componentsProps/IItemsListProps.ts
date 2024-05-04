@@ -9,5 +9,5 @@ type Item = {
 }
 
 export interface IItemsListProps {
-    items: Item[],
+    items: Item[] | [],
 }
