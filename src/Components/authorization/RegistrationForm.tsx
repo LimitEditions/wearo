@@ -2,15 +2,12 @@ import React, { useEffect, useRef, useState } from "react";
 import getStyles from "../../utils/getStyles";
 import { BlockStyle } from "../../types/interfaces/IStyles";
 import { validateField } from "../../utils/validation";
-import { Button } from "../common/Button";
 import { IRegistrationFormProps } from "../../types/interfaces/componentsProps/IFormProps";
 import useApi from "../../hooks/useApi";
-import { InputsList } from "../common/InputsList";
 import { Info } from "../common/Info";
 import { Modal } from "../common/Modal";
 import { SuccessfulContent } from "../common/SuccessfulContent";
-import { UserRegistrationForm } from "./UserRegistrationForm";
-import { CreateAdminForm } from "../superadmin/CreateAdminForm";
+import { AuthForm } from "./AuthForm";
 
 // Компонент будет создавать либо форму для регистрации user, либо для регистрации нового admin
 export const RegistrationForm = ({
@@ -88,8 +85,7 @@ export const RegistrationForm = ({
 
   return (
     <>
-      {type === 'reg' && <UserRegistrationForm formData={formData} onSubmit={onSubmit} />}
-      {type === 'createAdmin' && <CreateAdminForm formData={formData} onSubmit={onSubmit} />}
+      <AuthForm onSubmit={onSubmit} formData={formData} type={type} />
       <Info showInfo={isLoading} msg="Loading..." style={getStyles(pStyle)} />
       <Info showInfo={error ? true: false} msg="Ошибка регистрации." style={getStyles(spanErrorStyle)} />
       <Modal isOpen={mod} setIsOpen={setMod} swipeable={false}>
