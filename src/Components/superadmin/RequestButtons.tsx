@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { BlockStyle } from '../../types/interfaces/IStyles'
 import getStyles from '../../utils/getStyles'
-// import { ApproveRequest } from './ApproveRequest'
-// import { RejectReques } from './RejectReques'
 import useApi from '../../hooks/useApi'
 import { retrieve } from '../../utils/encryption'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -43,9 +41,13 @@ export const RequestButtons = () => {
   );
 
   useEffect(() => {
-    if(shouldExecute && (data || error)) {
+    if(shouldExecute && (data || data === '' || error)) {
       // после взаимодействия с сервером сбрасываем флаг
       setShouldExecute(false);
+      // Если в ошибку ничего не пришло, то открываем окно об успехе
+      if (!error){
+        openModal('modalResult')
+      }
     };
     if(activeModal === 'modalResult') {
       // осуществляем переход по таймингу после всплытия результирующего окна
@@ -61,9 +63,7 @@ export const RequestButtons = () => {
 
   return (
     <div className={getStyles(div1Style)}>
-        {/* <ApproveRequest />
-        <RejectReques /> */}
-        <Button showButton={true} onClick={() => {openModal('modalResult'); setStatus('approve'); setShouldExecute(true)}}>
+        <Button showButton={true} onClick={() => {setStatus('approve'); setShouldExecute(true)}}>
           Одобрить
         </Button>
         <Button showButton={true} styles={buttonStyle} onClick={() => {openModal('modalComment'); setStatus('reject')}}>
@@ -88,7 +88,7 @@ export const RequestButtons = () => {
             <Button
               showButton={true}
               type="button"
-              onClick={() => {setShouldExecute(true); setActiveModal('modalResult')}}
+              onClick={() => {setShouldExecute(true)}}
             >
               Отклонить
             </Button>
