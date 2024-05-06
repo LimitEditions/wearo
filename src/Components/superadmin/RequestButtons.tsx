@@ -6,7 +6,6 @@ import { retrieve } from '../../utils/encryption'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Modal } from '../common/Modal'
 import { SuccessfulContent } from '../common/SuccessfulContent'
-import { Info } from '../common/Info'
 import { Button } from '../common/Button'
 import { Input } from '../common/Input'
 
@@ -44,10 +43,6 @@ export const RequestButtons = () => {
     if(shouldExecute && (data || data === '' || error)) {
       // после взаимодействия с сервером сбрасываем флаг
       setShouldExecute(false);
-      // Если в ошибку ничего не пришло, то открываем окно об успехе
-      if (!error){
-        openModal('modalResult')
-      }
     };
     if(activeModal === 'modalResult') {
       // осуществляем переход по таймингу после всплытия результирующего окна
@@ -63,7 +58,7 @@ export const RequestButtons = () => {
 
   return (
     <div className={getStyles(div1Style)}>
-        <Button showButton={true} onClick={() => {setStatus('approve'); setShouldExecute(true)}}>
+        <Button showButton={true} onClick={() => {openModal('modalResult'); setStatus('approve'); setShouldExecute(true)}}>
           Одобрить
         </Button>
         <Button showButton={true} styles={buttonStyle} onClick={() => {openModal('modalComment'); setStatus('reject')}}>
@@ -88,7 +83,7 @@ export const RequestButtons = () => {
             <Button
               showButton={true}
               type="button"
-              onClick={() => {setShouldExecute(true)}}
+              onClick={() => {setShouldExecute(true); setActiveModal('modalResult')}}
             >
               Отклонить
             </Button>
@@ -96,9 +91,12 @@ export const RequestButtons = () => {
         </Modal>
 
         <Modal isOpen={activeModal === 'modalResult'} setIsOpen={closeModal} swipeable={false}>
-          <SuccessfulContent message={`Заявка успешно ${status === 'approve'? 'одобрена': 'отклонена'}`} />
+          {error ? 
+            <span className={getStyles(spanStyle)}>Ошибка запроса, повторите позже</span> 
+            :
+            <SuccessfulContent message={`Заявка успешно ${status === 'approve'? 'одобрена': 'отклонена'}`} />
+          }
         </Modal>
-        <Info msg="Ошибка запроса" showInfo={!!error} style="" />
     </div>
   )
 }
@@ -127,3 +125,8 @@ const div2Style: BlockStyle = {
   spacing: "m-auto mt-8",
   blockSize: "w-3/4",
 };
+
+const spanStyle: BlockStyle = {
+  text: 'text-base text-black',
+  spacing: 'pb-4'
+}
