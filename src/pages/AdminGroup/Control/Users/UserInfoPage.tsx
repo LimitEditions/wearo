@@ -18,12 +18,12 @@ import { UserScansPage } from "./UserScansPage";
 import { EditUserInfo } from "./EditUserInfo";
 
 export const UserInfo = () => {
-  const [user, setUser] = useState<UserModel>();
+  const [user, setUser] = useState<UserModel>({});
   // Флаг для открытия окна удаления пользователя
   const [mod, setMod] = useState<boolean>(false);
   const { id } = useParams();
   // Запрос для получения информации о пользователе
-  const [data, isLoading, dataError] = useApi(
+  const [data, isLoading, dataError] = useApi<"usersDetail", UserModel>(
     "usersDetail",
     id,
     { headers: { Authorization: `Bearer ${retrieve("token")}` } },
@@ -36,8 +36,7 @@ export const UserInfo = () => {
     }
   }, [data, isLoading, dataError]);
 
-  const items = user
-    ? [
+  const items = [
         {
           title: "Избранное",
           path: `/control/users/${user.guid}/favorites`,
@@ -60,12 +59,12 @@ export const UserInfo = () => {
           state: user
         },
       ]
-    : null;
 
   return (
-
-      <Routes>
-        <Route index element={
+    <Routes>
+      <Route
+        index
+        element={
           <>
             <div className={getStyles(containerStyle)}>
               <SectionsTitle
@@ -73,7 +72,7 @@ export const UserInfo = () => {
                 title="Профиль"
                 needBottomSpasing={true}
               />
-              {user && items && (
+              {items && (
                 <>
                   <AvatarAndName
                     name={user.firstName}
@@ -100,15 +99,19 @@ export const UserInfo = () => {
               )}
             </div>
             <Info showInfo={isLoading} msg="Загрузка..." style="" />
-            <Info showInfo={!!dataError} msg="Ошибка загрузки данных" style="" />
+            <Info
+              showInfo={!!dataError}
+              msg="Ошибка загрузки данных"
+              style=""
+            />
           </>
-        }/>
-        <Route path="favorites" element={<UserFavoritesPage />} />
-        <Route path="subscriptions" element={<UserSubscriptionsPage />} />
-        <Route path="scans" element={<UserScansPage />} />
-        <Route path="edit" element={<EditUserInfo />} />
-      </Routes>
-      
+        }
+      />
+      <Route path="favorites" element={<UserFavoritesPage />} />
+      <Route path="subscriptions" element={<UserSubscriptionsPage />} />
+      <Route path="scans" element={<UserScansPage />} />
+      <Route path="edit" element={<EditUserInfo />} />
+    </Routes>
   );
 };
 

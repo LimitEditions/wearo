@@ -9,11 +9,12 @@ import { ItemsList } from '../../../../Components/common/ItemGroup/ItemsList';
 import { Info } from '../../../../Components/common/Info';
 import { Route, Routes } from 'react-router-dom';
 import { BrandInfoPage } from './BrandInfoPage';
+import { Item } from '../../../../types/interfaces/componentsProps/IItemsListProps';
 
 export const BrandsPage = () => {
-  const [brands, setBrands] = useState<BrandModelDataResult>();
+  const [items, setItems] = useState<Item[]>([])
   // Запрос на получение списка брендов
-  const [data, isLoading, dataError] = useApi(
+  const [data, isLoading, dataError] = useApi<'brandsList', BrandModelDataResult>(
     "brandsList",
     { PageSize: 100, IsDeleted: false},
     { headers: { Authorization: `Bearer ${retrieve("token")}` } },
@@ -21,23 +22,20 @@ export const BrandsPage = () => {
   );
 
   useEffect(() => {
-    if (data) {
-      setBrands(data);
-    }
-  }, [data, isLoading, dataError]);
-
-  const items = brands?.data
-    ? brands?.data.map((item) => {
+    if (data?.data) {
+      // Список брендов с логотипом, названием, по клику будет осуществлен переход на страницу с подробной информацией о бренде
+      setItems(data.data.map((item) => {
         return {
           title: item.name || "Название не указано",
-          path: `/control/brands/${item.guid}`,
+          path: `./${item.guid}`,
           photoId: item.photo,
           needPhoto: true,
           alt: 'Логотип бренда',
           photoStyles: getStyles(imgStyle),
-        };
-      })
-    : null;
+        }
+      }))
+    }
+  }, [data, isLoading, dataError]);
 
   return (
     <>

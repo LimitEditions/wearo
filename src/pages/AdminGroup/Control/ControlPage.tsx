@@ -8,10 +8,10 @@ import { PostsPage } from "./PostsPage";
 
 export const ControlPage = () => {
   const items = [
-    { title: "Заявки на создание бренда", path: "/control/requests" },
-    { title: "Пользователи", path: "/control/users" },
-    { title: "Бренды", path: "/control/brands" },
-    { title: "Публикации", path: "/control/posts" },
+    { title: "Заявки на создание бренда", path: "./requests" },
+    { title: "Пользователи", path: "./users" },
+    { title: "Бренды", path: "./brands" },
+    { title: "Публикации", path: "./posts" },
   ];
   return (
     <>

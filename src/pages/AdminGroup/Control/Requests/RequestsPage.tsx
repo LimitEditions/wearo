@@ -12,11 +12,12 @@ import { Info } from "../../../../Components/common/Info";
 import getStyles from "../../../../utils/getStyles";
 import { Route, Routes } from "react-router-dom";
 import { RequestInfoPage } from "./RequestInfoPage";
+import { Item } from "../../../../types/interfaces/componentsProps/IItemsListProps";
 
 export const RequestsPage = () => {
-  const [requests, setRequests] = useState<BrandRequestModelDataResult>();
+  const [items, setItems] = useState<Item[]>([])
   // Запрос на получение заявок на создание бренда
-  const [data, isLoading, dataError] = useApi(
+  const [data, isLoading, dataError] = useApi<'brandsRequestsList', BrandRequestModelDataResult>(
     "brandsRequestsList",
     { Status: RequestStatus.New, PageSize: 100 },
     { headers: { Authorization: `Bearer ${retrieve("token")}` } },
@@ -24,16 +25,15 @@ export const RequestsPage = () => {
   );
 
   useEffect(() => {
-    if (data) {
-      setRequests(data);
+    if (data?.data) {
+      // Список заявок, по клику на конкретную заявку открывается страница с подробной информацией
+      setItems(data.data.map((item) => {
+        return {
+           title: item.name || '', path: `./${item.guid}` 
+        }
+      }))
     }
   }, [data, isLoading, dataError]);
-  // Список заявок, по клику на конкретную заявку открывается страница с подробной информацией
-  const items = requests?.data
-    ? requests?.data.map((item) => {
-        return { title: item.name || '', path: `/control/requests/${item.guid}` };
-      })
-    : null;
 
   return (
     <Routes>
