@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { UserModelDataResult, UserType } from "../../../../api/data-contracts";
+import { UserModel, UserModelDataResult, UserType } from "../../../../api/data-contracts";
 import useApi from "../../../../hooks/useApi";
 import { retrieve } from "../../../../utils/encryption";
 import { SectionsTitle } from "../../../../Components/common/SectionsTitle";
@@ -9,12 +9,13 @@ import { BlockStyle } from "../../../../types/interfaces/IStyles";
 import getStyles from "../../../../utils/getStyles";
 import { Route, Routes } from "react-router-dom";
 import { UserInfo } from "./UserInfoPage";
+import { Item } from "../../../../types/interfaces/componentsProps/IItemsListProps";
 
 
 export const UsersPage = () => {
-  const [users, setUsers] = useState<UserModelDataResult>();
+  const [items, setItems] = useState<Item[]>([])
   // Запрос на получение списка неудаленных пользователей
-  const [data, isLoading, dataError] = useApi(
+  const [data, isLoading, dataError] = useApi<'usersList', UserModelDataResult>(
     "usersList",
     { Types: UserType.User, PageSize: 100, IsDeleted: false },
     { headers: { Authorization: `Bearer ${retrieve("token")}` } },
@@ -22,15 +23,9 @@ export const UsersPage = () => {
   );
 
   useEffect(() => {
-    if (data) {
-      setUsers(data);
-      // console.log(users?.data);
-    }
-  }, [data, isLoading, dataError, users]);
-
-  // Список пользователей с аватаркой, именем, по клику будет осуществлен переход на страницу с подробной информацией о пользователе
-  const items = users?.data
-    ? users?.data.map((item) => {
+    if (data?.data) {
+      // Список пользователей с аватаркой, именем, по клику будет осуществлен переход на страницу с подробной информацией о пользователе
+      setItems(data.data.map((item) => {
         return {
           title: item.firstName || "Имя не указано",
           path: `/control/users/${item.guid}`,
@@ -39,8 +34,9 @@ export const UsersPage = () => {
           alt: 'Аватар пользователя',
           photoStyles: getStyles(imgStyle),
         };
-      })
-    : null;
+      }))
+    }
+  }, [data, isLoading, dataError]);
 
   return (
     <>

@@ -1,4 +1,4 @@
-type Item = {
+export type Item = {
     title: string,
     path: string,
     photoId?: string | undefined | null,
