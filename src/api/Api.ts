@@ -10,6 +10,7 @@
  */
 
 import {
+  AddExtraFileToPostModel,
   AddFileToLookModel,
   AddProductToLookModel,
   AddTagToLookModel,
@@ -31,8 +32,10 @@ import {
   CreateClothingCollectionModel,
   CreateColorsModel,
   CreateCommentModel,
+  CreateFileProductModel,
   CreateLookModel,
   CreateMaterialModel,
+  CreateMessageModel,
   CreatePostModel,
   CreateProductCategoryModel,
   CreateProductColor,
@@ -40,16 +43,23 @@ import {
   CreateProductItemModel,
   CreateProductMaterialModel,
   CreateProductModel,
+  CreatePromotionCodeModel,
+  CreatePromotionModel,
   CreateScanModel,
   CreateSubscriptionModel,
   CreateTipModel,
   CreateUserModel,
   FileModel,
+  FileProductModel,
   FileType,
   FilterType,
+  ForwardMessagesModel,
   LookModel,
   LookModelDataResult,
   MaterialModel,
+  MessageModel,
+  MessageModelDataResult,
+  PostFileModel,
   PostModel,
   PostModelDataResult,
   ProblemDetails,
@@ -57,11 +67,14 @@ import {
   ProductCategoryModelDataResult,
   ProductColorModel,
   ProductItemModel,
+  ProductItemModelDataResult,
   ProductMaterialModel,
   ProductMeasurementModel,
   ProductModel,
   ProductModelDataResult,
   ProductStatus,
+  PromotionModel,
+  PromotionModelDataResult,
   RefreshModel,
   RejectRequestModel,
   RequestStatus,
@@ -76,13 +89,17 @@ import {
   UpdateCommentModel,
   UpdateLookModel,
   UpdateMaterialModel,
+  UpdateMessageModel,
   UpdatePostModel,
   UpdateProductCategoryModel,
   UpdateProductItemModel,
   UpdateProductModel,
+  UpdatePromotionModel,
   UpdateTipModel,
   UpdateUserModel,
   UserModel,
+  UserModelDataResult,
+  UserType,
 } from "./data-contracts";
 import { ContentType, HttpClient, RequestParams } from "./http-client";
 
@@ -205,6 +222,28 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
       SortMember?: string;
       /** Направление сортировки - по возрастанию */
       Ascending?: boolean;
+      /**
+       * Начало периода.
+       * @format date-time
+       */
+      createDtStart?: string;
+      /**
+       * Конец периода.
+       * @format date-time
+       */
+      createDtEnd?: string;
+      /**
+       * Начало периода.
+       * @format date-time
+       */
+      updateDtStart?: string;
+      /**
+       * Конец периода.
+       * @format date-time
+       */
+      updateDtEnd?: string;
+      /** Отметка удаления */
+      IsDeleted?: boolean;
     },
     params: RequestParams = {},
   ) =>
@@ -325,6 +364,18 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
       SortMember?: string;
       /** Направление сортировки - по возрастанию */
       Ascending?: boolean;
+      /**
+       * Начало периода.
+       * @format date-time
+       */
+      updateDtStart?: string;
+      /**
+       * Конец периода.
+       * @format date-time
+       */
+      updateDtEnd?: string;
+      /** Отметка удаления */
+      IsDeleted?: boolean;
     },
     params: RequestParams = {},
   ) =>
@@ -647,11 +698,10 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @secure
    */
   filesDetail = (id: string, params: RequestParams = {}) =>
-    this.request<FileModel, ProblemDetails>({
+    this.request<void, ProblemDetails>({
       path: `/api/Files/${id}`,
       method: "GET",
       secure: true,
-      format: "json",
       ...params,
     });
   /**
@@ -667,6 +717,31 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
     this.request<FileModel, ProblemDetails>({
       path: `/api/Files/${id}`,
       method: "DELETE",
+      secure: true,
+      format: "json",
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags Files
+   * @name FilesModelDetail
+   * @summary Получить файл
+   * @request GET:/api/Files/{id}/Model
+   * @secure
+   */
+  filesModelDetail = (
+    id: string,
+    query?: {
+      /** @default false */
+      includeProducts?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<FileModel, ProblemDetails>({
+      path: `/api/Files/${id}/Model`,
+      method: "GET",
+      query: query,
       secure: true,
       format: "json",
       ...params,
@@ -720,6 +795,42 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
       path: `/api/Files/${type}/${field}/${id}`,
       method: "PATCH",
       query: query,
+      secure: true,
+      format: "json",
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags Files
+   * @name FilesProductsCreate
+   * @summary Привязать ссылку на продукт к файлу
+   * @request POST:/api/Files/Products
+   * @secure
+   */
+  filesProductsCreate = (data: CreateFileProductModel, params: RequestParams = {}) =>
+    this.request<FileProductModel, ProblemDetails>({
+      path: `/api/Files/Products`,
+      method: "POST",
+      body: data,
+      secure: true,
+      type: ContentType.Json,
+      format: "json",
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags Files
+   * @name FilesProductsDelete
+   * @summary Удаление привязки продукта к файлу
+   * @request DELETE:/api/Files/Products/{id}
+   * @secure
+   */
+  filesProductsDelete = (id: string, params: RequestParams = {}) =>
+    this.request<FileModel, ProblemDetails>({
+      path: `/api/Files/Products/${id}`,
+      method: "DELETE",
       secure: true,
       format: "json",
       ...params,
@@ -1031,15 +1142,15 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
   /**
    * No description
    *
-   * @tags PostCommentsControllers
-   * @name PostCommentsControllersDetail
+   * @tags Messages
+   * @name MessagesDetail
    * @summary Получить по ид
-   * @request GET:/api/PostCommentsControllers/{id}
+   * @request GET:/api/Messages/{id}
    * @secure
    */
-  postCommentsControllersDetail = (id: string, params: RequestParams = {}) =>
-    this.request<CommentModel, ProblemDetails>({
-      path: `/api/PostCommentsControllers/${id}`,
+  messagesDetail = (id: string, params: RequestParams = {}) =>
+    this.request<MessageModel, ProblemDetails>({
+      path: `/api/Messages/${id}`,
       method: "GET",
       secure: true,
       format: "json",
@@ -1048,14 +1159,15 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
   /**
    * No description
    *
-   * @tags PostCommentsControllers
-   * @name PostCommentsControllersDelete
-   * @request DELETE:/api/PostCommentsControllers/{id}
+   * @tags Messages
+   * @name MessagesDelete
+   * @summary Удаление сообщения
+   * @request DELETE:/api/Messages/{id}
    * @secure
    */
-  postCommentsControllersDelete = (id: string, params: RequestParams = {}) =>
+  messagesDelete = (id: string, params: RequestParams = {}) =>
     this.request<void, ProblemDetails>({
-      path: `/api/PostCommentsControllers/${id}`,
+      path: `/api/Messages/${id}`,
       method: "DELETE",
       secure: true,
       ...params,
@@ -1063,13 +1175,190 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
   /**
    * No description
    *
-   * @tags PostCommentsControllers
-   * @name PostCommentsControllersList
-   * @summary Поиск коментов
-   * @request GET:/api/PostCommentsControllers
+   * @tags Messages
+   * @name MessagesList
+   * @summary Поиск сообщений
+   * @request GET:/api/Messages
    * @secure
    */
-  postCommentsControllersList = (
+  messagesList = (
+    query?: {
+      /**
+       * От пользователя
+       * @format uuid
+       */
+      FromUserGuid?: string;
+      /**
+       * Пользователю
+       * @format uuid
+       */
+      ToUserGuid?: string;
+      /** Запрашивать новые */
+      Unreaded?: boolean;
+      /** Поле, по которому происходит сортировка */
+      SortMember?: string;
+      /** Направление сортировки - по возрастанию */
+      Ascending?: boolean;
+      /**
+       * Номер страницы (по умолчанию = 1).
+       * @format int32
+       */
+      Page?: number;
+      /**
+       * Размер страницы (по умолчанию = 25).
+       * @format int32
+       */
+      PageSize?: number;
+      /**
+       * Начало периода.
+       * @format date-time
+       */
+      createDtStart?: string;
+      /**
+       * Конец периода.
+       * @format date-time
+       */
+      createDtEnd?: string;
+      /**
+       * Начало периода.
+       * @format date-time
+       */
+      updateDtStart?: string;
+      /**
+       * Конец периода.
+       * @format date-time
+       */
+      updateDtEnd?: string;
+      /** Отметка удаления */
+      IsDeleted?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<MessageModelDataResult, ProblemDetails>({
+      path: `/api/Messages`,
+      method: "GET",
+      query: query,
+      secure: true,
+      format: "json",
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags Messages
+   * @name MessagesCreate
+   * @summary Отправка сообщений
+   * @request POST:/api/Messages
+   * @secure
+   */
+  messagesCreate = (data: CreateMessageModel, params: RequestParams = {}) =>
+    this.request<MessageModel, ProblemDetails>({
+      path: `/api/Messages`,
+      method: "POST",
+      body: data,
+      secure: true,
+      type: ContentType.Json,
+      format: "json",
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags Messages
+   * @name MessagesUpdate
+   * @summary Редактирование сообщения
+   * @request PUT:/api/Messages
+   * @secure
+   */
+  messagesUpdate = (data: UpdateMessageModel, params: RequestParams = {}) =>
+    this.request<MessageModel, ProblemDetails>({
+      path: `/api/Messages`,
+      method: "PUT",
+      body: data,
+      secure: true,
+      type: ContentType.Json,
+      format: "json",
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags Messages
+   * @name MessagesForwardCreate
+   * @summary Переслать сообщения
+   * @request POST:/api/Messages/Forward
+   * @secure
+   */
+  messagesForwardCreate = (data: ForwardMessagesModel, params: RequestParams = {}) =>
+    this.request<MessageModel[], ProblemDetails>({
+      path: `/api/Messages/Forward`,
+      method: "POST",
+      body: data,
+      secure: true,
+      type: ContentType.Json,
+      format: "json",
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags Messages
+   * @name MessagesMarkReadedUpdate
+   * @summary Пометить сообщения как прочитанные
+   * @request PUT:/api/Messages/MarkReaded
+   * @secure
+   */
+  messagesMarkReadedUpdate = (data: string[], params: RequestParams = {}) =>
+    this.request<void, ProblemDetails>({
+      path: `/api/Messages/MarkReaded`,
+      method: "PUT",
+      body: data,
+      secure: true,
+      type: ContentType.Json,
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags PostComments
+   * @name PostCommentsDetail
+   * @summary Получить по ид
+   * @request GET:/api/PostComments/{id}
+   * @secure
+   */
+  postCommentsDetail = (id: string, params: RequestParams = {}) =>
+    this.request<CommentModel, ProblemDetails>({
+      path: `/api/PostComments/${id}`,
+      method: "GET",
+      secure: true,
+      format: "json",
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags PostComments
+   * @name PostCommentsDelete
+   * @request DELETE:/api/PostComments/{id}
+   * @secure
+   */
+  postCommentsDelete = (id: string, params: RequestParams = {}) =>
+    this.request<void, ProblemDetails>({
+      path: `/api/PostComments/${id}`,
+      method: "DELETE",
+      secure: true,
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags PostComments
+   * @name PostCommentsList
+   * @summary Поиск коментов
+   * @request GET:/api/PostComments
+   * @secure
+   */
+  postCommentsList = (
     query?: {
       /** @format uuid */
       UserGuid?: string;
@@ -1084,7 +1373,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
     params: RequestParams = {},
   ) =>
     this.request<CommentModelDataResult, any>({
-      path: `/api/PostCommentsControllers`,
+      path: `/api/PostComments`,
       method: "GET",
       query: query,
       secure: true,
@@ -1094,15 +1383,15 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
   /**
    * No description
    *
-   * @tags PostCommentsControllers
-   * @name PostCommentsControllersCreate
+   * @tags PostComments
+   * @name PostCommentsCreate
    * @summary Создание комментария
-   * @request POST:/api/PostCommentsControllers
+   * @request POST:/api/PostComments
    * @secure
    */
-  postCommentsControllersCreate = (data: CreateCommentModel, params: RequestParams = {}) =>
+  postCommentsCreate = (data: CreateCommentModel, params: RequestParams = {}) =>
     this.request<CommentModel, ProblemDetails>({
-      path: `/api/PostCommentsControllers`,
+      path: `/api/PostComments`,
       method: "POST",
       body: data,
       secure: true,
@@ -1113,15 +1402,15 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
   /**
    * No description
    *
-   * @tags PostCommentsControllers
-   * @name PostCommentsControllersUpdate
+   * @tags PostComments
+   * @name PostCommentsUpdate
    * @summary Модель редактирования коммента
-   * @request PUT:/api/PostCommentsControllers
+   * @request PUT:/api/PostComments
    * @secure
    */
-  postCommentsControllersUpdate = (data: UpdateCommentModel, params: RequestParams = {}) =>
+  postCommentsUpdate = (data: UpdateCommentModel, params: RequestParams = {}) =>
     this.request<CommentModel, ProblemDetails>({
-      path: `/api/PostCommentsControllers`,
+      path: `/api/PostComments`,
       method: "PUT",
       body: data,
       secure: true,
@@ -1237,6 +1526,48 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
       secure: true,
       type: ContentType.Json,
       format: "json",
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags Posts
+   * @name PostsFilesCreate
+   * @summary Добавить файл к посту
+   * @request POST:/api/Posts/Files
+   * @secure
+   */
+  postsFilesCreate = (data: AddExtraFileToPostModel, params: RequestParams = {}) =>
+    this.request<PostFileModel, ProblemDetails>({
+      path: `/api/Posts/Files`,
+      method: "POST",
+      body: data,
+      secure: true,
+      type: ContentType.Json,
+      format: "json",
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags Posts
+   * @name PostsFilesDelete
+   * @summary Отвязать файл от поста
+   * @request DELETE:/api/Posts/Files
+   * @secure
+   */
+  postsFilesDelete = (
+    query?: {
+      /** @format uuid */
+      id?: string;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<void, ProblemDetails>({
+      path: `/api/Posts/Files`,
+      method: "DELETE",
+      query: query,
+      secure: true,
       ...params,
     });
   /**
@@ -1369,6 +1700,57 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
     this.request<ProductItemModel, ProblemDetails>({
       path: `/api/ProductItems/${id}`,
       method: "DELETE",
+      secure: true,
+      format: "json",
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags ProductItems
+   * @name ProductItemsList
+   * @summary Поиск едениц изделий
+   * @request GET:/api/ProductItems
+   * @secure
+   */
+  productItemsList = (
+    query?: {
+      /**
+       * ИД продукта
+       * @format uuid
+       */
+      ProductGuid?: string;
+      /**
+       * ИД пользователя-владельца
+       * @format uuid
+       */
+      UserGuid?: string;
+      /**
+       * ИД партии
+       * @format uuid
+       */
+      ClothingPartyGuid?: string;
+      /**
+       * Номер страницы (по умолчанию = 1).
+       * @format int32
+       */
+      Page?: number;
+      /**
+       * Размер страницы (по умолчанию = 25).
+       * @format int32
+       */
+      PageSize?: number;
+      /** Поле, по которому происходит сортировка */
+      SortMember?: string;
+      /** Направление сортировки - по возрастанию */
+      Ascending?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<ProductItemModelDataResult, any>({
+      path: `/api/ProductItems`,
+      method: "GET",
+      query: query,
       secure: true,
       format: "json",
       ...params,
@@ -1549,7 +1931,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags Products
    * @name ProductsColorsCreate
-   * @summary Добавить цвет к файлу
+   * @summary Добавить цвет к продукту
    * @request POST:/api/Products/Colors
    * @secure
    */
@@ -1687,6 +2069,194 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
   /**
    * No description
    *
+   * @tags Promotions
+   * @name PromotionsDetail
+   * @summary Получить по ид
+   * @request GET:/api/Promotions/{id}
+   * @secure
+   */
+  promotionsDetail = (id: string, params: RequestParams = {}) =>
+    this.request<PromotionModel, ProblemDetails>({
+      path: `/api/Promotions/${id}`,
+      method: "GET",
+      secure: true,
+      format: "json",
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags Promotions
+   * @name PromotionsDelete
+   * @summary Удаление промика
+   * @request DELETE:/api/Promotions/{id}
+   * @secure
+   */
+  promotionsDelete = (id: string, params: RequestParams = {}) =>
+    this.request<void, ProblemDetails>({
+      path: `/api/Promotions/${id}`,
+      method: "DELETE",
+      secure: true,
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags Promotions
+   * @name PromotionsList
+   * @summary Поиск промиков
+   * @request GET:/api/Promotions
+   * @secure
+   */
+  promotionsList = (
+    query?: {
+      /** Часть имени */
+      Name?: string;
+      /** Часть текста */
+      Text?: string;
+      /**
+       * Бренд
+       * @format uuid
+       */
+      BrandGuid?: string;
+      /**
+       * Ид пользователя
+       * Для User обязательно указывать себя!
+       * @format uuid
+       */
+      UserGuid?: string;
+      /**
+       * Начало периода.
+       * @format date-time
+       */
+      createDtStart?: string;
+      /**
+       * Конец периода.
+       * @format date-time
+       */
+      createDtEnd?: string;
+      /**
+       * Начало периода.
+       * @format date-time
+       */
+      updateDtStart?: string;
+      /**
+       * Конец периода.
+       * @format date-time
+       */
+      updateDtEnd?: string;
+      /** Отметка удаления */
+      IsDeleted?: boolean;
+      /**
+       * Номер страницы (по умолчанию = 1).
+       * @format int32
+       */
+      Page?: number;
+      /**
+       * Размер страницы (по умолчанию = 25).
+       * @format int32
+       */
+      PageSize?: number;
+      /** Поле, по которому происходит сортировка */
+      SortMember?: string;
+      /** Направление сортировки - по возрастанию */
+      Ascending?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<PromotionModelDataResult, ProblemDetails>({
+      path: `/api/Promotions`,
+      method: "GET",
+      query: query,
+      secure: true,
+      format: "json",
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags Promotions
+   * @name PromotionsCreate
+   * @summary Создание промика
+   * @request POST:/api/Promotions
+   * @secure
+   */
+  promotionsCreate = (data: CreatePromotionModel, params: RequestParams = {}) =>
+    this.request<PromotionModel, ProblemDetails>({
+      path: `/api/Promotions`,
+      method: "POST",
+      body: data,
+      secure: true,
+      type: ContentType.Json,
+      format: "json",
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags Promotions
+   * @name PromotionsUpdate
+   * @summary Модель редактирования коммента
+   * @request PUT:/api/Promotions
+   * @secure
+   */
+  promotionsUpdate = (data: UpdatePromotionModel, params: RequestParams = {}) =>
+    this.request<PromotionModel, ProblemDetails>({
+      path: `/api/Promotions`,
+      method: "PUT",
+      body: data,
+      secure: true,
+      type: ContentType.Json,
+      format: "json",
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags Promotions
+   * @name PromotionsCodesCreate
+   * @summary Залить пачку кодов
+   * @request POST:/api/Promotions/Codes
+   * @secure
+   */
+  promotionsCodesCreate = (data: CreatePromotionCodeModel, params: RequestParams = {}) =>
+    this.request<void, ProblemDetails>({
+      path: `/api/Promotions/Codes`,
+      method: "POST",
+      body: data,
+      secure: true,
+      type: ContentType.Json,
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags Promotions
+   * @name PromotionsCodesUpdate
+   * @summary Активировать код
+   * @request PUT:/api/Promotions/Codes
+   * @secure
+   */
+  promotionsCodesUpdate = (
+    query?: {
+      /**
+       * ИД промо акции
+       * @format uuid
+       */
+      id?: string;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<void, ProblemDetails>({
+      path: `/api/Promotions/Codes`,
+      method: "PUT",
+      query: query,
+      secure: true,
+      ...params,
+    });
+  /**
+   * No description
+   *
    * @tags Scans
    * @name ScansDetail
    * @summary Получить скан по ИД
@@ -1813,6 +2383,32 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
        * @format int32
        */
       PageSize?: number;
+      /** Поле, по которому происходит сортировка */
+      SortMember?: string;
+      /** Направление сортировки - по возрастанию */
+      Ascending?: boolean;
+      /**
+       * Начало периода.
+       * @format date-time
+       */
+      createDtStart?: string;
+      /**
+       * Конец периода.
+       * @format date-time
+       */
+      createDtEnd?: string;
+      /**
+       * Начало периода.
+       * @format date-time
+       */
+      updateDtStart?: string;
+      /**
+       * Конец периода.
+       * @format date-time
+       */
+      updateDtEnd?: string;
+      /** Отметка удаления */
+      IsDeleted?: boolean;
     },
     params: RequestParams = {},
   ) =>
@@ -2123,15 +2719,69 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * No description
    *
    * @tags Users
-   * @name UsersCheckDetail
-   * @summary Проверка свободен ли никнейм
-   * @request GET:/api/Users/Check/{username}
+   * @name UsersList
+   * @summary Получить юзеров по фильтру
+   * @request GET:/api/Users
    * @secure
    */
-  usersCheckDetail = (username: string, params: RequestParams = {}) =>
-    this.request<boolean, any>({
-      path: `/api/Users/Check/${username}`,
+  usersList = (
+    query?: {
+      /** login */
+      Username?: string;
+      /** Имя */
+      FirstName?: string;
+      /** Фамилия */
+      SecondName?: string;
+      /** Тип пользователя */
+      Types?: UserType[];
+      /**
+       * Ид бренда
+       * @format uuid
+       */
+      BrandGuid?: string;
+      /**
+       * Номер страницы (по умолчанию = 1).
+       * @format int32
+       */
+      Page?: number;
+      /**
+       * Размер страницы (по умолчанию = 25).
+       * @format int32
+       */
+      PageSize?: number;
+      /** Поле, по которому происходит сортировка */
+      SortMember?: string;
+      /** Направление сортировки - по возрастанию */
+      Ascending?: boolean;
+      /**
+       * Начало периода.
+       * @format date-time
+       */
+      createDtStart?: string;
+      /**
+       * Конец периода.
+       * @format date-time
+       */
+      createDtEnd?: string;
+      /**
+       * Начало периода.
+       * @format date-time
+       */
+      updateDtStart?: string;
+      /**
+       * Конец периода.
+       * @format date-time
+       */
+      updateDtEnd?: string;
+      /** Отметка удаления */
+      IsDeleted?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<UserModelDataResult, ProblemDetails>({
+      path: `/api/Users`,
       method: "GET",
+      query: query,
       secure: true,
       format: "json",
       ...params,
@@ -2156,14 +2806,15 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
       ...params,
     });
   /**
-   * No description
-   *
-   * @tags Users
-   * @name UsersUpdate
-   * @summary Редактирование пользователя
-   * @request PUT:/api/Users
-   * @secure
-   */
+ * No description
+ *
+ * @tags Users
+ * @name UsersUpdate
+ * @summary Редактирование пользователя
+Адммин бренда может назначать обычных пользователей своими сотрудниками
+ * @request PUT:/api/Users
+ * @secure
+ */
   usersUpdate = (data: UpdateUserModel, params: RequestParams = {}) =>
     this.request<UserModel, ProblemDetails>({
       path: `/api/Users`,
@@ -2171,6 +2822,23 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
       body: data,
       secure: true,
       type: ContentType.Json,
+      format: "json",
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags Users
+   * @name UsersCheckDetail
+   * @summary Проверка свободен ли никнейм
+   * @request GET:/api/Users/Check/{username}
+   * @secure
+   */
+  usersCheckDetail = (username: string, params: RequestParams = {}) =>
+    this.request<boolean, any>({
+      path: `/api/Users/Check/${username}`,
+      method: "GET",
+      secure: true,
       format: "json",
       ...params,
     });

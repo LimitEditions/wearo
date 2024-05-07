@@ -9,6 +9,24 @@
  * ---------------------------------------------------------------
  */
 
+export interface AddExtraFileToPostModel {
+  /**
+   * Ид Файла
+   * @format uuid
+   */
+  fileGuid?: string;
+  /**
+   * Ид поста
+   * @format uuid
+   */
+  postGuid?: string;
+  /**
+   * Номер
+   * @format int32
+   */
+  order?: number;
+}
+
 export interface AddFileToLookModel {
   /**
    * Ид файла
@@ -53,7 +71,7 @@ export interface AuthModel {
 }
 
 export enum BodyPart {
-  Chest = "Chest",
+  Bust = "Bust",
   Hip = "Hip",
   Waist = "Waist",
 }
@@ -361,6 +379,12 @@ export interface CommentModelDataResult {
   data?: CommentModel[];
 }
 
+export interface ConfirmConfirmitionModel {
+  /** @format uuid */
+  guid?: string;
+  code?: string;
+}
+
 /** Бренд */
 export interface CreateBrandModel {
   /** Название бренда */
@@ -444,6 +468,35 @@ export interface CreateCommentModel {
   entityGuid?: string;
 }
 
+export interface CreateConfiramtionEmailModel {
+  /** @format uuid */
+  guid?: string;
+  email?: string;
+}
+
+export interface CreateFileProductModel {
+  /**
+   * Гуид файла
+   * @format uuid
+   */
+  fileGuid?: string;
+  /**
+   * Гуид продукта
+   * @format uuid
+   */
+  productGuid?: string;
+  /**
+   * Относительная позиция по оси Х
+   * @format double
+   */
+  x?: number;
+  /**
+   * Относительная позиция по оси У
+   * @format double
+   */
+  y?: number;
+}
+
 /** Совместимость вещей */
 export interface CreateLookModel {
   /** Наименование */
@@ -471,6 +524,41 @@ export interface CreateMaterialModel {
   description?: string;
 }
 
+export interface CreateMessageModel {
+  /**
+   * От пользователя
+   * @format uuid
+   */
+  fromUserGuid?: string;
+  /**
+   * К пользователю
+   * @format uuid
+   */
+  toUserGuid?: string;
+  /**
+   * Приложенный файл
+   * @format uuid
+   */
+  fileGuid?: string | null;
+  /** Текст */
+  text?: string | null;
+  /**
+   * Группирующий гуид
+   * @format uuid
+   */
+  groupId?: string | null;
+  /**
+   * Время прочтения
+   * @format date-time
+   */
+  readDt?: string | null;
+  /**
+   * Ответ на сообщение
+   * @format uuid
+   */
+  replyAtGuid?: string | null;
+}
+
 /** Публикация */
 export interface CreatePostModel {
   /**
@@ -480,6 +568,11 @@ export interface CreatePostModel {
   brandGuid?: string;
   /** Текст */
   text?: string;
+  /**
+   * Файл
+   * @format uuid
+   */
+  fileGuid?: string | null;
 }
 
 /** Тип одежды */
@@ -523,7 +616,7 @@ export interface CreateProductFileModel {
    * Ид цвета
    * @format uuid
    */
-  colorGuid?: string | null;
+  productColorGuid?: string | null;
   /**
    * Позиция файла
    * @format int64
@@ -548,7 +641,7 @@ export interface CreateProductItemModel {
    * Цвет
    * @format uuid
    */
-  colorGuid?: string | null;
+  productColorGuid?: string | null;
   /**
    * Ид партии одежды
    * @format uuid
@@ -601,6 +694,60 @@ export interface CreateProductModel {
   collectionGuid?: string | null;
 }
 
+export interface CreatePromotionCodeModel {
+  /**
+   * Ид промо
+   * @format uuid
+   */
+  promotionGuid?: string;
+  /** Набор кодов */
+  codes?: string[];
+}
+
+/** Модель для создания промо-акции */
+export interface CreatePromotionModel {
+  /** Наименование */
+  name?: string;
+  /** Текст */
+  text?: string;
+  /**
+   * Обложка акции
+   * @format uuid
+   */
+  imageGuid?: string | null;
+  /**
+   * Необходимое количество вещей во владении
+   * @format int32
+   */
+  productInOwnershipCount?: number;
+  /**
+   * Количество необходимых отсканированных вещей
+   * @format int32
+   */
+  scannedProductCount?: number;
+  /** Для всех ли вещей бренда акция */
+  isForAllProducts?: boolean;
+  /**
+   * Бренд ИД
+   * @format uuid
+   */
+  brandGuid?: string;
+  /** Набор продуктов */
+  products?: string[] | null;
+  /** Код, если он один на всех */
+  universalCode?: string | null;
+  /**
+   * Дата начала действия
+   * @format date-time
+   */
+  start?: string;
+  /**
+   * Дата оканчания действия
+   * @format date-time
+   */
+  end?: string;
+}
+
 export interface CreateScanModel {
   /** @format uuid */
   userGuid?: string | null;
@@ -644,6 +791,18 @@ export interface CreateUserModel {
   firstName?: string | null;
   /** Фамилия */
   secondName?: string | null;
+  type?: UserType;
+  /**
+   * ИД аватара
+   * @format uuid
+   */
+  mainAvatarGuid?: string | null;
+}
+
+export enum EditType {
+  None = "None",
+  Delete = "Delete",
+  Add = "Add",
 }
 
 /** Ссылка на файл */
@@ -670,12 +829,57 @@ export interface FileModel {
    * @format int64
    */
   position?: number;
+  /** Наименование */
+  name?: string | null;
   fileType?: FileType;
   /**
    * Ид Файла
    * @format uuid
    */
   fileGuid?: string;
+  /** Ссылки на продукты */
+  products?: FileProductModel[] | null;
+}
+
+/** Отображение файла на изображении */
+export interface FileProductModel {
+  /**
+   * Идентификатор
+   * @format uuid
+   */
+  guid?: string;
+  /** Отметка удаления */
+  isDeleted?: boolean;
+  /**
+   * Дата создания
+   * @format date-time
+   */
+  createDT?: string;
+  /**
+   * Дата обнавления
+   * @format date-time
+   */
+  updateDT?: string;
+  /**
+   * Гуид файла
+   * @format uuid
+   */
+  fileGuid?: string;
+  /**
+   * Гуид продукта
+   * @format uuid
+   */
+  productGuid?: string;
+  /**
+   * Относительная позиция по оси Х
+   * @format double
+   */
+  x?: number;
+  /**
+   * Относительная позиция по оси У
+   * @format double
+   */
+  y?: number;
 }
 
 export enum FileType {
@@ -695,6 +899,28 @@ export enum FilterType {
   StartsWith = "StartsWith",
   EndsWith = "EndsWith",
   Contains = "Contains",
+}
+
+export interface ForwardMessagesModel {
+  /**
+   * Кому идёт пересылка
+   * @format uuid
+   */
+  to: string;
+  /** Перечень пересылаемых сообщений */
+  messages: string[];
+  /** Текст сообщения */
+  text?: string | null;
+}
+
+/** Модель редактирования */
+export interface GuidEditModel {
+  /**
+   * ИД
+   * @format uuid
+   */
+  guid?: string;
+  edit?: EditType;
 }
 
 /** Совместимость вещей */
@@ -845,6 +1071,112 @@ export interface MaterialModel {
   description?: string;
 }
 
+export enum MeasurementUnits {
+  ValueСentimeter = "Сentimeter",
+  Millimeter = "Millimeter",
+  Meter = "Meter",
+}
+
+/** Сообщение одного пользователя другому */
+export interface MessageModel {
+  /**
+   * Идентификатор
+   * @format uuid
+   */
+  guid?: string;
+  /** Отметка удаления */
+  isDeleted?: boolean;
+  /**
+   * Дата создания
+   * @format date-time
+   */
+  createDT?: string;
+  /**
+   * Дата обнавления
+   * @format date-time
+   */
+  updateDT?: string;
+  /**
+   * От пользователя
+   * @format uuid
+   */
+  fromUserGuid?: string;
+  /**
+   * К пользователю
+   * @format uuid
+   */
+  toUserGuid?: string;
+  /**
+   * Приложенный файл
+   * @format uuid
+   */
+  fileGuid?: string | null;
+  /** Текст */
+  text?: string | null;
+  /**
+   * Группирующий гуид
+   * @format uuid
+   */
+  groupId?: string | null;
+  /**
+   * Время прочтения
+   * @format date-time
+   */
+  readDt?: string | null;
+  /**
+   * Ответ на сообщение
+   * @format uuid
+   */
+  replyAtGuid?: string | null;
+}
+
+/** Результат чтения данных. */
+export interface MessageModelDataResult {
+  /**
+   * Общее количество найденных элементов.
+   * @format int32
+   */
+  total?: number;
+  /** Данные. */
+  data?: MessageModel[];
+}
+
+/** Дополнительные файлы к посту */
+export interface PostFileModel {
+  /**
+   * Идентификатор
+   * @format uuid
+   */
+  guid?: string;
+  /** Отметка удаления */
+  isDeleted?: boolean;
+  /**
+   * Дата создания
+   * @format date-time
+   */
+  createDT?: string;
+  /**
+   * Дата обнавления
+   * @format date-time
+   */
+  updateDT?: string;
+  /**
+   * Ид поста
+   * @format uuid
+   */
+  postGuid?: string;
+  /**
+   * Ид файла
+   * @format uuid
+   */
+  fileGuid?: string;
+  /**
+   * Порядковый номер
+   * @format int32
+   */
+  order?: number;
+}
+
 /** Публикация */
 export interface PostModel {
   /**
@@ -871,10 +1203,19 @@ export interface PostModel {
    * @format uuid
    */
   brandGuid?: string;
+  /**
+   * Файл
+   * @format uuid
+   */
+  fileGuid?: string | null;
   /** Бренд */
   brand?: BrandModel;
   /** Комментарии */
   comments?: CommentModel[] | null;
+  /** Ссылка на файл */
+  file?: FileModel;
+  /** Дополнительные файлы */
+  extraFiles?: PostFileModel[] | null;
 }
 
 /** Результат чтения данных. */
@@ -1012,12 +1353,12 @@ export interface ProductItemModel {
   product?: ProductModel;
   /** Пользователь */
   user?: UserModel;
-  color?: ColorModel;
+  color?: ProductColorModel;
   /**
    * Цвет
    * @format uuid
    */
-  colorGuid?: string | null;
+  productColorGuid?: string | null;
   /** Партия одежды */
   clothingParty?: ClothingPartyModel;
   /**
@@ -1025,6 +1366,17 @@ export interface ProductItemModel {
    * @format uuid
    */
   clothingPartyGuid?: string | null;
+}
+
+/** Результат чтения данных. */
+export interface ProductItemModelDataResult {
+  /**
+   * Общее количество найденных элементов.
+   * @format int32
+   */
+  total?: number;
+  /** Данные. */
+  data?: ProductItemModel[];
 }
 
 /** Материал продукта */
@@ -1086,11 +1438,8 @@ export interface ProductMeasurementModel {
    * @format date-time
    */
   updateDT?: string;
-  /**
-   * Размер, по которому будет произведена группировка
-   * @format int32
-   */
-  size?: number;
+  /** Размер, по которому будет произведена группировка */
+  size?: string;
   /**
    * Продукт
    * @format uuid
@@ -1102,6 +1451,7 @@ export interface ProductMeasurementModel {
    */
   measurement?: number;
   part?: BodyPart;
+  unit?: MeasurementUnits;
 }
 
 /** Продукт */
@@ -1180,6 +1530,115 @@ export enum ProductStatus {
   Prepublish = "Prepublish",
   Published = "Published",
   Discontinued = "Discontinued",
+}
+
+/** Акция */
+export interface PromotionModel {
+  /**
+   * Идентификатор
+   * @format uuid
+   */
+  guid?: string;
+  /** Отметка удаления */
+  isDeleted?: boolean;
+  /**
+   * Дата создания
+   * @format date-time
+   */
+  createDT?: string;
+  /**
+   * Дата обнавления
+   * @format date-time
+   */
+  updateDT?: string;
+  /** Бренд */
+  brand?: BrandModel;
+  /** Продукты участвующие в акции */
+  products?: PromotionProductModel[] | null;
+  /** Наименование */
+  name?: string;
+  /** Текст */
+  text?: string;
+  /**
+   * Обложка акции
+   * @format uuid
+   */
+  imageGuid?: string | null;
+  /**
+   * Необходимое количество вещей во владении
+   * @format int32
+   */
+  productInOwnershipCount?: number;
+  /**
+   * Количество необходимых отсканированных вещей
+   * @format int32
+   */
+  scannedProductCount?: number;
+  /** Для всех ли вещей бренда акция */
+  isForAllProducts?: boolean;
+  /**
+   * Бренд ИД
+   * @format uuid
+   */
+  brandGuid?: string;
+  /** Код, если он один на всех */
+  universalCode?: string | null;
+  /**
+   * Дата начала действия
+   * @format date-time
+   */
+  start?: string;
+  /**
+   * Дата оканчания действия
+   * @format date-time
+   */
+  end?: string;
+}
+
+/** Результат чтения данных. */
+export interface PromotionModelDataResult {
+  /**
+   * Общее количество найденных элементов.
+   * @format int32
+   */
+  total?: number;
+  /** Данные. */
+  data?: PromotionModel[];
+}
+
+/** Связка продуктов участвующих в акции */
+export interface PromotionProductModel {
+  /**
+   * Идентификатор
+   * @format uuid
+   */
+  guid?: string;
+  /** Отметка удаления */
+  isDeleted?: boolean;
+  /**
+   * Дата создания
+   * @format date-time
+   */
+  createDT?: string;
+  /**
+   * Дата обнавления
+   * @format date-time
+   */
+  updateDT?: string;
+  /**
+   * Ид продукта
+   * @format uuid
+   */
+  productGuid?: string;
+  /**
+   * Ид акции
+   * @format uuid
+   */
+  promotionGuid?: string;
+  /** Акция */
+  promotion?: PromotionModel;
+  /** Продукт */
+  product?: ProductModel;
 }
 
 export interface RefreshModel {
@@ -1417,6 +1876,22 @@ export interface UpdateMaterialModel {
   description?: string;
 }
 
+/** Модель обновления сообщения */
+export interface UpdateMessageModel {
+  /**
+   * Ид
+   * @format uuid
+   */
+  guid?: string;
+  /**
+   * Приложенный файл
+   * @format uuid
+   */
+  fileGuid?: string | null;
+  /** Текст */
+  text?: string | null;
+}
+
 /** Публикация */
 export interface UpdatePostModel {
   /**
@@ -1431,6 +1906,11 @@ export interface UpdatePostModel {
   brandGuid?: string;
   /** Текст */
   text?: string;
+  /**
+   * Файл
+   * @format uuid
+   */
+  fileGuid?: string | null;
 }
 
 /** Тип одежды */
@@ -1498,6 +1978,55 @@ export interface UpdateProductModel {
   collectionGuid?: string | null;
 }
 
+/** Модель редактирования промо */
+export interface UpdatePromotionModel {
+  /**
+   * Идентификатор
+   * @format uuid
+   */
+  guid?: string;
+  /** Наименование */
+  name?: string;
+  /** Текст */
+  text?: string;
+  /**
+   * Обложка акции
+   * @format uuid
+   */
+  imageGuid?: string | null;
+  /**
+   * Необходимое количество вещей во владении
+   * @format int32
+   */
+  productInOwnershipCount?: number;
+  /**
+   * Количество необходимых отсканированных вещей
+   * @format int32
+   */
+  scannedProductCount?: number;
+  /** Для всех ли вещей бренда акция */
+  isForAllProducts?: boolean;
+  /**
+   * Бренд ИД
+   * @format uuid
+   */
+  brandGuid?: string;
+  /** Набор продуктов */
+  products?: GuidEditModel[] | null;
+  /** Код, если он один на всех */
+  universalCode?: string | null;
+  /**
+   * Дата начала действия
+   * @format date-time
+   */
+  start?: string;
+  /**
+   * Дата оканчания действия
+   * @format date-time
+   */
+  end?: string;
+}
+
 /** Советы */
 export interface UpdateTipModel {
   /**
@@ -1532,6 +2061,43 @@ export interface UpdateUserModel {
   /** Фамилия */
   secondName?: string | null;
   type?: UserType;
+  /**
+   * ИД аватара
+   * @format uuid
+   */
+  mainAvatarGuid?: string | null;
+  /** Номер телефона */
+  phone?: string | null;
+  /** Электронная почта */
+  email?: string | null;
+  /** Id Тг */
+  telegramId?: string | null;
+  /** Id Вк */
+  vkId?: string | null;
+  /** Флаги доступности */
+  flags?: UserInfoFlags;
+}
+
+/** Флаги доступности */
+export enum UserInfoFlags {
+  Secret = "Secret",
+  ShowPhone = "ShowPhone",
+  ShowEmail = "ShowEmail",
+  ShowTelegram = "ShowTelegram",
+  ShowVkId = "ShowVkId",
+  ShowAll = "ShowAll",
+}
+
+/** Информация о пользователе */
+export interface UserInfoModel {
+  /** Номер телефона */
+  phone?: string | null;
+  /** Электронная почта */
+  email?: string | null;
+  /** Id Тг */
+  telegramId?: string | null;
+  /** Id Вк */
+  vkId?: string | null;
 }
 
 /** Пользователь */
@@ -1560,13 +2126,31 @@ export interface UserModel {
   /** Фамилия */
   secondName?: string | null;
   type?: UserType;
+  /** Информация о пользователе */
+  userInfo?: UserInfoModel;
+  /**
+   * ИД аватара
+   * @format uuid
+   */
+  mainAvatarGuid?: string | null;
+}
+
+/** Результат чтения данных. */
+export interface UserModelDataResult {
+  /**
+   * Общее количество найденных элементов.
+   * @format int32
+   */
+  total?: number;
+  /** Данные. */
+  data?: UserModel[];
 }
 
 export enum UserType {
   Unauthorized = "Unauthorized",
   User = "User",
-  BrandAdmin = "BrandAdmin",
   BrandSeller = "BrandSeller",
+  BrandAdmin = "BrandAdmin",
   Admin = "Admin",
   SuperAdmin = "SuperAdmin",
 }

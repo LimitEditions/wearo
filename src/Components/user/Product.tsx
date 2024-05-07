@@ -10,6 +10,7 @@ import { Info } from '../common/Info';
 import getStyles from '../../utils/getStyles';
 import { BlockStyle } from '../../types/interfaces/IStyles';
 import moment from 'moment';
+import { Colors } from './Colors';
 
 
 const Product = () => {
@@ -17,7 +18,7 @@ const Product = () => {
   const [data, isLoading, error] = useApi<'productsDetail', ProductModel>(
     'productsDetail', id, {}, true
   );
-
+  
   
   return (
     <div className={getStyles(containerStyle)}>
@@ -25,40 +26,34 @@ const Product = () => {
       <Info showInfo={error ? true: false} msg='Ошибка!' style={getStyles(errorStyle)}/>
       {data &&
       <>
-      <Photos photos={data?.photos} />
-      <div>{data.name}<span></span></div>
-      <div className={getStyles(descStyle)}>
-        <span className='block'>{data?.description}</span>
-        <ProfileItem path={`./../brand/${data.brandGuid}`}>Название бренда</ProfileItem>
-        {data?.colors?.map(color => (
-          <span key={color.guid} className={getStyles(colorStyle)}>
-            {color.color?.name}
-            <span className={`${getStyles(colorCircleStyle)} bg-[#${color.color?.hex}]`}></span>
-          </span>
-        ))}
-      </div>
-      <div className={getStyles(originStyle)}>
-        Происхождение
-      </div>
-      <div className={getStyles(compositionStyle)}>
-        <p>Состав ткани:</p>
-        {data?.composition?.map(material => (
-          <span key={material.guid} className={getStyles(materialStyle)}>{material.material?.name} {material.share} %</span>
-        ))}
-      </div>
-      <Tips tips={data?.tips as TipModel[]}/>
-      <div>
-        <p>Дата сканирования:</p> 
-        <span> {data?.createDT ? moment(data.createDT).format('DD.MM.YYYY') : 'Дата неизвестна'}</span>
-      </div>
-      <div>
-        <ProfileItem path='/comments'>Отзывы</ProfileItem>
-        <ProfileItem path='/collection'>Коллекция</ProfileItem>
-        <ProfileItem path='/buy_item'>Купить изделие</ProfileItem>
-      </div>
-      <Button showButton={true}>Оставить отзыв</Button>
+        <Photos photos={data?.photos} />
+        <div>{data.name}<span></span></div>
+        <div className={getStyles(descStyle)}>
+          <span className='block'>{data?.description}</span>
+          <ProfileItem path={`./../brand/${data.brandGuid}`}>Название бренда</ProfileItem>
+          {data.colors && <Colors prodColors={data.colors}/>}
+        </div>
+        <div className={getStyles(originStyle)}>
+          Происхождение
+        </div>
+        <div className={getStyles(compositionStyle)}>
+          <p>Состав ткани:</p>
+          {data?.composition?.map(material => (
+            <span key={material.guid} className={getStyles(materialStyle)}>{material.material?.name} {material.share} %</span>
+          ))}
+        </div>
+        <Tips tips={data?.tips as TipModel[]}/>
+        <div>
+          <p>Дата сканирования:</p> 
+          <span> {data?.createDT ? moment(data.createDT).format('DD.MM.YYYY') : 'Дата неизвестна'}</span>
+        </div>
+        <div>
+          <ProfileItem path='/comments'>Отзывы</ProfileItem>
+          <ProfileItem path='/collection'>Коллекция</ProfileItem>
+          <ProfileItem path='/buy_item'>Купить изделие</ProfileItem>
+        </div>
+        <Button showButton={true}>Оставить отзыв</Button>
       </>}
-      
     </div>
   );
 };
@@ -81,17 +76,6 @@ const errorStyle: BlockStyle = {
 
 const descStyle: BlockStyle = {
   spacing: 'space-y-4'
-};
-
-const colorStyle: BlockStyle = {
-  container: 'relative inline-block w-1/2 rounded-full',
-  background: 'bg-[#f3f3f3]',
-  spacing: 'p-2 mx-1'
-};
-
-const colorCircleStyle: BlockStyle = {
-  container: 'absolute right-2 top-1/2 rounded-full w-4 h-4',
-  transitionsAnimation: 'transform -translate-y-1/2'
 };
 
 const originStyle: BlockStyle = {
