@@ -7,9 +7,9 @@ import { SectionsTitle } from "../../../Components/common/SectionsTitle";
 import { Button } from "../../../Components/common/Button";
 import { BlockStyle } from "../../../types/interfaces/IStyles";
 import getStyles from "../../../utils/getStyles";
-import { EmployeeInfoList } from "../../../Components/common/EmployeeGroup/EmployeeInfoList";
 import { ModalsDelete } from "../../../Components/common/ModalsDelete";
 import { Info } from "../../../Components/common/Info";
+import { TextItemsList } from "../../../Components/superadmin/TextItemsList";
 
 export const EmployeeDetailsPage = () => {
   const [user, setUser] = useState<UserModel>();
@@ -42,7 +42,7 @@ export const EmployeeDetailsPage = () => {
       {user && (
         <>
         {/* Информация о пользователе */}
-          <EmployeeInfoList user={user} />
+          <TextItemsList info={user} type="admin"/>
           <div className={getStyles(divStyle)}>
             <Button showButton={true} onClick={handleClick}>
               Удалить

@@ -3,8 +3,8 @@ import { SectionsTitle } from '../common/SectionsTitle'
 import { retrieve } from '../../utils/encryption';
 import useApi from '../../hooks/useApi';
 import { UserModel } from '../../api/data-contracts';
-import { EmployeeInfoList } from '../common/EmployeeGroup/EmployeeInfoList';
 import { Info } from '../common/Info';
+import { TextItemsList } from './TextItemsList';
 
 export const SuperadminInfo = () => {
   const [user, setUser] = useState<UserModel>();
@@ -23,7 +23,7 @@ export const SuperadminInfo = () => {
   return (
     <>
       <SectionsTitle needsClose={false} title='Настройки' needTopSpasing={true} />
-      {user && <EmployeeInfoList user={user}/>}
+      {user && <TextItemsList info={user} type='admin'/>}
       <Info msg='Не удалось получить данные.' showInfo={!!dataError} style=''/>
     </>
   )

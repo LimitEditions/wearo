@@ -7,7 +7,6 @@ import { UserModel } from "../../../../api/data-contracts";
 import { Route, Routes, useParams } from "react-router-dom";
 import { retrieve } from "../../../../utils/encryption";
 import { ItemsList } from "../../../../Components/common/ItemGroup/ItemsList";
-import { UserInfoList } from "../../../../Components/superadmin/UserInfoList";
 import { ModalsDelete } from "../../../../Components/common/ModalsDelete";
 import { Button } from "../../../../Components/common/Button";
 import { Info } from "../../../../Components/common/Info";
@@ -16,6 +15,7 @@ import { UserFavoritesPage } from "./UserFavoritesPage";
 import { UserSubscriptionsPage } from "./UserSubscriptionsPage";
 import { UserScansPage } from "./UserScansPage";
 import { EditUserInfo } from "./EditUserInfo";
+import { TextItemsList } from "../../../../Components/superadmin/TextItemsList";
 
 export const UserInfo = () => {
   const [user, setUser] = useState<UserModel>({});
@@ -79,8 +79,9 @@ export const UserInfo = () => {
                   />
                   {/* Разделы Избранное, Подписки, Сканирования, настройки. Каждый со стрелкой вправо и с переходом на страницу */}
                   <ItemsList items={items} />
+                  {/* Информаци о пользователе */}
                   <div className={getStyles(divStyle)}>
-                    <UserInfoList info={user} />
+                    <TextItemsList info={user} type="user"/>
                   </div>
                   <div className={getStyles(btnContainer)}>
                     <Button showButton={true} onClick={() => setMod(true)}>

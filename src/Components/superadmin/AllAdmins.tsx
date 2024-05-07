@@ -1,6 +1,6 @@
 import React from "react";
 import { SectionsTitle } from "../common/SectionsTitle";
-import { EmployeeList } from "../common/EmployeeGroup/EmployeeList";
+import { EmployeeList } from "../common/EmployeeList";
 import { Button } from "../common/Button";
 import { BlockStyle } from "../../types/interfaces/IStyles";
 import getStyles from "../../utils/getStyles";

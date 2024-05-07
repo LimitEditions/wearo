@@ -3,20 +3,20 @@ import {
   UserModel,
   UserModelDataResult,
   UserType,
-} from "../../../api/data-contracts";
-import useApi from "../../../hooks/useApi";
-import { retrieve } from "../../../utils/encryption";
-import { Info } from "../Info";
-import { getEmployeePosition } from "../../../utils/getEmployeePosition";
-import Item from "../ItemGroup/Item";
-import { BlockStyle } from "../../../types/interfaces/IStyles";
-import getStyles from "../../../utils/getStyles";
+} from "../../api/data-contracts";
+import useApi from "../../hooks/useApi";
+import { retrieve } from "../../utils/encryption";
+import { Info } from "./Info";
+import { getEmployeePosition } from "../../utils/getEmployeePosition";
+import Item from "./ItemGroup/Item";
+import { BlockStyle } from "../../types/interfaces/IStyles";
+import getStyles from "../../utils/getStyles";
 
 export const EmployeeList = ({ userType }: { userType: UserType }) => {
   // Должность сотрудника
   const position = getEmployeePosition(userType);
   const [employee, setEmployee] = useState<UserModelDataResult>();
-  // Запрос на получение списка админов
+  // Запрос на получение списка пользователей с определенным типом
   const [data, isLoading, dataError] = useApi(
     "usersList",
     { Types: userType },
