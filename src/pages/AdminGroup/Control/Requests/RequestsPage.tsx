@@ -29,7 +29,7 @@ export const RequestsPage = () => {
       // Список заявок, по клику на конкретную заявку открывается страница с подробной информацией
       setItems(data.data.map((item) => {
         return {
-           title: item.name || '', path: `./${item.guid}` 
+           title: item.name || '', path: `/${item.guid}` 
         }
       }))
     }

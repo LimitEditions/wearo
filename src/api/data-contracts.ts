@@ -379,6 +379,12 @@ export interface CommentModelDataResult {
   data?: CommentModel[];
 }
 
+export interface ConfirmConfirmitionModel {
+  /** @format uuid */
+  guid?: string;
+  code?: string;
+}
+
 /** Бренд */
 export interface CreateBrandModel {
   /** Название бренда */
@@ -462,6 +468,12 @@ export interface CreateCommentModel {
   entityGuid?: string;
 }
 
+export interface CreateConfiramtionEmailModel {
+  /** @format uuid */
+  guid?: string;
+  email?: string;
+}
+
 export interface CreateFileProductModel {
   /**
    * Гуид файла
@@ -540,6 +552,11 @@ export interface CreateMessageModel {
    * @format date-time
    */
   readDt?: string | null;
+  /**
+   * Ответ на сообщение
+   * @format uuid
+   */
+  replyAtGuid?: string | null;
 }
 
 /** Публикация */
@@ -677,6 +694,60 @@ export interface CreateProductModel {
   collectionGuid?: string | null;
 }
 
+export interface CreatePromotionCodeModel {
+  /**
+   * Ид промо
+   * @format uuid
+   */
+  promotionGuid?: string;
+  /** Набор кодов */
+  codes?: string[];
+}
+
+/** Модель для создания промо-акции */
+export interface CreatePromotionModel {
+  /** Наименование */
+  name?: string;
+  /** Текст */
+  text?: string;
+  /**
+   * Обложка акции
+   * @format uuid
+   */
+  imageGuid?: string | null;
+  /**
+   * Необходимое количество вещей во владении
+   * @format int32
+   */
+  productInOwnershipCount?: number;
+  /**
+   * Количество необходимых отсканированных вещей
+   * @format int32
+   */
+  scannedProductCount?: number;
+  /** Для всех ли вещей бренда акция */
+  isForAllProducts?: boolean;
+  /**
+   * Бренд ИД
+   * @format uuid
+   */
+  brandGuid?: string;
+  /** Набор продуктов */
+  products?: string[] | null;
+  /** Код, если он один на всех */
+  universalCode?: string | null;
+  /**
+   * Дата начала действия
+   * @format date-time
+   */
+  start?: string;
+  /**
+   * Дата оканчания действия
+   * @format date-time
+   */
+  end?: string;
+}
+
 export interface CreateScanModel {
   /** @format uuid */
   userGuid?: string | null;
@@ -726,6 +797,12 @@ export interface CreateUserModel {
    * @format uuid
    */
   mainAvatarGuid?: string | null;
+}
+
+export enum EditType {
+  None = "None",
+  Delete = "Delete",
+  Add = "Add",
 }
 
 /** Ссылка на файл */
@@ -822,6 +899,28 @@ export enum FilterType {
   StartsWith = "StartsWith",
   EndsWith = "EndsWith",
   Contains = "Contains",
+}
+
+export interface ForwardMessagesModel {
+  /**
+   * Кому идёт пересылка
+   * @format uuid
+   */
+  to: string;
+  /** Перечень пересылаемых сообщений */
+  messages: string[];
+  /** Текст сообщения */
+  text?: string | null;
+}
+
+/** Модель редактирования */
+export interface GuidEditModel {
+  /**
+   * ИД
+   * @format uuid
+   */
+  guid?: string;
+  edit?: EditType;
 }
 
 /** Совместимость вещей */
@@ -1024,6 +1123,11 @@ export interface MessageModel {
    * @format date-time
    */
   readDt?: string | null;
+  /**
+   * Ответ на сообщение
+   * @format uuid
+   */
+  replyAtGuid?: string | null;
 }
 
 /** Результат чтения данных. */
@@ -1428,6 +1532,115 @@ export enum ProductStatus {
   Discontinued = "Discontinued",
 }
 
+/** Акция */
+export interface PromotionModel {
+  /**
+   * Идентификатор
+   * @format uuid
+   */
+  guid?: string;
+  /** Отметка удаления */
+  isDeleted?: boolean;
+  /**
+   * Дата создания
+   * @format date-time
+   */
+  createDT?: string;
+  /**
+   * Дата обнавления
+   * @format date-time
+   */
+  updateDT?: string;
+  /** Бренд */
+  brand?: BrandModel;
+  /** Продукты участвующие в акции */
+  products?: PromotionProductModel[] | null;
+  /** Наименование */
+  name?: string;
+  /** Текст */
+  text?: string;
+  /**
+   * Обложка акции
+   * @format uuid
+   */
+  imageGuid?: string | null;
+  /**
+   * Необходимое количество вещей во владении
+   * @format int32
+   */
+  productInOwnershipCount?: number;
+  /**
+   * Количество необходимых отсканированных вещей
+   * @format int32
+   */
+  scannedProductCount?: number;
+  /** Для всех ли вещей бренда акция */
+  isForAllProducts?: boolean;
+  /**
+   * Бренд ИД
+   * @format uuid
+   */
+  brandGuid?: string;
+  /** Код, если он один на всех */
+  universalCode?: string | null;
+  /**
+   * Дата начала действия
+   * @format date-time
+   */
+  start?: string;
+  /**
+   * Дата оканчания действия
+   * @format date-time
+   */
+  end?: string;
+}
+
+/** Результат чтения данных. */
+export interface PromotionModelDataResult {
+  /**
+   * Общее количество найденных элементов.
+   * @format int32
+   */
+  total?: number;
+  /** Данные. */
+  data?: PromotionModel[];
+}
+
+/** Связка продуктов участвующих в акции */
+export interface PromotionProductModel {
+  /**
+   * Идентификатор
+   * @format uuid
+   */
+  guid?: string;
+  /** Отметка удаления */
+  isDeleted?: boolean;
+  /**
+   * Дата создания
+   * @format date-time
+   */
+  createDT?: string;
+  /**
+   * Дата обнавления
+   * @format date-time
+   */
+  updateDT?: string;
+  /**
+   * Ид продукта
+   * @format uuid
+   */
+  productGuid?: string;
+  /**
+   * Ид акции
+   * @format uuid
+   */
+  promotionGuid?: string;
+  /** Акция */
+  promotion?: PromotionModel;
+  /** Продукт */
+  product?: ProductModel;
+}
+
 export interface RefreshModel {
   /**
    * ид юзера
@@ -1763,6 +1976,55 @@ export interface UpdateProductModel {
    * @format uuid
    */
   collectionGuid?: string | null;
+}
+
+/** Модель редактирования промо */
+export interface UpdatePromotionModel {
+  /**
+   * Идентификатор
+   * @format uuid
+   */
+  guid?: string;
+  /** Наименование */
+  name?: string;
+  /** Текст */
+  text?: string;
+  /**
+   * Обложка акции
+   * @format uuid
+   */
+  imageGuid?: string | null;
+  /**
+   * Необходимое количество вещей во владении
+   * @format int32
+   */
+  productInOwnershipCount?: number;
+  /**
+   * Количество необходимых отсканированных вещей
+   * @format int32
+   */
+  scannedProductCount?: number;
+  /** Для всех ли вещей бренда акция */
+  isForAllProducts?: boolean;
+  /**
+   * Бренд ИД
+   * @format uuid
+   */
+  brandGuid?: string;
+  /** Набор продуктов */
+  products?: GuidEditModel[] | null;
+  /** Код, если он один на всех */
+  universalCode?: string | null;
+  /**
+   * Дата начала действия
+   * @format date-time
+   */
+  start?: string;
+  /**
+   * Дата оканчания действия
+   * @format date-time
+   */
+  end?: string;
 }
 
 /** Советы */

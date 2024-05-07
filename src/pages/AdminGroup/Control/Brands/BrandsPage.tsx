@@ -27,7 +27,7 @@ export const BrandsPage = () => {
       setItems(data.data.map((item) => {
         return {
           title: item.name || "Название не указано",
-          path: `./${item.guid}`,
+          path: `/${item.guid}`,
           photoId: item.photo,
           needPhoto: true,
           alt: 'Логотип бренда',

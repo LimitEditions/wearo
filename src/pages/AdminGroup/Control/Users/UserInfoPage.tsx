@@ -39,24 +39,23 @@ export const UserInfo = () => {
   const items = [
         {
           title: "Избранное",
-          path: `/control/users/${user.guid}/favorites`,
+          path: `/favorites`,
           needPhoto: false,
         },
         {
           title: "Подписки",
-          path: `/control/users/${user.guid}/subscriptions`,
+          path: `/subscriptions`,
           needPhoto: false,
         },
         {
           title: "Сканирования",
-          path: `/control/users/${user.guid}/scans`,
+          path: `/scans`,
           needPhoto: false,
         },
         {
           title: "Настройки",
-          path: `/control/users/${user.guid}/edit`,
+          path: `/edit`,
           needPhoto: false,
-          state: user
         },
       ]
 

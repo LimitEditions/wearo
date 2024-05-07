@@ -28,7 +28,7 @@ export const UsersPage = () => {
       setItems(data.data.map((item) => {
         return {
           title: item.firstName || "Имя не указано",
-          path: `./${item.guid}`,
+          path: `/${item.guid}`,
           photoId: item.mainAvatarGuid,
           needPhoto: true,
           alt: 'Аватар пользователя',

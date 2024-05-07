@@ -43,6 +43,8 @@ import {
   CreateProductItemModel,
   CreateProductMaterialModel,
   CreateProductModel,
+  CreatePromotionCodeModel,
+  CreatePromotionModel,
   CreateScanModel,
   CreateSubscriptionModel,
   CreateTipModel,
@@ -51,6 +53,7 @@ import {
   FileProductModel,
   FileType,
   FilterType,
+  ForwardMessagesModel,
   LookModel,
   LookModelDataResult,
   MaterialModel,
@@ -70,6 +73,8 @@ import {
   ProductModel,
   ProductModelDataResult,
   ProductStatus,
+  PromotionModel,
+  PromotionModelDataResult,
   RefreshModel,
   RejectRequestModel,
   RequestStatus,
@@ -89,6 +94,7 @@ import {
   UpdateProductCategoryModel,
   UpdateProductItemModel,
   UpdateProductModel,
+  UpdatePromotionModel,
   UpdateTipModel,
   UpdateUserModel,
   UserModel,
@@ -1260,7 +1266,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags Messages
    * @name MessagesUpdate
-   * @summary Редактирование поста
+   * @summary Редактирование сообщения
    * @request PUT:/api/Messages
    * @secure
    */
@@ -1272,6 +1278,43 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
       secure: true,
       type: ContentType.Json,
       format: "json",
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags Messages
+   * @name MessagesForwardCreate
+   * @summary Переслать сообщения
+   * @request POST:/api/Messages/Forward
+   * @secure
+   */
+  messagesForwardCreate = (data: ForwardMessagesModel, params: RequestParams = {}) =>
+    this.request<MessageModel[], ProblemDetails>({
+      path: `/api/Messages/Forward`,
+      method: "POST",
+      body: data,
+      secure: true,
+      type: ContentType.Json,
+      format: "json",
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags Messages
+   * @name MessagesMarkReadedUpdate
+   * @summary Пометить сообщения как прочитанные
+   * @request PUT:/api/Messages/MarkReaded
+   * @secure
+   */
+  messagesMarkReadedUpdate = (data: string[], params: RequestParams = {}) =>
+    this.request<void, ProblemDetails>({
+      path: `/api/Messages/MarkReaded`,
+      method: "PUT",
+      body: data,
+      secure: true,
+      type: ContentType.Json,
       ...params,
     });
   /**
@@ -2020,6 +2063,194 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
     this.request<void, ProblemDetails>({
       path: `/api/Products/Measurements/${productMeasurementId}`,
       method: "DELETE",
+      secure: true,
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags Promotions
+   * @name PromotionsDetail
+   * @summary Получить по ид
+   * @request GET:/api/Promotions/{id}
+   * @secure
+   */
+  promotionsDetail = (id: string, params: RequestParams = {}) =>
+    this.request<PromotionModel, ProblemDetails>({
+      path: `/api/Promotions/${id}`,
+      method: "GET",
+      secure: true,
+      format: "json",
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags Promotions
+   * @name PromotionsDelete
+   * @summary Удаление промика
+   * @request DELETE:/api/Promotions/{id}
+   * @secure
+   */
+  promotionsDelete = (id: string, params: RequestParams = {}) =>
+    this.request<void, ProblemDetails>({
+      path: `/api/Promotions/${id}`,
+      method: "DELETE",
+      secure: true,
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags Promotions
+   * @name PromotionsList
+   * @summary Поиск промиков
+   * @request GET:/api/Promotions
+   * @secure
+   */
+  promotionsList = (
+    query?: {
+      /** Часть имени */
+      Name?: string;
+      /** Часть текста */
+      Text?: string;
+      /**
+       * Бренд
+       * @format uuid
+       */
+      BrandGuid?: string;
+      /**
+       * Ид пользователя
+       * Для User обязательно указывать себя!
+       * @format uuid
+       */
+      UserGuid?: string;
+      /**
+       * Начало периода.
+       * @format date-time
+       */
+      createDtStart?: string;
+      /**
+       * Конец периода.
+       * @format date-time
+       */
+      createDtEnd?: string;
+      /**
+       * Начало периода.
+       * @format date-time
+       */
+      updateDtStart?: string;
+      /**
+       * Конец периода.
+       * @format date-time
+       */
+      updateDtEnd?: string;
+      /** Отметка удаления */
+      IsDeleted?: boolean;
+      /**
+       * Номер страницы (по умолчанию = 1).
+       * @format int32
+       */
+      Page?: number;
+      /**
+       * Размер страницы (по умолчанию = 25).
+       * @format int32
+       */
+      PageSize?: number;
+      /** Поле, по которому происходит сортировка */
+      SortMember?: string;
+      /** Направление сортировки - по возрастанию */
+      Ascending?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<PromotionModelDataResult, ProblemDetails>({
+      path: `/api/Promotions`,
+      method: "GET",
+      query: query,
+      secure: true,
+      format: "json",
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags Promotions
+   * @name PromotionsCreate
+   * @summary Создание промика
+   * @request POST:/api/Promotions
+   * @secure
+   */
+  promotionsCreate = (data: CreatePromotionModel, params: RequestParams = {}) =>
+    this.request<PromotionModel, ProblemDetails>({
+      path: `/api/Promotions`,
+      method: "POST",
+      body: data,
+      secure: true,
+      type: ContentType.Json,
+      format: "json",
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags Promotions
+   * @name PromotionsUpdate
+   * @summary Модель редактирования коммента
+   * @request PUT:/api/Promotions
+   * @secure
+   */
+  promotionsUpdate = (data: UpdatePromotionModel, params: RequestParams = {}) =>
+    this.request<PromotionModel, ProblemDetails>({
+      path: `/api/Promotions`,
+      method: "PUT",
+      body: data,
+      secure: true,
+      type: ContentType.Json,
+      format: "json",
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags Promotions
+   * @name PromotionsCodesCreate
+   * @summary Залить пачку кодов
+   * @request POST:/api/Promotions/Codes
+   * @secure
+   */
+  promotionsCodesCreate = (data: CreatePromotionCodeModel, params: RequestParams = {}) =>
+    this.request<void, ProblemDetails>({
+      path: `/api/Promotions/Codes`,
+      method: "POST",
+      body: data,
+      secure: true,
+      type: ContentType.Json,
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags Promotions
+   * @name PromotionsCodesUpdate
+   * @summary Активировать код
+   * @request PUT:/api/Promotions/Codes
+   * @secure
+   */
+  promotionsCodesUpdate = (
+    query?: {
+      /**
+       * ИД промо акции
+       * @format uuid
+       */
+      id?: string;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<void, ProblemDetails>({
+      path: `/api/Promotions/Codes`,
+      method: "PUT",
+      query: query,
       secure: true,
       ...params,
     });

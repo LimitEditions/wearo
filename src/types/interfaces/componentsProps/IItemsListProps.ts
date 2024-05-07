@@ -4,8 +4,7 @@ export type Item = {
     photoId?: string | undefined | null,
     needPhoto?: boolean,
     alt?: string,
-    photoStyles?: string,
-    state?: any
+    photoStyles?: string
 }
 
 export interface IItemsListProps {

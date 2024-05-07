@@ -1,6 +1,8 @@
 import React from 'react'
 import { UserModel } from '../../api/data-contracts'
-import { EmployeeInfo } from '../common/EmployeeGroup/EmployeeInfo'
+import { BlockStyle } from '../../types/interfaces/IStyles';
+import getStyles from '../../utils/getStyles';
+import Item from '../common/ItemGroup/Item';
 
 export const UserInfoList = ({info} : {info: UserModel}) => {
   // Использование библиотеки moment для форматирования даты
@@ -40,14 +42,36 @@ export const UserInfoList = ({info} : {info: UserModel}) => {
     <>
         {infoList.map((el) => {
         return (
-          <EmployeeInfo
-            needArrow={false}
-            title={el.infoTitle}
-            value={el.value}
-            key={el.infoTitle}
-          />
+          <Item key={el.infoTitle}>
+            <div className={getStyles(containerStyle)}>
+              <div>
+                <h3 className={getStyles(h3Style)}>{el.infoTitle}</h3>
+                {el.value ? (
+                  <span className={getStyles(spanStyle)}>{el.value}</span>
+                ) : (
+                  <span className={getStyles(spanStyle)}>
+                    Данные не указаны
+                  </span>
+                )}
+              </div>
+            </div>
+          </Item>
         );
       })}
     </>
   )
 }
+
+const h3Style: BlockStyle = {
+  text: 'text-xs font-normal'
+}
+
+const spanStyle: BlockStyle = {
+  text: 'font-normal text-sm'
+}
+
+const containerStyle: BlockStyle = {
+blockSize: "w-full",
+background: "bg-gray-100",
+container: "flex justify-between",
+};
