@@ -11,7 +11,7 @@ export const ItemsList: React.FC<IItemsListProps> = ({ items }) => {
     <div className={getStyles(containerStyle)}>
       {items.map((el) => {
         return (
-          <Item key={el.title + new Date()} path={el.path}>
+          <Item key={el.path} path={el.path}>
             <div className={getStyles(divStyle)}>
               {/* Если нужно, добавляем фото */}
               {el.needPhoto && (
