@@ -13,37 +13,30 @@ import { AvatarAndName } from "../../../../Components/common/AvatarAndName";
 import { TextItemsList } from "../../../../Components/superadmin/TextItemsList";
 
 export const RequestInfoPage = () => {
-  const [brandInfo, setBrandInfo] = useState<BrandRequestModel>();
   const { id } = useParams();
-  // Запрос на получение информации о конкретной заявки на создание бренда
-  const [data, isLoading, dataError] = useApi(
+  // Запрос на получение информации о конкретной заявкe на создание бренда
+  const [data, isLoading, dataError] = useApi<"brandsRequestsDetail", BrandRequestModel>(
     "brandsRequestsDetail",
     id,
     { headers: { Authorization: `Bearer ${retrieve("token")}` } },
     true
   );
 
-  useEffect(() => {
-    if (data) {
-      setBrandInfo(data);
-    }
-  }, [data, isLoading, dataError]);
-
   return (
     <div className={getStyles(divStyle)}>
       <SectionsTitle needsClose={true} title="Заявка на открытие бренда" />
-      {brandInfo && (
+      {data && (
         <>
           {/* Отображаем логитип и название */}
-          <AvatarAndName name={brandInfo.name} photoId={brandInfo.photo} />
+          <AvatarAndName name={data.name} photoId={data.photo} />
           {/* Отображаем информацию из заявки */}
-          <TextItemsList info={brandInfo} type="brandRequest"/>
+          <TextItemsList info={data} type="brandRequest"/>
           {/* Отображение файлов */}
           <div className={getStyles(containerFilesStyle)}>
             <h3 className={getStyles(h3Style)}>Файлы компании</h3>
             {/* При наличии прикрепленных файлов отображаем ссылки для их скачивания */}
-            {brandInfo.files ? (
-              brandInfo.files.map((el: FileModel) => {
+            {data.files ? (
+              data.files.map((el: FileModel) => {
                 return <DownloadFile id={el.fileGuid} key={el.fileGuid} />;
               })
             ) : (

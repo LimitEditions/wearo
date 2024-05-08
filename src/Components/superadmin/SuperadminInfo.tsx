@@ -7,23 +7,18 @@ import { Info } from '../common/Info';
 import { TextItemsList } from './TextItemsList';
 
 export const SuperadminInfo = () => {
-  const [user, setUser] = useState<UserModel>();
-  const [data, isLoading, dataError] = useApi(
+  // Запрос на получение подробной информации о пользователе
+  const [data, , dataError] = useApi<"usersDetail", UserModel>(
     "usersDetail",
     retrieve("guid"),
     { headers: { Authorization: `Bearer ${retrieve("token")}` } },
     true
   );
 
-  useEffect(() => {
-    if (data) {
-      setUser(data);
-    }
-  }, [data, isLoading, dataError]);
   return (
     <>
       <SectionsTitle needsClose={false} title='Настройки' needTopSpasing={true} />
-      {user && <TextItemsList info={user} type='admin'/>}
+      {data && <TextItemsList info={data} type='admin'/>}
       <Info msg='Не удалось получить данные.' showInfo={!!dataError} style=''/>
     </>
   )

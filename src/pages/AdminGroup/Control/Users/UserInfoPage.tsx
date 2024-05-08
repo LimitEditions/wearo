@@ -18,7 +18,6 @@ import { EditUserInfo } from "./EditUserInfo";
 import { TextItemsList } from "../../../../Components/superadmin/TextItemsList";
 
 export const UserInfo = () => {
-  const [user, setUser] = useState<UserModel>({});
   // Флаг для открытия окна удаления пользователя
   const [mod, setMod] = useState<boolean>(false);
   const { id } = useParams();
@@ -29,12 +28,6 @@ export const UserInfo = () => {
     { headers: { Authorization: `Bearer ${retrieve("token")}` } },
     true
   );
-
-  useEffect(() => {
-    if (data) {
-      setUser(data);
-    }
-  }, [data, isLoading, dataError]);
 
   const items = [
         {
@@ -71,17 +64,17 @@ export const UserInfo = () => {
                 title="Профиль"
                 needBottomSpasing={true}
               />
-              {items && (
+              {items && data && (
                 <>
                   <AvatarAndName
-                    name={user.firstName}
-                    photoId={user.mainAvatarGuid}
+                    name={data.firstName}
+                    photoId={data.mainAvatarGuid}
                   />
                   {/* Разделы Избранное, Подписки, Сканирования, настройки. Каждый со стрелкой вправо и с переходом на страницу */}
                   <ItemsList items={items} />
                   {/* Информаци о пользователе */}
                   <div className={getStyles(divStyle)}>
-                    <TextItemsList info={user} type="user"/>
+                    <TextItemsList info={data} type="user"/>
                   </div>
                   <div className={getStyles(btnContainer)}>
                     <Button showButton={true} onClick={() => setMod(true)}>

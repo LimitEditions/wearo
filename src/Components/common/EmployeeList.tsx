@@ -15,24 +15,17 @@ import getStyles from "../../utils/getStyles";
 export const EmployeeList = ({ userType }: { userType: UserType }) => {
   // Должность сотрудника
   const position = getEmployeePosition(userType);
-  const [employee, setEmployee] = useState<UserModelDataResult>();
   // Запрос на получение списка пользователей с определенным типом
-  const [data, isLoading, dataError] = useApi(
+  const [data, isLoading, dataError] = useApi<'usersList', UserModelDataResult>(
     "usersList",
     { Types: userType },
     { headers: { Authorization: `Bearer ${retrieve("token")}` } },
     true
   );
 
-  useEffect(() => {
-    if (data) {
-      setEmployee(data);
-    }
-  }, [data, isLoading, dataError]);
-
   return (
     <>
-      {employee?.data?.map((el) => {
+      {data?.data?.map((el) => {
         if (!el.isDeleted) {
           return (
             <Item path={`/admin/${el.guid}`} key={el.guid}>

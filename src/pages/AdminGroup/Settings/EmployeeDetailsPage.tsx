@@ -12,20 +12,16 @@ import { Info } from "../../../Components/common/Info";
 import { TextItemsList } from "../../../Components/superadmin/TextItemsList";
 
 export const EmployeeDetailsPage = () => {
-  const [user, setUser] = useState<UserModel>();
   // Флаг для открытия модалки удаления сотрудника
   const [isOpenPopup, setIsOpenPopup] = useState<boolean>(false);
   const { id } = useParams();
+  // Запрос на получение подробной информации о пользователе
   const [data, isLoading, dataError] = useApi<"usersDetail", UserModel>(
     "usersDetail",
     id,
     { headers: { Authorization: `Bearer ${retrieve("token")}` } },
     true
   );
-
-  useEffect(() => {
-    setUser(data as UserModel);
-  }, [data, isLoading, dataError]);
 
   const handleClick = () => {
     // По нажатию на кнопку Удалить открывается модальное окно "Точно ли хотите удалить" с кнопками удаления и отмены
@@ -39,10 +35,10 @@ export const EmployeeDetailsPage = () => {
         title={"Администратор"}
         needBottomSpasing={true}
       />
-      {user && (
+      {data && (
         <>
         {/* Информация о пользователе */}
-          <TextItemsList info={user} type="admin"/>
+          <TextItemsList info={data} type="admin"/>
           <div className={getStyles(divStyle)}>
             <Button showButton={true} onClick={handleClick}>
               Удалить

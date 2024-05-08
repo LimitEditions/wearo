@@ -13,21 +13,14 @@ import { BlockStyle } from "../../../../types/interfaces/IStyles";
 import getStyles from "../../../../utils/getStyles";
 
 export const UserSubscriptionsPage = () => {
-  const [subscriptions, setSubscriptions] =
-    useState<SubscriptionModelDataResult>();
   const { id } = useParams();
-  const [data, isLoading, dataError] = useApi(
+  const [data, isLoading, dataError] = useApi<"subscriptionsList", SubscriptionModelDataResult>(
     "subscriptionsList",
     { PageSize: 100, UserGuid: id, IsDeleted: false },
     { headers: { Authorization: `Bearer ${retrieve("token")}` } },
     true
   );
 
-  useEffect(() => {
-    if (data) {
-      setSubscriptions(data);
-    }
-  }, [data, isLoading, dataError]);
   return (
     <div className={getStyles(divStyle)}>
       <SectionsTitle
@@ -35,8 +28,7 @@ export const UserSubscriptionsPage = () => {
         title="Подписки"
         needBottomSpasing={true}
       />
-      {subscriptions?.data &&
-        subscriptions.data.map((el: SubscriptionModel) => {
+      {data?.data?.map((el: SubscriptionModel) => {
           return (
             <Subscription
               brandId={el.brandGuid}

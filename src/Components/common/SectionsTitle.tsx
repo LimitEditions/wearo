@@ -2,9 +2,10 @@ import React from "react";
 import { ISectionsTitle } from "../../types/interfaces/componentsProps/ISectionsTitle";
 import { BlockStyle } from "../../types/interfaces/IStyles";
 import getStyles from "../../utils/getStyles";
-import { CloseBtn } from "./CloseBtn";
+import { useNavigate } from "react-router-dom";
+import { Button } from "./Button";
 
-// Компонент для создания названия раздела. 
+// Компонент для создания названия раздела.
 export const SectionsTitle = ({
   title,
   needsClose,
@@ -23,11 +24,24 @@ export const SectionsTitle = ({
       : "";
     return baseStyles + spasing;
   };
+
+  // Откат на станицу назад при нажатии на крестик
+  const navigate = useNavigate();
+  const handleClick = () => {
+    navigate(-1);
+  };
+
   return (
     <div className={getContainerStyles()}>
       <div className={getStyles(divStyle)}>
         <h2 className={getStyles(h2Style)}>{title}</h2>
-        {needsClose ? <CloseBtn /> : null}
+        <Button
+          onClick={handleClick}
+          className={getStyles(divStyle)}
+          showButton={needsClose}
+        >
+          <img src="/images/closeBtn.png" alt="Крестик для закрытия" />
+        </Button>
       </div>
     </div>
   );
@@ -42,7 +56,7 @@ const containerWithoutClose: BlockStyle = {
 const containerWithClose: BlockStyle = {
   blockSize: "w-full",
   spacing: "px-2 py-4",
-  background: 'bg-white'
+  background: "bg-white",
 };
 
 const containerWithTopSpasing: BlockStyle = {
@@ -55,8 +69,6 @@ const containerWithBottomSpasing: BlockStyle = {
 
 const divStyle: BlockStyle = {
   container: "flex justify-between",
-  blockSize: "w-full",
-  spacing: "m-auto",
 };
 
 const h2Style: BlockStyle = {

@@ -17,32 +17,25 @@ export const Subscription = ({
   subId: string | undefined;
   brandId: string | undefined;
 }) => {
-  const [brandInfo, setBrandInfo] = useState<BrandModel>();
   // Флаг открытия окна удаления подписки
   const [mod, setMod] = useState<boolean>(false)
 
   // Получаем данные о бренде, на который подписан пользователь
-  const [data, isLoading, dataError] = useApi(
+  const [data, isLoading, dataError] = useApi<'brandsDetail', BrandModel>(
     "brandsDetail",
     brandId,
     { headers: { Authorization: `Bearer ${retrieve("token")}` } },
     true
   );
 
-  useEffect(() => {
-    if (data) {
-      setBrandInfo(data);
-    }
-  }, [data, isLoading, dataError, brandInfo]);
-
   if (!subId || !brandId) return null;
   return (
     <>
-      {brandInfo && (
+      {data && (
         <div className={getStyles(containerStyle)}>
           <div className={getStyles(divStyle)}>
-            <Photo id={brandInfo.photo} styles={getStyles(imgStyle)} alt='Логотип бренда'/>
-            <span className={getStyles(spanStyle)}>{brandInfo.name}</span>
+            <Photo id={data.photo} styles={getStyles(imgStyle)} alt='Логотип бренда'/>
+            <span className={getStyles(spanStyle)}>{data.name}</span>
           </div>
           {/* По нажатию на кнопку отмены подписки появляется окно с кнопками Удалить и Отменить */}
           <Button showButton={true} styles={btnStyle} onClick={() => setMod(true)}>Отменить подписку</Button>
