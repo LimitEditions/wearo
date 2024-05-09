@@ -8,6 +8,7 @@ import useApi from "../../hooks/useApi";
 import { InputsList } from "../common/InputsList";
 import { Info } from "../common/Info";
 import { Modal } from "../common/Modal";
+import { IsLoading } from "../common/IsLoading";
 
 export const RegistrationForm = ({
   user,
@@ -90,7 +91,7 @@ export const RegistrationForm = ({
           <Button showButton={true} type={"submit"}>Зарегистироваться</Button>
         </form>
       </div>
-      <Info showInfo={isLoading} msg="Loading..." style={getStyles(pStyle)} />
+      <IsLoading show={isLoading} />
       <Info showInfo={error ? true: false} msg="Ошибка регистрации." style={getStyles(spanErrorStyle)} />
       <Modal isOpen={mod} 
             setIsOpen={setMod} 

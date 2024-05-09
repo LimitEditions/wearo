@@ -6,6 +6,7 @@ import { ILoginFormProps } from "../../types/interfaces/componentsProps/IFormPro
 import { InputsList } from "../common/InputsList";
 import { Info } from "../common/Info";
 import { IFormData } from "../../types/interfaces/componentsProps/IInputsListProps";
+import { IsLoading } from "../common/IsLoading";
 
 export const LoginForm = ({
   user,
@@ -39,7 +40,7 @@ export const LoginForm = ({
           <Button showButton={true} type="submit">Войти</Button>
         </form>
       </div>
-      <Info showInfo={isLoading} msg="Loading..." style={getStyles(pStyle)} />
+      <IsLoading show={isLoading} />
     </>
   );
 };

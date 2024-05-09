@@ -2,19 +2,17 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { BrandModel } from '../../api/data-contracts';
 import useApi from '../../hooks/useApi';
-import { Photos } from './Photos';
-import { Button } from '../common/Button';
-import { BlockStyle } from '../../types/interfaces/IStyles';
-import ProfileItem from './ProfileItem';
-import { Info } from '../common/Info';
-import getStyles from '../../utils/getStyles';
-import { Tips } from './Tips';
+import { Photos } from '../../Components/user/Photos';
+import { Button } from '../../Components/common/Button';
+import ProfileItem from '../../Components/user/ProfileItem';
+import { Tips } from '../../Components/user/Tips';
+import { IsLoading } from '../../Components/common/IsLoading';
 
-export const Brand = () => {
+export const BrandPage = () => {
   const {id} = useParams();
   const [shouldExecute, setShouldExecute] = useState<boolean>(false);
 
-  const [data, isLoading, error] = useApi<'brandsDetail', BrandModel>(
+  const [data, isLoading, ] = useApi<'brandsDetail', BrandModel>(
     'brandsDetail', id, {}, shouldExecute
   );
   
@@ -27,11 +25,11 @@ export const Brand = () => {
 
   return (
     <div className='space-y-7 w-full sm:w-1/4'>
-      <Info showInfo={isLoading} msg='Загружаю...' style={getStyles(infoStyle)}/>
+      <IsLoading show={isLoading} />
       <Photos photos={undefined} imgSize='w-full'/>
       <div className='flex justify-between p-4'>
         <span>{data?.name}</span>
-        <Button showButton={true} styles={btnStyle}>Подписаться</Button>
+        <Button showButton={true}>Подписаться</Button>
       </div>
       <div className='m-2'>{data?.description}</div>
       <div>
@@ -43,12 +41,3 @@ export const Brand = () => {
     </div>
   )
 }
-
-
-const btnStyle: BlockStyle = {
-  border: ''
-};
-
-const infoStyle: BlockStyle = {
-  text: 'text-green-700'
-};

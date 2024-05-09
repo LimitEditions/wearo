@@ -6,9 +6,11 @@ import { Logo } from './Components/common/Logo';
 import { Authorization } from './pages/Authorization';
 import { BlockStyle } from './types/interfaces/IStyles';
 import getStyles from './utils/getStyles';
-import { WardrobePage } from './pages/WardrobePage';
-import { Brand } from './Components/user/Brand';
-import { PostsPage } from './pages/PostsPage';
+import { WardrobePage } from './pages/UserGroup/WardrobePage';
+import { BrandPage } from './pages/UserGroup/BrandPage';
+import { PostsPage } from './pages/UserGroup/PostsPage';
+import { CollectionPage } from './pages/UserGroup/CollectionPage';
+import { ProductPage } from './pages/UserGroup/ProductPage';
 
 
 function App() {
@@ -20,8 +22,10 @@ function App() {
         <Route path='/' element={ <Home /> }/>
         <Route path='/auth/*' element={ <Authorization /> }/>
         <Route path='/wardrobe/*' element={ <WardrobePage /> }/>
+        <Route path='/product/:id/*' element={<ProductPage />} />
         <Route path='/posts/*' element={ <PostsPage /> }/>
-        <Route path='/brand/:id/' element={<Brand />} />
+        <Route path='/brand/:id/' element={<BrandPage />} />
+        <Route path='/collection/:id' element={<CollectionPage />} />
         <Route path='/*' element="no content"/> Обработка ошибочных запросов
       </Routes>
       <Nav />
