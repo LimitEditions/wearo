@@ -1,7 +1,4 @@
-import { CreateUserModel } from "../api/data-contracts";
-
-
-export function validate(word: string , target: string | null): boolean {
+export function validate(word: string, target: string | null): boolean {
     let regex;
     switch (target) {
         case 'password':
@@ -14,22 +11,29 @@ export function validate(word: string , target: string | null): boolean {
         case 'secondName':
             regex = /^[а-яА-ЯёЁ]{2,}$/;
             break;
+        case 'email':
+            regex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
+            break;
+        case 'phone':
+            regex = /^((8|\+7)[- ]?)?(\(?\d{3}\)?[- ]?)?[\d\- ]{7,10}$/;
+            break;
         default:
-            console.log(target)
             throw new Error('Invalid target');
     };
     return regex.test(word);
-};
+}
 
-export const validateField = (value: string, name: CreateUserModel[keyof CreateUserModel]) => {
+export const validateField = (value: string, name: string) => {
     let message = '';
 
     if (name && !validate(value, name)) {
         message = name === "password" ? 
-        "Буквы латинского алфавита, цифры и/или спец. символы (!@#$%^&*). Минимальная длина - 4 символа.":
+        "Буквы латинского алфавита, цифры и/или спец. символы (!@#$%^&*). Минимальная длина - 4 символа." :
         name === "username" ?
-        "Буквы латинского алфавита и/или цифры. Минимальная длина - 4 символа.":
-        "Буквы кириллического алфавита. Минимальная длина - 2 символа.";
+        "Буквы латинского алфавита и/или цифры. Минимальная длина - 4 символа." :
+        name === "firstName" || name === "secondName" ?
+        "Буквы кириллического алфавита. Минимальная длина - 2 символа." :
+        "Некорректное значение в поле";
     };
 
     return message;

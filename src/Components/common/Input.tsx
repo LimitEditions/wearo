@@ -30,7 +30,7 @@ export const Input = ({
 const inpitStyle: BlockStyle = {
   spacing: "py-2 px-5",
   background: "bg-gray-200",
-  border: "rounded-smGermany_freeopenvpn_udp.ovpn",
+  border: "rounded-lg",
   text: "placeholder-gray-700",
   blockSize: "w-full",
 };

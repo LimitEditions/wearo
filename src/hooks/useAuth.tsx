@@ -3,7 +3,6 @@ import AuthContext from '../context/AuthProvider';
 import { useNavigate } from 'react-router-dom';
 import { retrieve } from '../utils/encryption';
 import useApi from './useApi';
-import { IAuthMeList } from '../types/interfaces/ApiResponses/IAuthMeList';
 import { isTokenExpired } from '../utils/expirationTime';
 import { dataToLS } from '../utils/dataToLS';
 import { TokenModel } from '../api/data-contracts';
@@ -50,13 +49,9 @@ const useAuth = () => {
       if (isTokenModel(data)) {
         dataToLS(data);
       } else {
-        const dataInfo = data as IAuthMeList;
         setAuth({
           status: true,
-          username: dataInfo.username,
-          firstName: dataInfo.firstName,
-          secondName: dataInfo.secondName,
-          type: dataInfo.type
+          ...data
         });
       };  
     } else if (error) {

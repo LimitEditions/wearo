@@ -1,15 +1,15 @@
 import React from 'react'
 
 export const Info = ({ 
-    showInfo, msg, style 
+    showInfo, msg, className 
 }: {
     showInfo: boolean,
     msg: string,
-    style: string
+    className: string
 }) => {
     if (!showInfo) { return null };
 
     return (
-        <p className={style}>{msg}</p>
+        <p className={className}>{msg}</p>
     );
 };

@@ -27,11 +27,14 @@ import {
   Coloring,
   CommentModel,
   CommentModelDataResult,
+  ConfirmConfirmitionModel,
   CreateBrandModel,
   CreateBrandRequestModel,
   CreateClothingCollectionModel,
   CreateColorsModel,
   CreateCommentModel,
+  CreateConfiramtionEmailModel,
+  CreateConfiramtionPhoneModel,
   CreateFileProductModel,
   CreateLookModel,
   CreateMaterialModel,
@@ -691,16 +694,140 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
   /**
    * No description
    *
+   * @tags ConfirmationRequests
+   * @name ConfirmationRequestsEmailCreate
+   * @summary Установка email через запрос сообщения на почту
+   * @request POST:/api/ConfirmationRequests/Email
+   * @secure
+   */
+  confirmationRequestsEmailCreate = (data: CreateConfiramtionEmailModel, params: RequestParams = {}) =>
+    this.request<void, ProblemDetails>({
+      path: `/api/ConfirmationRequests/Email`,
+      method: "POST",
+      body: data,
+      secure: true,
+      type: ContentType.Json,
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags ConfirmationRequests
+   * @name ConfirmationRequestsEmailConfirmCreate
+   * @summary Установка email через запрос сообщения на почту
+   * @request POST:/api/ConfirmationRequests/Email/Confirm
+   * @secure
+   */
+  confirmationRequestsEmailConfirmCreate = (data: ConfirmConfirmitionModel, params: RequestParams = {}) =>
+    this.request<void, ProblemDetails>({
+      path: `/api/ConfirmationRequests/Email/Confirm`,
+      method: "POST",
+      body: data,
+      secure: true,
+      type: ContentType.Json,
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags ConfirmationRequests
+   * @name ConfirmationRequestsPhoneCreate
+   * @summary Установка номера через обратный flashcall
+   * @request POST:/api/ConfirmationRequests/Phone
+   * @secure
+   */
+  confirmationRequestsPhoneCreate = (data: CreateConfiramtionPhoneModel, params: RequestParams = {}) =>
+    this.request<void, ProblemDetails>({
+      path: `/api/ConfirmationRequests/Phone`,
+      method: "POST",
+      body: data,
+      secure: true,
+      type: ContentType.Json,
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags ConfirmationRequests
+   * @name ConfirmationRequestsPhoneCheckCreate
+   * @summary Проверить статус запроса
+   * @request POST:/api/ConfirmationRequests/Phone/Check/{guid}
+   * @secure
+   */
+  confirmationRequestsPhoneCheckCreate = (guid: string, params: RequestParams = {}) =>
+    this.request<void, ProblemDetails>({
+      path: `/api/ConfirmationRequests/Phone/Check/${guid}`,
+      method: "POST",
+      secure: true,
+      ...params,
+    });
+  /**
+ * No description
+ *
+ * @tags ConfirmationRequests
+ * @name ConfirmationRequestsPhoneNumberCreate
+ * @summary Получить номер, на который надо звонить.
+(сейчас номер статичный)
+ * @request POST:/api/ConfirmationRequests/Phone/Number
+ * @secure
+ */
+  confirmationRequestsPhoneNumberCreate = (params: RequestParams = {}) =>
+    this.request<string, ProblemDetails>({
+      path: `/api/ConfirmationRequests/Phone/Number`,
+      method: "POST",
+      secure: true,
+      format: "json",
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags ConfirmationRequests
+   * @name ConfirmationRequestsPhonePostbackCreate
+   * @summary Метод для автоматического одабрения внешним сервисом
+   * @request POST:/api/ConfirmationRequests/Phone/Postback
+   * @secure
+   */
+  confirmationRequestsPhonePostbackCreate = (
+    query?: {
+      status?: string;
+      callId?: string;
+      phone?: string;
+      secretCode?: string;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<void, ProblemDetails>({
+      path: `/api/ConfirmationRequests/Phone/Postback`,
+      method: "POST",
+      query: query,
+      secure: true,
+      ...params,
+    });
+  /**
+   * No description
+   *
    * @tags Files
    * @name FilesDetail
    * @summary Получить файл
    * @request GET:/api/Files/{id}
    * @secure
    */
-  filesDetail = (id: string, params: RequestParams = {}) =>
+  filesDetail = (
+    id: string,
+    query?: {
+      /**
+       * S или XS для фото
+       * @default ""
+       */
+      size?: string;
+    },
+    params: RequestParams = {},
+  ) =>
     this.request<void, ProblemDetails>({
       path: `/api/Files/${id}`,
       method: "GET",
+      query: query,
       secure: true,
       ...params,
     });
@@ -989,6 +1116,24 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * No description
    *
    * @tags Looks
+   * @name LooksFileCreate2
+   * @summary Удаление продукта от лука
+   * @request POST:/api/Looks/File/{guid}
+   * @originalName looksFileCreate
+   * @duplicate
+   * @secure
+   */
+  looksFileCreate2 = (guid: string, params: RequestParams = {}) =>
+    this.request<void, ProblemDetails>({
+      path: `/api/Looks/File/${guid}`,
+      method: "POST",
+      secure: true,
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags Looks
    * @name LooksProductCreate
    * @summary Добавление продукта к образу
    * @request POST:/api/Looks/Product
@@ -1008,6 +1153,24 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * No description
    *
    * @tags Looks
+   * @name LooksProductCreate2
+   * @summary Удаление продукта от лука
+   * @request POST:/api/Looks/Product/{guid}
+   * @originalName looksProductCreate
+   * @duplicate
+   * @secure
+   */
+  looksProductCreate2 = (guid: string, params: RequestParams = {}) =>
+    this.request<void, ProblemDetails>({
+      path: `/api/Looks/Product/${guid}`,
+      method: "POST",
+      secure: true,
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags Looks
    * @name LooksTagCreate
    * @summary Добавление тега к образу
    * @request POST:/api/Looks/Tag
@@ -1021,6 +1184,24 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
       secure: true,
       type: ContentType.Json,
       format: "json",
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags Looks
+   * @name LooksTagCreate2
+   * @summary Удаление тега от лука
+   * @request POST:/api/Looks/Tag/{guid}
+   * @originalName looksTagCreate
+   * @duplicate
+   * @secure
+   */
+  looksTagCreate2 = (guid: string, params: RequestParams = {}) =>
+    this.request<void, ProblemDetails>({
+      path: `/api/Looks/Tag/${guid}`,
+      method: "POST",
+      secure: true,
       ...params,
     });
   /**
@@ -2247,11 +2428,12 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
     },
     params: RequestParams = {},
   ) =>
-    this.request<void, ProblemDetails>({
+    this.request<string, ProblemDetails>({
       path: `/api/Promotions/Codes`,
       method: "PUT",
       query: query,
       secure: true,
+      format: "json",
       ...params,
     });
   /**

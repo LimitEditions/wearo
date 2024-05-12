@@ -37,6 +37,7 @@ export default App;
 
 const mainStyle: BlockStyle = {
   container: 'min-h-screen',
-  spacing: 'pb-20'
+  spacing: 'pb-20',
+  text: 'font-serif'
 };
 

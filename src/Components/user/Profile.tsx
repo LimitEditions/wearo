@@ -2,8 +2,6 @@ import React, { useContext } from 'react'
 import ProfileItem from './ProfileItem';
 import getStyles from '../../utils/getStyles';
 import { BlockStyle } from '../../types/interfaces/IStyles';
-import { Button } from '../common/Button';
-import { Outlet } from 'react-router-dom';
 import { LogOut } from '../common/LogOut';
 import AuthContext from '../../context/AuthProvider';
 
@@ -27,24 +25,16 @@ export const Profile = () => {
         <h2 className={getStyles(headStyle)}>Настройки</h2>
         <ProfileItem path="/settings/email">
           <div>Почта:</div>
-          <div>email@mail.ru</div>
+          <div>{isAuth.userInfo ? isAuth.userInfo.email: 'не подтверждена'}</div>
         </ProfileItem>
         <ProfileItem path="/settings/phone">
           <div>Телефон:</div>
-          <div>+7 (000) 000-00-00</div>
+          <div>{isAuth.userInfo ? isAuth.userInfo.phone: 'не подтвержден'}</div>
         </ProfileItem>
         <ProfileItem path="/settings/password">Пароль</ProfileItem>
         
         <LogOut show={true} />
-
-        <Button 
-          showButton={true} 
-          onClick={() => {/* логика открытия своего бренда */}}
-          styles={btnBrand}>
-            Открыть свой бренд
-        </Button>
       </div>
-      <Outlet />
     </>
     
   )
@@ -68,11 +58,4 @@ const fotoStyle: BlockStyle = {
 const headStyle: BlockStyle = {
   text: "text-xl font-bold",
   spacing: "my-4",
-};
-
-const btnBrand: BlockStyle = {
-  blockSize: "block rounded",
-  spacing: "mx-auto p-2",
-  background: "bg-gray-400",
-  text: "text-white",
 };

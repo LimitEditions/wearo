@@ -4,9 +4,9 @@ import getStyles from "../../utils/getStyles";
 import { Button } from "../common/Button";
 import { ILoginFormProps } from "../../types/interfaces/componentsProps/IFormProps";
 import { InputsList } from "../common/InputsList";
-import { Info } from "../common/Info";
 import { IFormData } from "../../types/interfaces/componentsProps/IInputsListProps";
 import { IsLoading } from "../common/IsLoading";
+import { ErrorReq } from "../common/ErrorReq";
 
 export const LoginForm = ({
   user,
@@ -36,7 +36,7 @@ export const LoginForm = ({
         <h1 className={getStyles(hStyle)}>Вход</h1>
         <form className={getStyles(formStyle)} onSubmit={onSubmit}>
           <InputsList formData={formData} />
-          <Info showInfo={error ? true: false} msg='Неверный логин или пароль' style={getStyles(spanErrorStyle)} />
+          <ErrorReq show={!!error} error={error}/>
           <Button showButton={true} type="submit">Войти</Button>
         </form>
       </div>
@@ -58,7 +58,3 @@ const spanErrorStyle: BlockStyle = {
   text: "text-red-500",
 };
 
-const pStyle: BlockStyle = {
-  text: "text-center",
-  spacing: "m-auto my-8",
-};

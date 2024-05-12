@@ -5,12 +5,8 @@ import { UserType } from "../api/data-contracts";
 
 
 // Создаем контекст с типом AuthContextType и начальными значениями по умолчанию
-export const defaultContext = {
+export const defaultContext: IAuthMeList = {
   status: false,
-  guid: '',
-  userName: '',
-  firstName: null,
-  secondName: null,
   type: UserType.Unauthorized,
 };
 

@@ -44,7 +44,7 @@ export const withAuthLogic = ({ Component, type }: IwithAuthLogicProps) => {
       };
     }, [data, error, shouldExecute, navigate, initialUser]);
 
-    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
       // проверяем все инпуты на валидность
       refs.forEach(ref => {
