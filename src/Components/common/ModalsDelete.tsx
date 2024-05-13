@@ -8,7 +8,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import { retrieve } from "../../utils/encryption";
 import useApi from "../../hooks/useApi";
 import { SuccessfulContent } from "./SuccessfulContent";
-import { Info } from "./Info";
 
 export const ModalsDelete = ({
   apiMethod,
@@ -16,7 +15,7 @@ export const ModalsDelete = ({
   setIsOpen1,
   messageSuccess,
   messageSure,
-  idForDelete
+  idForDelete,
 }: IModalsDeleteProps) => {
   // Флаг для отображения окна, сообзающего об успехе
   const [isOpen2, setIsOpen2] = useState(false);
@@ -35,11 +34,11 @@ export const ModalsDelete = ({
     if (shouldExequte && (data === "" || dataError)) {
       // Останавливаем запрос
       setShouldExequte(false);
+      // Показываем результирующее окно
+      setIsOpen2(true);
       if (data === "" && !dataError) {
         // Закрываем первое окно "Уверены, что хотите удалить..."
         setIsOpen1(false);
-        // В случае успешного запроса показываем на 2 секунды второе окно, которое сообщает об успехе
-        setIsOpen2(true);
         const timer = setTimeout(() => {
           setIsOpen1(false);
           navigate(-1);
@@ -58,7 +57,7 @@ export const ModalsDelete = ({
 
   return (
     <>
-    {/* Первое окно с кнопками Удалить и Отменить */}
+      {/* Первое окно с кнопками Удалить и Отменить */}
       <Modal isOpen={isOpen1} setIsOpen={setIsOpen1} swipeable={false}>
         <h3 className={getStyles(h3Style)}>{messageSure}</h3>
         <div className={getStyles(div1Style)}>
@@ -74,16 +73,17 @@ export const ModalsDelete = ({
           </Button>
         </div>
       </Modal>
-      
-      {/* Второе окно, сообзающее об успехе */}
+
+      {/* Второе окно, сообщающее об успехе */}
       <Modal isOpen={isOpen2} setIsOpen={setIsOpen2} swipeable={false}>
+        {dataError ? (
+          <span className={getStyles(spanStyle)}>
+            Ошибка запроса, повторите позже.
+          </span>
+        ) : (
           <SuccessfulContent message={messageSuccess} />
-        </Modal>
-      <Info
-        msg="Ошибка запроса, повторите позже."
-        showInfo={!!dataError}
-        style=""
-      />
+        )}
+      </Modal>
     </>
   );
 };
@@ -106,4 +106,9 @@ const h3Style: BlockStyle = {
   blockSize: "w-3/4",
   spacing: "m-auto py-4",
   text: "text-center text-black text-base",
+};
+
+const spanStyle: BlockStyle = {
+  text: "text-base text-black",
+  spacing: "pb-4",
 };
