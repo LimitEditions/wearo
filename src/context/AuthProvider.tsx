@@ -5,25 +5,21 @@ import { UserType } from "../api/data-contracts";
 
 
 // Создаем контекст с типом AuthContextType и начальными значениями по умолчанию
-const info = {
+export const defaultContext: IAuthMeList = {
   status: false,
-  guid: '',
-  userName: '',
-  firstName: null,
-  secondName: null,
   type: UserType.Unauthorized,
 };
 
 const AuthContext = createContext<AuthContextType>({
-    isAuthenticated: info,
+    isAuth: defaultContext,
     setAuth: () => { },
 });
 
 export const AuthProvider = ({ children }: { children: JSX.Element }) => {
-    const [isAuthenticated, setAuth] = useState<IAuthMeList>(info);
+    const [isAuth, setAuth] = useState<IAuthMeList>(defaultContext);
     
     return (
-      <AuthContext.Provider value={{ isAuthenticated, setAuth }}>
+      <AuthContext.Provider value={{ isAuth, setAuth }}>
         {children}
       </AuthContext.Provider>
     );

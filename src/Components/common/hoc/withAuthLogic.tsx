@@ -41,7 +41,7 @@ export const withAuthLogic = ({ Component, type }: IwithAuthLogicProps) => {
         if (data) {
           if (type === "login") {
             dataToLS(data);
-            navigate("/");
+            navigate("/wardrobe");
           } else {
             setMod(true);
             const timer = setTimeout(() => {
@@ -53,7 +53,7 @@ export const withAuthLogic = ({ Component, type }: IwithAuthLogicProps) => {
       };
     }, [data, error, shouldExecute, navigate, initialUser]);
 
-    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
       // проверяем все инпуты на валидность
       refs.forEach(ref => {

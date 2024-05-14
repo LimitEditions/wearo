@@ -51,6 +51,11 @@ export interface AddProductToLookModel {
    * @format uuid
    */
   lookGuid?: string;
+  /**
+   * Цвет продукта
+   * @format uuid
+   */
+  productColorGuid?: string | null;
 }
 
 export interface AddTagToLookModel {
@@ -474,6 +479,12 @@ export interface CreateConfiramtionEmailModel {
   email?: string;
 }
 
+export interface CreateConfiramtionPhoneModel {
+  /** @format uuid */
+  guid?: string;
+  phone?: string;
+}
+
 export interface CreateFileProductModel {
   /**
    * Гуид файла
@@ -497,10 +508,12 @@ export interface CreateFileProductModel {
   y?: number;
 }
 
-/** Совместимость вещей */
+/** Образ/лукбук */
 export interface CreateLookModel {
   /** Наименование */
   name?: string;
+  /** Описание */
+  description?: string | null;
   /**
    * Рост модели
    * @format double
@@ -514,6 +527,11 @@ export interface CreateLookModel {
   modelShape?: BodyShape;
   /** Набор файлов */
   files?: string[] | null;
+  /**
+   * Заглавная фото
+   * @format uuid
+   */
+  mainFileGuid?: string | null;
 }
 
 /** Материал */
@@ -923,7 +941,7 @@ export interface GuidEditModel {
   edit?: EditType;
 }
 
-/** Совместимость вещей */
+/** Образ/лукбук */
 export interface LookModel {
   /**
    * Идентификатор
@@ -944,6 +962,8 @@ export interface LookModel {
   updateDT?: string;
   /** Наименование */
   name?: string;
+  /** Описание */
+  description?: string | null;
   /**
    * Рост модели
    * @format double
@@ -961,6 +981,11 @@ export interface LookModel {
   files?: FileModel[] | null;
   /** Теги */
   tags?: LookTagModel[] | null;
+  /**
+   * Заглавная фото
+   * @format uuid
+   */
+  mainFileGuid?: string | null;
 }
 
 /** Результат чтения данных. */
@@ -993,7 +1018,7 @@ export interface LookProductModel {
    * @format date-time
    */
   updateDT?: string;
-  /** Совместимость вещей */
+  /** Образ/лукбук */
   look?: LookModel;
   /** Продукт */
   product?: ProductModel;
@@ -1007,6 +1032,12 @@ export interface LookProductModel {
    * @format uuid
    */
   productGuid?: string;
+  productColor?: ProductColorModel;
+  /**
+   * Цвет продукта
+   * @format uuid
+   */
+  productColorGuid?: string | null;
 }
 
 /** Тег образа */
@@ -1028,7 +1059,7 @@ export interface LookTagModel {
    * @format date-time
    */
   updateDT?: string;
-  /** Совместимость вещей */
+  /** Образ/лукбук */
   look?: LookModel;
   /**
    * ИД тега
@@ -1841,7 +1872,7 @@ export interface UpdateCommentModel {
   isLike?: boolean | null;
 }
 
-/** Совместимость вещей */
+/** Образ/лукбук */
 export interface UpdateLookModel {
   /**
    * Идентификатор
@@ -1850,6 +1881,8 @@ export interface UpdateLookModel {
   guid?: string;
   /** Наименование */
   name?: string;
+  /** Описание */
+  description?: string | null;
   /**
    * Рост модели
    * @format double
@@ -1861,6 +1894,11 @@ export interface UpdateLookModel {
    */
   modelWidth?: number | null;
   modelShape?: BodyShape;
+  /**
+   * Заглавная фото
+   * @format uuid
+   */
+  mainFileGuid?: string | null;
 }
 
 /** Материал */

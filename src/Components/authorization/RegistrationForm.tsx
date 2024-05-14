@@ -4,10 +4,11 @@ import { BlockStyle } from "../../types/interfaces/IStyles";
 import { validateField } from "../../utils/validation";
 import { IRegistrationFormProps } from "../../types/interfaces/componentsProps/IFormProps";
 import useApi from "../../hooks/useApi";
-import { Info } from "../common/Info";
 import { Modal } from "../common/Modal";
 import { SuccessfulContent } from "../common/SuccessfulContent";
 import { AuthForm } from "./AuthForm";
+import { IsLoading } from "../common/IsLoading";
+import { ErrorReq } from "../common/ErrorReq";
 
 // Компонент будет создавать либо форму для регистрации user, либо для регистрации нового admin
 export const RegistrationForm = ({
@@ -86,22 +87,36 @@ export const RegistrationForm = ({
   return (
     <>
       <AuthForm onSubmit={onSubmit} formData={formData} type={type} />
-      <Info showInfo={isLoading} msg="Loading..." style={getStyles(pStyle)} />
-      <Info showInfo={error ? true: false} msg="Ошибка регистрации." style={getStyles(spanErrorStyle)} />
+      <IsLoading show={isLoading} />
+      <ErrorReq show={!!error} error={error}/>
       <Modal isOpen={mod} setIsOpen={setMod} swipeable={false}>
         <SuccessfulContent message={type === "reg" ? "Регистрация прошла успешно!" : "Администратор создан."} />
       </Modal>
+      {/* <Modal isOpen={mod} 
+            setIsOpen={setMod} 
+            title={ userData? 'Регистрация успешно пройдена!': 'Ошибка!' }
+            swipeable={false}
+            // case2: modal  
+            // additionalStyles={{
+            //   spacing: 'p-0', container: 'fixed w-full overflow-y-auto flex bottom-0 h-1/3 '
+            // }}
+            >
+          <Button showButton={true} 
+                  type='button' 
+                  styles={btnStyle} 
+                  onClick={() => {setMod(false); navigate(".././login");}}>
+                    <div>Ok</div>
+          </Button>
+      </Modal> */}
     </>
   );
 };
 
-const spanErrorStyle: BlockStyle = {
-  text: "text-red-500 text-center",
-  container: "block",
-  spacing: "mb-10",
-};
-
-const pStyle: BlockStyle = {
-  text: "text-center",
-  spacing: "m-auto my-8",
-};
+// const btnStyle: BlockStyle = {
+//   container: 'flex justify-center rounded-md',
+//   border: 'border border-transparent',
+//   background: 'bg-blue-100',
+//   spacing: ' px-4 py-2 mx-auto',
+//   text: 'text-sm font-medium text-blue-900',
+//   transitionsAnimation: 'hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2'
+// };

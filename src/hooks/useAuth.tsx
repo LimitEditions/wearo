@@ -3,13 +3,13 @@ import AuthContext from '../context/AuthProvider';
 import { useNavigate } from 'react-router-dom';
 import { retrieve } from '../utils/encryption';
 import useApi from './useApi';
-import { IAuthMeList } from '../types/interfaces/ApiResponses/IAuthMeList';
 import { isTokenExpired } from '../utils/expirationTime';
 import { dataToLS } from '../utils/dataToLS';
+import { TokenModel } from '../api/data-contracts';
 
 
 const useAuth = () => {
-  const { isAuthenticated, setAuth } = useContext(AuthContext);
+  const { isAuth, setAuth } = useContext(AuthContext);
   
   const token = retrieve('token');
   const tokenExpireIn = retrieve('tokenExpireIn');
@@ -22,14 +22,14 @@ const useAuth = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    setShouldReq(false);
     if (tokenExpireIn || refreshTokenExpireIn) {
       setShouldReq(true);
     } else {
-      // navigate('/auth');
+      navigate('/auth');
     };
-  }, [tokenExpireIn, refreshTokenExpireIn, shouldRefresh, setShouldReq, navigate]);
+  }, [tokenExpireIn, refreshTokenExpireIn, setShouldReq, navigate]);
 
-  
   const endPoint = shouldRefresh ? 'authRefreshTokenCreate' : 'authMeList';
   const params = shouldRefresh ? {
     "userGuid": userGuid,
@@ -40,28 +40,26 @@ const useAuth = () => {
 
   const [data, , error] = useApi(endPoint, params, {}, shouldReq);
 
+  function isTokenModel(data: any): data is TokenModel {
+    return 'token' in data || 'refreshToken' in data;
+  };
+
   useEffect(() => {
-    if (data || error) {
-      if (data && shouldRefresh) {
+    if (data && shouldReq ) {
+      if (isTokenModel(data)) {
         dataToLS(data);
-        setShouldReq(false);
-      } else if (error) {
-        navigate('/auth');
       } else {
-        const dataInfo = data as IAuthMeList;
         setAuth({
           status: true,
-          username: dataInfo.username,
-          firstName: dataInfo.firstName,
-          secondName: dataInfo.secondName,
-          type: dataInfo.type
+          ...data
         });
-      }; 
+      };  
+    } else if (error) {
+      navigate('/auth');
     };
-    
-  }, [data, error, shouldRefresh, setShouldReq, setAuth, navigate])
+  }, [data, error, shouldReq, setAuth, navigate])
 
-  return isAuthenticated;
+  return isAuth;
 };
 
 export default useAuth;
