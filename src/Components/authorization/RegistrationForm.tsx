@@ -2,14 +2,15 @@ import React, { useEffect, useRef, useState } from "react";
 import getStyles from "../../utils/getStyles";
 import { BlockStyle } from "../../types/interfaces/IStyles";
 import { validateField } from "../../utils/validation";
-import { Button } from "../common/Button";
 import { IRegistrationFormProps } from "../../types/interfaces/componentsProps/IFormProps";
 import useApi from "../../hooks/useApi";
-import { InputsList } from "../common/InputsList";
 import { Modal } from "../common/Modal";
+import { SuccessfulContent } from "../common/SuccessfulContent";
+import { AuthForm } from "./AuthForm";
 import { IsLoading } from "../common/IsLoading";
 import { ErrorReq } from "../common/ErrorReq";
 
+// Компонент будет создавать либо форму для регистрации user, либо для регистрации нового admin
 export const RegistrationForm = ({
   user,
   onSubmit,
@@ -19,6 +20,7 @@ export const RegistrationForm = ({
   error,
   isLoading,
   modal,
+  type
 }: IRegistrationFormProps) => {
   const { username, password, firstName, secondName } = user;
   const { mod, setMod, navigate } = modal;
@@ -76,24 +78,21 @@ export const RegistrationForm = ({
   };
 
   const formData = [
-    {'name': 'username', 'placeholder': 'логин', 'value': username, 'onBlur': handleBlur, 'ref': nameRef, onChange: onChange},
-    {'name': 'password', 'type': 'password', 'placeholder': 'пароль', 'value': password, 'ref': passwordRef, onChange: onChange},
-    {'name': 'firstName', 'placeholder': 'имя', 'value': firstName || undefined, 'ref': firstNameRef, onChange: onChange},
-    {'name': 'secondName', 'placeholder': 'фамилию', 'value': secondName || undefined, 'ref': secondNameRef, onChange: onChange},
+    {'name': 'username', 'placeholder': 'логин', 'value': username, 'onBlur': handleBlur, 'ref': nameRef, onChange: onChange, labelName: 'Логин'},
+    {'name': 'password', 'type': 'password', 'placeholder': 'пароль', 'value': password, 'ref': passwordRef, onChange: onChange, labelName: 'Пароль'},
+    {'name': 'firstName', 'placeholder': 'имя', 'value': firstName || undefined, 'ref': firstNameRef, onChange: onChange, labelName: 'Имя'},
+    {'name': 'secondName', 'placeholder': 'фамилию', 'value': secondName || undefined, 'ref': secondNameRef, onChange: onChange, labelName: 'Фамилия'},
   ]
 
   return (
     <>
-      <div>
-        <h1 className={getStyles(hStyle)}>Регистрация</h1>
-        <form className={getStyles(formStyle)} onSubmit={onSubmit}>
-          <InputsList formData={formData} />
-          <Button showButton={true} type={"submit"}>Зарегистироваться</Button>
-        </form>
-      </div>
+      <AuthForm onSubmit={onSubmit} formData={formData} type={type} />
       <IsLoading show={isLoading} />
       <ErrorReq show={!!error} error={error}/>
-      <Modal isOpen={mod} 
+      <Modal isOpen={mod} setIsOpen={setMod} swipeable={false}>
+        <SuccessfulContent message={type === "reg" ? "Регистрация прошла успешно!" : "Администратор создан."} />
+      </Modal>
+      {/* <Modal isOpen={mod} 
             setIsOpen={setMod} 
             title={ userData? 'Регистрация успешно пройдена!': 'Ошибка!' }
             swipeable={false}
@@ -108,31 +107,16 @@ export const RegistrationForm = ({
                   onClick={() => {setMod(false); navigate(".././login");}}>
                     <div>Ok</div>
           </Button>
-      </Modal>
+      </Modal> */}
     </>
   );
 };
 
-const hStyle: BlockStyle = {
-  text: "text-center text-2xl",
-  spacing: "pb-4",
-};
-
-const formStyle: BlockStyle = {
-  container: `flex flex-col gap-3`,
-};
-
-const spanErrorStyle: BlockStyle = {
-  text: "text-red-500 text-center",
-  container: "block",
-  spacing: "mb-10",
-};
-
-const btnStyle: BlockStyle = {
-  container: 'flex justify-center rounded-md',
-  border: 'border border-transparent',
-  background: 'bg-blue-100',
-  spacing: ' px-4 py-2 mx-auto',
-  text: 'text-sm font-medium text-blue-900',
-  transitionsAnimation: 'hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2'
-};
+// const btnStyle: BlockStyle = {
+//   container: 'flex justify-center rounded-md',
+//   border: 'border border-transparent',
+//   background: 'bg-blue-100',
+//   spacing: ' px-4 py-2 mx-auto',
+//   text: 'text-sm font-medium text-blue-900',
+//   transitionsAnimation: 'hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2'
+// };

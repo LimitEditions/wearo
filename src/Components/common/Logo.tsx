@@ -41,10 +41,9 @@ export const Logo = () => {
 };
 
 const logoStyle: BlockStyle = {
-    blockSize: "h-[50px] ralative",
-    spacing: "py-2",
-    background: "bg-gray-300 shadow-md",
-    text: "text-center tracking-wider text-lg",
+  blockSize: "h-[50px] ralative",
+  spacing: "py-2",
+  text: "text-center tracking-wider text-lg text-2xl font-semibold",
 };
 
 const btnProfile: BlockStyle = {

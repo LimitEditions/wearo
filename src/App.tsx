@@ -11,6 +11,9 @@ import { BrandPage } from './pages/UserGroup/BrandPage';
 import { PostsPage } from './pages/UserGroup/PostsPage';
 import { CollectionPage } from './pages/UserGroup/CollectionPage';
 import { ProductPage } from './pages/UserGroup/ProductPage';
+import { ControlPage } from './pages/AdminGroup/Control/ControlPage';
+import { SettingsPage } from './pages/AdminGroup/Settings/SettingsPage';
+
 
 
 function App() {
@@ -21,11 +24,16 @@ function App() {
       <Routes>
         <Route path='/' element={ <Home /> }/>
         <Route path='/auth/*' element={ <Authorization /> }/>
+
         <Route path='/wardrobe/*' element={ <WardrobePage /> }/>
         <Route path='/product/:id/*' element={<ProductPage />} />
         <Route path='/posts/*' element={ <PostsPage /> }/>
         <Route path='/brand/:id/' element={<BrandPage />} />
         <Route path='/collection/:id' element={<CollectionPage />} />
+
+        <Route path='/options/*' element={ <SettingsPage /> }/>
+        <Route path='/control/*' element={ <ControlPage /> }/>
+
         <Route path='/*' element="no content"/> Обработка ошибочных запросов
       </Routes>
       <Nav />

@@ -4,11 +4,12 @@ import { withAuthLogic } from "../Components/common/hoc/withAuthLogic";
 import { RegistrationForm } from "../Components/authorization/RegistrationForm";
 
 export const RegistrationPage = () => {
-  const RegistrationWithLogic = withAuthLogic({ Component: RegistrationForm, type: "reg" });
+  // Форма для регистрации нового пользователя, обернутая в HOC с базовой логикой авторизации/регистрации
+  const Registration = withAuthLogic({ Component: RegistrationForm, type: "reg" });
   
   return (
     <AuthWrapper>
-      <RegistrationWithLogic />
+      <Registration />
     </AuthWrapper>
   );
 };

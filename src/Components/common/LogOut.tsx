@@ -14,14 +14,12 @@ export const LogOut: React.FC<{show: boolean}> = ({show}) => {
         navigate('/auth');
     };
 
-    return (
-        <Button
-        showButton={show}
-        onClick={logOut}
-        styles={logOutStyle}>Выйти</Button>
-    );
+return (
+    <Button
+    showButton={show}
+    onClick={logOut}
+    styles={logOutStyle}>Выйти</Button>
+  );
 };
 
-const logOutStyle: BlockStyle = {
-
-};
+const logOutStyle: BlockStyle = {};

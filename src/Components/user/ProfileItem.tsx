@@ -32,3 +32,4 @@ const angleStyle: BlockStyle = {
     transitionsAnimation: "transform -translate-y-1/2",
     text: "text-lg",
 };
+

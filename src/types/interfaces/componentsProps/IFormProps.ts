@@ -12,6 +12,7 @@ interface IFormProps<TUser, TData> {
     data: TData,
     error: IApiError,
     isLoading: boolean,
+    type: "login" | "reg" | "createAdmin"
     modal: {
         mod: boolean,
         setMod: (event:boolean) => void,

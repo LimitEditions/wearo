@@ -36,7 +36,7 @@ export const navContent: NavContentType = {
         },
         {
             path: "/posts",
-            name: "События"
+            name: "Лента"
         },
         {
             path: "/wardrobe",

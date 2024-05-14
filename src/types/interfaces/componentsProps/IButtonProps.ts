@@ -6,3 +6,4 @@ export interface IButtonProps extends React.ButtonHTMLAttributes<HTMLButtonEleme
     children?: React.ReactNode;
     type?: 'submit' | 'button'; 
 };
+

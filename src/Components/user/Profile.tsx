@@ -12,18 +12,18 @@ export const Profile = () => {
     <>
       <div className={getStyles(profStyle)}>
         <h2 className={getStyles(headStyle)}>Профиль</h2>
-        <ProfileItem path="/photo">
+        <Item path="/photo">
           <div className={getStyles(nameStyle)}>
             <img className={getStyles(fotoStyle)} src="https://sartur.sgu.ru/wp-content/uploads/2021/09/avatar1-1536x1536.png" alt="foto" />
             {isAuth.username}
           </div>
-        </ProfileItem>
-        <ProfileItem path="/favorites">Избранное</ProfileItem>
-        <ProfileItem path="/subscriptions">Подписки</ProfileItem>
-        <ProfileItem path="/scans">Сканирования</ProfileItem>
+        </Item>
+        <Item path="/favorites">Избранное</Item>
+        <Item path="/subscriptions">Подписки</Item>
+        <Item path="/scans">Сканирования</Item>
         
         <h2 className={getStyles(headStyle)}>Настройки</h2>
-        <ProfileItem path="/settings/email">
+        <Item path="/settings/email">
           <div>Почта:</div>
           <div>{isAuth.userInfo ? isAuth.userInfo.email: 'не подтверждена'}</div>
         </ProfileItem>
@@ -36,9 +36,8 @@ export const Profile = () => {
         <LogOut show={true} />
       </div>
     </>
-    
-  )
-}
+  );
+};
 
 const profStyle: BlockStyle = {
   blockSize: "w-full",
