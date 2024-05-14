@@ -15,7 +15,7 @@ return (
     showButton={show}
     onClick={logOut}
     styles={logOutStyle}>Выйти</Button>
-);
+  );
 };
 
 const logOutStyle: BlockStyle = {};

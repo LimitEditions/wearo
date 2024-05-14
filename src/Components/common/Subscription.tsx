@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { BrandModel } from "../../api/data-contracts";
 import useApi from "../../hooks/useApi";
 import { retrieve } from "../../utils/encryption";
@@ -14,8 +14,8 @@ export const Subscription = ({
   subId,
   brandId,
 }: {
-  subId: string | undefined;
-  brandId: string | undefined;
+  subId: string | null;
+  brandId: string | null;
 }) => {
   // Флаг открытия окна удаления подписки
   const [mod, setMod] = useState<boolean>(false)
@@ -34,7 +34,7 @@ export const Subscription = ({
       {data && (
         <div className={getStyles(containerStyle)}>
           <div className={getStyles(divStyle)}>
-            <Photo id={data.photo} styles={getStyles(imgStyle)} alt='Логотип бренда'/>
+            <Photo id={data.photo || null} styles={getStyles(imgStyle)} alt='Логотип бренда'/>
             <span className={getStyles(spanStyle)}>{data.name}</span>
           </div>
           {/* По нажатию на кнопку отмены подписки появляется окно с кнопками Удалить и Отменить */}

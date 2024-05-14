@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   SubscriptionModel,
   SubscriptionModelDataResult,
@@ -31,8 +31,8 @@ export const UserSubscriptionsPage = () => {
       {data?.data?.map((el: SubscriptionModel) => {
           return (
             <Subscription
-              brandId={el.brandGuid}
-              subId={el.guid}
+              brandId={el.brandGuid || null}
+              subId={el.guid || null}
               key={el.guid}
             />
           );

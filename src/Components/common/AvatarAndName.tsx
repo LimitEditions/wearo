@@ -8,8 +8,8 @@ export const AvatarAndName = ({
   photoId,
   name,
 }: {
-  photoId: string | null | undefined;
-  name: string | null | undefined;
+  photoId: string | null;
+  name: string | null;
 }) => {
   return (
     <>

@@ -48,7 +48,7 @@ export const ModalsDelete = ({
         };
       }
     }
-  }, [data, isLoading, dataError]);
+  }, [data, isLoading, dataError, shouldExequte, setIsOpen1, navigate]);
 
   const handleClick = () => {
     // Отправляем запрос на удаление

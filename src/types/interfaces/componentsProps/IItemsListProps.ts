@@ -1,7 +1,7 @@
 export type Item = {
     title: string,
     path: string,
-    photoId?: string | undefined | null,
+    photoId?: string | null,
     needPhoto?: boolean,
     alt?: string,
     photoStyles?: string

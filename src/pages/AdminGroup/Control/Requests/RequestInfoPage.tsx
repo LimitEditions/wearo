@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { SectionsTitle } from "../../../../Components/common/SectionsTitle";
 import { useParams } from "react-router-dom";
 import { BrandRequestModel, FileModel } from "../../../../api/data-contracts";
@@ -28,7 +28,7 @@ export const RequestInfoPage = () => {
       {data && (
         <>
           {/* Отображаем логитип и название */}
-          <AvatarAndName name={data.name} photoId={data.photo} />
+          <AvatarAndName name={data.name || null} photoId={data.photo || null} />
           {/* Отображаем информацию из заявки */}
           <TextItemsList info={data} type="brandRequest"/>
           {/* Отображение файлов */}
@@ -37,7 +37,7 @@ export const RequestInfoPage = () => {
             {/* При наличии прикрепленных файлов отображаем ссылки для их скачивания */}
             {data.files ? (
               data.files.map((el: FileModel) => {
-                return <DownloadFile id={el.fileGuid} key={el.fileGuid} />;
+                return <DownloadFile id={el.fileGuid || null} key={el.fileGuid} />;
               })
             ) : (
               <span>Файлы отсутствуют</span>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { BlockStyle } from "../../../../types/interfaces/IStyles";
 import getStyles from "../../../../utils/getStyles";
 import { SectionsTitle } from "../../../../Components/common/SectionsTitle";
@@ -67,8 +67,8 @@ export const UserInfo = () => {
               {items && data && (
                 <>
                   <AvatarAndName
-                    name={data.firstName}
-                    photoId={data.mainAvatarGuid}
+                    name={data.firstName || null}
+                    photoId={data.mainAvatarGuid || null}
                   />
                   {/* Разделы Избранное, Подписки, Сканирования, настройки. Каждый со стрелкой вправо и с переходом на страницу */}
                   <ItemsList items={items} />

@@ -15,7 +15,7 @@ export const ItemsList: React.FC<IItemsListProps> = ({ items }) => {
             <div className={getStyles(divStyle)}>
               {/* Если нужно, добавляем фото */}
               {el.needPhoto && (
-                <Photo id={el?.photoId} styles={el.photoStyles || ""} alt={el.alt || 'Фотография'}/>
+                <Photo id={el?.photoId || null} styles={el.photoStyles || ""} alt={el.alt || 'Фотография'}/>
               )}
               <h2 className={getStyles(h2Style)}>{el.title}</h2>
             </div>

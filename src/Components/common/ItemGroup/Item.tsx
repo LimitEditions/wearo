@@ -13,7 +13,7 @@ const Item: React.FC<IItemProps> = ({ path, children }) => {
     if (path) {
       navigate(location.pathname + path);
     }
-  }, [path, location]);
+  }, [path, location, navigate]);
 
   // Если указан путь, то добавляем hover-эффекты
   const containerStyle = path ? `${getStyles(divStyle)} ${getStyles(hoverStyle)}` : getStyles(divStyle)

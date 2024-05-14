@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { BlockStyle } from "../../types/interfaces/IStyles";
 import getStyles from "../../utils/getStyles";
 import { FileModel } from "../../api/data-contracts";
@@ -7,7 +7,7 @@ import { retrieve } from "../../utils/encryption";
 import { Info } from "./Info";
 
 // Компонент отображает иконку файла и ссылку на скачивание этого файла
-export const DownloadFile = ({ id }: { id: string | undefined }) => {
+export const DownloadFile = ({ id }: { id: string | null }) => {
   // получаем файл для скачивания
   const [data, , dataError] = useApi<'filesModelDetail', FileModel>(
     "filesModelDetail",
