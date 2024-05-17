@@ -12,5 +12,5 @@ export const ProfilePage = () => {
             <Route path='phone/*' element={<ConfirmPage />} />
         </Routes>
     </div>
-  );Ca
+  );
 };
