@@ -763,7 +763,12 @@ export interface CreatePromotionModel {
    * Дата оканчания действия
    * @format date-time
    */
-  end?: string;
+  end?: string | null;
+  /**
+   * Ограничение на использование пользователями
+   * @format int32
+   */
+  codePerUserLimit?: number | null;
 }
 
 export interface CreateScanModel {
@@ -1623,7 +1628,12 @@ export interface PromotionModel {
    * Дата оканчания действия
    * @format date-time
    */
-  end?: string;
+  end?: string | null;
+  /**
+   * Ограничение на использование пользователями
+   * @format int32
+   */
+  codePerUserLimit?: number | null;
 }
 
 /** Результат чтения данных. */
@@ -2062,7 +2072,12 @@ export interface UpdatePromotionModel {
    * Дата оканчания действия
    * @format date-time
    */
-  end?: string;
+  end?: string | null;
+  /**
+   * Ограничение на использование пользователями
+   * @format int32
+   */
+  codePerUserLimit?: number | null;
 }
 
 /** Советы */

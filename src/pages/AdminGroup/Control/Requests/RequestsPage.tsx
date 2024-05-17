@@ -1,18 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { SectionsTitle } from "../../../../Components/common/SectionsTitle";
 import useApi from "../../../../hooks/useApi";
-import {
-  BrandRequestModelDataResult,
-  RequestStatus,
-} from "../../../../api/data-contracts";
+import { BrandRequestModelDataResult, RequestStatus } from "../../../../api/data-contracts";
 import { retrieve } from "../../../../utils/encryption";
 import { ItemsList } from "../../../../Components/common/ItemGroup/ItemsList";
-import { BlockStyle } from "../../../../types/interfaces/IStyles";
-import { Info } from "../../../../Components/common/Info";
-import getStyles from "../../../../utils/getStyles";
 import { Route, Routes } from "react-router-dom";
 import { RequestInfoPage } from "./RequestInfoPage";
 import { Item } from "../../../../types/interfaces/componentsProps/IItemsListProps";
+import { IsLoading } from "../../../../Components/common/IsLoading";
+import { ErrorReq } from "../../../../Components/common/ErrorReq";
 
 export const RequestsPage = () => {
   const [items, setItems] = useState<Item[]>([])
@@ -41,8 +37,8 @@ export const RequestsPage = () => {
           <>
             <SectionsTitle title="Заявки на создание бренда" needsClose={true} />
             {items && <ItemsList items={items}/>}
-            <Info msg="Загружаем заявки на бренды..." showInfo={isLoading} style={getStyles(pStyle)} />
-            <Info msg="Ошибка запроса, повторите позже." showInfo={!!dataError} style={getStyles(pStyle)} />
+            <IsLoading show={isLoading} />
+            <ErrorReq show={!!dataError} error={dataError} />
           </>
       }/>
       <Route path=":id" element={<RequestInfoPage />} />
@@ -51,7 +47,3 @@ export const RequestsPage = () => {
 
   );
 };
-
-const pStyle: BlockStyle = {
-  text: 'text-lg'
-}

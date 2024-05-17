@@ -1,10 +1,14 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { IProfileItem } from '../../types/interfaces/IProfileItem';
 import { BlockStyle } from '../../types/interfaces/IStyles';
 import getStyles from '../../utils/getStyles';
 
-const ProfileItem: React.FC<IProfileItem> = ({ path, children }) => {
+interface IItem {
+  path: any;
+  children: any
+}
+
+const Item: React.FC<IItem> = ({ path, children }) => {
   const navigate = useNavigate();
 
   return (
@@ -17,7 +21,7 @@ const ProfileItem: React.FC<IProfileItem> = ({ path, children }) => {
   );
 };
 
-export default ProfileItem;
+export default Item;
 
 const profItStyle: BlockStyle = {
     blockSize: "flex-col items-center max-w-md relative",

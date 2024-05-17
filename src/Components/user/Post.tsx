@@ -2,7 +2,7 @@ import React from 'react'
 import useApi from '../../hooks/useApi';
 import { PostModel } from '../../api/data-contracts';
 import { Photos } from './Photos';
-import ProfileItem from './ProfileItem';
+import Item from '../common/ItemGroup/Item';
 
 export const Post = ({ id }: { id: string }) => {
     const [data, , error] = useApi<'postsDetail', PostModel>('postsDetail', id, {}, true)
@@ -15,7 +15,7 @@ export const Post = ({ id }: { id: string }) => {
                     <Photos photos={undefined} imgSize='w-full'/>
                     <div className='px-2'>
                         <p>{data.text}</p>
-                        <ProfileItem path={`./../brand/${data.brandGuid}`}>Название бренда</ProfileItem>
+                        <Item path={`./../brand/${data.brandGuid}`}>Название бренда</Item>
                     </div>
                 </>
             }

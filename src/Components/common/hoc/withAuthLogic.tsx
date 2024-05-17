@@ -46,7 +46,7 @@ export const withAuthLogic = ({ Component, type }: IwithAuthLogicProps) => {
             setMod(true);
             const timer = setTimeout(() => {
               setMod(false);
-              type === 'reg' ? navigate('/login') : navigate(-1)
+              type === 'reg' ? navigate('auth/login') : navigate(-1)
             }, 2000);
           };
         };

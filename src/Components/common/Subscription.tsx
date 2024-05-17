@@ -4,10 +4,12 @@ import useApi from "../../hooks/useApi";
 import { retrieve } from "../../utils/encryption";
 import { Photo } from "./Photo";
 import { Button } from "./Button";
-import { Info } from "./Info";
 import { BlockStyle } from "../../types/interfaces/IStyles";
 import getStyles from "../../utils/getStyles";
 import { ModalsDelete } from "./ModalsDelete";
+import { IsLoading } from "./IsLoading";
+import { ErrorReq } from "./ErrorReq";
+
 
 // Отображение конкретной подписки: логотип бренда с названием, а также кнопка для отмены подписки
 export const Subscription = ({
@@ -41,9 +43,16 @@ export const Subscription = ({
           <Button showButton={true} styles={btnStyle} onClick={() => setMod(true)}>Отменить подписку</Button>
         </div>
       )}
-      <ModalsDelete apiMethod="subscriptionsDelete" idForDelete={subId} isOpen1={mod} setIsOpen1={setMod} messageSuccess="Подписка отменена." messageSure="Вы уверены, что хотите удалить подписку?"/>
-      <Info msg="Загрузка..." showInfo={isLoading} style="" />
-      <Info msg="Ошибка получения данных." showInfo={!!dataError} style="" />
+      <ModalsDelete 
+        apiMethod="subscriptionsDelete" 
+        idForDelete={subId} 
+        isOpen1={mod} 
+        setIsOpen1={setMod} 
+        messageSuccess="Подписка отменена." 
+        messageSure="Вы уверены, что хотите удалить подписку?"
+        />
+      <IsLoading show={isLoading} />
+      <ErrorReq show={!!dataError} error={dataError} />
     </>
   );
 };

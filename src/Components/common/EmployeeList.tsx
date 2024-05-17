@@ -1,15 +1,14 @@
 import React from "react";
-import {
-  UserModelDataResult,
-  UserType,
-} from "../../api/data-contracts";
+import { UserModelDataResult, UserType} from "../../api/data-contracts";
 import useApi from "../../hooks/useApi";
 import { retrieve } from "../../utils/encryption";
-import { Info } from "./Info";
 import { getEmployeePosition } from "../../utils/getEmployeePosition";
 import Item from "./ItemGroup/Item";
 import { BlockStyle } from "../../types/interfaces/IStyles";
 import getStyles from "../../utils/getStyles";
+import { ErrorReq } from "./ErrorReq";
+import { IsLoading } from "./IsLoading";
+
 
 export const EmployeeList = ({ userType }: { userType: UserType }) => {
   // Должность сотрудника
@@ -38,8 +37,8 @@ export const EmployeeList = ({ userType }: { userType: UserType }) => {
           );
         }
       })}
-      <Info msg="Ошибка получения данных" showInfo={!!dataError} style="" />
-      <Info msg="Загрузка..." showInfo={isLoading} style="" />
+      <IsLoading show={isLoading}/>
+      <ErrorReq show={!!dataError} error={dataError}/>
     </>
   );
 };

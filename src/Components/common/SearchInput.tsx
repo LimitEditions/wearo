@@ -42,7 +42,6 @@ export const SearchInput = ({show, setShow, search}: { show: boolean, setShow: (
 };
 
 const containerStyle: BlockStyle = {
-    container: 'flex w-full absolute',
     spacing: ' mx-2',
 };
 

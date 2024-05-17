@@ -9,13 +9,14 @@ import { retrieve } from "../../../../utils/encryption";
 import { ItemsList } from "../../../../Components/common/ItemGroup/ItemsList";
 import { ModalsDelete } from "../../../../Components/common/ModalsDelete";
 import { Button } from "../../../../Components/common/Button";
-import { Info } from "../../../../Components/common/Info";
 import { AvatarAndName } from "../../../../Components/common/AvatarAndName";
 import { UserFavoritesPage } from "./UserFavoritesPage";
 import { UserSubscriptionsPage } from "./UserSubscriptionsPage";
 import { UserScansPage } from "./UserScansPage";
 import { EditUserInfo } from "./EditUserInfo";
 import { TextItemsList } from "../../../../Components/superadmin/TextItemsList";
+import { IsLoading } from "../../../../Components/common/IsLoading";
+import { ErrorReq } from "../../../../Components/common/ErrorReq";
 
 export const UserInfo = () => {
   // Флаг для открытия окна удаления пользователя
@@ -91,12 +92,8 @@ export const UserInfo = () => {
                 </>
               )}
             </div>
-            <Info showInfo={isLoading} msg="Загрузка..." style="" />
-            <Info
-              showInfo={!!dataError}
-              msg="Ошибка загрузки данных"
-              style=""
-            />
+            <IsLoading show={isLoading} />
+            <ErrorReq show={!!dataError} error={dataError} />
           </>
         }
       />

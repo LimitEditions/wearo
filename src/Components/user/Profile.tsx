@@ -1,9 +1,10 @@
 import React, { useContext } from 'react'
-import ProfileItem from './ProfileItem';
+
 import getStyles from '../../utils/getStyles';
 import { BlockStyle } from '../../types/interfaces/IStyles';
 import { LogOut } from '../common/LogOut';
 import AuthContext from '../../context/AuthProvider';
+import Item from '../common/ItemGroup/Item';
 
 export const Profile = () => {
   const { isAuth } = useContext(AuthContext);
@@ -23,15 +24,15 @@ export const Profile = () => {
         <Item path="/scans">Сканирования</Item>
         
         <h2 className={getStyles(headStyle)}>Настройки</h2>
-        <Item path="/settings/email">
+        <Item path="/email">
           <div>Почта:</div>
           <div>{isAuth.userInfo ? isAuth.userInfo.email: 'не подтверждена'}</div>
-        </ProfileItem>
-        <ProfileItem path="/settings/phone">
+        </Item>
+        <Item path="/phone">
           <div>Телефон:</div>
           <div>{isAuth.userInfo ? isAuth.userInfo.phone: 'не подтвержден'}</div>
-        </ProfileItem>
-        <ProfileItem path="/settings/password">Пароль</ProfileItem>
+        </Item>
+        <Item path="/password">Пароль</Item>
         
         <LogOut show={true} />
       </div>

@@ -4,7 +4,7 @@ import getStyles from "../../utils/getStyles";
 import { FileModel } from "../../api/data-contracts";
 import useApi from "../../hooks/useApi";
 import { retrieve } from "../../utils/encryption";
-import { Info } from "./Info";
+import { ErrorReq } from "./ErrorReq";
 
 // Компонент отображает иконку файла и ссылку на скачивание этого файла
 export const DownloadFile = ({ id }: { id: string | null }) => {
@@ -27,7 +27,7 @@ export const DownloadFile = ({ id }: { id: string | null }) => {
           </a>
         </>
       )}
-      <Info msg="Не удалось загрузить файл" showInfo={!!dataError} style="" />
+      <ErrorReq show={!!dataError} error={dataError}/>
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState, memo } from 'react';
 import { BlockStyle } from '../../types/interfaces/IStyles'
 import getStyles from '../../utils/getStyles';
 import { Link, useLocation } from 'react-router-dom';
@@ -8,7 +8,7 @@ import { showEl } from '../../utils/showEl';
 import AuthContext from '../../context/AuthProvider';
 
 
-export const Nav: React.FC = () => {
+export const Nav: React.FC = memo(() => {
   const { isAuth } = useContext(AuthContext);
   const location = useLocation();
   const [showNav, setShowNav] = useState<boolean>(true);
@@ -40,13 +40,14 @@ export const Nav: React.FC = () => {
   return (
     <>
       {showNav && <nav className={getStyles(navStyle)}>     
-      {data.map(e => {
-        return <Link key={e.path} to={e.path}>{e.name}</Link>
-      })}   
-    </nav>}
+        {data.map(e => {
+          return <Link key={e.path} to={e.path}>{e.name}</Link>
+        })}   
+      </nav>}
+
     </>
   );
-};
+});
 
 const navStyle: BlockStyle = {
   blockSize: "fixed bottom-0 left-1/2 w-full h-auto",

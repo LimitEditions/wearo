@@ -4,9 +4,9 @@ import { BrandModel } from '../../api/data-contracts';
 import useApi from '../../hooks/useApi';
 import { Photos } from '../../Components/user/Photos';
 import { Button } from '../../Components/common/Button';
-import ProfileItem from '../../Components/user/ProfileItem';
 import { Tips } from '../../Components/user/Tips';
 import { IsLoading } from '../../Components/common/IsLoading';
+import Item from '../../Components/user/ProfileItem';
 
 export const BrandPage = () => {
   const {id} = useParams();
@@ -33,8 +33,8 @@ export const BrandPage = () => {
       </div>
       <div className='m-2'>{data?.description}</div>
       <div>
-        <ProfileItem path='/collections'>Коллекции</ProfileItem>
-        <ProfileItem path='/items'>Изделия</ProfileItem>
+        <Item path='/collections'>Коллекции</Item>
+        <Item path='/items'>Изделия</Item>
       </div>
       <Tips tips={[]} />
       <div>Публикации</div>

@@ -15,8 +15,15 @@ import { ErrorReq } from '../common/ErrorReq';
 
 export const Confirm = ({ mode, navigate }: { mode?: string; navigate: NavigateFunction }) => {
     // создание уникального id запроса и внесение его в LS
-    encrypt(`${mode}-guid`, uuidv4());
-
+    useEffect(() => {
+        const key = `${mode}-guid`;
+        if (!localStorage.getItem(key)) {
+            console.log(1)
+            const newGuid = uuidv4();
+            encrypt(key, newGuid);
+        }
+    }, [mode]);
+    
     // стейт на инпут
     const [text, setText] = useState<string>('');
 
@@ -46,54 +53,31 @@ export const Confirm = ({ mode, navigate }: { mode?: string; navigate: NavigateF
         };
     };
 
-    // описание метода отправки данных на сервер (основного) 
-    const params_config: [keyof Api<unknown>, any, any, boolean] = useMemo(() => {
-        return [
-            mode === 'email' ? 'confirmationRequestsEmailCreate': 'confirmationRequestsPhoneCreate',
-            mode === 'email' ? { "guid": retrieve(`${mode}-uuid`), email: text }: { "guid": retrieve(`${mode}-guid`), phone: text },
-            { headers: { Authorization: `Bearer ${retrieve("token")}` } },
-            shouldExecute
-        ]
-    }, [mode, text, shouldExecute]);
+    // описание метода отправки данных на сервер
+    const guid = retrieve(`${mode}-guid`);
+    const token = useMemo(() => retrieve("token"), []);
+    const params_config: [keyof Api<unknown>, any, any, boolean] = [
+        mode === 'email' ? 'confirmationRequestsEmailCreate': 'confirmationRequestsPhoneCreate',
+        mode === 'email' ? { "guid": guid, email: text } : { "guid": guid, phone: text },
+        { headers: { Authorization: `Bearer ${token}` } },
+        shouldExecute
+    ];
+ 
     const [data, isLoading, error] = useApi(...params_config);
 
-    // остановка запроса (основного)
+    // остановка запроса
     useEffect(() => {
         if(isLoading) {
             setShouldExecute(false);
         };
     }, [isLoading]);
 
-    // описание метода отправки данных на сервер (вторичного - получение телефона) 
-    const [phoneNumber, setPhoneNumber] = useState<string>('')
-    const [getPhone, setGetPhone] = useState<boolean>(false);
-    const [dataPhone, isLoadingPhone, errorPhone] = useApi<'confirmationRequestsPhoneNumberCreate', string>(
-        'confirmationRequestsPhoneNumberCreate', 
-        {},
-        { headers: { Authorization: `Bearer ${retrieve("token")}` } },
-        getPhone
-    );
-
-    // остановка запроса (вторичного - получение телефона)
-    useEffect(() => {
-        if(isLoadingPhone) {
-            setGetPhone(false);
-        };
-    }, [isLoadingPhone]);
-    
     // дальнейшие действия после успешного ответа после основного запроса
     useEffect(() => {
         if(data === '' && !error) {
-            mode === 'email' ? navigate('pin'): setGetPhone(true);
+            mode === 'email' ? navigate('pin'): navigate('callme');
         };
     }, [navigate, data, error, mode]);
-
-    // действия после успеха вторичного запроса - получение телефона
-    useEffect(() => {
-        if(dataPhone && !errorPhone) {
-            setPhoneNumber(dataPhone)
-        };
-    }, [dataPhone, errorPhone])
 
     return (
         <form className={getStyles(formStyle)} onSubmit={handleSubmit}>
@@ -103,16 +87,17 @@ export const Confirm = ({ mode, navigate }: { mode?: string; navigate: NavigateF
                     type={ mode }
                     name={ mode }
                     id='inputField'
-                    placeholder={mode === 'email'? 'Электронная почта': 'Телефон'}
+                    placeholder={ mode === 'email'? 'Электронная почта': 'Телефон' }
                     refLink={ref}
                     value={text}
                     onChange={handleChange}
                     />
             </div>
-            <Button showButton={true}>Получить код</Button>
+            <div className='w-1/2 m-auto'>
+                <Button showButton={true}>Получить { mode === 'email'? 'код': 'номер телефона' }</Button>
+            </div>
             <IsLoading show={isLoading} />
             <ErrorReq show={!!error} error={error}/>
-            <div>{phoneNumber}</div>
         </form>
     );
 };

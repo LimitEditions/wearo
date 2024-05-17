@@ -8,9 +8,9 @@ export const ProfilePage = () => {
     <div>
         <Routes>
             <Route index element={<Profile />}/>
-            <Route path='/settings/:mode/*' element={<ConfirmPage />} />
-
+            <Route path='email/*' element={<ConfirmPage />} />
+            <Route path='phone/*' element={<ConfirmPage />} />
         </Routes>
     </div>
-  );
+  );Ca
 };

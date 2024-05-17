@@ -7,19 +7,20 @@ import { NavigateFunction } from 'react-router-dom';
 import { Modal } from '../common/Modal';
 import { Api } from '../../api/Api';
 
+
 export const Pin = ({ navigate } : { navigate: NavigateFunction }) => {
     // стейт на значение пин-кода
     const [pinValue, setPinValue] = useState('');
 
     // колбек на изменение пина
     const handlePinChange = (value: React.SetStateAction<string>) => {
-        setPinValue(value)
-        // if(value.length > 3) {
-        //     // нужно добавить дефис между 3 и 4 символами
-        //     let withDash = value as string;
-        //     withDash = `${withDash.slice(0,3)}-${withDash.slice(3)}`;
-        //     setPinValue(withDash);
-        // };
+        // setPinValue(value)
+        if(value.length > 3) {
+            // нужно добавить дефис между 3 и 4 символами
+            let withDash = value as string;
+            withDash = `${withDash.slice(0,3)}-${withDash.slice(3)}`;
+            setPinValue(withDash);
+        };
     };
 
     // стейты на модальное окно и отправку запроса на сервер
@@ -46,7 +47,7 @@ export const Pin = ({ navigate } : { navigate: NavigateFunction }) => {
 
     // колбек на подтверждение заполненной формы (можно сделать автоматом после ввода последнего значения)
     const handleSubmit = () => {
-        if (pinValue.length === 6) {
+        if (pinValue.length === 7) {
             setShouldExecute(true);
         };
     };
@@ -90,7 +91,9 @@ export const Pin = ({ navigate } : { navigate: NavigateFunction }) => {
                     borderColor: 'black',
                 }}
             />
-            <Button showButton={pinValue.length === 6} onClick={handleSubmit}>Подтвердить</Button>
+            <div className='w-1/2 m-auto'>
+                <Button showButton={pinValue.length === 7} onClick={handleSubmit}>Подтвердить</Button>
+            </div>
             <Modal isOpen={modal} setIsOpen={setModal} swipeable={false}>
                 <p className='text-center text-lg' tabIndex={0}>
                     { data === '' ? 'Почта подтверждена': `Ошибка - ${error?.message }`}

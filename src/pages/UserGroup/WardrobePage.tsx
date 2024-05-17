@@ -12,6 +12,7 @@ import { Button } from '../../Components/common/Button';
 
 export const WardrobePage = () => {
     const info = useAuth();
+    // console.log(info)
 
     // получение данных с сервера
     const [productsList, setProductsList] = useState<ProductModel[] | []>([]);
@@ -37,14 +38,13 @@ export const WardrobePage = () => {
             setProductsList(data.data || [])
         };
     }, [data, error, productsList])
-
+    
     return (
         <>
             <Routes>
                 <Route index element={
                     <div>
                         Welcome to the Wardrobe!
-                        <IsLoading show={isLoading}/>
                         <div className='relative h-12 w-full '>
                             <Button 
                                 showButton={!showInput}
@@ -54,6 +54,7 @@ export const WardrobePage = () => {
                             </Button>
                             <SearchInput show={showInput} setShow={handleSearchClick} search={searchProduct}/>
                         </div>
+                        <IsLoading show={isLoading}/>
                         <Products productsList={ filteredList.length > 0 ? filteredList: productsList }/>
                     </div>
                     } />

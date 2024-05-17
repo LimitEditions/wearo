@@ -1,13 +1,13 @@
 import React from 'react';
 import { ProductModel, TipModel } from '../../api/data-contracts';
 import { Button } from '../common/Button';
-import ProfileItem from './ProfileItem';
 import { Tips } from './Tips';
 import { Photos } from './Photos';
 import getStyles from '../../utils/getStyles';
 import { BlockStyle } from '../../types/interfaces/IStyles';
 import moment from 'moment';
 import { Colors } from './Colors';
+import Item from '../common/ItemGroup/Item';
 
 
 export const Product = ({ data }:{ data: ProductModel }) => {
@@ -17,7 +17,7 @@ export const Product = ({ data }:{ data: ProductModel }) => {
         <div>{data.name}<span></span></div>
         <div className={getStyles(descStyle)}>
           <span className='block'>{data?.description}</span>
-          <ProfileItem path={`./../brand/${data.brandGuid}`}>Название бренда</ProfileItem>
+          <Item path={`./../brand/${data.brandGuid}`}>Название бренда</Item>
           {data.colors && <Colors prodColors={data.colors}/>}
         </div>
         <div className={getStyles(originStyle)}>
@@ -35,9 +35,9 @@ export const Product = ({ data }:{ data: ProductModel }) => {
           <span> {data?.createDT ? moment(data.createDT).format('DD.MM.YYYY') : 'Дата неизвестна'}</span>
         </div>
         <div>
-          <ProfileItem path='/comments'>Отзывы</ProfileItem>
-          <ProfileItem path={`./../collection/${data.collectionGuid}`}>Коллекция</ProfileItem>
-          <ProfileItem path='/buy_item'>Купить изделие</ProfileItem>
+          <Item path='/comments'>Отзывы</Item>
+          <Item path={`./../collection/${data.collectionGuid}`}>Коллекция</Item>
+          <Item path='/buy_item'>Купить изделие</Item>
         </div>
         <Button showButton={true}>Оставить отзыв</Button>
       </>

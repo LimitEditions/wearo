@@ -6,10 +6,12 @@ import getStyles from '../../../../utils/getStyles';
 import { BlockStyle } from '../../../../types/interfaces/IStyles';
 import { SectionsTitle } from '../../../../Components/common/SectionsTitle';
 import { ItemsList } from '../../../../Components/common/ItemGroup/ItemsList';
-import { Info } from '../../../../Components/common/Info';
 import { Route, Routes } from 'react-router-dom';
 import { BrandInfoPage } from './BrandInfoPage';
 import { Item } from '../../../../types/interfaces/componentsProps/IItemsListProps';
+import { IsLoading } from '../../../../Components/common/IsLoading';
+import { ErrorReq } from '../../../../Components/common/ErrorReq';
+
 
 export const BrandsPage = () => {
   const [items, setItems] = useState<Item[]>([])
@@ -45,16 +47,8 @@ export const BrandsPage = () => {
             <SectionsTitle title="Бренды" needsClose={true} />
             <div className={getStyles(divStyle)}>
               {items && <ItemsList items={items} />}
-              <Info
-                msg="Загружаем бренды..."
-                showInfo={isLoading}
-                style={getStyles(pStyle)}
-              />
-              <Info
-                msg="Ошибка запроса, повторите позже."
-                showInfo={!!dataError}
-                style={getStyles(pStyle)}
-              />
+              <IsLoading show={isLoading} />
+              <ErrorReq show={!!dataError} error={dataError} />
             </div>
           </>
         }/>

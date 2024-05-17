@@ -1,16 +1,14 @@
 import React from "react";
-import {
-  SubscriptionModel,
-  SubscriptionModelDataResult,
-} from "../../../../api/data-contracts";
+import { SubscriptionModel, SubscriptionModelDataResult } from "../../../../api/data-contracts";
 import useApi from "../../../../hooks/useApi";
 import { retrieve } from "../../../../utils/encryption";
 import { Subscription } from "../../../../Components/common/Subscription";
-import { Info } from "../../../../Components/common/Info";
 import { useParams } from "react-router-dom";
 import { SectionsTitle } from "../../../../Components/common/SectionsTitle";
 import { BlockStyle } from "../../../../types/interfaces/IStyles";
 import getStyles from "../../../../utils/getStyles";
+import { IsLoading } from "../../../../Components/common/IsLoading";
+import { ErrorReq } from "../../../../Components/common/ErrorReq";
 
 export const UserSubscriptionsPage = () => {
   const { id } = useParams();
@@ -37,12 +35,8 @@ export const UserSubscriptionsPage = () => {
             />
           );
         })}
-      <Info msg="Загружаем подписки..." showInfo={isLoading} style="" />
-      <Info
-        msg="Ошибка запроса. Повторите попытку позже."
-        showInfo={!!dataError}
-        style=""
-      />
+      <IsLoading show={isLoading} />
+      <ErrorReq show={!!dataError} error={dataError} />
     </div>
   );
 };

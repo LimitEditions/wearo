@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { IItemProps } from "../../../types/interfaces/IItemProps";
 import { BlockStyle } from "../../../types/interfaces/IStyles";
 import getStyles from "../../../utils/getStyles";
-import { ArrowRight } from "../ArrowRight";
+import { Arrow } from "../Arrow";
 
 const Item: React.FC<IItemProps> = ({ path, children }) => {
   const location = useLocation();
@@ -24,7 +24,7 @@ const Item: React.FC<IItemProps> = ({ path, children }) => {
       onClick={handleClick}
     >
       {children}
-      {path && <ArrowRight />}
+      {path && <Arrow direct="right" />}
     </div>
   );
 };

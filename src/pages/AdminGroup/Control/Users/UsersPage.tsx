@@ -10,6 +10,8 @@ import getStyles from "../../../../utils/getStyles";
 import { Route, Routes } from "react-router-dom";
 import { UserInfo } from "./UserInfoPage";
 import { Item } from "../../../../types/interfaces/componentsProps/IItemsListProps";
+import { IsLoading } from "../../../../Components/common/IsLoading";
+import { ErrorReq } from "../../../../Components/common/ErrorReq";
 
 
 export const UsersPage = () => {
@@ -46,16 +48,8 @@ export const UsersPage = () => {
             <SectionsTitle title="Пользователи" needsClose={true} />
             <div className={getStyles(divStyle)}>
               {items && <ItemsList items={items} />}
-              <Info
-                msg="Загружаем пользователей..."
-                showInfo={isLoading}
-                style={getStyles(pStyle)}
-              />
-              <Info
-                msg="Ошибка запроса, повторите позже."
-                showInfo={!!dataError}
-                style={getStyles(pStyle)}
-              />
+              <IsLoading show={isLoading} />
+              <ErrorReq show={!!dataError} error={dataError} />
             </div>
           </>
         }/>

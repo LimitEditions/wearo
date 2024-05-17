@@ -7,10 +7,12 @@ import { retrieve } from "../../../../utils/encryption";
 import { BlockStyle } from "../../../../types/interfaces/IStyles";
 import getStyles from "../../../../utils/getStyles";
 import { RequestButtons } from "../../../../Components/superadmin/RequestButtons";
-import { Info } from "../../../../Components/common/Info";
 import { DownloadFile } from "../../../../Components/common/DownloadFile";
 import { AvatarAndName } from "../../../../Components/common/AvatarAndName";
 import { TextItemsList } from "../../../../Components/superadmin/TextItemsList";
+import { IsLoading } from "../../../../Components/common/IsLoading";
+import { ErrorReq } from "../../../../Components/common/ErrorReq";
+
 
 export const RequestInfoPage = () => {
   const { id } = useParams();
@@ -47,11 +49,8 @@ export const RequestInfoPage = () => {
           <RequestButtons />
         </>
       )}
-      <Info
-        msg="Ошибка получения данных о заявке."
-        showInfo={!!dataError}
-        style=""
-      />
+      <IsLoading show={isLoading} />
+      <ErrorReq show={!!dataError} error={dataError} />
     </div>
   );
 };

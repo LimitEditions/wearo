@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import useApi from "../../../hooks/useApi";
 import { retrieve } from "../../../utils/encryption";
@@ -8,8 +8,9 @@ import { Button } from "../../../Components/common/Button";
 import { BlockStyle } from "../../../types/interfaces/IStyles";
 import getStyles from "../../../utils/getStyles";
 import { ModalsDelete } from "../../../Components/common/ModalsDelete";
-import { Info } from "../../../Components/common/Info";
 import { TextItemsList } from "../../../Components/superadmin/TextItemsList";
+import { IsLoading } from "../../../Components/common/IsLoading";
+import { ErrorReq } from "../../../Components/common/ErrorReq";
 
 export const EmployeeDetailsPage = () => {
   // Флаг для открытия модалки удаления сотрудника
@@ -54,8 +55,8 @@ export const EmployeeDetailsPage = () => {
         messageSuccess="Сотрудник удален"
       />
 
-      <Info msg="Загрузка..." showInfo={isLoading} style=""/>
-      <Info msg="Ошибка загрузки данных" showInfo={!!dataError} style=""/>
+      <IsLoading show={isLoading} />
+      <ErrorReq show={!!dataError} error={dataError} />
     </div>
   );
 };

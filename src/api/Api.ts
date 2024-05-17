@@ -765,16 +765,16 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
  * No description
  *
  * @tags ConfirmationRequests
- * @name ConfirmationRequestsPhoneNumberCreate
+ * @name ConfirmationRequestsPhoneNumberList
  * @summary Получить номер, на который надо звонить.
 (сейчас номер статичный)
- * @request POST:/api/ConfirmationRequests/Phone/Number
+ * @request GET:/api/ConfirmationRequests/Phone/Number
  * @secure
  */
-  confirmationRequestsPhoneNumberCreate = (params: RequestParams = {}) =>
+  confirmationRequestsPhoneNumberList = (params: RequestParams = {}) =>
     this.request<string, ProblemDetails>({
       path: `/api/ConfirmationRequests/Phone/Number`,
-      method: "POST",
+      method: "GET",
       secure: true,
       format: "json",
       ...params,
