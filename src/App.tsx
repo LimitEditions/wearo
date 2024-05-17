@@ -15,7 +15,6 @@ import { ControlPage } from './pages/AdminGroup/Control/ControlPage';
 import { SettingsPage } from './pages/AdminGroup/Settings/SettingsPage';
 
 
-
 function App() {
 
   return (

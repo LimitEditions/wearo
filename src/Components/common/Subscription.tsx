@@ -7,8 +7,8 @@ import { Button } from "./Button";
 import { BlockStyle } from "../../types/interfaces/IStyles";
 import getStyles from "../../utils/getStyles";
 import { ModalsDelete } from "./ModalsDelete";
-import { IsLoading } from "./IsLoading";
-import { ErrorReq } from "./ErrorReq";
+import { IsLoading } from "./InfoGroup/IsLoading";
+import { ErrorReq } from "./InfoGroup/ErrorReq";
 
 
 // Отображение конкретной подписки: логотип бренда с названием, а также кнопка для отмены подписки

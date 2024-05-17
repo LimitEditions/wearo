@@ -2,7 +2,7 @@ import React from "react";
 import { IFormData } from "../../types/interfaces/componentsProps/IInputsListProps";
 import { BlockStyle } from "../../types/interfaces/IStyles";
 import getStyles from "../../utils/getStyles";
-import { InputsList } from "../common/InputsList";
+import { InputsList } from "../common/InputGroup/InputsList";
 import { Button } from "../common/Button";
 
 export const AuthForm = ({

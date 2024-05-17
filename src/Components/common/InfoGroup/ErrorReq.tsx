@@ -1,6 +1,7 @@
 import React from 'react'
-import { IApiError } from '../../types/interfaces/IApiError';
+import { IApiError } from '../../../types/interfaces/IApiError';
 import { Info } from './Info';
+
 
 export const ErrorReq = ({ show, error }: { show: boolean, error: IApiError | null}) => {
     return (

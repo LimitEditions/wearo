@@ -7,8 +7,8 @@ import { useParams } from "react-router-dom";
 import { SectionsTitle } from "../../../../Components/common/SectionsTitle";
 import { BlockStyle } from "../../../../types/interfaces/IStyles";
 import getStyles from "../../../../utils/getStyles";
-import { IsLoading } from "../../../../Components/common/IsLoading";
-import { ErrorReq } from "../../../../Components/common/ErrorReq";
+import { IsLoading } from "../../../../Components/common/InfoGroup/IsLoading";
+import { ErrorReq } from "../../../../Components/common/InfoGroup/ErrorReq";
 
 export const UserSubscriptionsPage = () => {
   const { id } = useParams();

@@ -15,8 +15,8 @@ import { UserSubscriptionsPage } from "./UserSubscriptionsPage";
 import { UserScansPage } from "./UserScansPage";
 import { EditUserInfo } from "./EditUserInfo";
 import { TextItemsList } from "../../../../Components/superadmin/TextItemsList";
-import { IsLoading } from "../../../../Components/common/IsLoading";
-import { ErrorReq } from "../../../../Components/common/ErrorReq";
+import { IsLoading } from "../../../../Components/common/InfoGroup/IsLoading";
+import { ErrorReq } from "../../../../Components/common/InfoGroup/ErrorReq";
 
 export const UserInfo = () => {
   // Флаг для открытия окна удаления пользователя

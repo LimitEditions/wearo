@@ -7,8 +7,8 @@ import { ItemsList } from "../../../../Components/common/ItemGroup/ItemsList";
 import { Route, Routes } from "react-router-dom";
 import { RequestInfoPage } from "./RequestInfoPage";
 import { Item } from "../../../../types/interfaces/componentsProps/IItemsListProps";
-import { IsLoading } from "../../../../Components/common/IsLoading";
-import { ErrorReq } from "../../../../Components/common/ErrorReq";
+import { IsLoading } from "../../../../Components/common/InfoGroup/IsLoading";
+import { ErrorReq } from "../../../../Components/common/InfoGroup/ErrorReq";
 
 export const RequestsPage = () => {
   const [items, setItems] = useState<Item[]>([])

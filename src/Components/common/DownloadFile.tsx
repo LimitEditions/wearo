@@ -4,7 +4,7 @@ import getStyles from "../../utils/getStyles";
 import { FileModel } from "../../api/data-contracts";
 import useApi from "../../hooks/useApi";
 import { retrieve } from "../../utils/encryption";
-import { ErrorReq } from "./ErrorReq";
+import { ErrorReq } from "./InfoGroup/ErrorReq";
 
 // Компонент отображает иконку файла и ссылку на скачивание этого файла
 export const DownloadFile = ({ id }: { id: string | null }) => {

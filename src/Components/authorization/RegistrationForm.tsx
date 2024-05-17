@@ -7,8 +7,8 @@ import useApi from "../../hooks/useApi";
 import { Modal } from "../common/Modal";
 import { SuccessfulContent } from "../common/SuccessfulContent";
 import { AuthForm } from "./AuthForm";
-import { IsLoading } from "../common/IsLoading";
-import { ErrorReq } from "../common/ErrorReq";
+import { IsLoading } from "../common/InfoGroup/IsLoading";
+import { ErrorReq } from "../common/InfoGroup/ErrorReq";
 
 // Компонент будет создавать либо форму для регистрации user, либо для регистрации нового admin
 export const RegistrationForm = ({

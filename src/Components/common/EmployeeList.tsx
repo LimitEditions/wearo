@@ -6,8 +6,8 @@ import { getEmployeePosition } from "../../utils/getEmployeePosition";
 import Item from "./ItemGroup/Item";
 import { BlockStyle } from "../../types/interfaces/IStyles";
 import getStyles from "../../utils/getStyles";
-import { ErrorReq } from "./ErrorReq";
-import { IsLoading } from "./IsLoading";
+import { ErrorReq } from "./InfoGroup/ErrorReq";
+import { IsLoading } from "./InfoGroup/IsLoading";
 
 
 export const EmployeeList = ({ userType }: { userType: UserType }) => {

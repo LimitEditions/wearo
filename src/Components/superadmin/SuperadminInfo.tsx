@@ -4,7 +4,7 @@ import { retrieve } from '../../utils/encryption';
 import useApi from '../../hooks/useApi';
 import { UserModel } from '../../api/data-contracts';
 import { TextItemsList } from './TextItemsList';
-import { ErrorReq } from '../common/ErrorReq';
+import { ErrorReq } from '../common/InfoGroup/ErrorReq';
 
 
 export const SuperadminInfo = () => {

@@ -5,9 +5,9 @@ import useApi from '../../hooks/useApi';
 import { ProductModel } from '../../api/data-contracts';
 import getStyles from '../../utils/getStyles';
 import { BlockStyle } from '../../types/interfaces/IStyles';
-import { IsLoading } from '../../Components/common/IsLoading';
+import { IsLoading } from '../../Components/common/InfoGroup/IsLoading';
 import { CommentsPage } from './CommentsPage';
-import { ErrorReq } from '../../Components/common/ErrorReq';
+import { ErrorReq } from '../../Components/common/InfoGroup/ErrorReq';
 
 export const ProductPage = () => {
     const { id } = useParams();

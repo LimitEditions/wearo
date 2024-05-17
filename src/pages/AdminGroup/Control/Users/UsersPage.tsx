@@ -4,14 +4,14 @@ import useApi from "../../../../hooks/useApi";
 import { retrieve } from "../../../../utils/encryption";
 import { SectionsTitle } from "../../../../Components/common/SectionsTitle";
 import { ItemsList } from "../../../../Components/common/ItemGroup/ItemsList";
-import { Info } from "../../../../Components/common/Info";
+import { Info } from "../../../../Components/common/InfoGroup/Info";
 import { BlockStyle } from "../../../../types/interfaces/IStyles";
 import getStyles from "../../../../utils/getStyles";
 import { Route, Routes } from "react-router-dom";
 import { UserInfo } from "./UserInfoPage";
 import { Item } from "../../../../types/interfaces/componentsProps/IItemsListProps";
-import { IsLoading } from "../../../../Components/common/IsLoading";
-import { ErrorReq } from "../../../../Components/common/ErrorReq";
+import { IsLoading } from "../../../../Components/common/InfoGroup/IsLoading";
+import { ErrorReq } from "../../../../Components/common/InfoGroup/ErrorReq";
 
 
 export const UsersPage = () => {

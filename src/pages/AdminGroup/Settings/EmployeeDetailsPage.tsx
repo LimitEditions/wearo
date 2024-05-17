@@ -9,8 +9,8 @@ import { BlockStyle } from "../../../types/interfaces/IStyles";
 import getStyles from "../../../utils/getStyles";
 import { ModalsDelete } from "../../../Components/common/ModalsDelete";
 import { TextItemsList } from "../../../Components/superadmin/TextItemsList";
-import { IsLoading } from "../../../Components/common/IsLoading";
-import { ErrorReq } from "../../../Components/common/ErrorReq";
+import { IsLoading } from "../../../Components/common/InfoGroup/IsLoading";
+import { ErrorReq } from "../../../Components/common/InfoGroup/ErrorReq";
 
 export const EmployeeDetailsPage = () => {
   // Флаг для открытия модалки удаления сотрудника

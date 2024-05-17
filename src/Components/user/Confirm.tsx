@@ -1,16 +1,16 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { v4 as uuidv4 } from 'uuid';
 import { NavigateFunction } from 'react-router-dom';
-import { Input } from '../common/Input';
+import { Input } from '../common/InputGroup/Input';
 import { Button } from '../common/Button';
 import { BlockStyle } from '../../types/interfaces/IStyles';
 import getStyles from '../../utils/getStyles';
 import { validateField } from '../../utils/validation';
 import useApi from '../../hooks/useApi';
 import { encrypt, retrieve } from '../../utils/encryption';
-import { IsLoading } from '../common/IsLoading';
+import { IsLoading } from '../common/InfoGroup/IsLoading';
 import { Api } from '../../api/Api';
-import { ErrorReq } from '../common/ErrorReq';
+import { ErrorReq } from '../common/InfoGroup/ErrorReq';
 
 
 export const Confirm = ({ mode, navigate }: { mode?: string; navigate: NavigateFunction }) => {

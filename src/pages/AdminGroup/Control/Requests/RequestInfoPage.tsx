@@ -10,8 +10,8 @@ import { RequestButtons } from "../../../../Components/superadmin/RequestButtons
 import { DownloadFile } from "../../../../Components/common/DownloadFile";
 import { AvatarAndName } from "../../../../Components/common/AvatarAndName";
 import { TextItemsList } from "../../../../Components/superadmin/TextItemsList";
-import { IsLoading } from "../../../../Components/common/IsLoading";
-import { ErrorReq } from "../../../../Components/common/ErrorReq";
+import { IsLoading } from "../../../../Components/common/InfoGroup/IsLoading";
+import { ErrorReq } from "../../../../Components/common/InfoGroup/ErrorReq";
 
 
 export const RequestInfoPage = () => {

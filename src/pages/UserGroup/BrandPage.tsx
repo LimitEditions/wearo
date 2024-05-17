@@ -5,7 +5,7 @@ import useApi from '../../hooks/useApi';
 import { Photos } from '../../Components/user/Photos';
 import { Button } from '../../Components/common/Button';
 import { Tips } from '../../Components/user/Tips';
-import { IsLoading } from '../../Components/common/IsLoading';
+import { IsLoading } from '../../Components/common/InfoGroup/IsLoading';
 import Item from '../../Components/user/ProfileItem';
 
 export const BrandPage = () => {

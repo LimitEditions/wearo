@@ -3,10 +3,10 @@ import { BlockStyle } from "../../types/interfaces/IStyles";
 import getStyles from "../../utils/getStyles";
 import { Button } from "../common/Button";
 import { ILoginFormProps } from "../../types/interfaces/componentsProps/IFormProps";
-import { InputsList } from "../common/InputsList";
+import { InputsList } from "../common/InputGroup/InputsList";
 import { IFormData } from "../../types/interfaces/componentsProps/IInputsListProps";
-import { IsLoading } from "../common/IsLoading";
-import { ErrorReq } from "../common/ErrorReq";
+import { IsLoading } from "../common/InfoGroup/IsLoading";
+import { ErrorReq } from "../common/InfoGroup/ErrorReq";
 
 export const LoginForm = ({
   user,

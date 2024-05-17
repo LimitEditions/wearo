@@ -3,7 +3,7 @@ import { NavigateFunction } from 'react-router-dom';
 import useApi from '../../hooks/useApi';
 import { retrieve } from '../../utils/encryption';
 import { Button } from '../common/Button';
-import { ErrorReq } from '../common/ErrorReq';
+import { ErrorReq } from '../common/InfoGroup/ErrorReq';
 import { RingLoader } from 'react-spinners';
 
 

@@ -7,7 +7,8 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { Modal } from '../common/Modal'
 import { SuccessfulContent } from '../common/SuccessfulContent'
 import { Button } from '../common/Button'
-import { Input } from '../common/Input'
+import { Input } from '../common/InputGroup/Input'
+
 
 // Кнопки для одобрения или отклонения заявки
 export const RequestButtons = () => {

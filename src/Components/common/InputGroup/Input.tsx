@@ -1,7 +1,8 @@
 import React from "react";
-import getStyles from "../../utils/getStyles";
-import { BlockStyle } from "../../types/interfaces/IStyles";
-import { IInputProps } from "../../types/interfaces/componentsProps/IInputProps";
+import { IInputProps } from "../../../types/interfaces/componentsProps/IInputProps";
+import getStyles from "../../../utils/getStyles";
+import { BlockStyle } from "../../../types/interfaces/IStyles";
+
 
 export const Input = ({
   name,

@@ -1,20 +1,24 @@
-import React, { Fragment, useState } from 'react'
-import { Button } from './Button'
-import { Input } from './Input'
-import getStyles from '../../utils/getStyles';
-import { BlockStyle } from '../../types/interfaces/IStyles';
+import React, { Dispatch, Fragment, SetStateAction, useState } from 'react'
+import { Button } from '../Button'
+import getStyles from '../../../utils/getStyles';
+import { BlockStyle } from '../../../types/interfaces/IStyles';
 import { Transition } from '@headlessui/react';
+import { Input } from '../InputGroup/Input';
 
-export const SearchInput = ({show, setShow, search}: { show: boolean, setShow: () => void, search: (value:string) => void }) => {
-    const [value, setValue] = useState<string>('')
+
+// поисковая строка и ее анимация
+export const SearchInput = ({show, setShow, callback }: { show: boolean, setShow: () => void, callback: Dispatch<SetStateAction<string>> }) => {
+    const [inputValue, setInputValue] = useState<string>('');
+
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setValue(event.target.value);
+        setInputValue(event.target.value);
     };
+
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        search(value);
+        callback(inputValue);
     };
-
+    
     return (
         <Transition show={show} as={Fragment}>
             <Transition.Child
@@ -31,10 +35,10 @@ export const SearchInput = ({show, setShow, search}: { show: boolean, setShow: (
                         className={getStyles(inputStyle)} 
                         type='text' 
                         placeholder='Поиск'
-                        value={value}
+                        value={inputValue}
                         onChange={handleChange}
                         />
-                    <Button showButton={true} onClick={setShow} className={getStyles(btnStyle)}>Отменить</Button>
+                    <Button showButton={true} onClick={setShow} className={getStyles(btnStyle)}>Скрыть</Button>
                 </form>
             </Transition.Child>
         </Transition>

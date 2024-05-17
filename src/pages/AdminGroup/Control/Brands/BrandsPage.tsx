@@ -9,8 +9,8 @@ import { ItemsList } from '../../../../Components/common/ItemGroup/ItemsList';
 import { Route, Routes } from 'react-router-dom';
 import { BrandInfoPage } from './BrandInfoPage';
 import { Item } from '../../../../types/interfaces/componentsProps/IItemsListProps';
-import { IsLoading } from '../../../../Components/common/IsLoading';
-import { ErrorReq } from '../../../../Components/common/ErrorReq';
+import { IsLoading } from '../../../../Components/common/InfoGroup/IsLoading';
+import { ErrorReq } from '../../../../Components/common/InfoGroup/ErrorReq';
 
 
 export const BrandsPage = () => {

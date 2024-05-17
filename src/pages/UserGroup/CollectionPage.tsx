@@ -3,7 +3,7 @@ import { ClothingCollectionModel, ProductModel } from '../../api/data-contracts'
 import { useParams } from 'react-router-dom'
 import useApi from '../../hooks/useApi';
 import { Products } from '../../Components/user/Products';
-import { IsLoading } from '../../Components/common/IsLoading';
+import { IsLoading } from '../../Components/common/InfoGroup/IsLoading';
 
 
 export const CollectionPage = () => {
