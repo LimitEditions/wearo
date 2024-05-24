@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from 'react';
-import { Dialog, Transition } from '@headlessui/react';
+import { Dialog, DialogPanel, DialogTitle, Transition, TransitionChild } from '@headlessui/react';
 import { BlockStyle } from '../../types/interfaces/IStyles';
 import getStyles from '../../utils/getStyles';
 import { IModalProps } from '../../types/interfaces/componentsProps/IModalProps';
@@ -36,7 +36,7 @@ export const Modal = ({isOpen, setIsOpen, title, children, additionalStyles, swi
         <Transition appear show={isOpen} as={Fragment}>
             <Dialog as="div" className={getStyles(dialogStyle)} onClose={() => setIsOpen(false)}>
                 {/* анимация затемнения фона */}
-                <Transition.Child
+                <TransitionChild
                     as={Fragment}
                     enter="ease-out duration-700"
                     enterFrom="opacity-0"
@@ -46,11 +46,11 @@ export const Modal = ({isOpen, setIsOpen, title, children, additionalStyles, swi
                     leaveTo="opacity-0"
                 >
                     <div className={getStyles(backgroundStyle)} />
-                </Transition.Child>
+                </TransitionChild>
 
                 <div className={getStyles(additionalStyles? additionalStyles: containerStyle)} {...(swipeable? handlers: {})} style={modalStyle}>
                     {/* анимация появления и исчезновения окна */}
-                    <Transition.Child
+                    <TransitionChild
                         as={Fragment}
                         enter="ease-out duration-500"
                         enterFrom="opacity-0 scale-95"
@@ -59,15 +59,15 @@ export const Modal = ({isOpen, setIsOpen, title, children, additionalStyles, swi
                         leaveFrom="opacity-100 scale-100"
                         leaveTo="opacity-0 scale-95"
                     >
-                        <Dialog.Panel className={additionalStyles? getStyles(panelStyle): getStyles(panelStyle) + ' max-w-md rounded-b-2xl'}>
-                            <Dialog.Title as="h3" className={getStyles(titleStyle)}>
+                        <DialogPanel className={additionalStyles? getStyles(panelStyle): getStyles(panelStyle) + ' max-w-md rounded-b-2xl'}>
+                            <DialogTitle as="h3" className={getStyles(titleStyle)}>
                                 {title}
-                            </Dialog.Title>
+                            </DialogTitle>
                             <div className={getStyles(contentStyle)}>
                                 {children}
                             </div>
-                        </Dialog.Panel>
-                    </Transition.Child>
+                        </DialogPanel>
+                    </TransitionChild>
                 </div>
             </Dialog>
         </Transition>

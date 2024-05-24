@@ -508,6 +508,23 @@ export interface CreateFileProductModel {
   y?: number;
 }
 
+export interface CreateHighlightModel {
+  /**
+   * Бренд
+   * @format uuid
+   */
+  brandGuid?: string;
+  /** Возможное имя хайлайта */
+  name?: string | null;
+  /**
+   * Картинка, считающаяся основной
+   * @format uuid
+   */
+  mainPhotoGuid?: string | null;
+  /** Набор входящих сторис */
+  stories?: string[];
+}
+
 /** Образ/лукбук */
 export interface CreateLookModel {
   /** Наименование */
@@ -710,6 +727,11 @@ export interface CreateProductModel {
    * @format uuid
    */
   collectionGuid?: string | null;
+  /**
+   * Главное фото
+   * @format uuid
+   */
+  mainPhotoGuid?: string | null;
 }
 
 export interface CreatePromotionCodeModel {
@@ -775,6 +797,19 @@ export interface CreateScanModel {
   /** @format uuid */
   userGuid?: string | null;
   code?: string;
+}
+
+export interface CreateStoryModel {
+  /**
+   * Файл сторис
+   * @format uuid
+   */
+  fileGuid?: string;
+  /**
+   * Публикующий чел
+   * @format uuid
+   */
+  brandGuid?: string;
 }
 
 /** Подписка на бренд */
@@ -944,6 +979,87 @@ export interface GuidEditModel {
    */
   guid?: string;
   edit?: EditType;
+}
+
+/** Хайлайт из набора сторис */
+export interface HighlightModel {
+  /**
+   * Идентификатор
+   * @format uuid
+   */
+  guid?: string;
+  /** Отметка удаления */
+  isDeleted?: boolean;
+  /**
+   * Дата создания
+   * @format date-time
+   */
+  createDT?: string;
+  /**
+   * Дата обнавления
+   * @format date-time
+   */
+  updateDT?: string;
+  /** Набор вложенных сторис */
+  stories?: HighlightStoryModel[] | null;
+  /**
+   * Бренд
+   * @format uuid
+   */
+  brandGuid?: string;
+  /** Возможное имя хайлайта */
+  name?: string | null;
+  /**
+   * Картинка, считающаяся основной
+   * @format uuid
+   */
+  mainPhotoGuid?: string | null;
+}
+
+/** Результат чтения данных. */
+export interface HighlightModelDataResult {
+  /**
+   * Общее количество найденных элементов.
+   * @format int32
+   */
+  total?: number;
+  /** Данные. */
+  data?: HighlightModel[];
+}
+
+/** Связка хайлайта и сторис */
+export interface HighlightStoryModel {
+  /**
+   * Идентификатор
+   * @format uuid
+   */
+  guid?: string;
+  /** Отметка удаления */
+  isDeleted?: boolean;
+  /**
+   * Дата создания
+   * @format date-time
+   */
+  createDT?: string;
+  /**
+   * Дата обнавления
+   * @format date-time
+   */
+  updateDT?: string;
+  /** Сторис */
+  story?: StoryModel;
+  /** Хайлайт из набора сторис */
+  highlight?: HighlightModel;
+  /**
+   * Хайлайт
+   * @format uuid
+   */
+  highlightGuid?: string;
+  /**
+   * Сторис
+   * @format uuid
+   */
+  storyGuid?: string;
 }
 
 /** Образ/лукбук */
@@ -1531,6 +1647,11 @@ export interface ProductModel {
    * @format uuid
    */
   categoryGuid?: string;
+  /**
+   * Главное фото
+   * @format uuid
+   */
+  mainPhotoGuid?: string | null;
   /** Бренд */
   brand?: BrandModel;
   /** Коллекция одежды */
@@ -1759,6 +1880,59 @@ export enum Season {
   ResortCruise = "ResortCruise",
 }
 
+/** Сторис */
+export interface StoryModel {
+  /**
+   * Идентификатор
+   * @format uuid
+   */
+  guid?: string;
+  /** Отметка удаления */
+  isDeleted?: boolean;
+  /**
+   * Дата создания
+   * @format date-time
+   */
+  createDT?: string;
+  /**
+   * Дата обнавления
+   * @format date-time
+   */
+  updateDT?: string;
+  /**
+   * Файл сторис
+   * @format uuid
+   */
+  fileGuid?: string;
+  /**
+   * Публикующий чел
+   * @format uuid
+   */
+  brandGuid?: string;
+}
+
+/** Результат чтения данных. */
+export interface StoryModelDataResult {
+  /**
+   * Общее количество найденных элементов.
+   * @format int32
+   */
+  total?: number;
+  /** Данные. */
+  data?: StoryModel[];
+}
+
+/** Результат чтения данных. */
+export interface StringDataResult {
+  /**
+   * Общее количество найденных элементов.
+   * @format int32
+   */
+  total?: number;
+  /** Данные. */
+  data?: string[];
+}
+
 /** Подписка на бренд */
 export interface SubscriptionModel {
   /**
@@ -1880,6 +2054,28 @@ export interface UpdateCommentModel {
   text?: string | null;
   /** Нравится ли */
   isLike?: boolean | null;
+}
+
+export interface UpdateHighlightModel {
+  /**
+   * Идентификатор
+   * @format uuid
+   */
+  guid?: string;
+  /**
+   * Бренд
+   * @format uuid
+   */
+  brandGuid?: string;
+  /** Возможное имя хайлайта */
+  name?: string | null;
+  /**
+   * Картинка, считающаяся основной
+   * @format uuid
+   */
+  mainPhotoGuid?: string | null;
+  /** Модель редактирования набора сторис */
+  stories?: GuidEditModel[];
 }
 
 /** Образ/лукбук */
@@ -2024,6 +2220,11 @@ export interface UpdateProductModel {
    * @format uuid
    */
   collectionGuid?: string | null;
+  /**
+   * Главное фото
+   * @format uuid
+   */
+  mainPhotoGuid?: string | null;
 }
 
 /** Модель редактирования промо */

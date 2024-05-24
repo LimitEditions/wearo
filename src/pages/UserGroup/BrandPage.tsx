@@ -1,43 +1,89 @@
-import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
-import { BrandModel } from '../../api/data-contracts';
+import React, { useEffect, useMemo, useState } from 'react'
+import { Link, useParams } from 'react-router-dom'
+import { BrandModel, SubscriptionModel } from '../../api/data-contracts';
 import useApi from '../../hooks/useApi';
-import { Photos } from '../../Components/user/Photos';
 import { Button } from '../../Components/common/Button';
 import { Tips } from '../../Components/user/Tips';
 import { IsLoading } from '../../Components/common/InfoGroup/IsLoading';
 import Item from '../../Components/user/ProfileItem';
+import { Photo } from '../../Components/common/Photo';
+import { ErrorReq } from '../../Components/common/InfoGroup/ErrorReq';
+import { BlockStyle } from '../../types/interfaces/IStyles';
+import { retrieve } from '../../utils/encryption';
+import { Modal } from '../../Components/common/Modal';
+import { SuccessfulContent } from '../../Components/common/SuccessfulContent';
+
 
 export const BrandPage = () => {
-  const {id} = useParams();
-  const [shouldExecute, setShouldExecute] = useState<boolean>(false);
+    // id бренда
+    const { id } = useParams();
+    // загрузка данных по бренду с сервера
+    const [data, isLoading, error] = useApi<'brandsDetail', BrandModel>(
+        'brandsDetail', id, {}, true
+    );
 
-  const [data, isLoading, ] = useApi<'brandsDetail', BrandModel>(
-    'brandsDetail', id, {}, shouldExecute
-  );
-  
-  useEffect(() => {
-    setShouldExecute(false);
-    id ? setShouldExecute(true): console.log('Передайте id в url')
+    // подписаться на бренд
+    const userGuid = useMemo(() => retrieve("guid"), []);
+    const token = useMemo(() => retrieve("token"), []);
+    const [shouldExecute, setShouldExecute] = useState<boolean>(false);
+    const [subscription, subscriptionLoading, subscriptionError] = useApi<'subscriptionsCreate', SubscriptionModel>(
+        'subscriptionsCreate',
+        { userGuid: userGuid, brandGuid: id },
+        { headers: { Authorization: `Bearer ${token}` } },
+        shouldExecute
+    );
 
-  }, [shouldExecute, id])
+    // стейт на модальное окно
+    const [modal, setModal] = useState<boolean>(false);
+
+    // эффекты
+    useEffect(() => {
+        // останавливаем запрос по подписке после единичной попытки
+        if(subscriptionLoading) {
+            setShouldExecute(false);
+            // всплывает окно об успехе/неудаче
+            setModal(true);
+        };
+        // таймер на закрытие окна
+        if(modal) {
+            setTimeout(() => {
+                setModal(false);
+            }, 2000)
+        };
+    }, [subscriptionLoading, modal]);
+
+    return (
+        <div className='space-y-5 w-full px-3'>
+            <IsLoading show={isLoading} />
+            <ErrorReq show={!!error} error={error} />
+            {data &&
+                <>
+                    <Photo id={data?.photo || null} styles={'border-4'} alt={'фото бренда'}/>
+                    <div className='flex justify-between '>
+                        <Link to={`${data.link}`}>{data?.name}</Link>
+                        <Button showButton={true} styles={cursorStyle} onClick={() => setShouldExecute(true)}>Подписаться</Button>
+                    </div>
+                    <div className='text-center'>
+                        {data?.description}
+                    </div>
+                    <div>
+                        <Item path='/collections'>Коллекции</Item>
+                        <Item path='/items'>Изделия</Item>
+                    </div>
+                    <Tips tips={[]} />
+                    <div>
+                        Публикации
+                    </div>
+                </>
+            }
+            <Modal isOpen={modal} setIsOpen={setModal} swipeable={false}>
+                <SuccessfulContent message={subscription && !subscriptionError ? 'Вы успешно подписаны': `Ошибка - ${subscriptionError?.message}`}/>
+            </Modal>
+        </div>
+    )
+};
 
 
-  return (
-    <div className='space-y-7 w-full sm:w-1/4'>
-      <IsLoading show={isLoading} />
-      <Photos photos={undefined} imgSize='w-full'/>
-      <div className='flex justify-between p-4'>
-        <span>{data?.name}</span>
-        <Button showButton={true}>Подписаться</Button>
-      </div>
-      <div className='m-2'>{data?.description}</div>
-      <div>
-        <Item path='/collections'>Коллекции</Item>
-        <Item path='/items'>Изделия</Item>
-      </div>
-      <Tips tips={[]} />
-      <div>Публикации</div>
-    </div>
-  )
-}
+const cursorStyle: BlockStyle = {
+    hover: 'cursor-pointer'
+};

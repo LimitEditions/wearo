@@ -15,7 +15,7 @@ export const Post = ({ id }: { id: string }) => {
                     <Photos photos={undefined} imgSize='w-full'/>
                     <div className='px-2'>
                         <p>{data.text}</p>
-                        <Item path={`./../brand/${data.brandGuid}`}>Название бренда</Item>
+                        <Item path={`.././brand/${data.brandGuid}`}>Название бренда</Item>
                     </div>
                 </>
             }

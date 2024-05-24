@@ -36,6 +36,7 @@ import {
   CreateConfiramtionEmailModel,
   CreateConfiramtionPhoneModel,
   CreateFileProductModel,
+  CreateHighlightModel,
   CreateLookModel,
   CreateMaterialModel,
   CreateMessageModel,
@@ -49,6 +50,7 @@ import {
   CreatePromotionCodeModel,
   CreatePromotionModel,
   CreateScanModel,
+  CreateStoryModel,
   CreateSubscriptionModel,
   CreateTipModel,
   CreateUserModel,
@@ -57,6 +59,8 @@ import {
   FileType,
   FilterType,
   ForwardMessagesModel,
+  HighlightModel,
+  HighlightModelDataResult,
   LookModel,
   LookModelDataResult,
   MaterialModel,
@@ -84,12 +88,16 @@ import {
   ScanModel,
   ScanModelDataResult,
   Season,
+  StoryModel,
+  StoryModelDataResult,
+  StringDataResult,
   SubscriptionModel,
   SubscriptionModelDataResult,
   TipModel,
   TokenModel,
   UpdateBrandModel,
   UpdateCommentModel,
+  UpdateHighlightModel,
   UpdateLookModel,
   UpdateMaterialModel,
   UpdateMessageModel,
@@ -2413,6 +2421,44 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * No description
    *
    * @tags Promotions
+   * @name PromotionsCodesList
+   * @summary Поиск промиков
+   * @request GET:/api/Promotions/Codes
+   * @secure
+   */
+  promotionsCodesList = (
+    query?: {
+      /** @format uuid */
+      UserGuid?: string;
+      /** @format uuid */
+      BrandGuid?: string;
+      /** @format uuid */
+      PromotionGuid?: string;
+      /**
+       * Номер страницы (по умолчанию = 1).
+       * @format int32
+       */
+      Page?: number;
+      /**
+       * Размер страницы (по умолчанию = 25).
+       * @format int32
+       */
+      PageSize?: number;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<StringDataResult, ProblemDetails>({
+      path: `/api/Promotions/Codes`,
+      method: "GET",
+      query: query,
+      secure: true,
+      format: "json",
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags Promotions
    * @name PromotionsCodesUpdate
    * @summary Активировать код
    * @request PUT:/api/Promotions/Codes
@@ -2528,6 +2574,252 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
     this.request<ScanModel, ProblemDetails>({
       path: `/api/Scans`,
       method: "POST",
+      body: data,
+      secure: true,
+      type: ContentType.Json,
+      format: "json",
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags Stories
+   * @name StoriesDetail
+   * @summary Получить сторис по ид
+   * @request GET:/api/Stories/{id}
+   * @secure
+   */
+  storiesDetail = (id: string, params: RequestParams = {}) =>
+    this.request<StoryModel, ProblemDetails>({
+      path: `/api/Stories/${id}`,
+      method: "GET",
+      secure: true,
+      format: "json",
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags Stories
+   * @name StoriesDelete
+   * @summary Удалить сторис
+   * @request DELETE:/api/Stories/{id}
+   * @secure
+   */
+  storiesDelete = (id: string, params: RequestParams = {}) =>
+    this.request<void, ProblemDetails>({
+      path: `/api/Stories/${id}`,
+      method: "DELETE",
+      secure: true,
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags Stories
+   * @name StoriesList
+   * @summary Поиск сторис по параметрам
+   * @request GET:/api/Stories
+   * @secure
+   */
+  storiesList = (
+    query?: {
+      /**
+       * Бренд
+       * @format uuid
+       */
+      BrandGuid?: string;
+      /**
+       * Номер страницы (по умолчанию = 1).
+       * @format int32
+       */
+      Page?: number;
+      /**
+       * Размер страницы (по умолчанию = 25).
+       * @format int32
+       */
+      PageSize?: number;
+      /**
+       * Начало периода.
+       * @format date-time
+       */
+      createDtStart?: string;
+      /**
+       * Конец периода.
+       * @format date-time
+       */
+      createDtEnd?: string;
+      /**
+       * Начало периода.
+       * @format date-time
+       */
+      updateDtStart?: string;
+      /**
+       * Конец периода.
+       * @format date-time
+       */
+      updateDtEnd?: string;
+      /** Отметка удаления */
+      IsDeleted?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<StoryModelDataResult, any>({
+      path: `/api/Stories`,
+      method: "GET",
+      query: query,
+      secure: true,
+      format: "json",
+      ...params,
+    });
+  /**
+ * No description
+ *
+ * @tags Stories
+ * @name StoriesCreate
+ * @summary Создание сторис
+Доступно админам
+ * @request POST:/api/Stories
+ * @secure
+ */
+  storiesCreate = (data: CreateStoryModel, params: RequestParams = {}) =>
+    this.request<StoryModel, ProblemDetails>({
+      path: `/api/Stories`,
+      method: "POST",
+      body: data,
+      secure: true,
+      type: ContentType.Json,
+      format: "json",
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags Stories
+   * @name StoriesHighlightsDetail
+   * @summary Получить хайлайт по ид
+   * @request GET:/api/Stories/Highlights/{id}
+   * @secure
+   */
+  storiesHighlightsDetail = (id: string, params: RequestParams = {}) =>
+    this.request<HighlightModel, ProblemDetails>({
+      path: `/api/Stories/Highlights/${id}`,
+      method: "GET",
+      secure: true,
+      format: "json",
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags Stories
+   * @name StoriesHighlightsDelete
+   * @summary Удалить хайлайт
+   * @request DELETE:/api/Stories/Highlights/{id}
+   * @secure
+   */
+  storiesHighlightsDelete = (id: string, params: RequestParams = {}) =>
+    this.request<void, ProblemDetails>({
+      path: `/api/Stories/Highlights/${id}`,
+      method: "DELETE",
+      secure: true,
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags Stories
+   * @name StoriesHighlightsList
+   * @summary Поиск хайлайта по параметрам
+   * @request GET:/api/Stories/Highlights
+   * @secure
+   */
+  storiesHighlightsList = (
+    query?: {
+      /**
+       * ИД бренда
+       * @format uuid
+       */
+      BrandGuid?: string;
+      /**
+       * Номер страницы (по умолчанию = 1).
+       * @format int32
+       */
+      Page?: number;
+      /**
+       * Размер страницы (по умолчанию = 25).
+       * @format int32
+       */
+      PageSize?: number;
+      /** Поле, по которому происходит сортировка */
+      SortMember?: string;
+      /** Направление сортировки - по возрастанию */
+      Ascending?: boolean;
+      /**
+       * Начало периода.
+       * @format date-time
+       */
+      createDtStart?: string;
+      /**
+       * Конец периода.
+       * @format date-time
+       */
+      createDtEnd?: string;
+      /**
+       * Начало периода.
+       * @format date-time
+       */
+      updateDtStart?: string;
+      /**
+       * Конец периода.
+       * @format date-time
+       */
+      updateDtEnd?: string;
+      /** Отметка удаления */
+      IsDeleted?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<HighlightModelDataResult, any>({
+      path: `/api/Stories/Highlights`,
+      method: "GET",
+      query: query,
+      secure: true,
+      format: "json",
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags Stories
+   * @name StoriesHighlightsCreate
+   * @summary Создание хайлайта
+   * @request POST:/api/Stories/Highlights
+   * @secure
+   */
+  storiesHighlightsCreate = (data: CreateHighlightModel, params: RequestParams = {}) =>
+    this.request<HighlightModel, ProblemDetails>({
+      path: `/api/Stories/Highlights`,
+      method: "POST",
+      body: data,
+      secure: true,
+      type: ContentType.Json,
+      format: "json",
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags Stories
+   * @name StoriesHighlightsUpdate
+   * @summary Редактирование хайлайта
+   * @request PUT:/api/Stories/Highlights
+   * @secure
+   */
+  storiesHighlightsUpdate = (data: UpdateHighlightModel, params: RequestParams = {}) =>
+    this.request<HighlightModel, ProblemDetails>({
+      path: `/api/Stories/Highlights`,
+      method: "PUT",
       body: data,
       secure: true,
       type: ContentType.Json,

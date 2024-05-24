@@ -1,19 +1,20 @@
 import React, { useCallback } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { IItemProps } from "../../../types/interfaces/IItemProps";
 import { BlockStyle } from "../../../types/interfaces/IStyles";
 import getStyles from "../../../utils/getStyles";
 import { Arrow } from "../Arrow";
 
 const Item: React.FC<IItemProps> = ({ path, children }) => {
-  const location = useLocation();
+  // const location = useLocation();
   const navigate = useNavigate();
   // Если задан путь, то по клику будет осуществлен переход на другую страницу
   const handleClick = useCallback(() => {
     if (path) {
-      navigate(location.pathname + path);
+      // navigate(location.pathname + path);
+      navigate(path);
     }
-  }, [path, location, navigate]);
+  }, [path, navigate]);
 
   // Если указан путь, то добавляем hover-эффекты
   const containerStyle = path ? `${getStyles(divStyle)} ${getStyles(hoverStyle)}` : getStyles(divStyle)
