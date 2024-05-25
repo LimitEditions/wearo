@@ -70,7 +70,7 @@ export const RequestButtons = () => {
           isOpen={activeModal === 'modalComment'}
           setIsOpen={closeModal}
           title="Укажите причину отказа"
-          additionalStyles={additionalStyles}
+          additionalStyles={{container: getStyles(additionalStyles)}}
           swipeable={true}
         >
           <Input

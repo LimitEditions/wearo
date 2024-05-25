@@ -40,10 +40,10 @@ export const CommentsPage = ({ comments }: { comments: CommentModel[] }) => {
   const toRender = comments.length > 0 ? comments: mock;
 
   return (
-    <>
+    <div className='pt-1'>
       {
         toRender.map(el => { return <CommentComponent comment={el} key={el.guid}/> })
       }
-    </>
+    </div>
   )
 }

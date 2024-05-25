@@ -6,12 +6,12 @@ import { LogOut } from '../common/LogOut';
 import AuthContext from '../../context/AuthProvider';
 import Item from '../common/ItemGroup/Item';
 import { Photo } from '../common/Photo';
-import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react';
+// import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react';
 
 
 export const Profile = () => {
     const { isAuth } = useContext(AuthContext);
-    // console.log(isAuth)
+    
     return (
         <div className={getStyles(profStyle)}>
             <h2 className={getStyles(headStyle)}>Профиль</h2>
@@ -25,7 +25,7 @@ export const Profile = () => {
             <Item path="/subscriptions">Подписки</Item>
             <Item path="/scans">Сканирования</Item>
 
-            <div className="flex flex-col items-center">
+            {/* <div className="flex flex-col items-center">
                 <Disclosure defaultOpen={false}>
                     <DisclosureButton className="w-3/4 px-4 py-2 bg-gray-300 rounded-md text-center">Персональные предложения</DisclosureButton>
                     <DisclosurePanel className="mt-2">
@@ -34,14 +34,14 @@ export const Profile = () => {
                         </Item>
                     </DisclosurePanel>
                 </Disclosure>
-            </div>
+            </div> */}
 
             <h2 className={getStyles(headStyle)}>Настройки</h2>
-            <Item path="/email">
+            <Item path="./email">
                 <div>Почта:</div>
                 <div>{isAuth.userInfo ? isAuth.userInfo.email: 'не подтверждена'}</div>
             </Item>
-            <Item path="/phone">
+            <Item path="./phone">
                 <div>Телефон:</div>
                 <div>{isAuth.userInfo ? isAuth.userInfo.phone: 'не подтвержден'}</div>
             </Item>

@@ -1,10 +1,10 @@
 import React from "react";
-import { AuthWrapper } from "../Components/authorization/AuthWrapper";
-import { BlockStyle } from "../types/interfaces/IStyles";
-import { Button } from "../Components/common/Button";
-import getStyles from "../utils/getStyles";
+import { AuthWrapper } from "../../Components/authorization/AuthWrapper";
+import { BlockStyle } from "../../types/interfaces/IStyles";
+import { Button } from "../../Components/common/Button";
+import getStyles from "../../utils/getStyles";
 import { Route, Routes, useNavigate } from "react-router-dom";
-import ProtectedRoute from "../Components/common/ProtectedRoute";
+import ProtectedRoute from "../../Components/common/ProtectedRoute";
 import { LoginPage } from "./LoginPage";
 import { RegistrationPage } from "./RegistrationPage";
 

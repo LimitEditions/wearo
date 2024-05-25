@@ -48,7 +48,7 @@ export const Modal = ({isOpen, setIsOpen, title, children, additionalStyles, swi
                     <div className={getStyles(backgroundStyle)} />
                 </TransitionChild>
 
-                <div className={getStyles(additionalStyles? additionalStyles: containerStyle)} {...(swipeable? handlers: {})} style={modalStyle}>
+                <div className={additionalStyles?.container? additionalStyles.container: getStyles(containerStyle)} {...(swipeable? handlers: {})} style={modalStyle}>
                     {/* анимация появления и исчезновения окна */}
                     <TransitionChild
                         as={Fragment}
@@ -59,7 +59,7 @@ export const Modal = ({isOpen, setIsOpen, title, children, additionalStyles, swi
                         leaveFrom="opacity-100 scale-100"
                         leaveTo="opacity-0 scale-95"
                     >
-                        <DialogPanel className={additionalStyles? getStyles(panelStyle): getStyles(panelStyle) + ' max-w-md rounded-b-2xl'}>
+                        <DialogPanel className={additionalStyles?.panel? additionalStyles.panel: getStyles(panelStyle)}>
                             <DialogTitle as="h3" className={getStyles(titleStyle)}>
                                 {title}
                             </DialogTitle>
@@ -91,7 +91,7 @@ const containerStyle: BlockStyle = {
 
 const panelStyle: BlockStyle = {
     blockSize: 'w-full transform overflow-hidden',
-    container: 'rounded-t-2xl',
+    container: 'rounded-2xl',
     spacing: 'p-6',
     background: 'bg-white',
     text: 'text-left align-middle',
@@ -103,6 +103,5 @@ const titleStyle: BlockStyle = {
 };
 
 const contentStyle: BlockStyle = {
-    spacing: 'mt-2',
     text: 'text-sm text-gray-500',
 };

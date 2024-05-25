@@ -31,8 +31,8 @@ export const navContent: NavContentType = {
     ],
     'User': [
         {
-            path: "/scan",
-            name: "Сканирование"
+            path: "/promotions",
+            name: "Промокоды"
         },
         {
             path: "/posts",

@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { BlockStyle } from '../../types/interfaces/IStyles';
 import getStyles from '../../utils/getStyles';
+import { Arrow } from '../common/Arrow';
 
 interface IItem {
   path: any;
@@ -16,7 +17,9 @@ const Item: React.FC<IItem> = ({ path, children }) => {
         className={getStyles(profItStyle)} 
         onClick={() => navigate(`.${path}`)}>
       {children}
-      <span className={getStyles(angleStyle)}>{'>'}</span>
+      <div className={getStyles(angleStyle)}>
+        <Arrow direct='right'/>
+      </div>
     </div>
   );
 };

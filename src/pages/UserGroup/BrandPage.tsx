@@ -3,7 +3,6 @@ import { Link, useParams } from 'react-router-dom'
 import { BrandModel, SubscriptionModel } from '../../api/data-contracts';
 import useApi from '../../hooks/useApi';
 import { Button } from '../../Components/common/Button';
-import { Tips } from '../../Components/user/Tips';
 import { IsLoading } from '../../Components/common/InfoGroup/IsLoading';
 import Item from '../../Components/user/ProfileItem';
 import { Photo } from '../../Components/common/Photo';
@@ -12,6 +11,9 @@ import { BlockStyle } from '../../types/interfaces/IStyles';
 import { retrieve } from '../../utils/encryption';
 import { Modal } from '../../Components/common/Modal';
 import { SuccessfulContent } from '../../Components/common/SuccessfulContent';
+import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react';
+import { Arrow } from '../../Components/common/Arrow';
+import { Highlights } from '../../Components/user/Stories&Hightlights/Highlights';
 
 
 export const BrandPage = () => {
@@ -33,6 +35,12 @@ export const BrandPage = () => {
         shouldExecute
     );
 
+    // Cтейт и колбек на разворот стрелки вниз и обратно
+    const [isRotated, setIsRotated] = useState<boolean>(false);
+    const handleRotate = () => {
+        setIsRotated(!isRotated);
+    };
+    
     // стейт на модальное окно
     const [modal, setModal] = useState<boolean>(false);
 
@@ -63,14 +71,23 @@ export const BrandPage = () => {
                         <Link to={`${data.link}`}>{data?.name}</Link>
                         <Button showButton={true} styles={cursorStyle} onClick={() => setShouldExecute(true)}>Подписаться</Button>
                     </div>
+                    <Highlights brandId={data.guid || null} />
                     <div className='text-center'>
                         {data?.description}
                     </div>
-                    <div>
-                        <Item path='/collections'>Коллекции</Item>
-                        <Item path='/items'>Изделия</Item>
-                    </div>
-                    <Tips tips={[]} />
+                    <Disclosure>
+                        <DisclosureButton className='w-full flex justify-between relative' onClick={handleRotate}>
+                            <div className='text-lg'>Коллекции</div>
+                            <div className={`absolute right-1 top-1/2 transform -translate-y-1/2 ${isRotated ? "rotate-90" : ""}`} >
+                                <Arrow direct={'right'} />
+                            </div>
+                        </DisclosureButton>
+                        <DisclosurePanel>
+                            {data.collections?.map(col => {
+                                return <Item path={`./../collection/${col.guid}`} key={col.guid}>{col.name}</Item>
+                            })}
+                        </DisclosurePanel>
+                    </Disclosure>
                     <div>
                         Публикации
                     </div>

@@ -10,8 +10,9 @@ import { Arrow } from './Arrow';
 export const Logo = () => {
     const location = useLocation();
     const navigate = useNavigate();
-
-    const showBackButton = /^\/wardrobe\/.*/.test(location.pathname) || /^\/options\/.*/.test(location.pathname);
+    
+    // const showBackButton = /^\/wardrobe\/.*/.test(location.pathname) || /^\/options\/.*/.test(location.pathname);
+    const showBackButton = !showEl(['/wardrobe', '/promotions', '/posts', '/auth', '/'] ,location.pathname);
     const showProfileButton = showEl(['/wardrobe'] ,location.pathname);
 
     const handleBackClick = () => {
@@ -20,7 +21,11 @@ export const Logo = () => {
         // проверяем не id ли последний элемент
         const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(urlData[urlData.length - 1]);
         // прыгаем через один, если последним идет id
-        navigate(isUuid ? urlData.slice(0, -2).join('/'): urlData.slice(0, -1).join('/'));
+        if(urlData.length > 3) {
+            navigate(isUuid ? urlData.slice(0, -2).join('/'): urlData.slice(0, -1).join('/'));
+        } else {
+            navigate(-1);
+        };
     };
 
     const handleProfileClick = () => {
@@ -46,12 +51,11 @@ export const Logo = () => {
                 <h1>WEAR</h1>
             </div>
         </div>
-        
     );
 };
 
 const contStyle: BlockStyle = {
-    blockSize: "sticky top-0 left-0 z-10 bg-white",
+    blockSize: "fixed w-full top-0 z-10",
 }; 
 
 const logoStyle: BlockStyle = {

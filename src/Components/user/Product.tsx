@@ -17,7 +17,7 @@ export const Product = ({ data }:{ data: ProductModel }) => {
         <div>{data.name}<span></span></div>
         <div className={getStyles(descStyle)}>
           <span className='block'>{data?.description}</span>
-          <Item path={`./../brand/${data.brandGuid}`}>Название бренда</Item>
+          <Item path={`.././brand/${data.brandGuid}`}>Название бренда</Item>
           {data.colors && <Colors prodColors={data.colors}/>}
         </div>
         <div className={getStyles(originStyle)}>
@@ -35,8 +35,8 @@ export const Product = ({ data }:{ data: ProductModel }) => {
           <span> {data?.createDT ? moment(data.createDT).format('DD.MM.YYYY') : 'Дата неизвестна'}</span>
         </div>
         <div>
-          <Item path='/comments'>Отзывы</Item>
-          <Item path={`./../collection/${data.collectionGuid}`}>Коллекция</Item>
+          <Item path='./comments'>Отзывы</Item>
+          <Item path={`.././collection/${data.collectionGuid}`}>Коллекция</Item>
           <Item path='/buy_item'>Купить изделие</Item>
         </div>
         <Button showButton={true}>Оставить отзыв</Button>

@@ -41,7 +41,7 @@ export const WardrobePage = memo(() => {
             <Routes>
                 <Route index element={
                     <div>
-                        Welcome to the Wardrobe!
+                        <p className='pt-2'>Welcome to the Wardrobe!</p>
                         <Search callBack={setSearchTarget}/>
                         <IsLoading show={isLoading}/>
                         <Products productsList={ filteredList ? filteredList: productsList }/>
