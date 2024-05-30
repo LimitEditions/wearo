@@ -80,7 +80,7 @@ const dialogStyle: BlockStyle = {
 
 const backgroundStyle: BlockStyle = {
     container: 'fixed inset-0 ',
-    background: 'bg-black/50'
+    background: 'bg-black/80'
 };
 
 const containerStyle: BlockStyle = {
