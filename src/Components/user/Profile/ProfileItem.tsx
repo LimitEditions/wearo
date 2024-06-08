@@ -1,8 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { BlockStyle } from '../../types/interfaces/IStyles';
-import getStyles from '../../utils/getStyles';
-import { Arrow } from '../common/Arrow';
+import { BlockStyle } from '../../../types/interfaces/IStyles';
+import getStyles from '../../../utils/getStyles';
+import { Arrow } from '../../common/Arrow';
 
 interface IItem {
   path: any;

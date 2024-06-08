@@ -1,7 +1,7 @@
 import React from 'react'
-import { ProductModel } from '../../api/data-contracts';
+import { ProductModel } from '../../../api/data-contracts';
 import { useNavigate } from 'react-router-dom';
-import { Photo } from '../common/Photo';
+import { Photo } from '../../common/Photo';
 
 
 export const Products = ({productsList}: {productsList: ProductModel[] }) => {

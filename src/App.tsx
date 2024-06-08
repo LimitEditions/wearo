@@ -10,6 +10,7 @@ import { BrandPage } from './pages/UserGroup/BrandPage';
 import { PostsPage } from './pages/UserGroup/PostsPage';
 import { CollectionPage } from './pages/UserGroup/CollectionPage';
 import { ProductPage } from './pages/UserGroup/ProductPage';
+import { ProductItemPage } from './pages/UserGroup/ProductItemPage';
 import { ControlPage } from './pages/AdminGroup/Control/ControlPage';
 import { SettingsPage } from './pages/AdminGroup/Settings/SettingsPage';
 import { PromotionsPage } from './pages/UserGroup/PromotionsPage';
@@ -27,6 +28,7 @@ function App() {
 
                     <Route path='/wardrobe/*' element={ <WardrobePage /> }/>
                     <Route path='/product/:id/*' element={<ProductPage />} />
+                    <Route path='/product_item/:id/*' element={<ProductItemPage />} />
                     <Route path='/posts/*' element={ <PostsPage /> }/>
                     <Route path='/brand/:id/' element={<BrandPage />} />
                     <Route path='/collection/:id' element={<CollectionPage />} />

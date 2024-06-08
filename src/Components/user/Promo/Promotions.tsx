@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import useApi from '../../hooks/useApi';
-import { ProductItemModelDataResult, PromotionModel, ScanModelDataResult } from '../../api/data-contracts';
-import { Photo } from '../common/Photo';
+import useApi from '../../../hooks/useApi';
+import { ProductItemModelDataResult, PromotionModel, ScanModelDataResult } from '../../../api/data-contracts';
+import { Photo } from '../../common/Photo';
 import moment from 'moment';
 import { useNavigate } from 'react-router-dom';
 
@@ -21,7 +21,7 @@ export const Promotions = ({ promotionsList, params, config }: { promotionsList:
     const [dataScansCount, , ] = useApi<'scansList', ScanModelDataResult>(
         'scansList', params, config, true
     );
-    const scannedProductCount = useMemo(() => dataScansCount?.total as number, [dataScansCount]);
+    const scannedProductCount: number  = useMemo(() => dataScansCount?.total as number, [dataScansCount]);
 
      // фильтрация списка акций
      useEffect(() => {

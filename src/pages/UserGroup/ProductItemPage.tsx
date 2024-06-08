@@ -1,18 +1,18 @@
 import React from 'react'
 import { Route, Routes, useParams } from 'react-router-dom';
-import { Product } from '../../Components/user/Product/Product';
+import { ProductItem } from '../../Components/user/ProductItem/ProductItem';
 import useApi from '../../hooks/useApi';
-import { ProductModel } from '../../api/data-contracts';
+import { ProductItemModel } from '../../api/data-contracts';
 import getStyles from '../../utils/getStyles';
 import { BlockStyle } from '../../types/interfaces/IStyles';
 import { IsLoading } from '../../Components/common/InfoGroup/IsLoading';
-import { CommentsPage } from './CommentsPage';
 import { ErrorReq } from '../../Components/common/InfoGroup/ErrorReq';
 
-export const ProductPage = () => {
+
+export const ProductItemPage = () => {
     const { id } = useParams();
-    const [data, isLoading, error] = useApi<'productsDetail', ProductModel>(
-      'productsDetail', id, {}, true
+    const [data, isLoading, error] = useApi<'productItemsDetail', ProductItemModel>(
+      'productItemsDetail', id, {}, true
     );
     
     return (
@@ -22,11 +22,10 @@ export const ProductPage = () => {
                     <div className={getStyles(containerStyle)}>
                         <IsLoading show={isLoading} />
                         <ErrorReq show={!!error} error={error}/>
-                        {data && <Product data={data}/>}
+                        {data && <ProductItem data={data}/>}
                     </div>
                 }/>
-                <Route path='/comments' element={<CommentsPage comments={data?.comments || []}/>} />
-                <Route path='/buy_item' element={<>Покупка изделия</>} />
+                <Route path='/clothing_party' element={<>Партия одежды {data?.clothingParty}</>} />
             </Routes>
         </>
     )

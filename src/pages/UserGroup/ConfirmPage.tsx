@@ -1,8 +1,8 @@
 import React from 'react'
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
-import { Confirm } from '../../Components/user/Confirm';
-import { Pin } from '../../Components/user/Pin';
-import { CallMe } from '../../Components/user/CallMe';
+import { Confirm } from '../../Components/user/Profile/Confirm';
+import { Pin } from '../../Components/user/Profile/Pin';
+import { CallMe } from '../../Components/user/Profile/CallMe';
 
 
 export const ConfirmPage = () => {

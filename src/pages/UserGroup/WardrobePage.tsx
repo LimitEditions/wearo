@@ -1,23 +1,26 @@
-import React, { memo, useEffect, useState } from 'react'
+import React, { memo, useEffect, useMemo, useState } from 'react'
 import useAuth from '../../hooks/useAuth';
 import { Route, Routes } from 'react-router-dom';
-import { ProductModel, ProductModelDataResult } from '../../api/data-contracts';
+import { ProductItemModel, ProductItemModelDataResult } from '../../api/data-contracts';
 import useApi from '../../hooks/useApi';
-import { Products } from '../../Components/user/Products';
 import { IsLoading } from '../../Components/common/InfoGroup/IsLoading';
 import { ProfilePage } from './ProfilePage';
-import { Search } from '../../Components/common/SearchGroup/Search';
-import useFilter from '../../hooks/useFilter';
+import { ProductItems } from '../../Components/user/ProductItem/ProductItems';
+import { retrieve } from '../../utils/encryption';
 
 
 export const WardrobePage = memo(() => {
     const info = useAuth(true);
+    const token = useMemo(() => retrieve("token"), []); 
     // console.log(info)
 
     // получение данных с сервера
-    const [productsList, setProductsList] = useState<ProductModel[] | []>([]);
-    const [data, isLoading, error] = useApi<'productsList', ProductModelDataResult>(
-        'productsList', {}, {}, true
+    const [productsList, setProductsList] = useState<ProductItemModel[]>([]);
+    const [data, isLoading, error] = useApi<'productItemsList', ProductItemModelDataResult>(
+        'productItemsList',
+        { UserGiud: info.guid },
+        { headers: { Authorization: `Bearer ${token}` } },
+        true
     );
     useEffect(() => {
         if(data && !error) {
@@ -25,16 +28,6 @@ export const WardrobePage = memo(() => {
         };
     }, [data, error, productsList])
     
-    // фильтрация списка
-    const [filteredList, setFilteredList] = useState<ProductModel[] | null>(null);
-    const { filteredData, setSearchTarget } = useFilter(productsList);
-    useEffect(() => {
-        if(filteredData) {
-            setFilteredList(filteredData);
-        } else {
-            setFilteredList(null);
-        };
-    }, [filteredData])
     
     return (
         <>
@@ -42,9 +35,8 @@ export const WardrobePage = memo(() => {
                 <Route index element={
                     <div>
                         <p className='pt-2'>Welcome to the Wardrobe!</p>
-                        <Search callBack={setSearchTarget}/>
                         <IsLoading show={isLoading}/>
-                        <Products productsList={ filteredList ? filteredList: productsList }/>
+                        <ProductItems productsList={ productsList || []}/>
                     </div>
                     } />
                 <Route path='/profile/*' element={<ProfilePage />} />

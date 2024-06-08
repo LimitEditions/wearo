@@ -1,12 +1,12 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { Link, useParams } from 'react-router-dom';
-import { PromotionModel, StringDataResult } from '../../api/data-contracts';
-import useApi from '../../hooks/useApi';
-import { retrieve } from '../../utils/encryption';
-import { IsLoading } from '../common/InfoGroup/IsLoading';
-import { ErrorReq } from '../common/InfoGroup/ErrorReq';
-import { Button } from '../common/Button';
-import { BlockStyle } from '../../types/interfaces/IStyles';
+import { PromotionModel, StringDataResult } from '../../../api/data-contracts';
+import useApi from '../../../hooks/useApi';
+import { retrieve } from '../../../utils/encryption';
+import { IsLoading } from '../../common/InfoGroup/IsLoading';
+import { ErrorReq } from '../../common/InfoGroup/ErrorReq';
+import { Button } from '../../common/Button';
+import { BlockStyle } from '../../../types/interfaces/IStyles';
 
 
 export const Promo = () => {

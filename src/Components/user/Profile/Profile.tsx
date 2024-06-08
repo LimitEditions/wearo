@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react'
-import getStyles from '../../utils/getStyles';
-import { BlockStyle } from '../../types/interfaces/IStyles';
-import { LogOut } from '../common/LogOut';
-import Item from '../common/ItemGroup/Item';
-import { Photo } from '../common/Photo';
-import { Modal } from '../common/Modal';
-import ImageCrop from '../common/ImageCrop';
-import { useUserUpdate } from '../../hooks/useUserUpdate';
-import { IAuthMeList } from '../../types/interfaces/ApiResponses/IAuthMeList';
-import useAuth from '../../hooks/useAuth';
-import { Button } from '../common/Button';
+import getStyles from '../../../utils/getStyles';
+import { BlockStyle } from '../../../types/interfaces/IStyles';
+import { LogOut } from '../../common/LogOut';
+import Item from '../../common/ItemGroup/Item';
+import { Photo } from '../../common/Photo';
+import { Modal } from '../../common/Modal';
+import ImageCrop from '../../common/ImageCrop';
+import { useUserUpdate } from '../../../hooks/useUserUpdate';
+import { IAuthMeList } from '../../../types/interfaces/ApiResponses/IAuthMeList';
+import useAuth from '../../../hooks/useAuth';
+import { Button } from '../../common/Button';
 
 
 export const Profile = () => {

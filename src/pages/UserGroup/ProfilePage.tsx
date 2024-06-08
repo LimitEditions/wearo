@@ -1,6 +1,6 @@
 import React from 'react'
 import { Route, Routes } from 'react-router-dom';
-import { Profile } from '../../Components/user/Profile';
+import { Profile } from '../../Components/user/Profile/Profile';
 import { ConfirmPage } from './ConfirmPage';
 
 

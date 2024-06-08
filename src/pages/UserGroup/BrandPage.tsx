@@ -3,7 +3,7 @@ import { Link, useParams } from 'react-router-dom'
 import { BrandModel } from '../../api/data-contracts';
 import useApi from '../../hooks/useApi';
 import { IsLoading } from '../../Components/common/InfoGroup/IsLoading';
-import Item from '../../Components/user/ProfileItem';
+import Item from '../../Components/user/Profile/ProfileItem';
 import { Photo } from '../../Components/common/Photo';
 import { ErrorReq } from '../../Components/common/InfoGroup/ErrorReq';
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react';

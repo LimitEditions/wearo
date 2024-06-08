@@ -3,10 +3,10 @@ import { PromotionModel, PromotionModelDataResult } from '../../api/data-contrac
 import { retrieve } from '../../utils/encryption';
 import useApi from '../../hooks/useApi';
 import { Route, Routes } from 'react-router-dom';
-import { Promotions } from '../../Components/user/Promotions';
+import { Promotions } from '../../Components/user/Promo/Promotions';
 import { IsLoading } from '../../Components/common/InfoGroup/IsLoading';
 import { ErrorReq } from '../../Components/common/InfoGroup/ErrorReq';
-import { Promo } from '../../Components/user/Promo';
+import { Promo } from '../../Components/user/Promo/Promo';
 
 export const PromotionsPage = () => {
     const [promotionsList, setPromotionsList] = useState<PromotionModel[]>([]);

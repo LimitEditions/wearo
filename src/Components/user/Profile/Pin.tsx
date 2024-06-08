@@ -1,11 +1,11 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import PinInput from 'react-pin-input';
-import { Button } from '../common/Button';
-import { retrieve } from '../../utils/encryption';
-import useApi from '../../hooks/useApi';
+import { Button } from '../../common/Button';
+import { retrieve } from '../../../utils/encryption';
+import useApi from '../../../hooks/useApi';
 import { NavigateFunction } from 'react-router-dom';
-import { Modal } from '../common/Modal';
-import { Api } from '../../api/Api';
+import { Modal } from '../../common/Modal';
+import { Api } from '../../../api/Api';
 
 
 export const Pin = ({ navigate } : { navigate: NavigateFunction }) => {
