@@ -8,7 +8,7 @@ import { dataToLS } from '../utils/dataToLS';
 import { TokenModel } from '../api/data-contracts';
 
 
-const useAuth = () => {
+const useAuth = (getData: boolean) => {
   const { isAuth, setAuth } = useContext(AuthContext);
   
   const token = retrieve('token');
@@ -24,11 +24,11 @@ const useAuth = () => {
   useEffect(() => {
     setShouldReq(false);
     if (tokenExpireIn || refreshTokenExpireIn) {
-      setShouldReq(true);
+      if(getData) setShouldReq(true);
     } else {
       navigate('/auth');
     };
-  }, [tokenExpireIn, refreshTokenExpireIn, setShouldReq, navigate]);
+  }, [tokenExpireIn, refreshTokenExpireIn, setShouldReq, navigate, getData]);
 
   const endPoint = shouldRefresh ? 'authRefreshTokenCreate' : 'authMeList';
   const params = shouldRefresh ? {

@@ -6,7 +6,7 @@ import "slick-carousel/slick/slick-theme.css";
 import { BlockStyle } from '../../types/interfaces/IStyles';
 import getStyles from '../../utils/getStyles';
 
-export const Photos = ({ photos, imgSize }: {photos: FileModel[] | null | undefined, imgSize?: string}) => {
+export const Photos = ({ photos, imgSize }: {photos: FileModel[] | null, imgSize?: string}) => {
   // Настройки для слайдера
   const settings = {
     dots: true, // Включаем точки

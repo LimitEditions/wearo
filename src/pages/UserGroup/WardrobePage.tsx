@@ -11,8 +11,8 @@ import useFilter from '../../hooks/useFilter';
 
 
 export const WardrobePage = memo(() => {
-    const info = useAuth();
-    console.log(info)
+    const info = useAuth(true);
+    // console.log(info)
 
     // получение данных с сервера
     const [productsList, setProductsList] = useState<ProductModel[] | []>([]);

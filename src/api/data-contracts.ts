@@ -2352,6 +2352,8 @@ export interface UserInfoModel {
   telegramId?: string | null;
   /** Id Вк */
   vkId?: string | null;
+  /** Флаги доступности */
+  flags?: UserInfoFlags;
 }
 
 /** Пользователь */

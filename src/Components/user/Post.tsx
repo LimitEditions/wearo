@@ -12,7 +12,7 @@ export const Post = ({ id }: { id: string }) => {
             {
                 !error && data &&
                 <>
-                    <Photos photos={undefined} imgSize='w-full'/>
+                    <Photos photos={null} imgSize='w-full'/>
                     <div className='px-2'>
                         <p>{data.text}</p>
                         <Item path={`.././brand/${data.brandGuid}`}>Название бренда</Item>

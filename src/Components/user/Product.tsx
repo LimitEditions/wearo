@@ -13,7 +13,7 @@ import Item from '../common/ItemGroup/Item';
 export const Product = ({ data }:{ data: ProductModel }) => {
   return (
       <>
-        <Photos photos={data?.photos} />
+        <Photos photos={data?.photos || null} />
         <div>{data.name}<span></span></div>
         <div className={getStyles(descStyle)}>
           <span className='block'>{data?.description}</span>

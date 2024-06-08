@@ -15,7 +15,6 @@ export const CommentComponent = ({ comment }: { comment: CommentModel }) => {
     const date = comment.updateDT ? comment.updateDT : comment.createDT;
     
 
-
     const [data, , ] = useApi<'usersDetail', UserModel>(
         'usersDetail',
         comment.userGuid,

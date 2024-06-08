@@ -13,7 +13,7 @@ export const Stories = ({ highlightStories, open, setOpen }:
         setOpen: React.Dispatch<React.SetStateAction<boolean>>
     }
 ) => {
-    const [loadingProgress, setLoadingProgress] = useState<number>(0);
+    const [loadingProgress, setLoadingProgress] = useState<number[]>([]);
     const stories = useMemo(() => highlightStories.map(el => {
         return el.story
     }), [highlightStories]);
@@ -27,44 +27,55 @@ export const Stories = ({ highlightStories, open, setOpen }:
         speed: 500,
         slidesToShow: 1,
         slidesToScroll: 1,
-        beforeChange: () => setLoadingProgress(0),
+        beforeChange: (oldIndex: number, newIndex: number) => {
+            setLoadingProgress(prev => {
+                const updated = [...prev];
+                updated[oldIndex] = 100;
+                return updated;
+            });
+        },
         afterChange: (currentSlide: number) => {
-            setLoadingProgress(0);  // Сброс прогресса при каждом переключении слайда
-            if(intervalId.current) clearInterval(intervalId.current);  // Остановка текущего интервала
-            startLoading();  // Запуск нового интервала
+            if (intervalId.current) clearInterval(intervalId.current);
+            startLoading(currentSlide);
             if (currentSlide === activeStories.length - 1) {
-                setTimeout(() => setOpen(false), 5000); // Дать последнему слайду показаться перед закрытием
-            };
-        }
+                setTimeout(() => setOpen(false), 5000);
+            }
+        },
     };
 
-    const startLoading = () => {
-        let intCur = intervalId.current;
-        if (intCur) clearInterval(intCur);  // Очистка предыдущего интервала, если он существует
+    const startLoading = (currentSlide: number) => {
+        let progress = 0;
+        setLoadingProgress(prev => {
+            const updated = [...prev];
+            updated[currentSlide] = progress;
+            return updated;
+        });
     
-        intCur = setInterval(() => {
-            setLoadingProgress((oldProgress) => {
-                if (oldProgress >= 100) {
-                    if (intCur) clearInterval(intCur);
-                    return 100;
-                }
-                return oldProgress + 1;
+        intervalId.current = setInterval(() => {
+            progress += 1;
+            setLoadingProgress(prev => {
+                const updated = [...prev];
+                updated[currentSlide] = progress;
+                return updated;
             });
-        }, 45);
+            if (progress >= 100) {
+                if (intervalId.current) clearInterval(intervalId.current);
+            }
+        }, 50);
     }
 
     useEffect(() => {
         if (open) {
-            startLoading();
+            setLoadingProgress(Array(stories.length).fill(0));
+            startLoading(0);
         } else {
-            setLoadingProgress(0);
+            setLoadingProgress([]);
+            if (intervalId.current) clearInterval(intervalId.current);
+        }
+        return () => {
             if (intervalId.current) clearInterval(intervalId.current);
         };
-        if (intervalId.current) {
-            return clearInterval(intervalId.current);
-        };
-    }, [open]);
-
+    }, [open, stories.length]);
 
     const isStoryActive = (createDT: string) => {
         const currentTime = new Date().getTime();
@@ -73,10 +84,7 @@ export const Stories = ({ highlightStories, open, setOpen }:
         return diff < 86400000;
     };
 
-
-    // сортировка активных сторисов по датам
     const activeStories = stories.filter(story => isStoryActive(story?.createDT as string));
-
 
     return (
         <>
@@ -96,17 +104,26 @@ export const Stories = ({ highlightStories, open, setOpen }:
                     >
                         &times; 
                     </button>
-                    <div className="w-3/4 mx-auto h-1 bg-gray-500">
-                        <div className="h-full bg-white" style={{ width: `${loadingProgress}%`, transition: 'width 0.1s linear' }}></div>
+                    <div className="w-3/4 mx-auto h-1 bg-gray-300 flex space-x-1">
+                        {Array.from({ length: stories.length }).map((_, index) => (
+                            <div
+                                key={index}
+                                className="relative h-full bg-gray-900 flex-1"
+                            >
+                                <div 
+                                    className="absolute left-0 top-0 h-full bg-white transition-all duration-100"
+                                    style={{ width: `${loadingProgress[index]}%` }}
+                                ></div>
+                            </div>
+                        ))}
                     </div>
                     <Slider {...settings}>
                         {activeStories.map((story) => (
-                        <div key={story?.guid} className="flex justify-center items-center w-full h-screen">
-                            <div className="relative w-full max-w-screen-sm" style={{ paddingTop: "177.78%" }}>
-                                <img src={`${story?.fileGuid}`} alt="Story" className="absolute top-1/2 left-0 w-full transform -translate-y-1/2 object-contain" />
+                            <div key={story?.guid} className="flex justify-center items-center w-full h-screen">
+                                <div className="relative w-full max-w-screen-sm" style={{ paddingTop: "177.78%" }}>
+                                    <img src={`${story?.fileGuid}`} alt="Story" className="absolute top-1/2 left-0 w-full transform -translate-y-1/2 object-contain" />
+                                </div>
                             </div>
-                        </div>
-                        
                         ))}
                     </Slider>
                 </div>
