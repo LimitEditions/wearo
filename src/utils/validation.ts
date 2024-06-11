@@ -15,7 +15,7 @@ export function validate(word: string, target: string | null): boolean {
             regex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
             break;
         case 'phone':
-            regex = /^((8|\+7)[- ]?)?(\(?\d{3}\)?[- ]?)?[\d\- ]{7,10}$/;
+            regex = /^\+7 \(\d{3}\) \d{3}-\d{4}$/;
             break;
         default:
             throw new Error('Invalid target');

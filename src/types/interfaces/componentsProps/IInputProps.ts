@@ -1,5 +1,6 @@
 import { InputHTMLAttributes, LegacyRef } from "react";
 
 export interface IInputProps extends InputHTMLAttributes<HTMLInputElement> {
-  refLink?: LegacyRef<HTMLInputElement>;
-};
+  reflink?: LegacyRef<HTMLInputElement>;
+  mask?: (string | RegExp)[];
+}

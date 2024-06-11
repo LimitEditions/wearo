@@ -53,9 +53,8 @@ export const CallMe = ({ navigate }: { navigate: NavigateFunction }) => {
                         <Button showButton={true} onClick={handleConfirm}>Подтвердить</Button>
                     </div>
                 </>}
-                {!errorCheckResponse && checkPhone && <p>Номер подтвержден</p>}
                 <ErrorReq show={!!errorGetPhone} error={errorGetPhone} />
-                <ErrorReq show={!!errorCheckResponse} error={errorCheckResponse} />
+                {checkPhone && (<ErrorReq show={!!errorCheckResponse} error={errorCheckResponse} /> || <p>Номер подтвержден</p>)}
             </div>}
             {loading && <RingLoader color='#7d7f7d' loading={true} size={75} speedMultiplier={1} />}
         </div>

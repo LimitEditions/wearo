@@ -11,7 +11,10 @@ import { encrypt, retrieve } from '../../../utils/encryption';
 import { IsLoading } from '../../common/InfoGroup/IsLoading';
 import { Api } from '../../../api/Api';
 import { ErrorReq } from '../../common/InfoGroup/ErrorReq';
+import withMask from '../../common/hoc/withMask';
 
+
+const InputWithMask = withMask(Input);
 
 export const Confirm = ({ mode, navigate }: { mode?: string; navigate: NavigateFunction }) => {
     // создание уникального id запроса и внесение его в LS
@@ -26,6 +29,9 @@ export const Confirm = ({ mode, navigate }: { mode?: string; navigate: NavigateF
     
     // стейт на инпут
     const [text, setText] = useState<string>('');
+
+    const phoneMask = ['+', '7', ' ', '(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
+    const mask = mode === 'phone' ? phoneMask: undefined;
 
     // колбек на ввод в инпут
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -83,14 +89,16 @@ export const Confirm = ({ mode, navigate }: { mode?: string; navigate: NavigateF
         <form className={getStyles(formStyle)} onSubmit={handleSubmit}>
             <div>
                 <label htmlFor="inputField">Введите данные</label>
-                <Input
+                <InputWithMask
                     type={ mode }
                     name={ mode }
                     id='inputField'
                     placeholder={ mode === 'email'? 'Электронная почта': 'Телефон' }
-                    refLink={ref}
+                    ref={ref}
                     value={text}
                     onChange={handleChange}
+                    mask={mask}
+                    className={getStyles(inpitStyle)}
                     />
             </div>
             <div className='w-1/2 m-auto'>
@@ -105,4 +113,12 @@ export const Confirm = ({ mode, navigate }: { mode?: string; navigate: NavigateF
 const formStyle: BlockStyle = {
     container: 'flex flex-col items-center justify-center',
     spacing: 'p-4 space-y-7'
+};
+
+const inpitStyle: BlockStyle = {
+    spacing: "py-2 px-5",
+    background: "bg-gray-200",
+    border: "rounded-lg",
+    text: "placeholder-gray-700",
+    blockSize: "w-full",
 };

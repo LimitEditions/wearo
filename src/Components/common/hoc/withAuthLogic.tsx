@@ -9,93 +9,94 @@ import { retrieve } from "../../../utils/encryption";
 
 
 export const withAuthLogic = ({ Component, type }: IwithAuthLogicProps) => {
-  const HocComponent = React.memo(({ ...props }) => {
-    // объявляем стартовый набор инпутов (попутно мемоизируем объект, чтобы не пересоздавался)
-    const initialUser = useMemo(() => ({
-      username: "",
-      password: "",
-      ...(type !== "login" && { firstName: "", secondName: "" }),
-      ...(type === "createAdmin" && { type: UserType.Admin})
-    }), []);
+    const HocComponent = React.memo(({ ...props }) => {
+        // объявляем стартовый набор инпутов (попутно мемоизируем объект, чтобы не пересоздавался)
+        const initialUser = useMemo(() => ({
+            username: "",
+            password: "",
+            ...(type !== "login" && { firstName: "", secondName: "" }),
+            ...(type === "createAdmin" && { type: UserType.Admin})
+        }), []);
 
-    // задаем переменную для хранения ссылок на инпуты
-    const [refs, setRefs] = useState<React.RefObject<HTMLInputElement>[] | []>([]);
-    // основной объект с данными для отправки на сервер
-    const [user, setUser] = useState<{[key: string]: string | null | undefined}>(initialUser);
-    // флаг отправки данных на сервер
-    const [shouldExecute, setShouldExecute] = useState<boolean>(false);
-    // метод: авторизация/регистрация
-    const apiMethod = type === "login" ? "authCreate" : "usersCreate";
-    // Добавляем токен, если создается админ
-    const headers = type === 'createAdmin' ? { headers: { Authorization: `Bearer ${retrieve("token")}` } } : {}
+        // задаем переменную для хранения ссылок на инпуты
+        const [refs, setRefs] = useState<React.RefObject<HTMLInputElement>[] | []>([]);
+        // основной объект с данными для отправки на сервер
+        const [user, setUser] = useState<{[key: string]: string | null | undefined}>(initialUser);
+        // флаг отправки данных на сервер
+        const [shouldExecute, setShouldExecute] = useState<boolean>(false);
+        // метод: авторизация/регистрация
+        const apiMethod = type === "login" ? "authCreate" : "usersCreate";
+        // Добавляем токен, если создается админ
+        const headers = type === 'createAdmin' ? { headers: { Authorization: `Bearer ${retrieve("token")}` } } : {}
 
-    const [data, isLoading, error] = useApi(apiMethod, user, headers, shouldExecute);
-    const navigate = useNavigate();
+        const [data, isLoading, error] = useApi(apiMethod, user, headers, shouldExecute);
+        const navigate = useNavigate();
 
-    // модальное окно
-    const [mod, setMod] = useState<boolean>(false);
+        // модальное окно
+        const [mod, setMod] = useState<boolean>(false);
 
-    useEffect(() => {
-      if (shouldExecute && (data || error)) {
-        setShouldExecute(false);
-        if (data) {
-          if (type === "login") {
-            dataToLS(data);
-            navigate("/wardrobe");
-          } else {
-            setMod(true);
-            const timer = setTimeout(() => {
-              setMod(false);
-              type === 'reg' ? navigate('auth/login') : navigate(-1)
-            }, 2000);
-          };
+        useEffect(() => {
+            if (shouldExecute && (data || error)) {
+                setShouldExecute(false);
+                if (data) {
+                    if (type === "login") {
+                        dataToLS(data);
+                        navigate("/wardrobe");
+                    } else {
+                        setMod(true);
+                        const timer = setTimeout(() => {
+                            setMod(false);
+                            type === 'reg' ? navigate('../../auth/login') : navigate(-1)
+                            clearTimeout(timer);
+                        }, 2000);
+                    };
+                };
+            };
+        }, [data, error, shouldExecute, navigate, initialUser]);
+
+        const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+            event.preventDefault();
+            // проверяем все инпуты на валидность
+            refs.forEach(ref => {
+                const curRef = ref.current;
+                if(curRef){
+                    curRef.setCustomValidity(
+                        validateField(curRef.value, curRef.name)
+                    );
+                    curRef.reportValidity();
+                };
+            });
+            // проверяем наличие всплывших окон над всеми инпутами сразу
+            const sendReq = refs.every(ref => {
+                return ref.current ? ref.current.reportValidity() : true;
+            });
+            // направляем запрос
+            if (sendReq) {
+                setShouldExecute(true);
+            };
         };
-      };
-    }, [data, error, shouldExecute, navigate, initialUser]);
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-      event.preventDefault();
-      // проверяем все инпуты на валидность
-      refs.forEach(ref => {
-        const curRef = ref.current;
-        if(curRef){
-          curRef.setCustomValidity(
-            validateField(curRef.value, curRef.name)
-          );
-          curRef.reportValidity();
+        const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+            setUser({ ...user, [event.target.name]: event.target.value });
+            // сбрасываем все всплывающие окна
+            refs.forEach(ref => ref.current?.setCustomValidity(''));
         };
-      });
-      // проверяем наличие всплывших окон над всеми инпутами сразу
-      const sendReq = refs.every(ref => {
-        return ref.current ? ref.current.reportValidity() : true;
-      });
-      // направляем запрос
-      if (sendReq) {
-        setShouldExecute(true);
-      };
-    };
 
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-      setUser({ ...user, [event.target.name]: event.target.value });
-      // сбрасываем все всплывающие окна
-      refs.forEach(ref => ref.current?.setCustomValidity(''));
-    };
+        return (
+            <Component
+                {...props}
+                user={user}
+                onSubmit={handleSubmit}
+                onChange={handleChange}
+                setRefs={setRefs}
+                data={data}
+                error={error}
+                isLoading={isLoading}
+                modal={{mod, setMod, navigate}}
+                type={type}
+            />
+        );
+    });
 
-    return (
-      <Component
-        {...props}
-        user={user}
-        onSubmit={handleSubmit}
-        onChange={handleChange}
-        setRefs={setRefs}
-        data={data}
-        error={error}
-        isLoading={isLoading}
-        modal={{mod, setMod, navigate}}
-        type={type}
-      />
-    );
-  });
-
-  return HocComponent;
+    return HocComponent;
 };
