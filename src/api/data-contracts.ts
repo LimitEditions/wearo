@@ -608,6 +608,26 @@ export interface CreatePostModel {
    * @format uuid
    */
   fileGuid?: string | null;
+  /**
+   * Ссылка на колекцию
+   * @format uuid
+   */
+  collectionGuid?: string | null;
+  /**
+   * Ссылка на образ
+   * @format uuid
+   */
+  lookGuid?: string | null;
+  /**
+   * Ссылка на совет
+   * @format uuid
+   */
+  tipGuid?: string | null;
+  /**
+   * Ссылка на промоакцию
+   * @format uuid
+   */
+  promoGuid?: string | null;
 }
 
 /** Тип одежды */
@@ -732,6 +752,8 @@ export interface CreateProductModel {
    * @format uuid
    */
   mainPhotoGuid?: string | null;
+  /** Пол */
+  gender?: Gender;
 }
 
 export interface CreatePromotionCodeModel {
@@ -969,6 +991,16 @@ export interface ForwardMessagesModel {
   messages: string[];
   /** Текст сообщения */
   text?: string | null;
+}
+
+/** Пол */
+export enum Gender {
+  Male = "Male",
+  Female = "Female",
+  Boy = "Boy",
+  Girl = "Girl",
+  Unisex = "Unisex",
+  UnisexKid = "UnisexKid",
 }
 
 /** Модель редактирования */
@@ -1368,6 +1400,34 @@ export interface PostModel {
   file?: FileModel;
   /** Дополнительные файлы */
   extraFiles?: PostFileModel[] | null;
+  /** Коллекция одежды */
+  collection?: ClothingCollectionModel;
+  /** Образ/лукбук */
+  look?: LookModel;
+  /** Советы по одежде */
+  tip?: TipModel;
+  /** Акция */
+  promo?: PromotionModel;
+  /**
+   * Ссылка на колекцию
+   * @format uuid
+   */
+  collectionGuid?: string | null;
+  /**
+   * Ссылка на образ
+   * @format uuid
+   */
+  lookGuid?: string | null;
+  /**
+   * Ссылка на совет
+   * @format uuid
+   */
+  tipGuid?: string | null;
+  /**
+   * Ссылка на промоакцию
+   * @format uuid
+   */
+  promoGuid?: string | null;
 }
 
 /** Результат чтения данных. */
@@ -1670,6 +1730,8 @@ export interface ProductModel {
   composition?: ProductMaterialModel[] | null;
   /** Измерения вещи */
   measurement?: ProductMeasurementModel[] | null;
+  /** Пол */
+  gender?: Gender;
 }
 
 /** Результат чтения данных. */
@@ -1874,10 +1936,8 @@ export interface ScanModelDataResult {
 export enum Season {
   Summer = "Summer",
   Winter = "Winter",
-  SpringSummer = "SpringSummer",
-  PreFall = "PreFall",
-  AutumnWinter = "AutumnWinter",
-  ResortCruise = "ResortCruise",
+  AnySeason = "AnySeason",
+  Demiseason = "Demiseason",
 }
 
 /** Сторис */
@@ -2155,6 +2215,26 @@ export interface UpdatePostModel {
    * @format uuid
    */
   fileGuid?: string | null;
+  /**
+   * Ссылка на колекцию
+   * @format uuid
+   */
+  collectionGuid?: string | null;
+  /**
+   * Ссылка на образ
+   * @format uuid
+   */
+  lookGuid?: string | null;
+  /**
+   * Ссылка на совет
+   * @format uuid
+   */
+  tipGuid?: string | null;
+  /**
+   * Ссылка на промоакцию
+   * @format uuid
+   */
+  promoGuid?: string | null;
 }
 
 /** Тип одежды */
@@ -2225,6 +2305,8 @@ export interface UpdateProductModel {
    * @format uuid
    */
   mainPhotoGuid?: string | null;
+  /** Пол */
+  gender?: Gender;
 }
 
 /** Модель редактирования промо */

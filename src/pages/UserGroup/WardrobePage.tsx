@@ -18,7 +18,7 @@ export const WardrobePage = memo(() => {
     const [productsList, setProductsList] = useState<ProductItemModel[]>([]);
     const [data, isLoading, error] = useApi<'productItemsList', ProductItemModelDataResult>(
         'productItemsList',
-        { UserGiud: info.guid },
+        { UserGiud: info.guid , IncludeProduct: true},
         { headers: { Authorization: `Bearer ${token}` } },
         true
     );
@@ -28,7 +28,7 @@ export const WardrobePage = memo(() => {
         };
     }, [data, error, productsList])
     
-    
+    console.log(data)
     return (
         <>
             <Routes>

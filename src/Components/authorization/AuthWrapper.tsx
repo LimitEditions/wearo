@@ -17,6 +17,6 @@ const divStyle: BlockStyle = {
   };
 
 const h1Style: BlockStyle = {
-    text: 'text-5xl font-semibold uppercase text-center',
+    text: 'text-5xl font-bold uppercase text-center',
     spacing: 'pb-12'
 };

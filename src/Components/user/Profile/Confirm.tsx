@@ -12,23 +12,29 @@ import { IsLoading } from '../../common/InfoGroup/IsLoading';
 import { Api } from '../../../api/Api';
 import { ErrorReq } from '../../common/InfoGroup/ErrorReq';
 import withMask from '../../common/hoc/withMask';
+import useAuth from '../../../hooks/useAuth';
 
 
 const InputWithMask = withMask(Input);
 
 export const Confirm = ({ mode, navigate }: { mode?: string; navigate: NavigateFunction }) => {
+    const isAuth = useAuth(true);
     // создание уникального id запроса и внесение его в LS
     useEffect(() => {
         const key = `${mode}-guid`;
         if (!localStorage.getItem(key)) {
-            console.log(1)
             const newGuid = uuidv4();
             encrypt(key, newGuid);
-        }
+        };
     }, [mode]);
     
     // стейт на инпут
-    const [text, setText] = useState<string>('');
+    const curEmail = isAuth.userInfo?.email;
+    const curPhone = isAuth.userInfo?.phone;
+    const initialData = mode === 'email' ?
+        curEmail ? curEmail: '':
+        curPhone ? curPhone: '';
+    const [text, setText] = useState<string>(initialData);
 
     const phoneMask = ['+', '7', ' ', '(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
     const mask = mode === 'phone' ? phoneMask: undefined;
@@ -89,17 +95,29 @@ export const Confirm = ({ mode, navigate }: { mode?: string; navigate: NavigateF
         <form className={getStyles(formStyle)} onSubmit={handleSubmit}>
             <div>
                 <label htmlFor="inputField">Введите данные</label>
-                <InputWithMask
-                    type={ mode }
-                    name={ mode }
-                    id='inputField'
-                    placeholder={ mode === 'email'? 'Электронная почта': 'Телефон' }
-                    ref={ref}
-                    value={text}
-                    onChange={handleChange}
-                    mask={mask}
-                    className={getStyles(inpitStyle)}
-                    />
+                { mode === 'phone' ?
+                    <InputWithMask
+                        type={ mode }
+                        name={ mode }
+                        id='inputField'
+                        placeholder='Телефон'
+                        ref={ref}
+                        value={text}
+                        onChange={handleChange}
+                        mask={mask}
+                        className={getStyles(inpitStyle)}
+                        /> :
+                    <Input
+                        type={ mode }
+                        name={ mode }
+                        id='inputField'
+                        placeholder='Электронная почта'
+                        reflink={ref}
+                        value={text}
+                        onChange={handleChange}
+                        className={getStyles(inpitStyle)}
+                        />
+                }
             </div>
             <div className='w-1/2 m-auto'>
                 <Button showButton={true}>Получить { mode === 'email'? 'код': 'номер телефона' }</Button>

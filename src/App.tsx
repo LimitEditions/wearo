@@ -50,9 +50,10 @@ export default App;
 
 const mainStyle: BlockStyle = {
     container: 'relative overflow-hidden',
-    text: 'font-serif'
+    // text: 'font-serif'
+    text: 'font-sf-pro'
 };
 
 const contentStyle:BlockStyle = {
-    spacing: 'my-12 px-1',
+    spacing: 'my-12',
 };

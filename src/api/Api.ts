@@ -1897,6 +1897,23 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * No description
    *
    * @tags ProductItems
+   * @name ProductItemsByCodeDetail
+   * @summary Запрос вещи по её коду
+   * @request GET:/api/ProductItems/ByCode/{code}
+   * @secure
+   */
+  productItemsByCodeDetail = (code: string, params: RequestParams = {}) =>
+    this.request<ProductItemModel, ProblemDetails>({
+      path: `/api/ProductItems/ByCode/${code}`,
+      method: "GET",
+      secure: true,
+      format: "json",
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags ProductItems
    * @name ProductItemsList
    * @summary Поиск едениц изделий
    * @request GET:/api/ProductItems
@@ -1933,6 +1950,8 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
       SortMember?: string;
       /** Направление сортировки - по возрастанию */
       Ascending?: boolean;
+      /** Включить в выборку продукт */
+      IncludeProduct?: boolean;
     },
     params: RequestParams = {},
   ) =>

@@ -56,12 +56,25 @@ export const Profile = () => {
 
             <h2 className={getStyles(headStyle)}>Настройки</h2>
             <Item path="./email">
-                <div>Почта:</div>
-                <div>{profileInfo.userInfo ? profileInfo.userInfo.email: 'не подтверждена'}</div>
+                <div className='flex flex-col'>
+                    <div>
+                        Почта:
+                    </div>
+                    <div>
+                        {profileInfo.userInfo?.email ? profileInfo.userInfo.email: 'не подтверждена'}
+                    </div>
+                </div>
+                {profileInfo.userInfo?.email && <span className='cursor-pointer text-xs m-0 absolute right-5'>Обновить</span>}
             </Item>
             <Item path="./phone">
-                <div>Телефон:</div>
-                <div>{profileInfo.userInfo ? profileInfo.userInfo.phone: 'не подтвержден'}</div>
+                <div className='flex flex-col'>
+                    <div>
+                        Телефон:
+                    </div>
+                    <div>
+                        {profileInfo.userInfo?.phone ? profileInfo.userInfo.phone: 'не подтвержден'}
+                    </div>
+                </div>
             </Item>
             <Item path="/password">Пароль</Item>
 

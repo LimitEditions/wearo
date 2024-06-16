@@ -1,7 +1,6 @@
 import React, { useContext } from 'react'
 import { Button } from './Button'
 import { useNavigate } from 'react-router-dom';
-import { BlockStyle } from '../../types/interfaces/IStyles';
 import AuthContext, { defaultContext } from '../../context/AuthProvider';
 
 export const LogOut: React.FC<{show: boolean}> = ({show}) => {
@@ -15,11 +14,13 @@ export const LogOut: React.FC<{show: boolean}> = ({show}) => {
     };
 
 return (
-    <Button
-    showButton={show}
-    onClick={logOut}
-    styles={logOutStyle}>Выйти</Button>
+    <div className='w-2/3 mx-auto my-5'>
+         <Button
+        showButton={show}
+        onClick={logOut}
+        >
+            Выйти из аккаунта
+        </Button>
+    </div>
   );
 };
-
-const logOutStyle: BlockStyle = {};

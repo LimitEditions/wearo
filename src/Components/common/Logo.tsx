@@ -48,7 +48,7 @@ export const Logo = () => {
                         <Arrow direct='left' />
                     </Button>
                 </div>
-                <h1>WEAR</h1>
+                <h1 className='font-bold uppercase text-2xl'>wear</h1>
             </div>
         </div>
     );

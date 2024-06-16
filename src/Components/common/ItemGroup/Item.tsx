@@ -33,7 +33,7 @@ const Item: React.FC<IItemProps> = ({ path, children }) => {
 export default Item;
 
 const divStyle: BlockStyle = {
-  blockSize: "flex items-center justify-between",
+  blockSize: "relative flex items-center justify-between",
   border: 'border-t divide-gray-400',
   spacing: "py-4 px-2",
   text: "text-sm",

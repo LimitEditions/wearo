@@ -12,6 +12,7 @@ import { Highlights } from '../../Components/user/Stories&Hightlights/Highlights
 import useSubscribe from '../../hooks/useSubscribe';
 import { Button } from '../../Components/common/Button';
 import { BlockStyle } from '../../types/interfaces/IStyles';
+import { ContactButtons } from '../../Components/common/ContactButtons';
 
 
 export const BrandPage = () => {
@@ -48,9 +49,12 @@ export const BrandPage = () => {
                     <Photo id={data?.photo || null} styles={'border-4'} alt={'фото бренда'}/>
                     <div className='flex justify-between '>
                         <Link to={`${data.link}`}>{data?.name}</Link>
-                        <Button showButton={true} styles={cursorStyle} onClick={ handleClick } >
-                            { subStatus ? 'Отписаться': 'Подписаться'}
-                        </Button>
+                        <div className='flex  space-x-2'>
+                            <ContactButtons telegram={'tarasoft_a'} whatsapp={''} email={''}/>
+                            <Button showButton={true} onClick={ handleClick } >
+                                { subStatus ? 'Отписаться': 'Подписаться'}
+                            </Button>
+                        </div>
                     </div>
                     <Highlights brandId={data.guid || null} />
                     <div className='text-center'>
