@@ -49,9 +49,11 @@ function App() {
 export default App;
 
 const mainStyle: BlockStyle = {
-    container: 'relative overflow-hidden',
-    // text: 'font-serif'
-    text: 'font-sf-pro'
+    container: 'relative overflow-hidden min-h-screen',
+    // text: 'font-serif',
+    text: 'font-sf-pro',
+    background: 'bg-gray-200',
+    spacing: 'pt-4 pb-10 px-0'
 };
 
 const contentStyle:BlockStyle = {

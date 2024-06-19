@@ -32,15 +32,18 @@ export const navContent: NavContentType = {
     'User': [
         {
             path: "/promotions",
-            name: "Промокоды"
+            name: "Промокоды",
+            image: "/images/promo.png"
         },
         {
             path: "/posts",
-            name: "Лента"
+            name: "Лента",
+            image: "/images/posts.png"
         },
         {
             path: "/wardrobe",
-            name: "Мой гардероб"
+            name: "Мой гардероб",
+            image: "/images/wardrobe.png"
         },
     ],
 };

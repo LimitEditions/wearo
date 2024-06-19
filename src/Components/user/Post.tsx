@@ -35,19 +35,31 @@ export const Post = ({ id }: { id: string }) => {
     
 
     return (
-        <div className="space-y-10 py-5 w-full">
+        <div className="w-full pb-2">
             {!error && data && (
-                <div className="relative w-full" style={{ paddingBottom: `153%`}}> 
-                {/* <div className="relative w-full" style={{ paddingBottom: `${aspectRatio}%`}}>  */}
-                    <div className="absolute inset-0">
-                        <Photo id={data.file?.guid || null} styles="w-full h-full" alt="изображение поста" />
+                <div className="relative w-full bg-light-gray" style={{ paddingBottom: "133%" }}>
+                    <div className="absolute inset-0 flex items-center justify-center">
+                        <Photo
+                        id={data.file?.guid ?? null}
+                        styles="object-contain max-h-full"
+                        alt="изображение поста"
+                        />
                     </div>
-                    <div className="absolute bottom-0 left-0 w-full px-2 pb-5">
-                        <div className='flex space-x-3 mb-3'>
-                            <Photo id={brandInfo?.photo || null} styles={'rounded-full w-16'} alt='изображение логотипа бренда'/>
-                            <div onClick={() => navigate(`.././brand/${data.brandGuid}`)} className='text-white text-sm my-auto'>{brandInfo?.name}</div>
+                    <div className="absolute bottom-4 left-8 w-3/4">
+                        <div className="flex space-x-3 mb-3">
+                        <Photo
+                            id={brandInfo?.photo ?? null}
+                            styles="rounded-full w-16"
+                            alt="изображение логотипа бренда"
+                        />
+                        <div
+                            onClick={() => navigate(`.././brand/${data.brandGuid}`)}
+                            className="text-white text-sm my-auto"
+                        >
+                            {brandInfo?.name}
                         </div>
-                        <p className="text-white pr-16 text-justify">{data.text}</p>
+                        </div>
+                        <p className="text-white text-sm">{data.text}</p>
                     </div>
                 </div>
             )}

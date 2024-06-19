@@ -19,7 +19,7 @@ const buttonStyle: BlockStyle = {
   blockSize: "w-full",
   background: "bg-custom-blue hover:bg-navy-blue",
   spacing: 'p-3 m-auto',
-  text: 'text-white text-md',
+  text: 'text-white text-sm',
   border: 'rounded-full shadow-lg',
   transitionsAnimation: 'transition-all duration-300'
 };

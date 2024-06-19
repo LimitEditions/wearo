@@ -58,9 +58,10 @@ export const Stories = ({ highlightStories, open, setOpen }:
                     if (currentSlideIndex < activeStories.length - 1) {
                         sliderRef.current?.slickNext();
                     } else if (currentSlideIndex === activeStories.length - 1) {
+                        console.log('2')
                         lastSlideTimeout.current = setTimeout(() => {
                             setOpen(false);
-                        }, 5000);
+                        }, 500);
                     }
                 }
             }
@@ -135,14 +136,14 @@ export const Stories = ({ highlightStories, open, setOpen }:
                     >
                         &times;
                     </button>
-                    <div className="w-3/4 mx-auto h-1 bg-gray-300 flex space-x-1">
+                    <div className="w-3/4 mx-auto h-1 bg-white-fon flex space-x-1">
                         {Array.from({ length: activeStories.length }).map((_, index) => (
-                            <div key={index} className="relative h-full bg-gray-900 flex-1">
+                            <div key={index} className="relative h-full bg-medium-gray flex-1">
                                 <ProgressBar 
                                     completed={loadingProgress[index]} 
                                     height="100%"
-                                    baseBgColor="#008000"
-                                    bgColor="#ff0000"
+                                    baseBgColor="#797C8E"
+                                    bgColor="#F9F8FF"
                                     isLabelVisible={false}
                                     transitionDuration="0.05s"
                                     animateOnRender={true}

@@ -60,7 +60,7 @@ const contStyle: BlockStyle = {
 
 const logoStyle: BlockStyle = {
     blockSize: "h-[50px] ralative grid place-items-center",
-    background:'bg-gray-200 shadow-md',
+    background:'bg-white-fon shadow-md',
     text: "text-center tracking-wider text-lg text-2xl font-semibold",
 };
 

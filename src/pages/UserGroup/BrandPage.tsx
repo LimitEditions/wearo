@@ -11,7 +11,6 @@ import { Arrow } from '../../Components/common/Arrow';
 import { Highlights } from '../../Components/user/Stories&Hightlights/Highlights';
 import useSubscribe from '../../hooks/useSubscribe';
 import { Button } from '../../Components/common/Button';
-import { BlockStyle } from '../../types/interfaces/IStyles';
 import { ContactButtons } from '../../Components/common/ContactButtons';
 
 
@@ -48,7 +47,7 @@ export const BrandPage = () => {
                 <>
                     <Photo id={data?.photo || null} styles={'border-4'} alt={'фото бренда'}/>
                     <div className='flex justify-between '>
-                        <Link to={`${data.link}`}>{data?.name}</Link>
+                        <Link to={`${data.link}`} target="_blank" rel="noopener noreferrer">{data?.name}</Link>
                         <div className='flex  space-x-2'>
                             <ContactButtons telegram={'tarasoft_a'} whatsapp={''} email={''}/>
                             <Button showButton={true} onClick={ handleClick } >
@@ -80,8 +79,4 @@ export const BrandPage = () => {
             }
         </div>
     )
-};
-
-const cursorStyle: BlockStyle = {
-    hover: 'cursor-pointer'
 };
