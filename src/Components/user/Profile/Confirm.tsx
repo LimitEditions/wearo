@@ -135,7 +135,7 @@ const formStyle: BlockStyle = {
 
 const inpitStyle: BlockStyle = {
     spacing: "py-2 px-5",
-    background: "bg-gray-200",
+    background: "bg-white-fon",
     border: "rounded-lg",
     text: "placeholder-gray-700",
     blockSize: "w-full",

@@ -14,6 +14,7 @@ import { ProductItemPage } from './pages/UserGroup/ProductItemPage';
 import { ControlPage } from './pages/AdminGroup/Control/ControlPage';
 import { SettingsPage } from './pages/AdminGroup/Settings/SettingsPage';
 import { PromotionsPage } from './pages/UserGroup/PromotionsPage';
+import Filters from './Components/user/Filters';
 
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
                     <Route path='/brand/:id/' element={<BrandPage />} />
                     <Route path='/collection/:id' element={<CollectionPage />} />
                     <Route path='/promotions/*' element={<PromotionsPage />} />
+                    <Route path='/filters/*' element={<Filters />} />
 
                     <Route path='/options/*' element={ <SettingsPage /> }/>
                     <Route path='/control/*' element={ <ControlPage /> }/>
