@@ -1,7 +1,7 @@
 import { Checkbox } from '@headlessui/react';
 import { CheckIcon } from '@heroicons/react/16/solid';
 
-export default function Example({
+export default function CheckboxUnit({
     enabled, setEnabled, text
 }: {
     enabled: boolean,
@@ -13,10 +13,10 @@ export default function Example({
             <Checkbox
                 checked={enabled}
                 onChange={setEnabled}
-                className="group size-6 rounded-md bg-white-fon p-1 ring-1 ring-white/15 ring-inset data-[checked]:bg-white-fon"
+                className="group size-7 rounded-md bg-gray-200 p-1 ring-1 ring-white/15 ring-inset data-[checked]:bg-gray-200"
                 name="my-checkbox"
                 >
-                <CheckIcon className="hidden size-4 fill-black group-data-[checked]:block" />
+                <CheckIcon className="hidden size-5 fill-black group-data-[checked]:block" />
             </Checkbox>
             <label htmlFor="my-checkbox" className="ml-2 text-md">
                 {text}

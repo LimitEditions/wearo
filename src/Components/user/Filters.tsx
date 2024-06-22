@@ -1,66 +1,26 @@
-import React, { useState } from 'react';
-import Example from '../common/Example';
+import React from 'react';
+import CheckboxUnit from '../common/CheckboxUnit';
+import { FiltersProps } from '../../types/interfaces/componentsProps/IFiltersProps';
 
 
-
-interface FiltersData {
-    [key: string]: boolean;
-}
-
-const categories: FiltersData = {
-    "Верхняя одежда": false,
-    "Платья": false,
-    "Юбки": false
-};
-
-const seasons: FiltersData = {
-    "Зима": false,
-    "Лето": false
-};
-
-const Filters: React.FC = () => {
-    const [categoryFilters, setCategoryFilters] = useState<FiltersData>(categories);
-    const [seasonFilters, setSeasonFilters] = useState<FiltersData>(seasons);
-
-    console.log(categoryFilters)
-
-    const handleFilterChange = (type: 'category' | 'season', key: string) => {
-        if (type === 'category') {
-            setCategoryFilters(prev => ({ ...prev, [key]: !prev[key] }));
-        } else if (type === 'season') {
-            setSeasonFilters(prev => ({ ...prev, [key]: !prev[key] }));
-        }
-    };
-
+const Filters: React.FC<FiltersProps> = ({ filterGroups, onFilterChange }) => {
     return (
-        <div className="space-y-4 px-2">
-            <div>
-                <h2 className="text-lg font-bold pl-2">Категория</h2>
-                {Object.keys(categoryFilters).map(key => (
-                <Example
-                    key={key}
-                    enabled={categoryFilters[key]}
-                    setEnabled={() => handleFilterChange('category', key)}
-                    text={key}
-                />
-                ))}
-            </div>
-            <input type="checkbox" name='check'/>
-            <label htmlFor="check" className='ml-3'>Чекбокс дефолтный</label>
-            <div>
-                <h2 className="text-lg font-bold pl-2">Сезон</h2>
-                {Object.keys(seasonFilters).map(key => (
-                <Example
-                    key={key}
-                    enabled={seasonFilters[key]}
-                    setEnabled={() => handleFilterChange('season', key)}
-                    text={key}
-                />
-                ))}
-            </div>
-            
-        </div>
+      <div className="space-y-4 px-2">
+        {filterGroups.map(group => (
+          <div key={group.title}>
+            <h2 className="text-lg font-bold pl-2">{group.title}</h2>
+            {Object.keys(group.filters).map(key => (
+              <CheckboxUnit
+                key={key}
+                enabled={group.filters[key]}
+                setEnabled={() => onFilterChange(group.title, key)}
+                text={key}
+              />
+            ))}
+          </div>
+        ))}
+      </div>
     );
-};
+  };
 
 export default Filters;
