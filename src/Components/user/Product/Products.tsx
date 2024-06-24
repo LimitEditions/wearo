@@ -14,20 +14,20 @@ export const Products = ({productsList}: {productsList: ProductModel[] }) => {
     const getItemWidth = () => {
         switch (itemSize) {
         case 1:
-            return 'w-full';
+            return 'w-1/3 transition-all duration-1000 ease-in-out';
         case 2:
-            return 'w-1/2';
+            return 'w-1/2 transition-all duration-1000 ease-in-out';
         case 3:
-            return 'w-1/3';
+            return 'w-full transition-all duration-1000 ease-in-out';
         default:
-            return 'w-1/2';
+            return 'w-1/2 transition-all duration-1000 ease-in-out';
         }
     };
 
     return (
         <div>
             <ItemSizeSlider onChange={setItemSize} />
-            <div className='w-full sm:w-1/4 flex flex-wrap justify-between p-1'>
+            <div className='w-full flex flex-wrap justify-between p-1'>
                 {productsList.map(prod => {
                     return <div 
                                 key={prod.guid} 

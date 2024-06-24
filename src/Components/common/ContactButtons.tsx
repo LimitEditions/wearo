@@ -31,7 +31,7 @@ export const ContactButtons: React.FC<ContactButtonProps> = ({ telegram, whatsap
                 Контакты
             </Button>
             ) : (
-            <div className="flex space-x-4">
+            <div className="flex space-x-4 animate-bounce">
                 <Link to={`https://t.me/${telegram}`} target="_blank" rel="noopener noreferrer">
                     <FaTelegramPlane className="text-blue-500 w-7 h-7 hover:text-blue-600 transition-all duration-300" />
                 </Link>

@@ -29,13 +29,12 @@ export const Brand = ({ brandInfo }: { brandInfo: BrandModel}) => {
         setIsRotated(!isRotated);
     };
     
-    
     return (
         <>
             <Photo id={brandInfo?.photo || null} styles={'border-4'} alt={'фото бренда'}/>
             <div className='flex justify-between '>
                 <Link to={`${brandInfo.link}`} target="_blank" rel="noopener noreferrer">{brandInfo?.name}</Link>
-                <div className='flex  space-x-2'>
+                <div className='flex space-x-2'>
                     <ContactButtons telegram={'tarasoft_a'} whatsapp={''} email={''}/>
                     <Button showButton={true} onClick={ handleClick } >
                         { subStatus ? 'Отписаться': 'Подписаться'}

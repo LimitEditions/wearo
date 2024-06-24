@@ -41,6 +41,7 @@ export const ProductsPage = () => {
     //фильтры
     const [modal, setModal] = useState<boolean>(false);
     const [filterGroups, setFilterGroups] = useState(initialFilterGroups);
+    const [disabledBtn, setDisabledBtn] = useState<boolean>(true);
 
     const handleFilterChange = (groupTitle: string, key: string) => {
         setFilterGroups(prevGroups => prevGroups.map(group => {
@@ -55,6 +56,7 @@ export const ProductsPage = () => {
         }
         return group;
         }));
+        setDisabledBtn(false);
     };
 
     return (
@@ -63,7 +65,7 @@ export const ProductsPage = () => {
             <Button 
                 showButton={true} 
                 className='w-1/4 float-right'
-                onClick={() => setModal(true)}
+                onClick={() => {setModal(true); setDisabledBtn(true)}}
                 >
                 Фильтры
             </Button>
@@ -73,6 +75,16 @@ export const ProductsPage = () => {
                 swipeable={true}
                 >
                 <Filters filterGroups={filterGroups} onFilterChange={handleFilterChange}/>
+                <div className='mt-2 w-1/2 mx-auto'>
+                    <Button showButton={true} onClick={() => setModal(false)} disabled={disabledBtn}>Применить</Button>
+                </div>
+                <Button 
+                    showButton={true} 
+                    className='absolute top-1 right-2 opacity-40'
+                    onClick={() => setModal(false)}
+                >
+                    <img src='images/closeBtn.png' alt='крестик'/>
+                </Button>
             </Modal>
             <div>
                 <IsLoading show={isLoading} />

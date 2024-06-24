@@ -1,17 +1,15 @@
 import React, { memo, useEffect, useMemo, useState } from 'react'
 import useAuth from '../../hooks/useAuth';
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { ProductItemModel, ProductItemModelDataResult } from '../../api/data-contracts';
 import useApi from '../../hooks/useApi';
 import { IsLoading } from '../../Components/common/InfoGroup/IsLoading';
 import { ProfilePage } from './ProfilePage';
 import { ProductItems } from '../../Components/user/ProductItem/ProductItems';
 import { retrieve } from '../../utils/encryption';
-import { Button } from '../../Components/common/Button';
 
 
 export const WardrobePage = memo(() => {
-    const navigate = useNavigate();
     const info = useAuth(true);
     const token = useMemo(() => retrieve("token"), []); 
     // console.log(info)
@@ -30,16 +28,12 @@ export const WardrobePage = memo(() => {
         };
     }, [data, error, productsList])
     
-    console.log(data)
     return (
         <>
             <Routes>
                 <Route index element={
                     <div>
-                        <p className='pt-2'>Welcome to the Wardrobe!</p>
-                        <div className='float-right w-1/4'>
-                            <Button showButton={true} onClick={() => navigate('.././filters')}>Фильтры</Button>
-                        </div>
+                        <p className='pt-2 pl-4'>Welcome to the Wardrobe!</p>
                         <IsLoading show={isLoading}/>
                         <ProductItems productsList={ productsList || []}/>
                     </div>

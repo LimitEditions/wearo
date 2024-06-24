@@ -50,13 +50,13 @@ const useSubscribe = (id: string): [boolean, () => void] => {
     // После получения данных о подписке и фильтрации условной заносим их в соответствующие стейты
     const [subscriptionId, setSubscriptionId] = useState<string>('');
     useEffect(() => {
-        if (isSubscribe && loadListSubs) {
+        if (isSubscribe) {
             const foundElement = isSubscribe.data?.find(el => el.brandGuid === id);
             if (foundElement) {
                 setSubscriptionId(foundElement.guid as string);
             };
         };
-    }, [isSubscribe, id, loadListSubs]);
+    }, [isSubscribe, id]);
 
     // стейт на статус подписки, передаем из хука для отображения соответствующей информации
     const [subStatus, setSubStatus] = useState<boolean>(false);
