@@ -3,24 +3,25 @@ import { BlockStyle } from '../../types/interfaces/IStyles';
 import getStyles from '../../utils/getStyles';
 import { IButtonProps } from '../../types/interfaces/componentsProps/IButtonProps';
 
-export const Button: React.FC<IButtonProps> = ({ showButton, styles, children, ...props }) => {
-  if (!showButton) { return null };
 
-  return (
-    <>
-      <button className={styles ? getStyles(styles) : getStyles(buttonStyle)} {...props}>
-        {children}
-      </button> 
-    </>
-  );
+export const Button: React.FC<IButtonProps> = ({ showButton, styles, children, ...props }) => {
+    if (!showButton) { return null };
+
+    return (
+        <>
+            <button className={styles ? getStyles(styles) : getStyles(buttonStyle)} {...props}>
+                {children}
+            </button> 
+        </>
+    );
 };
 
 const buttonStyle: BlockStyle = {
-  blockSize: "w-full",
-  background: "bg-custom-blue hover:bg-navy-blue disabled:bg-light-gray",
-  spacing: 'p-3 m-auto',
-  text: 'text-white text-sm',
-  border: 'rounded-full shadow-lg',
-  transitionsAnimation: 'transition-all duration-300'
+    blockSize: "w-full",
+    background: "bg-custom-blue hover:bg-navy-blue disabled:bg-light-gray",
+    spacing: 'p-3 m-auto',
+    text: 'text-white text-sm',
+    border: 'rounded-full shadow-lg',
+    transitionsAnimation: 'transition-all duration-300'
 };
 

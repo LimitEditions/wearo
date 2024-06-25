@@ -9,17 +9,23 @@ import { Highlights } from './Stories&Hightlights/Highlights';
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react';
 import { Arrow } from '../common/Arrow';
 import Item from './Profile/ProfileItem';
+import { Modal } from '../common/Modal';
+import { RingLoader } from 'react-spinners';
 
 
 export const Brand = ({ brandInfo }: { brandInfo: BrandModel}) => {
     // статус подписки с возможностью подписаться/отписаться
     const [subStatus, handlerSub] = useSubscribe(brandInfo.guid as string);
+    const [modal, setModal] = useState<boolean>(false);
     const handleClick = (event: any) => {
         handlerSub();
+        // отключаем кнопку и выводим модальное на передний план
+        setModal(true);
         event.target.disabled = true;
         const timer = setTimeout(() => {
+            setModal(false);
             event.target.disabled = false;
-        }, 1000)
+        }, 5000)
         return () => clearTimeout(timer);
     };
 
@@ -35,8 +41,12 @@ export const Brand = ({ brandInfo }: { brandInfo: BrandModel}) => {
             <div className='flex justify-between '>
                 <Link to={`${brandInfo.link}`} target="_blank" rel="noopener noreferrer">{brandInfo?.name}</Link>
                 <div className='flex space-x-2'>
-                    <ContactButtons telegram={'tarasoft_a'} whatsapp={''} email={''}/>
-                    <Button showButton={true} onClick={ handleClick } >
+                    <ContactButtons 
+                        telegram={brandInfo.telegramId || ''} 
+                        whatsapp={brandInfo.whatsappId || ''} 
+                        email={brandInfo.email || ''}
+                    />
+                    <Button showButton={true} onClick={ handleClick }>
                         { subStatus ? 'Отписаться': 'Подписаться'}
                     </Button>
                 </div>
@@ -62,6 +72,14 @@ export const Brand = ({ brandInfo }: { brandInfo: BrandModel}) => {
             <div>
                 Публикации
             </div>
+            <Modal
+                isOpen={modal}
+                setIsOpen={setModal}
+                swipeable={false}
+                additionalStyles={{panel: 'w-full bg-transparent flex justify-center'}}
+            >
+                <RingLoader color='#F9F8FF' loading={true} size={100} speedMultiplier={0.75} />
+            </Modal>
         </>
     );
 };

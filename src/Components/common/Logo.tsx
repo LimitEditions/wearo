@@ -61,7 +61,7 @@ const contStyle: BlockStyle = {
 const logoStyle: BlockStyle = {
     blockSize: "h-[50px] ralative grid place-items-center",
     background:'bg-white-fon shadow-md',
-    text: "text-center tracking-wider text-lg text-2xl font-semibold",
+    text: "text-center tracking-wider text-lg font-semibold",
 };
 
 const btnsStyle: BlockStyle = {

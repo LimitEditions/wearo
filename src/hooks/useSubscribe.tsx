@@ -46,7 +46,7 @@ const useSubscribe = (id: string): [boolean, () => void] => {
             setExecute(null);
         };
     }, [loadListSubs]);
-    
+
     // После получения данных о подписке и фильтрации условной заносим их в соответствующие стейты
     const [subscriptionId, setSubscriptionId] = useState<string>('');
     useEffect(() => {

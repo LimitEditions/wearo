@@ -128,6 +128,12 @@ export interface BrandModel {
   products?: ProductModel[] | null;
   /** Коллекции одежды */
   collections?: ClothingCollectionModel[] | null;
+  /** Email */
+  email?: string | null;
+  /** Логин Telegram */
+  telegramId?: string | null;
+  /** Логин WhatsApp */
+  whatsappId?: string | null;
 }
 
 /** Результат чтения данных. */
@@ -190,6 +196,12 @@ export interface BrandRequestModel {
   user?: UserModel;
   /** Приложенные файлы */
   files?: FileModel[] | null;
+  /** Email */
+  email?: string | null;
+  /** Логин Telegram */
+  telegramId?: string | null;
+  /** Логин WhatsApp */
+  whatsappId?: string | null;
 }
 
 /** Результат чтения данных. */
@@ -405,6 +417,12 @@ export interface CreateBrandModel {
   photo?: string | null;
   /** Ссылка на сайт */
   link?: string | null;
+  /** Email */
+  email?: string | null;
+  /** Логин Telegram */
+  telegramId?: string | null;
+  /** Логин WhatsApp */
+  whatsappId?: string | null;
 }
 
 /** Бренд */
@@ -426,6 +444,12 @@ export interface CreateBrandRequestModel {
   comment?: string;
   /** Файлы */
   files?: string[] | null;
+  /** Email */
+  email?: string | null;
+  /** Логин Telegram */
+  telegramId?: string | null;
+  /** Логин WhatsApp */
+  whatsappId?: string | null;
 }
 
 /** Коллекция одежды */
@@ -2096,6 +2120,12 @@ export interface UpdateBrandModel {
   photo?: string | null;
   /** Ссылка на сайт */
   link?: string | null;
+  /** Email */
+  email?: string | null;
+  /** Логин Telegram */
+  telegramId?: string | null;
+  /** Логин WhatsApp */
+  whatsappId?: string | null;
 }
 
 /** Комментарий */

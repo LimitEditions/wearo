@@ -32,15 +32,18 @@ export const ContactButtons: React.FC<ContactButtonProps> = ({ telegram, whatsap
             </Button>
             ) : (
             <div className="flex space-x-4 animate-bounce">
+                {telegram && 
                 <Link to={`https://t.me/${telegram}`} target="_blank" rel="noopener noreferrer">
                     <FaTelegramPlane className="text-blue-500 w-7 h-7 hover:text-blue-600 transition-all duration-300" />
-                </Link>
+                </Link>}
+                {whatsapp && 
                 <Link to={`https://wa.me/${whatsapp}`} target="_blank" rel="noopener noreferrer">
                     <FaWhatsapp className="text-green-500 w-7 h-7 hover:text-green-600 transition-all duration-300" />
-                </Link>
+                </Link>}
+                {email &&
                 <Link to={`mailto:${email}`} target="_blank" rel="noopener noreferrer">
                     <FaEnvelope className="text-red-500 w-7 h-7 hover:text-red-600 transition-all duration-300" />
-                </Link>
+                </Link>}
             </div>
             )}
         </div>
