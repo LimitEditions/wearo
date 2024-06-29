@@ -78,7 +78,7 @@ export const Brand = ({ brandInfo }: { brandInfo: BrandModel}) => {
                 swipeable={false}
                 additionalStyles={{panel: 'w-full bg-transparent flex justify-center'}}
             >
-                <RingLoader color='#F9F8FF' loading={true} size={100} speedMultiplier={0.75} />
+                <RingLoader color='#F9F8FF' loading={modal} size={45} speedMultiplier={0.75} />
             </Modal>
         </>
     );

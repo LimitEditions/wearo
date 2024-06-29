@@ -3,7 +3,10 @@ export interface FiltersData {
 };
 
 export interface FilterGroup {
-    title: string;
+    title: {
+        name: string;
+        guid: string;
+    };
     filters: FiltersData;
 };
 

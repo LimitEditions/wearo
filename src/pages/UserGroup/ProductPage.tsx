@@ -1,5 +1,5 @@
 import React from 'react'
-import { Route, Routes, useParams } from 'react-router-dom';
+import { Route, Routes, useLocation, useParams } from 'react-router-dom';
 import { Product } from '../../Components/user/Product/Product';
 import useApi from '../../hooks/useApi';
 import { ProductModel } from '../../api/data-contracts';
@@ -11,6 +11,10 @@ import { ErrorReq } from '../../Components/common/InfoGroup/ErrorReq';
 
 export const ProductPage = () => {
     const { id } = useParams();
+    const location = useLocation();
+    const { color } = location.state || {};
+    
+    
     const [data, isLoading, error] = useApi<'productsDetail', ProductModel>(
       'productsDetail', id, {}, true
     );
@@ -22,7 +26,7 @@ export const ProductPage = () => {
                     <div className={getStyles(containerStyle)}>
                         <IsLoading show={isLoading} />
                         <ErrorReq show={!!error} error={error}/>
-                        {data && <Product data={data}/>}
+                        {data && <Product data={data} color={color} />}
                     </div>
                 }/>
                 <Route path='/comments' element={<CommentsPage comments={data?.comments || []}/>} />

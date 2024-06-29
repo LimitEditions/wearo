@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
-import { ProductModel } from '../../../api/data-contracts';
+import { ProductItemModel, ProductModel } from '../../../api/data-contracts';
 import { useNavigate } from 'react-router-dom';
 import { Photo } from '../../common/Photo';
 import ItemSizeSlider from '../../common/ItemSizeSlider';
 
 
-export const Products = ({productsList}: {productsList: ProductModel[] }) => {
+export const Products = ({productsList}: {productsList: ProductModel[] | ProductItemModel[] }) => {
     const navigate = useNavigate();
 
     const [itemSize, setItemSize] = useState(2); // Начальное состояние, где 2 итема помещаются в ряд
@@ -24,19 +24,36 @@ export const Products = ({productsList}: {productsList: ProductModel[] }) => {
         }
     };
 
+    // проверка к какому типу относятся входящие данные
+    const isProductItemModel = (product: ProductModel | ProductItemModel): product is ProductItemModel => {
+        return (product as ProductItemModel).product !== undefined;
+    };
+
     return (
         <div>
             <ItemSizeSlider onChange={setItemSize} />
             <div className='w-full flex flex-wrap justify-between p-1'>
-                {productsList.map(prod => {
-                    return <div 
-                                key={prod.guid} 
-                                className={`${getItemWidth()} m-0 p-1 flex flex-col items-center justify-around`} 
-                                onClick={() => navigate(`.././product/${prod.guid}`)}
-                            >
-                                <Photo id={prod.mainPhotoGuid || ''} styles={''} alt={'фото'} />
-                                <p className='text-center'>{prod.name}</p>
-                            </div>
+                {productsList.map((prod) => {
+                const isProductItem = isProductItemModel(prod);
+                const product = isProductItem ? prod.product : prod as ProductModel;
+                const color = isProductItem ? prod.productColorGuid : null;
+                const endPoint = isProductItem ? `.././product/${product?.guid}`: `../../product/${product?.guid}`;
+                
+                return (
+                    product && 
+                    <div
+                        key={product.guid}
+                        className={`${getItemWidth()} m-0 p-1 flex flex-col items-center justify-around`}
+                        onClick={() => navigate(endPoint, {
+                            state: {
+                            color,
+                            }
+                        })}
+                    >
+                        <Photo id={product?.mainPhotoGuid || ''} styles={''} alt={'фото'} />
+                        <p className='text-center'>{product?.name}</p>
+                    </div>
+                );
                 })}
             </div>
         </div>

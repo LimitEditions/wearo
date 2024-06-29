@@ -38,7 +38,7 @@ export const CollectionPage = () => {
             <h1 className='text-center'>{data?.name}</h1>
             <p>{data?.description}</p>
             <Search callBack={setSearchTarget}/>
-            <Products productsList={filteredList ? filteredList: products || []}/>
+            <Products productsList={filteredList ? filteredList: products || []} />
         </div>
     )
 };

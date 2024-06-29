@@ -28,13 +28,8 @@ export const Confirm = ({ mode, navigate }: { mode?: string; navigate: NavigateF
         };
     }, [mode]);
     
-    // стейт на инпут
-    const curEmail = isAuth.userInfo?.email;
-    const curPhone = isAuth.userInfo?.phone;
-    const initialData = mode === 'email' ?
-        curEmail ? curEmail: '':
-        curPhone ? curPhone: '';
-    const [text, setText] = useState<string>(initialData);
+
+    const [text, setText] = useState<string>('');
 
     const phoneMask = ['+', '7', ' ', '(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
     const mask = mode === 'phone' ? phoneMask: undefined;
@@ -93,6 +88,11 @@ export const Confirm = ({ mode, navigate }: { mode?: string; navigate: NavigateF
 
     return (
         <form className={getStyles(formStyle)} onSubmit={handleSubmit}>
+            {mode === 'email' && 
+            <div className='w-full'>
+                <div>Текущая почта:</div>
+                <div>{isAuth.userInfo?.email}</div>
+            </div>}
             <div>
                 <label htmlFor="inputField">Введите данные</label>
                 { mode === 'phone' ?

@@ -9,7 +9,8 @@ import { Colors } from '../Colors';
 import Item from '../../common/ItemGroup/Item';
 
 
-export const Product = ({ data }:{ data: ProductModel }) => {
+export const Product = ({ data, color, size }:{ data: ProductModel, color?: string, size?: string }) => {
+    
     return (
         <>
             <Photos photos={data?.photos || null} />
@@ -17,7 +18,7 @@ export const Product = ({ data }:{ data: ProductModel }) => {
             <div className={getStyles(descStyle)}>
                 <span className='block'>{data?.description}</span>
                 <Item path={`.././brand/${data.brandGuid}`}>Название бренда</Item>
-                {data.colors && <Colors prodColors={data.colors}/>}
+                {data.colors && <Colors prodColors={data.colors} selectedColor={color}/>}
             </div>
             <div className={getStyles(originStyle)}>
                 Происхождение
