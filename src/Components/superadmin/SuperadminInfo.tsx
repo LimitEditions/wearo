@@ -3,10 +3,11 @@ import { SectionsTitle } from '../common/SectionsTitle'
 import { retrieve } from '../../utils/encryption';
 import useApi from '../../hooks/useApi';
 import { UserModel } from '../../api/data-contracts';
-import { TextItemsList } from './TextItemsList';
+import { TextItemsList } from '../../pages/AdminGroup/Control/Admins/TextItemsList';
 import { ErrorReq } from '../common/InfoGroup/ErrorReq';
 
 
+// рудимент, пока непонятно откуда и куда этот компонент 
 export const SuperadminInfo = () => {
   // Запрос на получение подробной информации о пользователе
   const [data, , dataError] = useApi<"usersDetail", UserModel>(

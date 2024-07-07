@@ -7,15 +7,17 @@ import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
 import { AuthProvider } from './context/AuthProvider';
 
+
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
+    document.getElementById('root') as HTMLElement
 );
+
 root.render(
-  <HashRouter>
-    <AuthProvider>
-      <App />
-    </AuthProvider>
-  </HashRouter>
+    <HashRouter>
+        <AuthProvider>
+            <App />
+        </AuthProvider>
+    </HashRouter>
 );
 
 serviceWorkerRegistration.register();

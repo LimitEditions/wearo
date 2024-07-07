@@ -55,7 +55,7 @@ export const Logo = () => {
 };
 
 const contStyle: BlockStyle = {
-    blockSize: "fixed w-full top-0 z-10",
+    blockSize: "w-full",
 }; 
 
 const logoStyle: BlockStyle = {

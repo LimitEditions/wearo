@@ -14,7 +14,7 @@ import { UserFavoritesPage } from "./UserFavoritesPage";
 import { UserSubscriptionsPage } from "./UserSubscriptionsPage";
 import { UserScansPage } from "./UserScansPage";
 import { EditUserInfo } from "./EditUserInfo";
-import { TextItemsList } from "../../../../Components/superadmin/TextItemsList";
+import { TextItemsList } from "../Admins/TextItemsList";
 import { IsLoading } from "../../../../Components/common/InfoGroup/IsLoading";
 import { ErrorReq } from "../../../../Components/common/InfoGroup/ErrorReq";
 

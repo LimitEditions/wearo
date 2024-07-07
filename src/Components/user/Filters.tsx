@@ -4,6 +4,7 @@ import { FiltersProps } from '../../types/interfaces/componentsProps/IFiltersPro
 
 
 const Filters: React.FC<FiltersProps> = ({ filterGroups, onFilterChange }) => {
+    if (!filterGroups) return null;
     return (
         <div className="space-y-4 px-2">
             {filterGroups.map(group => (

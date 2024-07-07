@@ -8,9 +8,9 @@ import { Button } from '../common/Button';
 import { Highlights } from './Stories&Hightlights/Highlights';
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react';
 import { Arrow } from '../common/Arrow';
-import Item from './Profile/ProfileItem';
 import { Modal } from '../common/Modal';
 import { RingLoader } from 'react-spinners';
+import Item from '../common/ItemGroup/Item';
 
 
 export const Brand = ({ brandInfo }: { brandInfo: BrandModel}) => {
@@ -64,7 +64,7 @@ export const Brand = ({ brandInfo }: { brandInfo: BrandModel}) => {
                 </DisclosureButton>
                 <DisclosurePanel>
                     {brandInfo.collections?.map(col => {
-                        return <Item path={`/collection/${col.guid}`} key={col.guid}>{col.name}</Item>
+                        return <Item path={`./../collection/${col.guid}`} key={col.guid}>{col.name}</Item>
                     })}
                 </DisclosurePanel>
             </Disclosure>

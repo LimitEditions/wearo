@@ -104,9 +104,9 @@ export const ProductsPage = () => {
             <Modal
                 isOpen={modal}
                 setIsOpen={setModal}
-                swipeable={true}
+                swipeable={false}
                 additionalStyles={{
-                    container: 'fixed inset-0 overflow-y-scroll px-8 pt-48 flex items-center justify-center'
+                    container: 'fixed inset-0 overflow-y-scroll px-8 pt-80 flex items-center justify-center'
                 }}
                 >
                 <Filters filterGroups={filterGroups} onFilterChange={handleFilterChange}/>

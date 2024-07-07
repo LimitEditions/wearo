@@ -40,5 +40,5 @@ const divStyle: BlockStyle = {
 };
 
 const hoverStyle: BlockStyle = {
-  hover: "cursor-pointer hover:bg-gray-50",
+  hover: "cursor-pointer focus:outline-none hover:animate-pulse",
 }

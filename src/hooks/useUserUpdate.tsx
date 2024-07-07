@@ -6,7 +6,7 @@ import { retrieve } from '../utils/encryption';
 import useAuth from './useAuth';
 
 
-export const useUserUpdate = (updateData: UpdateUserModel, sendData: boolean, setSendData:  React.Dispatch<React.SetStateAction<boolean>>) => {
+export const useUserUpdate = (updateData: UpdateUserModel, sendData: boolean, setSendData: React.Dispatch<React.SetStateAction<boolean>>) => {
     const { isAuth } = useContext(AuthContext);
     const [updateContext, setUpdateContext] = useState<boolean>(false)
     const x = useAuth(updateContext);
