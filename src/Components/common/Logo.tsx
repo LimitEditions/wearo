@@ -1,15 +1,18 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { BlockStyle } from '../../types/interfaces/IStyles';
 import getStyles from '../../utils/getStyles';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { showEl } from '../../utils/showEl';
 import { Button } from './Button';
 import { Arrow } from './Arrow';
+import { Photo } from './Photo';
+import AuthContext from '../../context/AuthProvider';
 
 
 export const Logo = () => {
     const location = useLocation();
     const navigate = useNavigate();
+    const {isAuth} = useContext(AuthContext);
     
     // const showBackButton = /^\/wardrobe\/.*/.test(location.pathname) || /^\/options\/.*/.test(location.pathname);
     const showBackButton = !showEl(['/wardrobe', '/promotions', '/posts', '/auth', '/'] ,location.pathname);
@@ -35,19 +38,19 @@ export const Logo = () => {
     return (
         <div className={getStyles(contStyle)}>
             <div className={getStyles(logoStyle)}>
-                <div className={getStyles(btnsStyle)}>
-                    <Button 
-                        showButton={showProfileButton}
-                        onClick={handleProfileClick}
-                        styles={btnProfile}
-                        />
-                    <Button 
-                        showButton={showBackButton}
-                        onClick={handleBackClick}
-                        styles={{}}>
-                        <Arrow direct='left' />
-                    </Button>
-                </div>
+                <Button 
+                    showButton={showProfileButton}
+                    onClick={handleProfileClick}
+                    styles={btnProfile}
+                >
+                    <Photo id={isAuth.mainAvatarGuid || null} styles='h-8 w-8 rounded-2xl transform translate-y-1/5' alt='фото профиля'/>
+                </Button>
+                <Button 
+                    showButton={showBackButton}
+                    onClick={handleBackClick}
+                    styles={btnsStyle}>
+                    <Arrow direct='left' />
+                </Button>
                 <h1 className='font-bold uppercase text-2xl'>wear</h1>
             </div>
         </div>
@@ -70,6 +73,6 @@ const btnsStyle: BlockStyle = {
 };
 
 const btnProfile: BlockStyle = {
-    background: "bg-[url('https://sartur.sgu.ru/wp-content/uploads/2021/09/avatar1-1536x1536.png')] bg-no-repeat bg-center bg-contain h-8 w-8",
-    transitionsAnimation: "transform translate-y-1/4",
+    blockSize: "absolute",
+    spacing: "right-3",
 };
