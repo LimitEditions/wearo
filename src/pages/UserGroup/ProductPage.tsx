@@ -9,6 +9,7 @@ import { IsLoading } from '../../Components/common/InfoGroup/IsLoading';
 import { CommentsPage } from './CommentsPage';
 import { ErrorReq } from '../../Components/common/InfoGroup/ErrorReq';
 
+
 export const ProductPage = () => {
     const { id } = useParams();
     const location = useLocation();

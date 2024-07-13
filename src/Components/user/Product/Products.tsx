@@ -46,7 +46,7 @@ export const Products = ({productsList}: {productsList: ProductModel[] | Product
                         className={`${getItemWidth()} m-0 p-1 flex flex-col items-center justify-around`}
                         onClick={() => navigate(endPoint, {
                             state: {
-                            color,
+                                color,
                             }
                         })}
                     >
