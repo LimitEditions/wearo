@@ -1,31 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import useApi from '../../hooks/useApi';
-import { ProductCategoryModelDataResult, ProductModelDataResult } from '../../api/data-contracts';
+import { ProductCategoryModel, ProductCategoryModelDataResult, ProductModelDataResult } from '../../api/data-contracts';
 import { useParams } from 'react-router-dom';
 import { Products } from '../../Components/user/Product/Products';
-import { FilterGroup, FiltersData } from '../../types/interfaces/componentsProps/IFiltersProps';
 import { Button } from '../../Components/common/Button';
 import { Modal } from '../../Components/common/Modal';
-import Filters from '../../Components/user/Filters';
 import { IsLoading } from '../../Components/common/InfoGroup/IsLoading';
 import { ErrorReq } from '../../Components/common/InfoGroup/ErrorReq';
-
-
-// const initialCategories: FiltersData = {
-//     "Верхняя одежда": false,
-//     "Платья": false,
-//     "Юбки": false
-// };
-
-// const initialSeasons: FiltersData = {
-//     "Зима": false,
-//     "Лето": false
-// };
-
-// const initialFilterGroups = [
-//     { title: "Категория", filters: initialCategories },
-//     { title: "Сезон", filters: initialSeasons }
-// ];
+import { buildHierarchyIteratively } from '../../utils/buildHierarchyIteratively';
+import { Category } from '../../types/interfaces/ICategories';
+import CategoryList from '../../Components/user/CategoryList';
 
 
 export const ProductsPage = () => {
@@ -41,55 +25,84 @@ export const ProductsPage = () => {
     //фильтры
     const [filtersData, ,] = useApi<'productCategoriesList', ProductCategoryModelDataResult>(
         'productCategoriesList',
-        {},
+        {PageSize: 248},
         {},
         true
     );
     
-    const [filterGroups, setFilterGroups] = useState<FilterGroup[]>([]);
+    // все доступные категории
+    const [filterCategories, setFilterCategories] = useState<Category[]>([]);
+
+    // отмеченные категории (сет уникальных значений)
+    const [checkedCategories, setCheckedCategories] = useState<Set<{name: string, id: string}>>();
+
+    // все полученные категории с сервера преобразовываем в единый стейт с иерархической структурой
+    // и сохраняем в соответствующую переменную
     useEffect(() => {
-        const titles = filtersData?.data?.filter(el => el.parentCategoryGuid === null);
-        const titlesData = titles?.map(el => {
-            const filters = filtersData?.data?.filter(element => el.guid === element.parentCategoryGuid)
-                .reduce((acc, curr) => {
-                    if (curr.name) {
-                        acc[curr.name] = false;
-                    }
-                    return acc;
-                }, {} as FiltersData);
-
-            return {
-                title: {
-                    name: el.name || '',
-                    guid: el.guid || ''
-                },
-                filters: filters
-            };
-        });
-
-        setFilterGroups(titlesData as FilterGroup[]);
-    }, [filtersData])
+        if (filtersData) {
+            const data = filtersData.data as ProductCategoryModel[];
+            const hierarchy = buildHierarchyIteratively(data);
+            setFilterCategories(hierarchy)
+        };
+    }, [filtersData]);
     
-
+    // стейты на модалку и кнопку внутри нее (вкл/выкл)
     const [modal, setModal] = useState<boolean>(false);
     const [disabledBtn, setDisabledBtn] = useState<boolean>(true);
 
-    const handleFilterChange = (groupTitle: string, key: string) => {
-        setFilterGroups(prevGroups => prevGroups.map(group => {
-            if (group.title.name === groupTitle) {
-                return {
-                ...group,
-                filters: {
-                    ...group.filters,
-                    [key]: !group.filters[key]
+    // колбек на изменение стейта filterCategories после отмеченных чекбоксов
+    const handleFilterChange = (categoryName: string, filterName: string) => {
+        setFilterCategories(prevCategories => prevCategories.map(category => {
+            const updateCategory = (cat: Category): Category => {
+                if (cat.title.name === categoryName) {
+                    return {
+                        ...cat,
+                        leafCategoryStates: cat.leafCategoryStates.map(state => {
+                            if (filterName in state) {
+                                return { [filterName]: {
+                                    ...state[filterName],
+                                    status: !state[filterName].status
+                                } };
+                            }
+                            return state;
+                        })
+                    };
                 }
+                return {
+                    ...cat,
+                    subcategories: cat.subcategories.map(updateCategory)
                 };
-            }
-            return group;
+            };
+            return updateCategory(category);
         }));
-
+    
         setDisabledBtn(false);
     };
+
+    // колбек на обновление выбранных категорий
+    const updateСheckedCategories = (filterCategories: Category[]) => {
+        const checked: Set<{name: string, id: string}> = new Set();
+    
+        const traverse = (categories: Category[]) => {
+          categories.forEach(category => {
+            category.leafCategoryStates.forEach(state => {
+                const [key] = Object.keys(state);
+                if (state[key].status) {
+                    checked.add({
+                        name: key,
+                        id: state[key].id
+                    });
+                }
+            });
+            traverse(category.subcategories);
+          });
+        };
+    
+        traverse(filterCategories);
+        setCheckedCategories(checked);
+    };
+
+    console.log(checkedCategories)
 
     return (
         <div>
@@ -106,12 +119,13 @@ export const ProductsPage = () => {
                 setIsOpen={setModal}
                 swipeable={false}
                 additionalStyles={{
-                    container: 'fixed inset-0 overflow-y-scroll px-8 pt-80 flex items-center justify-center'
+                    container: 'fixed inset-0 overflow-y-scroll my-16 flex items-center justify-center',
+                    panel: 'w-full h-3/4 px-4'
                 }}
-                >
-                <Filters filterGroups={filterGroups} onFilterChange={handleFilterChange}/>
+            >
+                <CategoryList categories={filterCategories} onFilterChange={handleFilterChange}/>
                 <div className='mt-2 w-1/2 mx-auto'>
-                    <Button showButton={true} onClick={() => setModal(false)} disabled={disabledBtn}>Применить</Button>
+                    <Button showButton={true} onClick={() => {setModal(false); updateСheckedCategories(filterCategories)}} disabled={disabledBtn}>Применить</Button>
                 </div>
                 <Button 
                     showButton={true} 
