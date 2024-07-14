@@ -3,7 +3,7 @@ import useApi from '../../hooks/useApi';
 import { BrandModel, PostModel } from '../../api/data-contracts';
 import { Photo } from '../common/Photo';
 import { useNavigate } from 'react-router-dom';
-import { Switch } from '@headlessui/react';
+import { Switcher } from '../common/Switcher';
 
 
 export const Post = ({ id }: { id: string }) => {
@@ -22,9 +22,12 @@ export const Post = ({ id }: { id: string }) => {
         if(data) {setGetInfo(true)};
     }, [data])
 
+    // стейты на прозрачность фона, отображения количества строк в описании и анимацию появления текста
     const [opacity, setOpacity] = useState<number>(0);
     const [lines, setLines] = useState<string>('line-clamp-2');
-    const [slideUp, setSlideUp] = useState<string>('line-clamp-2');
+    const [slideUp, setSlideUp] = useState<string>('');
+
+    // колбек на изменение вышеуказанных стейтов
     const readingMode = () => {
         setLines('');
         setSlideUp('animate-slide-up');
@@ -56,18 +59,8 @@ export const Post = ({ id }: { id: string }) => {
             {!error && data && (
                 <div className="relative w-full bg-light-gray" style={{ paddingBottom: "133%" }}>
                     <div className='absolute top-2 left-7 z-10'>
-                        <Switch
-                            checked={enabledSwitch}
-                            onChange={setEnabledSwitch}
-                            className="group relative flex h-7 w-14 cursor-pointer rounded-full bg-white/10 p-1 transition-colors duration-200 ease-in-out focus:outline-none data-[focus]:outline-1 data-[focus]:outline-white data-[checked]:bg-white/10"
-                        >
-                            <span
-                                aria-hidden="true"
-                                className="pointer-events-none inline-block size-5 translate-x-0 rounded-full bg-white ring-0 shadow-lg transition duration-200 ease-in-out group-data-[checked]:translate-x-7"
-                            />
-                        </Switch>
+                        <Switcher enabledSwitch={enabledSwitch} setEnabledSwitch={setEnabledSwitch} />
                     </div>
-                    
                     <div className="absolute inset-0 flex items-center justify-center">
                         <Photo
                         id={data.file?.guid ?? null}

@@ -26,3 +26,6 @@ serve:
 
 swagger: 
 	npx swagger-typescript-api -p http://vne.su:8081/swagger/v1/swagger.json -o ./src/api -n wearApi.ts --route-types --modular --axios
+
+cleanCache:
+	rm -rf node_modules/.cache
