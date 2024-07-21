@@ -2,8 +2,13 @@ import React, { useState } from 'react';
 import ReactSlider from 'react-slider';
 
 
-const ItemSizeSlider = ({ onChange }: { onChange: (value: number) => void }) => {
-    const [value, setValue] = useState(2);
+const ItemSizeSlider = ({ onChange, defaultValue, maxValue }: 
+    { 
+        onChange: (value: number) => void,
+        defaultValue: number,
+        maxValue: number
+    }) => {
+    const [value, setValue] = useState(defaultValue);
 
     const handleChange = (newValue: number) => {
         setValue(newValue);
@@ -26,9 +31,9 @@ const ItemSizeSlider = ({ onChange }: { onChange: (value: number) => void }) => 
                         />
                     );
                 }}
-                defaultValue={2}
+                defaultValue={defaultValue}
                 min={1}
-                max={3}
+                max={maxValue}
                 step={1}
                 onChange={handleChange}
                 value={value}

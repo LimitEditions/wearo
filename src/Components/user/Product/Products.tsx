@@ -31,7 +31,7 @@ export const Products = ({productsList}: {productsList: ProductModel[] | Product
 
     return (
         <div>
-            <ItemSizeSlider onChange={setItemSize} />
+            <ItemSizeSlider onChange={setItemSize} defaultValue={2} maxValue={3}/>
             <div className='w-full flex flex-wrap justify-between p-1'>
                 {productsList.map((prod) => {
                 const isProductItem = isProductItemModel(prod);

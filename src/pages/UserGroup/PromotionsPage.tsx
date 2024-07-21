@@ -18,6 +18,7 @@ export const PromotionsPage = () => {
     const [data, isLoading, error] = useApi< 'promotionsList', PromotionModelDataResult >(
         'promotionsList', params, config, true 
     );
+    
 
     useEffect(() => {
         setPromotionsList(data?.data as PromotionModel[]);
@@ -27,6 +28,8 @@ export const PromotionsPage = () => {
         <Routes>
             <Route index element={
                 <div>
+                    <h1 className='uppercase text-lg my-3 mx-4'>Мои промокоды</h1>
+                    <p className='text-md mx-2'>Приобретайте изделия и открывайте новые персональные промокоды, чтобы покупать дешевле. К одному заказу можно применить один промокод.</p>
                     <IsLoading show={isLoading} />
                     <ErrorReq show={!!error} error={error} />
                     <Promotions promotionsList={ promotionsList || null} params={params} config={config}/> 

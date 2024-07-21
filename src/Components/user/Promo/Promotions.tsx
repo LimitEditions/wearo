@@ -4,6 +4,7 @@ import { ProductItemModelDataResult, PromotionModel, ScanModelDataResult } from 
 import { Photo } from '../../common/Photo';
 import moment from 'moment';
 import { useNavigate } from 'react-router-dom';
+import ItemSizeSlider from '../../common/ItemSizeSlider';
 
 
 export const Promotions = ({ promotionsList, params, config }: { promotionsList: PromotionModel[] | null, params: any, config: any}) => {
@@ -24,34 +25,43 @@ export const Promotions = ({ promotionsList, params, config }: { promotionsList:
     const scannedProductCount: number  = useMemo(() => dataScansCount?.total as number, [dataScansCount]);
 
      // фильтрация списка акций
-     useEffect(() => {
+    useEffect(() => {
         setFiltredPromotionsList(promotionsList && promotionsList.length > 0 ? promotionsList.filter(el => {
             return el.productInOwnershipCount as number <= productInOwnershipCount && 
             el.scannedProductCount as number <= scannedProductCount;
         }): [])
-    },[promotionsList, productInOwnershipCount, scannedProductCount])
+    },[promotionsList, productInOwnershipCount, scannedProductCount]);
+
+    // размеры карточек
+    const [itemSize, setItemSize] = useState(2);
+    const getItemWidth = () => {
+        switch (itemSize) {
+        case 1:
+            return 'w-44 transition-all duration-1000 ease-in-out';
+        case 2:
+            return 'w-full transition-all duration-1000 ease-in-out';
+        default:
+            return 'w-full transition-all duration-1000 ease-in-out';
+        };
+    };
 
     return (
         <div>
+            <ItemSizeSlider onChange={setItemSize} defaultValue={2} maxValue={2}/>
             {filtredPromotionsList && (
-                <div className="flex flex-col items-center p-3">
+                <div className="w-full flex flex-wrap justify-around px-2 text-sm">
                     {filtredPromotionsList.map((el) => (
-                    <div
-                        key={el.guid}
-                        className="w-full bg-gray-200 relative rounded-md shadow-md p-2 m-2 space-y-4"
-                        onClick={() => navigate(`./${el.guid}`)}
-                    >
-                        <h1 className="text-xl font-semibold ">{el.name}</h1>
-                        <div className='absolute top-0 right-1'>
-                            <Photo id={el.imageGuid || ''} styles={'float-right w-1/4 object-cover m-0'} alt={'фото'} />
+                        <div
+                            key={el.guid}
+                            className={`relative ${getItemWidth()} h-36 bg-yellow shadow-md box-border space-y-2 p-4 m-0.5`}
+                            onClick={() => navigate(`./${el.guid}`)}
+                        >
+                            <h1 className="uppercase font-semibold">{el.name}</h1>
+                            <p>{el.text}</p>
+                            <p className='text-xs'>{moment(el.start).format('DD.MM.YYYY')} - {moment(el.end).format('DD.MM.YYYY')}</p>
+
+                            <Photo id={el.imageGuid || ''} styles={'absolute bottom-1 left-1 w-16 object-cover m-1'} alt={'фото'} />
                         </div>
-                        <div className="bg-blue-500 text-white px-1 py-3 rounded-md ">
-                            {el.text}
-                        </div>
-                        <div className="text-gray-600">
-                            <span>{moment(el.start).format('DD.MM.YYYY')} - {moment(el.end).format('DD.MM.YYYY')}</span>
-                        </div>
-                    </div>
                     ))}
                 </div>
             )}

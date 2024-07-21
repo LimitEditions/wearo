@@ -10,7 +10,8 @@ export const theme = {
             'medium-gray': '#797C8E',
             'light-gray': '#9095B5',
             'white-fon': '#F9F8FF',
-            'violet': '#C6C2FF'
+            'violet': '#C6C2FF',
+            'yellow': '#DFF37D'
         },
         fontFamily: {
             'sf-pro': ['"SF Pro Text"'],
