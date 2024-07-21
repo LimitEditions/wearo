@@ -5,7 +5,7 @@ import useApi from '../../hooks/useApi'
 import { retrieve } from '../../utils/encryption'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Modal } from '../common/Modal'
-import { SuccessfulContent } from '../common/SuccessfulContent'
+import { ResultInModal } from '../common/ResultInModal'
 import { Button } from '../common/Button'
 import { Input } from '../common/InputGroup/Input'
 
@@ -95,7 +95,10 @@ export const RequestButtons = () => {
           {error ? 
             <span className={getStyles(spanStyle)}>Ошибка запроса, повторите позже</span> 
             :
-            <SuccessfulContent message={`Заявка успешно ${status === 'approve'? 'одобрена': 'отклонена'}`} />
+            <ResultInModal 
+              message={`Заявка успешно ${status === 'approve'? 'одобрена': 'отклонена'}`}
+              path="/images/successful.png"
+            />
           }
         </Modal>
     </div>

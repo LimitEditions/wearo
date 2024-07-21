@@ -55,6 +55,7 @@
     "jest-test": "jest",
     "eject": "react-scripts eject"
   },
+  "proxy": "http://vne.su:8081",
   "eslintConfig": {
     "extends": [
       "react-app",

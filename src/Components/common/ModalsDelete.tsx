@@ -7,7 +7,7 @@ import { Button } from "./Button";
 import { useNavigate, useParams } from "react-router-dom";
 import { retrieve } from "../../utils/encryption";
 import useApi from "../../hooks/useApi";
-import { SuccessfulContent } from "./SuccessfulContent";
+import { ResultInModal } from "./ResultInModal";
 
 export const ModalsDelete = ({
   apiMethod,
@@ -81,7 +81,7 @@ export const ModalsDelete = ({
             Ошибка запроса, повторите позже.
           </span>
         ) : (
-          <SuccessfulContent message={messageSuccess} />
+          <ResultInModal message={messageSuccess} path="/images/successful.png"/>
         )}
       </Modal>
     </>

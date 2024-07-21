@@ -24,10 +24,16 @@ export const theme = {
                 '0%': { transform: 'translateY(100%)', opacity: '0' },
                 '100%': { transform: 'translateY(0)', opacity: '1' },
             },
+            'slide-diagonal': {
+                '0%': { transform: 'translateX(0%) translateY(0%)', },
+                '50%': { transform: 'translateX(-80%) translateY(-30%)' },
+                '100%': { transform: 'translateX(-80%) translateY(-30%)' },
+            },
         },
         animation: {
             'fade-in': 'fade-in 1s ease-in-out',
             'slide-up': 'slide-up 2s ease-in-out',
+            'slide-diagonal': 'slide-diagonal 3s ease-in-out 1.5s infinite',
         },
     },
 };

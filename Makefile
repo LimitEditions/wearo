@@ -29,3 +29,6 @@ swagger:
 
 cleanCache:
 	rm -rf node_modules/.cache
+
+https:
+	HTTPS=true npm run start

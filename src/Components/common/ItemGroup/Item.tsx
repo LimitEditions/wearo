@@ -5,7 +5,7 @@ import { BlockStyle } from "../../../types/interfaces/IStyles";
 import getStyles from "../../../utils/getStyles";
 import { Arrow } from "../Arrow";
 
-const Item: React.FC<IItemProps> = ({ path, children }) => {
+const Item: React.FC<IItemProps> = ({ path, children, arrow=true }) => {
   // const location = useLocation();
   const navigate = useNavigate();
   // Если задан путь, то по клику будет осуществлен переход на другую страницу
@@ -25,7 +25,7 @@ const Item: React.FC<IItemProps> = ({ path, children }) => {
       onClick={handleClick}
     >
       {children}
-      {path && <Arrow direct="right" />}
+      {arrow && <Arrow direct="right" />}
     </div>
   );
 };
@@ -41,4 +41,4 @@ const divStyle: BlockStyle = {
 
 const hoverStyle: BlockStyle = {
   hover: "cursor-pointer focus:outline-none hover:animate-pulse",
-}
+};

@@ -10,9 +10,11 @@ import { useUserUpdate } from '../../../hooks/useUserUpdate';
 import { IAuthMeList } from '../../../types/interfaces/ApiResponses/IAuthMeList';
 import useAuth from '../../../hooks/useAuth';
 import { Button } from '../../common/Button';
+import { useNavigate } from 'react-router-dom';
 
 
 export const Profile = () => {
+    const navigate = useNavigate();
     const isAuth = useAuth(true);
     const [profileInfo, setPorfileInfo] = useState<IAuthMeList>(isAuth);
     useEffect(() => {
@@ -50,6 +52,10 @@ export const Profile = () => {
                 <Photo id={profileInfo.mainAvatarGuid || null} styles={getStyles(fotoStyle)} alt={'foto'} />
                 <p>{profileInfo.username}</p>
             </div>
+            <Button showButton={true} styles={scanBtn} onClick={() => navigate('./scan')}>
+                Отсканировать изделие
+            </Button>
+
             <Item path="/favorites">Избранное</Item>
             <Item path="/subscriptions">Подписки</Item>
             <Item path="/scans">Сканирования</Item>
@@ -110,7 +116,7 @@ export const Profile = () => {
 
 const profStyle: BlockStyle = {
     blockSize: "w-full",
-    spacing: "p-4",
+    spacing: "px-3",
     media: 'sm:w-1/4'
 };
 
@@ -126,4 +132,10 @@ const fotoStyle: BlockStyle = {
 const headStyle: BlockStyle = {
     text: "text-xl font-bold",
     spacing: "my-4",
+};
+
+const scanBtn: BlockStyle = {
+    container: "w-full rounded-xl",
+    spacing: "my-3 py-4",
+    background: "bg-violet"
 };

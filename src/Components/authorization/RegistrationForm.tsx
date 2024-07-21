@@ -5,7 +5,7 @@ import { validateField } from "../../utils/validation";
 import { IRegistrationFormProps } from "../../types/interfaces/componentsProps/IFormProps";
 import useApi from "../../hooks/useApi";
 import { Modal } from "../common/Modal";
-import { SuccessfulContent } from "../common/SuccessfulContent";
+import { ResultInModal } from "../common/ResultInModal";
 import { AuthForm } from "./AuthForm";
 import { IsLoading } from "../common/InfoGroup/IsLoading";
 import { ErrorReq } from "../common/InfoGroup/ErrorReq";
@@ -90,7 +90,10 @@ export const RegistrationForm = ({
       <IsLoading show={isLoading} />
       <ErrorReq show={!!error} error={error}/>
       <Modal isOpen={mod} setIsOpen={setMod} swipeable={false}>
-        <SuccessfulContent message={type === "reg" ? "Регистрация прошла успешно!" : "Администратор создан."} />
+        <ResultInModal 
+          message={type === "reg" ? "Регистрация прошла успешно!" : "Администратор создан."}
+          path="/images/successful.png"
+        />
       </Modal>
       {/* <Modal isOpen={mod} 
             setIsOpen={setMod} 
