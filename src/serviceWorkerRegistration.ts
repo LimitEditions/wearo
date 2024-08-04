@@ -137,7 +137,7 @@ export function unregister() {
 }
 
 // публичный VAPID ключ, сгененрированный в паре с приватным на сервере
-const publicVapidKey = 'YOUR_PUBLIC_VAPID_KEY';
+const publicVapidKey = 'BG-d_Ln_C7s7I_MFQpHim75qy2Gx21RI9X03H1SVpayU7F53Esz9aGJQeNSIiPn9fqydD-J51J7CvSj2wwYwSAA';
 
 /**
  * Функция для преобразования base64 строки в Uint8Array

@@ -4,7 +4,7 @@ import { Route, Routes } from "react-router-dom";
 import { RequestsPage } from "./Requests/RequestsPage";
 import { UsersPage } from "./Users/UsersPage";
 import { BrandsPage } from "./Brands/BrandsPage";
-import { PostsPage } from "./PostsPage";
+import { PostListPage } from "./PostListPage";
 import { AdminsPage } from "./AdminsPage";
 
 
@@ -27,7 +27,7 @@ export const ControlPage = () => {
                 <Route path='admins/*' element={ <AdminsPage /> }/>
                 <Route path="users/*" element={<UsersPage />} />
                 <Route path="brands/*" element={<BrandsPage />} />
-                <Route path="posts" element={<PostsPage />} />
+                <Route path="posts" element={<PostListPage />} />
             </Routes>
         </>
     );

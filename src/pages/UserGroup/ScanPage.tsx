@@ -21,7 +21,7 @@ export const ScanPage = () => {
     return (
         <>
 
-            <NFCReader />
+            <NFCReader setModal={setModal}/>
             <NFCOnboarding />
             
             <Modal

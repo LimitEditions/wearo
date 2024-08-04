@@ -19,7 +19,7 @@ export default function CheckboxUnit({
                 >
                 <CheckIcon className="hidden size-5 fill-black group-data-[checked]:block" />
             </Checkbox>
-            <label htmlFor="my-checkbox" className="ml-2 text-md text-white-fon">
+            <label htmlFor="my-checkbox" className="ml-2 text-md text-black">
                 {text}
             </label>
         </div>

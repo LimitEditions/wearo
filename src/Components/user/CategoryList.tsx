@@ -17,7 +17,7 @@ const CategoryList: React.FC<CategoryListProps> = ({ categories, onFilterChange 
             <div className='my-2' key={category.title.guid}>
                 <Disclosure>
                     <DisclosureButton className='w-full flex justify-between relative'>
-                        <div className='text-lg text-white-fon'>{category.title.name}</div>
+                        <div className='text-lg text-black'>{category.title.name}</div>
                     </DisclosureButton>
                     <DisclosurePanel className='pl-4'>
                         {category.subcategories.map(subcategory => renderCategory(subcategory))}

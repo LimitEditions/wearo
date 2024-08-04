@@ -1,15 +1,16 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { FaTelegramPlane, FaWhatsapp, FaEnvelope } from 'react-icons/fa';
+import { FaTelegramPlane, FaWhatsapp, FaEnvelope, FaVk } from 'react-icons/fa';
 import { Button } from './Button';
 import { Link } from 'react-router-dom';
 
 interface ContactButtonProps {
-  telegram: string;
-  whatsapp: string;
-  email: string;
+  telegram?: string;
+  whatsapp?: string;
+  email?: string;
+  vk?: string;
 }
 
-export const ContactButtons: React.FC<ContactButtonProps> = ({ telegram, whatsapp, email }) => {
+export const ContactButtons: React.FC<ContactButtonProps> = ({ telegram, whatsapp, email, vk }) => {
     const [isExpanded, setIsExpanded] = useState(false);
     const ref = useRef<HTMLDivElement>(null);
 
@@ -43,6 +44,10 @@ export const ContactButtons: React.FC<ContactButtonProps> = ({ telegram, whatsap
                 {email &&
                 <Link to={`mailto:${email}`} target="_blank" rel="noopener noreferrer">
                     <FaEnvelope className="text-red-500 w-7 h-7 hover:text-red-600 transition-all duration-300" />
+                </Link>}
+                {vk &&
+                <Link to={`mailto:${email}`} target="_blank" rel="noopener noreferrer">
+                    <FaVk className="text-blue-500 w-7 h-7 hover:text-red-600 transition-all duration-300" />
                 </Link>}
             </div>
             )}

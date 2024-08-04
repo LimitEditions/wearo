@@ -509,6 +509,19 @@ export interface CreateConfiramtionPhoneModel {
   phone?: string;
 }
 
+export interface CreateFavoriteModel {
+  /**
+   * Пользователь
+   * @format uuid
+   */
+  userGuid?: string;
+  /**
+   * Товар
+   * @format uuid
+   */
+  productGuid?: string;
+}
+
 export interface CreateFileProductModel {
   /**
    * Гуид файла
@@ -778,6 +791,8 @@ export interface CreateProductModel {
   mainPhotoGuid?: string | null;
   /** Пол */
   gender?: Gender;
+  /** URI Продукта */
+  uri?: string | null;
 }
 
 export interface CreatePromotionCodeModel {
@@ -901,12 +916,109 @@ export interface CreateUserModel {
    * @format uuid
    */
   mainAvatarGuid?: string | null;
+  /** @format date */
+  birthDate?: string | null;
+  city?: string | null;
+  /** @format double */
+  height?: number | null;
+  /** @format double */
+  weight?: number | null;
 }
 
 export enum EditType {
   None = "None",
   Delete = "Delete",
   Add = "Add",
+}
+
+export enum EnitityViewType {
+  Story = "Story",
+  Product = "Product",
+  Post = "Post",
+}
+
+/** Просмотр сущности */
+export interface EntityViewModel {
+  /**
+   * Идентификатор
+   * @format uuid
+   */
+  guid?: string;
+  /** Отметка удаления */
+  isDeleted?: boolean;
+  /**
+   * Дата создания
+   * @format date-time
+   */
+  createDT?: string;
+  /**
+   * Дата обнавления
+   * @format date-time
+   */
+  updateDT?: string;
+  /**
+   * Ид Сущности
+   * @format uuid
+   */
+  entityGuid?: string;
+  /**
+   * Ид пользователя
+   * @format uuid
+   */
+  userGuid?: string;
+}
+
+/** Результат чтения данных. */
+export interface EntityViewModelDataResult {
+  /**
+   * Общее количество найденных элементов.
+   * @format int32
+   */
+  total?: number;
+  /** Данные. */
+  data?: EntityViewModel[];
+}
+
+/** Избранная вещь пользователя */
+export interface FavoriteModel {
+  /**
+   * Идентификатор
+   * @format uuid
+   */
+  guid?: string;
+  /** Отметка удаления */
+  isDeleted?: boolean;
+  /**
+   * Дата создания
+   * @format date-time
+   */
+  createDT?: string;
+  /**
+   * Дата обнавления
+   * @format date-time
+   */
+  updateDT?: string;
+  /**
+   * Пользователь
+   * @format uuid
+   */
+  userGuid?: string;
+  /**
+   * Товар
+   * @format uuid
+   */
+  productGuid?: string;
+}
+
+/** Результат чтения данных. */
+export interface FavoriteModelDataResult {
+  /**
+   * Общее количество найденных элементов.
+   * @format int32
+   */
+  total?: number;
+  /** Данные. */
+  data?: FavoriteModel[];
 }
 
 /** Ссылка на файл */
@@ -1116,6 +1228,33 @@ export interface HighlightStoryModel {
    * @format uuid
    */
   storyGuid?: string;
+}
+
+export interface ImportResult {
+  resultCode?: ImportResultCode;
+  errorDetail?: string | null;
+  productsResult?: Record<string, ImportResultCode>;
+}
+
+export enum ImportResultCode {
+  Ok = "Ok",
+  OkCreated = "OkCreated",
+  OkEdited = "OkEdited",
+  InvalidCategory = "InvalidCategory",
+  InvalidValue = "InvalidValue",
+  InvalidFile = "InvalidFile",
+  EntityExists = "EntityExists",
+}
+
+/** Результат чтения данных. */
+export interface Int32DataResult {
+  /**
+   * Общее количество найденных элементов.
+   * @format int32
+   */
+  total?: number;
+  /** Данные. */
+  data?: number[];
 }
 
 /** Образ/лукбук */
@@ -1349,6 +1488,13 @@ export interface MessageModelDataResult {
   data?: MessageModel[];
 }
 
+export interface NotificationData {
+  endpoint?: string;
+  p256DH?: string;
+  auth?: string;
+  payload?: string;
+}
+
 /** Дополнительные файлы к посту */
 export interface PostFileModel {
   /**
@@ -1452,6 +1598,8 @@ export interface PostModel {
    * @format uuid
    */
   promoGuid?: string | null;
+  /** Ссылки на товары при наличии */
+  products?: PostProductModel[] | null;
 }
 
 /** Результат чтения данных. */
@@ -1463,6 +1611,36 @@ export interface PostModelDataResult {
   total?: number;
   /** Данные. */
   data?: PostModel[];
+}
+
+export interface PostProductModel {
+  /**
+   * Идентификатор
+   * @format uuid
+   */
+  guid?: string;
+  /** Отметка удаления */
+  isDeleted?: boolean;
+  /**
+   * Дата создания
+   * @format date-time
+   */
+  createDT?: string;
+  /**
+   * Дата обнавления
+   * @format date-time
+   */
+  updateDT?: string;
+  /**
+   * Ид поста
+   * @format uuid
+   */
+  postGuid?: string;
+  /**
+   * Ид продукта
+   * @format uuid
+   */
+  productGuid?: string;
 }
 
 export interface ProblemDetails {
@@ -1736,6 +1914,8 @@ export interface ProductModel {
    * @format uuid
    */
   mainPhotoGuid?: string | null;
+  /** URI Продукта */
+  uri?: string | null;
   /** Бренд */
   brand?: BrandModel;
   /** Коллекция одежды */
@@ -1887,6 +2067,11 @@ export interface PromotionProductModel {
   promotion?: PromotionModel;
   /** Продукт */
   product?: ProductModel;
+}
+
+export interface PushSubscription {
+  endpoint?: string | null;
+  keys?: Record<string, string>;
 }
 
 export interface RefreshModel {
@@ -2337,6 +2522,8 @@ export interface UpdateProductModel {
   mainPhotoGuid?: string | null;
   /** Пол */
   gender?: Gender;
+  /** URI Продукта */
+  uri?: string | null;
 }
 
 /** Модель редактирования промо */
@@ -2442,6 +2629,13 @@ export interface UpdateUserModel {
   vkId?: string | null;
   /** Флаги доступности */
   flags?: UserInfoFlags;
+  /** @format date */
+  birthDate?: string | null;
+  city?: string | null;
+  /** @format double */
+  height?: number | null;
+  /** @format double */
+  weight?: number | null;
 }
 
 /** Флаги доступности */
@@ -2501,6 +2695,13 @@ export interface UserModel {
    * @format uuid
    */
   mainAvatarGuid?: string | null;
+  /** @format date */
+  birthDate?: string | null;
+  city?: string | null;
+  /** @format double */
+  height?: number | null;
+  /** @format double */
+  weight?: number | null;
 }
 
 /** Результат чтения данных. */

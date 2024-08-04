@@ -117,7 +117,6 @@ export const Profile = () => {
 const profStyle: BlockStyle = {
     blockSize: "w-full",
     spacing: "px-3",
-    media: 'sm:w-1/4'
 };
 
 const nameStyle: BlockStyle = {

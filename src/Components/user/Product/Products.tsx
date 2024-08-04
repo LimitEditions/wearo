@@ -3,11 +3,11 @@ import { ProductItemModel, ProductModel } from '../../../api/data-contracts';
 import { useNavigate } from 'react-router-dom';
 import { Photo } from '../../common/Photo';
 import ItemSizeSlider from '../../common/ItemSizeSlider';
+import { v4 as uuidv4 } from 'uuid';
 
 
 export const Products = ({productsList}: {productsList: ProductModel[] | ProductItemModel[] }) => {
     const navigate = useNavigate();
-
     const [itemSize, setItemSize] = useState(2); // Начальное состояние, где 2 итема помещаются в ряд
 
     // размеры итемов
@@ -42,7 +42,7 @@ export const Products = ({productsList}: {productsList: ProductModel[] | Product
                 return (
                     product && 
                     <div
-                        key={product.guid}
+                        key={uuidv4()}
                         className={`${getItemWidth()} m-0 p-1 flex flex-col items-center justify-around`}
                         onClick={() => navigate(endPoint, {
                             state: {

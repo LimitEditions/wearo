@@ -35,6 +35,7 @@ import {
   CreateCommentModel,
   CreateConfiramtionEmailModel,
   CreateConfiramtionPhoneModel,
+  CreateFavoriteModel,
   CreateFileProductModel,
   CreateHighlightModel,
   CreateLookModel,
@@ -54,6 +55,10 @@ import {
   CreateSubscriptionModel,
   CreateTipModel,
   CreateUserModel,
+  EnitityViewType,
+  EntityViewModelDataResult,
+  FavoriteModel,
+  FavoriteModelDataResult,
   FileModel,
   FileProductModel,
   FileType,
@@ -61,11 +66,14 @@ import {
   ForwardMessagesModel,
   HighlightModel,
   HighlightModelDataResult,
+  ImportResult,
+  Int32DataResult,
   LookModel,
   LookModelDataResult,
   MaterialModel,
   MessageModel,
   MessageModelDataResult,
+  NotificationData,
   PostFileModel,
   PostModel,
   PostModelDataResult,
@@ -82,6 +90,7 @@ import {
   ProductStatus,
   PromotionModel,
   PromotionModelDataResult,
+  PushSubscription,
   RefreshModel,
   RejectRequestModel,
   RequestStatus,
@@ -815,6 +824,110 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
   /**
    * No description
    *
+   * @tags Enums
+   * @name EnumsList
+   * @request GET:/api/Enums
+   * @secure
+   */
+  enumsList = (
+    query?: {
+      name?: string;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<void, ProblemDetails>({
+      path: `/api/Enums`,
+      method: "GET",
+      query: query,
+      secure: true,
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags Favorites
+   * @name FavoritesList
+   * @summary Поиск фаворитов
+   * @request GET:/api/Favorites
+   * @secure
+   */
+  favoritesList = (
+    query?: {
+      /**
+       * Ид пользователя
+       * Должно быть заполнено оно либо продукт
+       * @format uuid
+       */
+      UserGuid?: string;
+      /**
+       * Ид продукта
+       * Должно быть заполнено оно либо пользователь
+       * @format uuid
+       */
+      ProductGuid?: string;
+      /**
+       * Номер страницы (по умолчанию = 1).
+       * @format int32
+       */
+      Page?: number;
+      /**
+       * Размер страницы (по умолчанию = 25).
+       * @format int32
+       */
+      PageSize?: number;
+      /** Поле, по которому происходит сортировка */
+      SortMember?: string;
+      /** Направление сортировки - по возрастанию */
+      Ascending?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<FavoriteModelDataResult, ProblemDetails>({
+      path: `/api/Favorites`,
+      method: "GET",
+      query: query,
+      secure: true,
+      format: "json",
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags Favorites
+   * @name FavoritesCreate
+   * @summary Создание избранного
+   * @request POST:/api/Favorites
+   * @secure
+   */
+  favoritesCreate = (data: CreateFavoriteModel, params: RequestParams = {}) =>
+    this.request<FavoriteModel, ProblemDetails>({
+      path: `/api/Favorites`,
+      method: "POST",
+      body: data,
+      secure: true,
+      type: ContentType.Json,
+      format: "json",
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags Favorites
+   * @name FavoritesDelete
+   * @summary Удаление избранного
+   * @request DELETE:/api/Favorites/{id}
+   * @secure
+   */
+  favoritesDelete = (id: string, params: RequestParams = {}) =>
+    this.request<void, ProblemDetails>({
+      path: `/api/Favorites/${id}`,
+      method: "DELETE",
+      secure: true,
+      ...params,
+    });
+  /**
+   * No description
+   *
    * @tags Files
    * @name FilesDetail
    * @summary Получить файл
@@ -1335,6 +1448,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @name MessagesDetail
    * @summary Получить по ид
    * @request GET:/api/Messages/{id}
+   * @deprecated
    * @secure
    */
   messagesDetail = (id: string, params: RequestParams = {}) =>
@@ -1352,6 +1466,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @name MessagesDelete
    * @summary Удаление сообщения
    * @request DELETE:/api/Messages/{id}
+   * @deprecated
    * @secure
    */
   messagesDelete = (id: string, params: RequestParams = {}) =>
@@ -1368,6 +1483,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @name MessagesList
    * @summary Поиск сообщений
    * @request GET:/api/Messages
+   * @deprecated
    * @secure
    */
   messagesList = (
@@ -1438,6 +1554,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @name MessagesCreate
    * @summary Отправка сообщений
    * @request POST:/api/Messages
+   * @deprecated
    * @secure
    */
   messagesCreate = (data: CreateMessageModel, params: RequestParams = {}) =>
@@ -1457,6 +1574,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @name MessagesUpdate
    * @summary Редактирование сообщения
    * @request PUT:/api/Messages
+   * @deprecated
    * @secure
    */
   messagesUpdate = (data: UpdateMessageModel, params: RequestParams = {}) =>
@@ -1476,6 +1594,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @name MessagesForwardCreate
    * @summary Переслать сообщения
    * @request POST:/api/Messages/Forward
+   * @deprecated
    * @secure
    */
   messagesForwardCreate = (data: ForwardMessagesModel, params: RequestParams = {}) =>
@@ -1495,6 +1614,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @name MessagesMarkReadedUpdate
    * @summary Пометить сообщения как прочитанные
    * @request PUT:/api/Messages/MarkReaded
+   * @deprecated
    * @secure
    */
   messagesMarkReadedUpdate = (data: string[], params: RequestParams = {}) =>
@@ -2029,22 +2149,18 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    */
   productsList = (
     query?: {
-      /**
-       * Бренд
-       * @format uuid
-       */
-      BrandGuid?: string;
+      /** Бренд */
+      BrandsGuid?: string[];
       /** Статус вещи */
       Status?: ProductStatus;
       /** Сезон */
       Season?: Season;
-      /**
-       * Коллекция
-       * @format uuid
-       */
-      CollectionGuid?: string;
+      /** Коллекция */
+      CollectionsGuid?: string[];
       /** Окраска */
-      Coloring?: Coloring;
+      Coloring?: Coloring[];
+      /** Категория товара */
+      Catigories?: string[];
       /**
        * Номер страницы (по умолчанию = 1).
        * @format int32
@@ -2277,6 +2393,58 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
   /**
    * No description
    *
+   * @tags Products
+   * @name ProductsExportList
+   * @request GET:/api/Products/Export
+   * @secure
+   */
+  productsExportList = (
+    query?: {
+      /** @format uuid */
+      brandId?: string;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<File, ProblemDetails>({
+      path: `/api/Products/Export`,
+      method: "GET",
+      query: query,
+      secure: true,
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags Products
+   * @name ProductsImportCreate
+   * @request POST:/api/Products/Import
+   * @secure
+   */
+  productsImportCreate = (
+    data: {
+      /** @format binary */
+      xlsx: File;
+    },
+    query?: {
+      /** @format uuid */
+      brandGuid?: string;
+      /** @default true */
+      testMode?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<void, ProblemDetails | ImportResult>({
+      path: `/api/Products/Import`,
+      method: "POST",
+      query: query,
+      body: data,
+      secure: true,
+      type: ContentType.FormData,
+      ...params,
+    });
+  /**
+   * No description
+   *
    * @tags Promotions
    * @name PromotionsDetail
    * @summary Получить по ид
@@ -2499,6 +2667,40 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
       query: query,
       secure: true,
       format: "json",
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags Push
+   * @name PushSubscribeCreate
+   * @request POST:/api/Push/subscribe
+   * @secure
+   */
+  pushSubscribeCreate = (data: PushSubscription, params: RequestParams = {}) =>
+    this.request<void, any>({
+      path: `/api/Push/subscribe`,
+      method: "POST",
+      body: data,
+      secure: true,
+      type: ContentType.Json,
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags Push
+   * @name PushSendCreate
+   * @request POST:/api/Push/send
+   * @secure
+   */
+  pushSendCreate = (data: NotificationData, params: RequestParams = {}) =>
+    this.request<void, any>({
+      path: `/api/Push/send`,
+      method: "POST",
+      body: data,
+      secure: true,
+      type: ContentType.Json,
       ...params,
     });
   /**
@@ -3331,6 +3533,106 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
     this.request<boolean, any>({
       path: `/api/Users/Check/${username}`,
       method: "GET",
+      secure: true,
+      format: "json",
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags Views
+   * @name ViewsDetail
+   * @summary Запрос просмотров для сущностей
+   * @request GET:/api/Views/{entity}/{id}
+   * @secure
+   */
+  viewsDetail = (
+    entity: EnitityViewType,
+    id: string,
+    query?: {
+      /**
+       * Номер страницы (по умолчанию = 1).
+       * @format int32
+       */
+      Page?: number;
+      /**
+       * Размер страницы (по умолчанию = 25).
+       * @format int32
+       */
+      PageSize?: number;
+      /** Поле, по которому происходит сортировка */
+      SortMember?: string;
+      /** Направление сортировки - по возрастанию */
+      Ascending?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<EntityViewModelDataResult, ProblemDetails>({
+      path: `/api/Views/${entity}/${id}`,
+      method: "GET",
+      query: query,
+      secure: true,
+      format: "json",
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags Views
+   * @name ViewsCreate
+   * @request POST:/api/Views/{entity}/{id}
+   * @secure
+   */
+  viewsCreate = (
+    id: string,
+    entity: string,
+    query?: {
+      entity?: EnitityViewType;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<EntityViewModelDataResult, ProblemDetails>({
+      path: `/api/Views/${entity}/${id}`,
+      method: "POST",
+      query: query,
+      secure: true,
+      format: "json",
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags Views
+   * @name ViewsCountDetail
+   * @summary Запрос количества просмотров для сущностей
+   * @request GET:/api/Views/{entity}/{id}/Count
+   * @secure
+   */
+  viewsCountDetail = (
+    entity: EnitityViewType,
+    id: string,
+    query?: {
+      /**
+       * Номер страницы (по умолчанию = 1).
+       * @format int32
+       */
+      Page?: number;
+      /**
+       * Размер страницы (по умолчанию = 25).
+       * @format int32
+       */
+      PageSize?: number;
+      /** Поле, по которому происходит сортировка */
+      SortMember?: string;
+      /** Направление сортировки - по возрастанию */
+      Ascending?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<Int32DataResult, ProblemDetails>({
+      path: `/api/Views/${entity}/${id}/Count`,
+      method: "GET",
+      query: query,
       secure: true,
       format: "json",
       ...params,

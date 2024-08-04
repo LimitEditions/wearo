@@ -119,7 +119,7 @@ export const ProductsPage = () => {
                 setIsOpen={setModal}
                 swipeable={false}
                 additionalStyles={{
-                    container: 'fixed inset-0 overflow-y-scroll my-16 flex items-center justify-center',
+                    container: 'fixed bg-white-fon inset-0 overflow-y-scroll my-16 flex items-center justify-center',
                     panel: 'w-full h-3/4 px-4'
                 }}
             >
@@ -129,7 +129,7 @@ export const ProductsPage = () => {
                 </div>
                 <Button 
                     showButton={true} 
-                    className='absolute top-3 right-3 opacity-40'
+                    className='absolute -top-20 right-3'
                     onClick={() => setModal(false)}
                 >
                     <img src='images/closeBtn.png' alt='крестик'/>
