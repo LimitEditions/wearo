@@ -5,7 +5,7 @@ import { IApiError } from "../types/interfaces/IApiError";
 import axios from "axios";
 
 
-const api = new Api({ baseURL: '/' });
+const api = new Api({ baseURL: 'http://vne.su:8081' });
 
 const useApi = <T extends keyof Api, Data >(
   method: T, 
