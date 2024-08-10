@@ -4,7 +4,6 @@ import { IApiResponse } from '../types/interfaces/ApiResponses/IApiResponse';
 import { IApiError } from "../types/interfaces/IApiError";
 import axios from "axios";
 
-console.log(process.env);
 const api = new Api({ baseURL: '/' });
 
 const useApi = <T extends keyof Api, Data >(
