@@ -4,8 +4,8 @@ import { IApiResponse } from '../types/interfaces/ApiResponses/IApiResponse';
 import { IApiError } from "../types/interfaces/IApiError";
 import axios from "axios";
 
-
-const api = new Api({ baseURL: 'http://vne.su:8081' });
+console.log(process.env);
+const api = new Api({ baseURL: '/' });
 
 const useApi = <T extends keyof Api, Data >(
   method: T, 
