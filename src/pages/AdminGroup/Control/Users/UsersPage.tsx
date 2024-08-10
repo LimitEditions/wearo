@@ -70,6 +70,5 @@ const imgStyle: BlockStyle = {
 
 const divStyle: BlockStyle = {
   blockSize: "min-h-screen",
-  spacing: "pb-10",
   background: "bg-gray-100",
 };

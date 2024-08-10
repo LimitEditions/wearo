@@ -44,5 +44,4 @@ export const UserSubscriptionsPage = () => {
 const divStyle: BlockStyle = {
   background: 'bg-gray-100',
   blockSize: 'min-h-screen',
-  spacing: 'pb-10'
 }

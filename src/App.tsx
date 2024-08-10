@@ -14,9 +14,9 @@ function App() {
     const location = useLocation();
 
     return (
-        <div className={getStyles(mainStyle)}>
+        <div className={getStyles(mainStyle, [ 'screen' ])}>
             <Logo />
-            <div>
+            <div className='screen__wrapper'>
                 <AnimatePresence mode="wait">
                     <Routes location={location} key={location.pathname}>
                         {
@@ -39,6 +39,5 @@ const mainStyle: BlockStyle = {
     container: 'relative overflow-hidden min-h-screen',
     text: 'font-sf-pro',
     background: 'bg-gray-200',
-    spacing: 'pb-20',
 };
 

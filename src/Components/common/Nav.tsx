@@ -39,7 +39,7 @@ export const Nav: React.FC = memo(() => {
 
     return (
         <>
-            {showNav && <nav className={getStyles(navStyle)}>     
+            {showNav && <nav className={getStyles(navStyle, ["screen__nav"])}>     
                 {data.map(e => {
                     return <Link key={e.path} to={e.path} className={getStyles(linkStyle)}>
                         <div className='w-5'>
@@ -57,11 +57,11 @@ export const Nav: React.FC = memo(() => {
 });
 
 const navStyle: BlockStyle = {
-    blockSize: "fixed bottom-0 left-1/2 w-full h-auto",
+    // blockSize: "fixed bottom-0 left-1/2 w-full h-auto",
     container: "flex justify-between",
     spacing: "py-4",
     border: "box-border border border-gray-300 rounded-md",
-    transitionsAnimation: "transform -translate-x-1/2",
+    // transitionsAnimation: "transform -translate-x-1/2",
     background: "bg-white-fon shadow-md",
     
     
