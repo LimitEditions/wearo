@@ -10,15 +10,23 @@ import { ErrorReq } from '../../common/InfoGroup/ErrorReq';
 
 export const Highlights = ({ brandId }: { brandId: string | null}) => {
     const token = useMemo(() => retrieve("token"), []);
-
+    
     const [data, isLoading, error] = useApi<'storiesHighlightsList', HighlightModelDataResult>(
         'storiesHighlightsList',
         {BrandGuid: brandId},
         { headers: { Authorization: `Bearer ${token}` } },
         true
     );
+    console.log("[STORIESHIGLIGHT]", data);
     
     const highlights = data?.data as HighlightModel[];
+
+    if (highlights) {
+        highlights[0].mainPhotoGuid = 'https://media.sproutsocial.com/uploads/2022/12/IMG_6187.png'
+        highlights[0].stories = ['https://media.sproutsocial.com/uploads/2022/12/IMG_6187.png' as any]
+        highlights[1].mainPhotoGuid = 'https://media.sproutsocial.com/uploads/2022/12/IMG_6187.png'
+    }
+
     const res = highlights && highlights.length > 0 ? highlights: HighlightsData;
 
     return (

@@ -10,7 +10,10 @@ export const Highlight = ({ highlight }: { highlight: HighlightModel}) => {
     return (
         <div>
             <StoriesIcon image={highlight.mainPhotoGuid} name={highlight.name} caller={() => setOpen(true)} />
-            <Stories highlightStories={highlight.stories || []} open={open} setOpen={setOpen} />
+            {
+                open && <Stories close={setOpen} stories={highlight.stories as string[]}/>
+            }
+            {/* <Stories highlightStories={highlight.stories || []} open={open} setOpen={setOpen} /> */}
         </div>
     );
 };
