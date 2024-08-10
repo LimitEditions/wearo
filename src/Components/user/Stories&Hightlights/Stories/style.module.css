@@ -37,7 +37,15 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: default;
   /* outline: 1px dotted black; */
+}
+
+.controller__outline {
+  outline: 2px dotted black;
+  background-color: rgba(128, 128, 128, 0.753);
+  color: white;
+  font-weight: bold;
 }
 
 .more {

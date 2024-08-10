@@ -8,7 +8,7 @@ export const More = ({ close } : MoreProps) => {
   return (
     <div className={Style.more}>
         <div className={Style.more__back} onClick={close}></div>
-        <div className={Style.more__container}>MORE</div>
+        <div className={Style.more__container}>Какой-то контент</div>
     </div>
   )
 }

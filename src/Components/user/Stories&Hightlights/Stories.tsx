@@ -174,6 +174,7 @@ import Style from './Stories/style.module.css'
 import { More } from './Stories/More'
 import { Progress } from './Stories/Progress'
 import { Controll } from './Stories/Control';
+import { useImage } from '../../../hooks/useImage';
 
 interface StoriesProps {
     close: React.Dispatch<React.SetStateAction<boolean>>;
@@ -186,6 +187,7 @@ export const Stories = ({ close, stories }: StoriesProps) => {
     const [currentStoryIndex, setCurrentStoryIndex] = useState(0);
 
     const [showMore, setShowMore] = useState(false);
+    const [pressedScreen, setPressedScreen] = useState(false);
 
     const changeIndex = (operation : (x: number) => number) => {
         if (STORIES[operation(currentStoryIndex)] !== undefined) {
@@ -194,6 +196,8 @@ export const Stories = ({ close, stories }: StoriesProps) => {
             close(false);
         }
     }
+
+    const src = useImage(STORIES[currentStoryIndex])
 
     return (
         <Modal
@@ -206,14 +210,15 @@ export const Stories = ({ close, stories }: StoriesProps) => {
             }}
         >   
             <div>
-                <div onClick={() => close(false)}>X {currentStoryIndex}</div>
-                <Progress needChangeIndex={() => changeIndex((x) => x + 1)} pause={!showMore} key={currentStoryIndex}/>
+                <div onClick={() => close(false)}>X</div>
+                <Progress needChangeIndex={() => changeIndex((x) => x + 1)} pause={showMore || src === null || pressedScreen} key={currentStoryIndex}/>
             </div>
             <div className={Style.stories}>
                 <div className={Style.img__container}>
-                    {STORIES[currentStoryIndex] && <img rel="preload" className={Style.img__item} src={STORIES[currentStoryIndex]} alt='asd'/>}
+                    {STORIES[currentStoryIndex] && src && <img rel="preload" className={Style.img__item} src={src} alt='asd'/>}
                 </div>
                 <Controll
+                    changePressed={(v: boolean) => setPressedScreen(v)}
                     changeIndex={changeIndex}
                     currentStoryIndex={currentStoryIndex}
                     showMoreClick={() => setShowMore(true)}

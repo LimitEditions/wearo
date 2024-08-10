@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react"
 import Styles from './style.module.css'
+import { useImage } from "../../../../hooks/useImage"
 
 interface StoriesIconProps {
   image?: string | null
@@ -8,21 +8,7 @@ interface StoriesIconProps {
 }
 
 export const StoriesIcon = ({ image, caller, name }: StoriesIconProps) => {
-  const [ src, setSrc ] = useState<null | string>(null)
-
-  useEffect(() => {
-    if (!image) return;
-
-    const img = new Image();
-
-    img.onload = () => {
-      setSrc(image as string)
-    }
-
-    img.src = image;
-  }, [image])
-
-
+  const src = useImage(image as string)
 
   return (
     <div className='flex flex-col items-center space-y-1' onClick={caller}>   

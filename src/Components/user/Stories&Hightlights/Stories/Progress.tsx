@@ -10,7 +10,7 @@ export const Progress = ({ needChangeIndex, pause }: ProgressProps) => {
   const [ progressValue, setProgressValue ] = useState(0);
 
   useEffect(() => {
-    if (!pause) return;
+    if (pause) return;
 
     if (progressValue >= 100) {
       needChangeIndex();
