@@ -12,7 +12,7 @@ describe('testing authorization', () => {
     }
 
     beforeEach(async () => {
-        api = new Api({baseURL: 'http://vne.su:8081/'});
+        api = new Api({baseURL: '/'});
         token = await getAuthToken();
     })
 
