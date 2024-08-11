@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import { Link, useNavigate, useParams } from 'react-router-dom';
-import { PromotionModel, StringDataResult } from '../../../api/data-contracts';
+import { Link, useParams } from 'react-router-dom';
+import { BrandModel, PromotionModel, StringDataResult } from '../../../api/data-contracts';
 import useApi from '../../../hooks/useApi';
 import { retrieve } from '../../../utils/encryption';
 import { IsLoading } from '../../common/InfoGroup/IsLoading';
@@ -16,7 +16,6 @@ export const Promo = () => {
     const token = useMemo(() => retrieve("token"), []);
     const config = { headers: { Authorization: `Bearer ${token}` } };
     const userGuid = useMemo(() => retrieve("guid"), []);
-    const navigate = useNavigate();
 
     // загрузка данных по акции
     const [data, isLoading, error] = useApi<'promotionsDetail', PromotionModel>(
@@ -71,6 +70,22 @@ export const Promo = () => {
 
     }, [getNewCodeIsLoading, getNewCode, getNewCodeError])
 
+
+    // ссылка на сайт бренда
+    const [brandLink, setBrandLink] = useState<string>('');
+
+    const [getBrandLink,,] = useApi<'brandsDetail', BrandModel>(
+        'brandsDetail',
+        data?.brandGuid,
+        {},
+        !!data
+    );
+    useEffect(() => {
+        if(getBrandLink) {
+            setBrandLink(getBrandLink.link || '');
+        };
+    }, [getBrandLink]);
+
     return (
         <div className='relative h-[calc(90vh-80px)] px-2'>
             <IsLoading show={isLoading} />
@@ -117,7 +132,7 @@ export const Promo = () => {
             }
             <Button showButton={true} styles={btnStyle} onClick={() => {setShouldExecuteNewCode(true); } }>Активировать промокод</Button>
             <div className='w-3/4 absolute bottom-0 left-1/2 transform -translate-x-1/2'>
-                <Button showButton={true} onClick={() => {navigate('../../posts/') } }>К покупкам</Button>
+                <Button showButton={true} onClick={() => window.open(brandLink, '_blank') }>Перейти на сайт</Button>
             </div>
         </div>
     );

@@ -88,35 +88,39 @@ export const Confirm = ({ mode, navigate }: { mode?: string; navigate: NavigateF
 
     return (
         <form className={getStyles(formStyle)} onSubmit={handleSubmit}>
-            {mode === 'email' && 
-            <div className='w-full'>
-                <div>Текущая почта:</div>
-                <div>{isAuth.userInfo?.email}</div>
-            </div>}
             <div>
-                <label htmlFor="inputField">Введите данные</label>
                 { mode === 'phone' ?
-                    <InputWithMask
-                        type={ mode }
-                        name={ mode }
-                        id='inputField'
-                        placeholder='Телефон'
-                        ref={ref}
-                        value={text}
-                        onChange={handleChange}
-                        mask={mask}
-                        className={getStyles(inpitStyle)}
-                        /> :
-                    <Input
-                        type={ mode }
-                        name={ mode }
-                        id='inputField'
-                        placeholder='Электронная почта'
-                        reflink={ref}
-                        value={text}
-                        onChange={handleChange}
-                        className={getStyles(inpitStyle)}
+                    <>
+                        <h3 className='uppercase'>изменение телефон</h3>
+                        <label htmlFor="inputField">Укажите номер телефона</label>
+                        <InputWithMask
+                            type={ mode }
+                            name={ mode }
+                            id='inputField'
+                            placeholder='Телефон'
+                            ref={ref}
+                            value={text}
+                            onChange={handleChange}
+                            mask={mask}
+                            className={getStyles(inpitStyle)}
+                        /> 
+                    </>
+                    :
+                    <>
+                        <h3 className='uppercase'>изменение электронной почты</h3>
+                        <label htmlFor="inputField">Укажите адрес электронной почты</label>
+                        <div className='text-gray-400 text-sm'>Текущая почта {isAuth.userInfo?.email}</div>
+                        <Input
+                            type={ mode }
+                            name={ mode }
+                            id='inputField'
+                            placeholder='Электронная почта'
+                            reflink={ref}
+                            value={text}
+                            onChange={handleChange}
+                            className={getStyles(inpitStyle)}
                         />
+                    </>
                 }
             </div>
             <div className='w-1/2 m-auto'>
