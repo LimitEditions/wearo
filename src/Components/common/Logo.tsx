@@ -36,7 +36,7 @@ export const Logo = () => {
     };
 
     return (
-        <div className={getStyles(contStyle, ['screen__logo'])}>
+        <div className={getStyles(contStyle)}>
             <div className={getStyles(logoStyle)}>
                 <Button 
                     showButton={showProfileButton}
