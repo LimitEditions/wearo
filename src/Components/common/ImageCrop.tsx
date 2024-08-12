@@ -107,7 +107,7 @@ function ImageCrop({ aspect, setGuidImg }: { aspect: number, setGuidImg: React.D
 
             try {
                 const token = await retrieve("token");
-                const response = await fetch('http://vne.su:8081/api/Files', {
+                const response = await fetch(`/api/Files`, {
                     method: 'POST',
                     headers: {
                         Authorization: `Bearer ${token}`

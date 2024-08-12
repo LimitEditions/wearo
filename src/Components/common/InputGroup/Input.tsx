@@ -32,6 +32,6 @@ const inpitStyle: BlockStyle = {
     spacing: "py-2 px-5",
     background: "bg-white-fon",
     border: "rounded-lg",
-    text: "placeholder-gray-700",
+    text: "placeholder-gray-400 text-sm",
     blockSize: "w-full",
 };

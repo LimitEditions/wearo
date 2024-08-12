@@ -22,7 +22,7 @@ export const DownloadFile = ({ id }: { id: string | null }) => {
       {data && (
         <>
           <img src="/images/downloadFile.png" alt="Иконка скачивания файла"/>
-          <a href={`http://vne.su:8081/api/Files/${id}`} download>
+          <a href={`/api/Files/${id}`} download>
             {data?.name || "Название не указано"}
           </a>
         </>
