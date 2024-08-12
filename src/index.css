@@ -15,20 +15,3 @@
     font-weight: 600;
     font-style: normal;
 }
-
-/* .screen {
-    display: flex;
-    flex-direction: column;
-    max-height: 100vh;
-} */
-
-.screen__wrapper {
-    flex: 2;
-    overflow: auto;
-    padding-bottom: 5px; /* Чтобы кнопки не были прижаты к низу экрана */
-}
-
-.screen__nav {
-    flex: 1;
-    max-height: 78px;
-}

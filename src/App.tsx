@@ -16,7 +16,7 @@ function App() {
     return (
         <div className={getStyles(mainStyle, [ 'flex', 'flex-col', 'max-h-screen' ])}>
             <Logo />
-            <div className='flex-[2_2_0%] overflow-auto pb-[5px]'>
+            <div className='flex-[2_1_0%] overflow-auto pb-[5px]'>
                 <AnimatePresence mode="wait">
                     <Routes location={location} key={location.pathname}>
                         {
