@@ -39,7 +39,7 @@ export const Nav: React.FC = memo(() => {
 
     return (
         <>
-            {showNav && <nav className={getStyles(navStyle, ["screen__nav"])}>     
+            {showNav && <nav className={getStyles(navStyle, ["flex-1", 'max-h-[78px]'])}>     
                 {data.map(e => {
                     return <Link key={e.path} to={e.path} className={getStyles(linkStyle)}>
                         <div className='w-5'>

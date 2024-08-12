@@ -14,9 +14,9 @@ function App() {
     const location = useLocation();
 
     return (
-        <div className={getStyles(mainStyle, [ 'screen' ])}>
+        <div className={getStyles(mainStyle, [ 'flex', 'flex-col', 'max-h-screen' ])}>
             <Logo />
-            <div className='screen__wrapper'>
+            <div className='flex-[2_2_0%] overflow-auto pb-[5px]'>
                 <AnimatePresence mode="wait">
                     <Routes location={location} key={location.pathname}>
                         {

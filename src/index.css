@@ -16,11 +16,11 @@
     font-style: normal;
 }
 
-.screen {
+/* .screen {
     display: flex;
     flex-direction: column;
     max-height: 100vh;
-}
+} */
 
 .screen__wrapper {
     flex: 2;
