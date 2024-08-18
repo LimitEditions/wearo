@@ -340,12 +340,30 @@ export interface ColorModelDataResult {
 
 export enum Coloring {
   Monocolor = "Monocolor",
-  Bicolor = "Bicolor",
-  Multicolor = "Multicolor",
-  Pattern = "Pattern",
-  Print = "Print",
-  Jeans = "Jeans",
-  Effect = "Effect",
+  Abstract = "Abstract",
+  Animalistic = "Animalistic",
+  Argyle = "Argyle",
+  Geometric = "Geometric",
+  PolkaDot = "PolkaDot",
+  Houndstooth = "Houndstooth",
+  Dip = "Dip",
+  Other = "Other",
+  Check = "Check",
+  Logo = "Logo",
+  Military = "Military",
+  Marine = "Marine",
+  Lettering = "Lettering",
+  Monochrome = "Monochrome",
+  Ornament = "Ornament",
+  Landscape = "Landscape",
+  Paisley = "Paisley",
+  Stripe = "Stripe",
+  Patchwork = "Patchwork",
+  Multicolored = "Multicolored",
+  Religious = "Religious",
+  GlowInTheDark = "GlowInTheDark",
+  TieDye = "TieDye",
+  Ethnic = "Ethnic",
 }
 
 /** Комментарий */
@@ -852,6 +870,18 @@ export interface CreatePromotionModel {
    * @format int32
    */
   codePerUserLimit?: number | null;
+}
+
+/** Подписка на уведомления */
+export interface CreatePushSubscribtionModel {
+  /**
+   * Пользователь
+   * @format uuid
+   */
+  userGuid?: string;
+  pushAuth?: string;
+  pushEndpoint?: string;
+  pushP256DH?: string;
 }
 
 export interface CreateScanModel {
@@ -1390,7 +1420,7 @@ export interface LookTagModel {
 export enum LookTagType {
   Event = "Event",
   Style = "Style",
-  Wether = "Wether",
+  Weather = "Weather",
 }
 
 /** Материал */
@@ -1489,10 +1519,10 @@ export interface MessageModelDataResult {
 }
 
 export interface NotificationData {
-  endpoint?: string;
-  p256DH?: string;
-  auth?: string;
-  payload?: string;
+  /** @format uuid */
+  userGuid?: string;
+  title?: string;
+  message?: string;
 }
 
 /** Дополнительные файлы к посту */
@@ -2067,11 +2097,6 @@ export interface PromotionProductModel {
   promotion?: PromotionModel;
   /** Продукт */
   product?: ProductModel;
-}
-
-export interface PushSubscription {
-  endpoint?: string | null;
-  keys?: Record<string, string>;
 }
 
 export interface RefreshModel {

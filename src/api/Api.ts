@@ -50,6 +50,7 @@ import {
   CreateProductModel,
   CreatePromotionCodeModel,
   CreatePromotionModel,
+  CreatePushSubscribtionModel,
   CreateScanModel,
   CreateStoryModel,
   CreateSubscriptionModel,
@@ -90,7 +91,6 @@ import {
   ProductStatus,
   PromotionModel,
   PromotionModelDataResult,
-  PushSubscription,
   RefreshModel,
   RejectRequestModel,
   RequestStatus,
@@ -2673,13 +2673,13 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * No description
    *
    * @tags Push
-   * @name PushSubscribeCreate
-   * @request POST:/api/Push/subscribe
+   * @name PushCreate
+   * @request POST:/api/Push
    * @secure
    */
-  pushSubscribeCreate = (data: PushSubscription, params: RequestParams = {}) =>
+  pushCreate = (data: CreatePushSubscribtionModel, params: RequestParams = {}) =>
     this.request<void, any>({
-      path: `/api/Push/subscribe`,
+      path: `/api/Push`,
       method: "POST",
       body: data,
       secure: true,
@@ -2691,12 +2691,12 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags Push
    * @name PushSendCreate
-   * @request POST:/api/Push/send
+   * @request POST:/api/Push/Send
    * @secure
    */
   pushSendCreate = (data: NotificationData, params: RequestParams = {}) =>
     this.request<void, any>({
-      path: `/api/Push/send`,
+      path: `/api/Push/Send`,
       method: "POST",
       body: data,
       secure: true,

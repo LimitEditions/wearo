@@ -73,7 +73,7 @@ export const Promo = () => {
 
     // ссылка на сайт бренда
     const [brandLink, setBrandLink] = useState<string>('');
-
+    
     const [getBrandLink,,] = useApi<'brandsDetail', BrandModel>(
         'brandsDetail',
         data?.brandGuid,
@@ -131,9 +131,11 @@ export const Promo = () => {
                 </div>
             }
             <Button showButton={true} styles={btnStyle} onClick={() => {setShouldExecuteNewCode(true); } }>Активировать промокод</Button>
-            <div className='w-3/4 absolute bottom-0 left-1/2 transform -translate-x-1/2'>
-                <Button showButton={true} onClick={() => window.open(brandLink, '_blank') }>Перейти на сайт</Button>
-            </div>
+            <Link to={brandLink} target="_blank" rel="noopener noreferrer">
+                <div className='w-3/4 absolute bottom-0 left-1/2 transform -translate-x-1/2'>
+                    <Button showButton={true}>Перейти на сайт</Button>
+                </div>
+            </Link>
         </div>
     );
 };

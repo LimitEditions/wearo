@@ -16,7 +16,8 @@ type Config = {
  * @param {Config} [config] - конфигурация
  */
 export function register(config?: Config) {
-    if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
+    // if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
+    if (process.env.NODE_ENV === 'development' && 'serviceWorker' in navigator) {
         // Конструктор URL доступен во всех браузерах, поддерживающих SW.
         const publicUrl = new URL(process.env.PUBLIC_URL, window.location.href);
         if (publicUrl.origin !== window.location.origin) {
@@ -26,21 +27,28 @@ export function register(config?: Config) {
         }
 
         window.addEventListener('load', () => {
-            const swUrl = `${process.env.PUBLIC_URL}/service-worker.js`;
-
-            if (isLocalhost) {
-                // Это работает на localhost. Давайте проверим, существует ли сервис-воркер или нет.
-                checkValidServiceWorker(swUrl, config);
-
-                // Добавьте дополнительный лог для localhost, указывая разработчикам
-                // на документацию по service worker/PWA.
-                navigator.serviceWorker.ready.then(() => {
-                    console.log('Это веб-приложение обслуживается кешем первым сервис-воркером.');
-                });
-            } else {
-                // Не localhost. Просто регистрируем сервис-воркер
-                registerValidSW(swUrl, config);
-            }
+            const swUrl = '/service-worker.js';
+    
+            // Проверка на наличие уже зарегистрированного Service Worker
+            navigator.serviceWorker.getRegistration().then((registration) => {
+                if (registration) {
+                    console.log('Service Worker уже зарегистрирован:', registration);
+                } else {
+                    // Если Service Worker не зарегистрирован, регистрируем новый
+                    if (isLocalhost) {
+                        checkValidServiceWorker(swUrl, config);
+    
+                        navigator.serviceWorker.ready.then(() => {
+                            console.log('Это веб-приложение обслуживается кешем первым сервис-воркером.');
+                        });
+                    } else {
+                        console.log(swUrl)
+                        registerValidSW(swUrl, config);
+                    }
+                }
+            }).catch((error) => {
+                console.error('Ошибка при проверке регистрации Service Worker:', error);
+            });
         });
     }
 }
@@ -80,8 +88,8 @@ function registerValidSW(swUrl: string, config?: Config) {
                 };
             };
 
-            // Подписка пользователя на push-уведомления
-            subscribeUserToPush(registration);
+            // Проверяем и подписываем пользователя на push-уведомления, если он еще не подписан
+            checkAndSubscribeUserToPush(registration);
         })
         .catch((error) => {
             console.error('Ошибка во время регистрации сервис-воркера:', error);
@@ -182,3 +190,19 @@ function subscribeUserToPush(registration: ServiceWorkerRegistration) {
         });
     }).catch((err: Error) => console.error('Ошибка подписки на push-уведомления:', err));
 }
+
+// Функция для проверки текущей подписки и подписки пользователя на push-уведомления
+function checkAndSubscribeUserToPush(registration: ServiceWorkerRegistration) {
+    registration.pushManager.getSubscription().then((existingSubscription) => {
+        if (existingSubscription === null) {
+            // Пользователь еще не подписан, подписываем его
+            console.log('Пользователь еще не подписан на push-уведомления. Подписываем...');
+            subscribeUserToPush(registration);
+        } else {
+            // Пользователь уже подписан
+            console.log('Пользователь уже подписан на push-уведомления:', existingSubscription);
+        }
+    }).catch((err) => {
+        console.error('Ошибка проверки подписки на push-уведомления:', err);
+    });
+};

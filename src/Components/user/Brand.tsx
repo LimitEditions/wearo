@@ -41,13 +41,8 @@ export const Brand = ({ brandInfo }: { brandInfo: BrandModel}) => {
             <div className='flex justify-between '>
                 <Link to={`${brandInfo.link}`} target="_blank" rel="noopener noreferrer">{brandInfo?.name}</Link>
                 <div className='flex space-x-2'>
-                    <ContactButtons 
-                        telegram={brandInfo.telegramId || ''} 
-                        whatsapp={brandInfo.whatsappId || ''} 
-                        email={brandInfo.email || ''}
-                    />
                     <Button showButton={true} onClick={ handleClick }>
-                        { subStatus ? 'Отписаться': 'Подписаться'}
+                        { subStatus ? 'Вы подписаны': 'Подписаться'}
                     </Button>
                 </div>
             </div>
@@ -64,7 +59,7 @@ export const Brand = ({ brandInfo }: { brandInfo: BrandModel}) => {
                 </DisclosureButton>
                 <DisclosurePanel>
                     {brandInfo.collections?.map(col => {
-                        return <Item path={`./../collection/${col.guid}`} key={col.guid}>{col.name}</Item>
+                        return <Item path={`../../collection/${col.guid}`} key={col.guid}>{col.name}</Item>
                     })}
                 </DisclosurePanel>
             </Disclosure>
@@ -72,6 +67,16 @@ export const Brand = ({ brandInfo }: { brandInfo: BrandModel}) => {
             <div>
                 Публикации
             </div>
+            <div className='fixed bottom-24 w-full'>
+                <h3 className='text-center mb-2'>Служба поддержки</h3>
+                <ContactButtons 
+                    telegram={brandInfo.telegramId || ''} 
+                    whatsapp={brandInfo.whatsappId || ''} 
+                    email={brandInfo.email || ''}
+                    phone={'+78005558607'}
+                />
+            </div>
+            
             <Modal
                 isOpen={modal}
                 setIsOpen={setModal}

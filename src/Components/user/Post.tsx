@@ -39,8 +39,17 @@ export const Post = ({ id }: { id: string }) => {
     useEffect(() => {
         enabledSwitch ? setReadingMode(readingOnDark): setReadingMode(readingOff)
     }, [enabledSwitch]);
+    useEffect(() => {
+        readingMode.state === 'incr_dark' ? setEnabledSwitch(true): setEnabledSwitch(false);
+    }, [readingMode]);
 
+    // переход к отмеченным изделиям
+    const handleProdsBag = () => {
+        const prods = data?.products?.map(prod => prod.productGuid);
+        return prods && prods.length > 0 && navigate('./post_products', {state: {prodsData: prods}});
+    };
 
+    
     return (
         <div className="w-full pb-2">
             {!error && data && (
@@ -48,11 +57,14 @@ export const Post = ({ id }: { id: string }) => {
                     <div className='absolute top-2 left-7 z-10'>
                         <Switcher enabledSwitch={enabledSwitch} setEnabledSwitch={setEnabledSwitch} />
                     </div>
-                    <div className="absolute inset-0 flex items-center justify-center">
+                    <div className={`absolute top-3 right-4 w-6 h-6 ${readingMode.z_index}`} onClick={handleProdsBag}>
+                        <img src='/images/bag.png' alt='отмеченные изделия'/>
+                    </div>
+                    <div className="absolute inset-0 flex items-center justify-center z-0">
                         <Photo
-                        id={data.file?.guid ?? null}
-                        styles="object-contain max-h-full"
-                        alt="изображение поста"
+                            id={data.file?.guid ?? null}
+                            styles="object-contain max-h-full"
+                            alt="изображение поста"
                         />
                         <div className={`absolute inset-0 bg-black opacity-${readingMode.opacity}`}></div>
                     </div>

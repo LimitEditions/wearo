@@ -57,7 +57,7 @@ export const Nav: React.FC = memo(() => {
 });
 
 const navStyle: BlockStyle = {
-    blockSize: "fixed bottom-0 left-1/2 w-full h-auto",
+    blockSize: "fixed bottom-0 left-1/2 w-full h-auto z-20",
     container: "flex justify-between",
     spacing: "py-4",
     border: "box-border border border-gray-300 rounded-md",

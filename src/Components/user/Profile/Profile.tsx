@@ -56,7 +56,7 @@ export const Profile = () => {
                 Отсканировать изделие
             </Button>
 
-            <Item path="/favorites">Избранное</Item>
+            <Item path="./favorites">Избранное</Item>
             <Item path="/subscriptions">Подписки</Item>
             <Item path="/scans">Сканирования</Item>
 

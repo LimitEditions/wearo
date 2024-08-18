@@ -13,34 +13,34 @@ interface Favorites {
     id?: string
 };
 
+
 export const useFavorites = (
     {sendData, setSendData, mode, userGuid, prodGuid, id}: Favorites
 ) => {
     const [endPoint, setEndPoint] = useState<'favoritesList' | 'favoritesCreate' | 'favoritesDelete'>('favoritesList');
     const [params, setParams] = useState<
-    {
-        UserGuid?: string,
-        ProductGuid?: string;
-    } |
-    CreateFavoriteModel |
-    string
-    >({});
+        {UserGuid?: string} |
+        {ProductGuid?: string} |
+        CreateFavoriteModel |
+        string
+    >();
     const config = { headers: { Authorization: `Bearer ${retrieve('token')}` } };
 
     useEffect(() => {
         switch(mode) {
             case 'check':
                 setEndPoint('favoritesList');
-                setParams({
-                    UserGuid: userGuid,
-                    ProductGuid: prodGuid
-                });
+                setParams(
+                    (userGuid && {UserGuid: userGuid}) 
+                    ||
+                    (prodGuid && {ProductGuid: prodGuid})
+                );
                 break
             case 'create':
                 setEndPoint('favoritesCreate');
                 setParams({
-                    UserGuid: userGuid,
-                    ProductGuid: prodGuid
+                    userGuid: userGuid,
+                    productGuid: prodGuid
                 })
                 break
             case 'delete':
@@ -64,7 +64,7 @@ export const useFavorites = (
     }, [isLoading, setSendData]);
 
     const [favoritesList, setFavoritesList] = useState<FavoriteModel[]>();
-    const [favorite, setFavorite] = useState<FavoriteModel>();
+    const [favoriteGuid, setFavoriteGuid] = useState<string>('');
     const [isDeleted, setIsDeleted] = useState<boolean>(false);
     useEffect(() => {
         if(data && !error) {
@@ -76,7 +76,7 @@ export const useFavorites = (
                     break
                 case 'create':
                     res = data as FavoriteModel;
-                    setFavorite(data);
+                    setFavoriteGuid(res.guid || '');
                     break
                 case 'delete':
                     setIsDeleted(true);
@@ -85,5 +85,5 @@ export const useFavorites = (
         };
     }, [data, error, mode]);
 
-    return {favoritesList, favorite, isDeleted};
+    return {favoritesList, favoriteGuid, isDeleted};
 };
