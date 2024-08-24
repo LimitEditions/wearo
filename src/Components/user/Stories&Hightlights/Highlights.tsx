@@ -17,7 +17,6 @@ export const Highlights = ({ brandId }: { brandId: string | null}) => {
         { headers: { Authorization: `Bearer ${token}` } },
         true
     );
-    console.log("[STORIESHIGLIGHT]", data);
     
     const highlights = data?.data as HighlightModel[];
 

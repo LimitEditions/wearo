@@ -17,18 +17,19 @@ export const Controll = ({ changeIndex, currentStoryIndex, showMoreClick, change
     const item = localStorage.getItem(KEY_FOR_LOCALSTORAGE);
 
     if (!item) {
-      // localStorage.setItem(KEY_FOR_LOCALSTORAGE, '1');
+      localStorage.setItem(KEY_FOR_LOCALSTORAGE, '1');
       setIsShowControllHelper(true);
+      changePressed(true);
       setTimeout(() => {
+        changePressed(false)
         setIsShowControllHelper(false);
       }, 2000)
     }
-  }, [])
+  }, [changePressed])
 
   const pressEvent = (e: React.MouseEvent<HTMLDivElement, MouseEvent> | React.TouchEvent<HTMLDivElement>, operation: () => void) => {
-    e.preventDefault();
     operation();
-  } 
+  }
 
   const EventPack = {
     onTouchStart: (e: React.TouchEvent<HTMLDivElement>) => pressEvent(e, () => changePressed(true)),
@@ -38,11 +39,11 @@ export const Controll = ({ changeIndex, currentStoryIndex, showMoreClick, change
   }
 
   return (
-    <div className={Style.stories__control}>
+    <div className={[Style.stories__control, !isShowControllHelper ? Style.stories__control__show : ''].join(' ')}>
         <div className={Style.controller__wrapper}>
             {(currentStoryIndex !== 0 || isShowControllHelper) && (
                 <div
-                  className={isShowControllHelper ? Style.controller__outline : undefined}
+                  className={Style.controller__outline}
                   onClick={() => changeIndex((x) => x - 1)}
                   {...EventPack}
                 >
@@ -50,7 +51,7 @@ export const Controll = ({ changeIndex, currentStoryIndex, showMoreClick, change
                 </div>
             )}
             <div
-              className={isShowControllHelper ? Style.controller__outline : undefined}
+              className={Style.controller__outline}
               onClick={() => changeIndex((x) => x + 1)}
               {...EventPack}
             >
@@ -58,7 +59,7 @@ export const Controll = ({ changeIndex, currentStoryIndex, showMoreClick, change
             </div>
         </div>
         <div
-          className={[Style.controller__more, isShowControllHelper ? Style.controller__outline : ''].join(" ")}
+          className={[Style.controller__more, Style.controller__outline].join(" ")}
           onClick={showMoreClick}
           {...EventPack}
         >

@@ -1,40 +1,75 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Style from './style.module.css'
 
 interface ProgressProps {
   needChangeIndex: () => void;
   pause: boolean
+  storiesCount: number
+  currentStoryIndex: number
 }
 
-export const Progress = ({ needChangeIndex, pause }: ProgressProps) => {
+interface ProgressItemProps {
+  index: number
+  currentIndex: number
+  isPause: boolean
+  doneFunc: () => void
+}
+
+function ProgressItem({ doneFunc, index, currentIndex, isPause }: ProgressItemProps) {
   const [ progressValue, setProgressValue ] = useState(0);
 
   useEffect(() => {
-    if (pause) return;
+    if (index !== currentIndex && progressValue > 0) {
+      setProgressValue(0);
+    }
+
+    if (index !== currentIndex || isPause) return
 
     if (progressValue >= 100) {
-      needChangeIndex();
+      doneFunc();
       return;
     }
-    const timer = setTimeout(() => {
-      setProgressValue((x) => x+1);
-    }, 100)
+    let timer: any
+    timer = setTimeout(() => {
+      setProgressValue((x) => x + 1)
+    }, 100);
 
     return () => {
       clearTimeout(timer);
     }
-  
-  }, [ 
-    progressValue, 
-    pause, 
-    // Не будет обновляться
-    // поставил чтоб еслинт не ругался
-    needChangeIndex 
-  ])
+  }, [progressValue, isPause, index, currentIndex, doneFunc])
+
+  let value = progressValue;
+
+  if (index < currentIndex) {
+    value = 100
+  }
 
   return (
-    <div>
-      <progress className={["w-full", Style['progress-class']].join(' ')} value={progressValue} max="100"/>
+    <progress 
+      className={["w-full","flex-1", Style['progress-class']].join(' ')}
+      value={value}
+      max="100"
+    />
+  )
+}
+
+export const Progress = ({ needChangeIndex, pause, storiesCount, currentStoryIndex }: ProgressProps) => {
+  return (
+    <div className="flex gap-[4px] mb-1">
+      {
+        Array(storiesCount).fill(0).map((_, index) => {
+          return (
+            <ProgressItem
+              key={index}
+              index={index}
+              currentIndex={currentStoryIndex}
+              isPause={pause}
+              doneFunc={needChangeIndex}
+            />
+          )
+        })
+      }
     </div>
   )
 }
