@@ -5,8 +5,6 @@ import { retrieve } from "../../../../utils/encryption";
 import { UserModel } from "../../../../api/data-contracts";
 import { SectionsTitle } from "../../../../Components/common/SectionsTitle";
 import { Button } from "../../../../Components/common/Button";
-import { BlockStyle } from "../../../../types/interfaces/IStyles";
-import getStyles from "../../../../utils/getStyles";
 import { ModalsDelete } from "../../../../Components/common/ModalsDelete";
 import { TextItemsList } from "./TextItemsList";
 import { IsLoading } from "../../../../Components/common/InfoGroup/IsLoading";
@@ -74,7 +72,7 @@ export const EmployeeDetailsPage = () => {
     };
 
     return (
-        <div className={getStyles(containerStyle)}>
+        <div className='relative bg-gray-100 min-h-screen'>
             <SectionsTitle
                 needsClose={false}
                 title={"Администратор"}
@@ -96,12 +94,12 @@ export const EmployeeDetailsPage = () => {
                         <img src='/images/closeBtn.png' alt="редактировать, закрыть"/>
                     </Button>
                 </div>
-                <div className={getStyles(divStyle)}>
+                <div className='w-3/4 max-w-96 m-auto pt-10'>
                     <Button showButton={editBtn} onClick={handleClick}>
                         Удалить сотрудника
                     </Button>
                 </div>
-                <div className={getStyles(divStyle)}>
+                <div className='w-3/4 max-w-96 m-auto pt-10'>
                     <Button showButton={!editBtn} onClick={() => {setSendData(true); setModal(true); setEditBtn(true)}}>
                         Принять изменения
                     </Button>
@@ -135,14 +133,4 @@ export const EmployeeDetailsPage = () => {
             <ErrorReq show={!!dataError} error={dataError} />
         </div>
     );
-};
-
-const containerStyle: BlockStyle = {
-    background: "relative bg-gray-100",
-    blockSize: "min-h-screen",
-};
-
-const divStyle: BlockStyle = {
-    blockSize: "w-3/4 max-w-96",
-    spacing: "m-auto pt-10",
 };

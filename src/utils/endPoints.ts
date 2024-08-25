@@ -58,7 +58,7 @@ export const endPoints = [
 
     //admin
     {
-        path: '/options/*',
+        path: '/settings/*',
         component: SettingsPage
     },
     {

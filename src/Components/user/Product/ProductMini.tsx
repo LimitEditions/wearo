@@ -11,7 +11,7 @@ export const ProductMini = ({ id }: { id: string }) => {
         'productsDetail', id, {}, true
     );
     return (
-        <div className='w-48 h-48 m-1 p-1' onClick={() => navigate(`../../.././product/${id}`)}>
+        <div className='w-48 h-48 m-1 p-1' onClick={() => navigate(`/product/${id}`)}>
             <Photo id={data?.mainPhotoGuid || ''} styles={'h-full mx-auto'} alt={'изображение продукта'}/>
             {/* <Photo id="d0290abb-4c63-46d9-b9b1-f7cc78013553" styles={'h-full mx-auto'} alt={'изображение продукта'}/> */}
         </div>

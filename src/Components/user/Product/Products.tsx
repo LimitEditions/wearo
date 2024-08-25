@@ -37,7 +37,7 @@ export const Products = ({productsList}: {productsList: ProductModel[] | Product
                 const isProductItem = isProductItemModel(prod);
                 const product = isProductItem ? prod.product : prod as ProductModel;
                 const color = isProductItem ? prod.productColorGuid : null;
-                const endPoint = isProductItem ? `.././product/${product?.guid}`: `../../product/${product?.guid}`;
+                const endPoint = `/product/${product?.guid}`;
                 
                 return (
                     product && 

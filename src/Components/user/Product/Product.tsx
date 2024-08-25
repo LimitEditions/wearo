@@ -82,8 +82,7 @@ export const Product = ({ data, color, size }:{ data: ProductModel, color?: stri
                 <div onClick={() => setIsLike((prevState) => { return prevState === 'like' ? 'unlike': 'like' })}>
                     {isLike === 'like' ?
                     <img src="/images/hearts/blue_heart_small.png" alt="значек лайка, прожатый" />:
-                    <img src="/images/hearts/whi            
-te_heart_small.png" alt="значек лайка, не прожатый" />}
+                    <img src="/images/hearts/white_heart_small.png" alt="значек лайка, не прожатый" />}
                 </div>
             </div>
             <div className={getStyles(descStyle)}>

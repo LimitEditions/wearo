@@ -1,3 +1,7 @@
+import { retrieve } from "./utils/encryption";
+import { arrayBufferToBase64, urlBase64ToUint8Array } from "./utils/format";
+
+
 const isLocalhost = Boolean(
     window.location.hostname === 'localhost' ||
     // [::1] is the IPv6 localhost address.
@@ -16,8 +20,8 @@ type Config = {
  * @param {Config} [config] - конфигурация
  */
 export function register(config?: Config) {
-    // if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
-    if (process.env.NODE_ENV === 'development' && 'serviceWorker' in navigator) {
+    if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
+    // if (process.env.NODE_ENV === 'development' && 'serviceWorker' in navigator) {
         // Конструктор URL доступен во всех браузерах, поддерживающих SW.
         const publicUrl = new URL(process.env.PUBLIC_URL, window.location.href);
         if (publicUrl.origin !== window.location.origin) {
@@ -33,6 +37,7 @@ export function register(config?: Config) {
             navigator.serviceWorker.getRegistration().then((registration) => {
                 if (registration) {
                     console.log('Service Worker уже зарегистрирован:', registration);
+                    checkAndSubscribeUserToPush(registration)
                 } else {
                     // Если Service Worker не зарегистрирован, регистрируем новый
                     if (isLocalhost) {
@@ -148,26 +153,6 @@ export function unregister() {
 const publicVapidKey = 'BG-d_Ln_C7s7I_MFQpHim75qy2Gx21RI9X03H1SVpayU7F53Esz9aGJQeNSIiPn9fqydD-J51J7CvSj2wwYwSAA';
 
 /**
- * Функция для преобразования base64 строки в Uint8Array
- * @param {string} base64String - base64 строка
- * @returns {Uint8Array} - массив байтов
- */
-function urlBase64ToUint8Array(base64String: string): Uint8Array {
-    const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
-    const base64 = (base64String + padding)
-        .replace(/\-/g, '+')
-        .replace(/_/g, '/');
-
-    const rawData = window.atob(base64);
-    const outputArray = new Uint8Array(rawData.length);
-
-    for (let i = 0; i < rawData.length; ++i) {
-        outputArray[i] = rawData.charCodeAt(i);
-    }
-    return outputArray;
-}
-
-/**
  * Функция для подписки пользователя на push-уведомления
  * @param {ServiceWorkerRegistration} registration - регистрация сервис-воркера
  */
@@ -179,14 +164,34 @@ function subscribeUserToPush(registration: ServiceWorkerRegistration) {
         applicationServerKey: convertedVapidKey
     }).then((subscription: PushSubscription) => {
         console.log('Подписка на push-уведомления выполнена:', subscription);
+        
+        const pushData = {
+            "userGuid": retrieve('guid'),
+            "pushAuth": arrayBufferToBase64(subscription.getKey('auth') as Uint8Array),
+            "pushEndpoint": subscription.endpoint,
+            "pushP256DH": arrayBufferToBase64(subscription.getKey('p256dh') as Uint8Array)
+        };
 
         // Отправка подписки на сервер
-        fetch('/api/subscribe', {
+        fetch('/api/Push', {
             method: 'POST',
-            body: JSON.stringify(subscription),
+            body: JSON.stringify(pushData),
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${retrieve('token')}`
             }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Ошибка сети: ' + response.statusText);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Успешно отправлено:', data);
+        })
+        .catch(err => {
+            console.error('Ошибка при отправке:', err);
         });
     }).catch((err: Error) => console.error('Ошибка подписки на push-уведомления:', err));
 }
@@ -201,6 +206,7 @@ function checkAndSubscribeUserToPush(registration: ServiceWorkerRegistration) {
         } else {
             // Пользователь уже подписан
             console.log('Пользователь уже подписан на push-уведомления:', existingSubscription);
+            existingSubscription.unsubscribe()
         }
     }).catch((err) => {
         console.error('Ошибка проверки подписки на push-уведомления:', err);

@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { ITextItemsListProps } from "../../../../types/interfaces/componentsProps/ITextItemsListProps";
 import { BrandRequestModel, UserModel } from "../../../../api/data-contracts";
 import { getBrandRequestInfo, getUserInfo } from "../../../../utils/getTextItems";
 import Item from "../../../../Components/common/ItemGroup/Item";
-import { BlockStyle } from "../../../../types/interfaces/IStyles";
-import getStyles from "../../../../utils/getStyles";
 import { Input } from "../../../../Components/common/InputGroup/Input";
+import { Button } from "../../../../Components/common/Button";
+import { useUserUpdate } from "../../../../hooks/useUserUpdate";
 
 
 export const TextItemsList: React.FC<ITextItemsListProps> = ({
@@ -14,28 +14,36 @@ export const TextItemsList: React.FC<ITextItemsListProps> = ({
     edit,
     onChange
 }) => {
+    // стейт на обновление данных
+    const [updatedData, setUpdatedData] = useState(info);
+    const [sendData, setSendData] = useState<boolean>(false);
+    const [data, error] = useUserUpdate(updatedData, sendData, setSendData);
+    useEffect(() => {
+        if(data && !error) setUpdatedData(data);
+    }, [data, error])
+
     // Определяем, данные какого типа пришли
     const currentModel =
-        type === "brandRequest" ? (info as BrandRequestModel) : (info as UserModel);
+        type === "brandRequest" ? (updatedData as BrandRequestModel) : (updatedData as UserModel);
     
     // Создаем массив с названиями полей и их значениями
     const currentInfo =
         type === "brandRequest"
         ? getBrandRequestInfo(currentModel)
         : getUserInfo(currentModel, type);
-        
+
     return (
         <>
             {currentInfo.map((el) => {
                 return (
                     !edit? <Item key={el.infoTitle}>
-                        <div className={getStyles(containerStyle)}>
+                        <div className='w-full bg-gray-100 flex justify-between animate-fade-in'>
                             <div>
-                                <h3 className={getStyles(h3Style)}>{el.infoTitle}</h3>
+                                <h3 className='text-xs font-normal'>{el.infoTitle}</h3>
                                 {el.value ? (
-                                    <span className={getStyles(spanStyle)}>{el.value}</span>
+                                    <span className='font-normal text-sm'>{el.value}</span>
                                     ) : (
-                                    <span className={getStyles(spanStyle)}>
+                                    <span className='font-normal text-sm'>
                                         Данные не указаны
                                     </span>
                                 )}
@@ -60,21 +68,9 @@ export const TextItemsList: React.FC<ITextItemsListProps> = ({
                     </div>
                 );
             })}
+            <div className='w-3/4 max-w-96 m-auto'>
+                <Button showButton={edit || false} onClick={() => setSendData(true)}>Принять</Button>
+            </div>
         </>
     );
-};
-
-const h3Style: BlockStyle = {
-    text: "text-xs font-normal",
-};
-
-const spanStyle: BlockStyle = {
-    text: "font-normal text-sm",
-};
-
-const containerStyle: BlockStyle = {
-    blockSize: "w-full",
-    background: "bg-gray-100",
-    container: "flex justify-between",
-    transitionsAnimation: 'animate-fade-in'
 };
