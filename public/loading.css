@@ -6,29 +6,18 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
-  font-size: 32px;
-  gap: 10px;
 }
-
-.letters-wrapper {
-  display: flex;
-}
-
-.letters-wrapper img {
-  animation: loading-key 5s linear infinite;
-}
-
 
 .img-wrapper {
   display: flex;
 }
 
-.img-wrapper img {
+.loading img {
   display: block;
-  animation: loading-img 3s infinite linear;
+  animation: loading-key 3s infinite linear;
   max-width: 100px;
   max-height: 100px;
+  width: 200px;
 }
 
 @keyframes loading-key {
