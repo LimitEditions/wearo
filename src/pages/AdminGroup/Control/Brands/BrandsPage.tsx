@@ -4,7 +4,6 @@ import { BrandModelDataResult } from '../../../../api/data-contracts';
 import { retrieve } from '../../../../utils/encryption';
 import getStyles from '../../../../utils/getStyles';
 import { BlockStyle } from '../../../../types/interfaces/IStyles';
-import { SectionsTitle } from '../../../../Components/common/SectionsTitle';
 import { ItemsList } from '../../../../Components/common/ItemGroup/ItemsList';
 import { Route, Routes } from 'react-router-dom';
 import { BrandInfoPage } from './BrandInfoPage';
@@ -28,7 +27,7 @@ export const BrandsPage = () => {
       // Список брендов с логотипом, названием, по клику будет осуществлен переход на страницу с подробной информацией о бренде
       setItems(data.data.map((item) => {
         return {
-          title: item.name || "Название не указано",
+          name: item.name || "Название не указано",
           path: `/${item.guid}`,
           photoId: item.photo,
           needPhoto: true,
@@ -44,7 +43,7 @@ export const BrandsPage = () => {
       <Routes>
         <Route index element={
           <>
-            <SectionsTitle title="Бренды" needsClose={true} />
+            <h3 className="w-full text-center uppercase py-3">Бренды</h3>
             <div className={getStyles(divStyle)}>
               {items && <ItemsList items={items} />}
               <IsLoading show={isLoading} />

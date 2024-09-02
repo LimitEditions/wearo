@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import getStyles from '../../../utils/getStyles';
-import { BlockStyle } from '../../../types/interfaces/IStyles';
 import { LogOut } from '../../common/LogOut';
 import Item from '../../common/ItemGroup/Item';
 import { Photo } from '../../common/Photo';
@@ -46,13 +44,13 @@ export const Profile = () => {
 
     
     return (
-        <div className={getStyles(profStyle)}>
-            <h2 className={getStyles(headStyle)}>Профиль</h2>
-            <div className={getStyles(nameStyle)} onClick={() => setModal(true)}>
-                <Photo id={profileInfo.mainAvatarGuid || null} styles={getStyles(fotoStyle)} alt={'foto'} />
+        <div className='w-full px-3'>
+            <h2 className='text-xl font-bold my-4'>Профиль</h2>
+            <div className='flex items-center' onClick={() => setModal(true)}>
+                <Photo id={profileInfo.mainAvatarGuid || null} styles='w-20 h-20 rounded-full mr-3' alt={'foto'} />
                 <p>{profileInfo.username}</p>
             </div>
-            <Button showButton={true} styles={scanBtn} onClick={() => navigate('./scan')}>
+            <Button showButton={true} styles='w-full rounded-xl my-3 py-4 bg-violet' onClick={() => navigate('./scan')}>
                 Отсканировать изделие
             </Button>
 
@@ -60,7 +58,7 @@ export const Profile = () => {
             <Item path="/subscriptions">Подписки</Item>
             <Item path="/scans">Сканирования</Item>
 
-            <h2 className={getStyles(headStyle)}>Настройки</h2>
+            <h2 className='text-xl font-bold my-4'>Настройки</h2>
             <Item path="./email">
                 <div className='flex flex-col'>
                     <div>
@@ -112,29 +110,4 @@ export const Profile = () => {
             </Modal>
         </div>
     );
-};
-
-const profStyle: BlockStyle = {
-    blockSize: "w-full",
-    spacing: "px-3",
-};
-
-const nameStyle: BlockStyle = {
-    blockSize: "flex items-center",
-};
-
-const fotoStyle: BlockStyle = {
-    blockSize: "w-20 h-20 rounded-full ",
-    spacing: "mr-3",
-};
-
-const headStyle: BlockStyle = {
-    text: "text-xl font-bold",
-    spacing: "my-4",
-};
-
-const scanBtn: BlockStyle = {
-    container: "w-full rounded-xl",
-    spacing: "my-3 py-4",
-    background: "bg-violet"
 };

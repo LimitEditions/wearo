@@ -62,7 +62,7 @@ export const RequestButtons = () => {
         <Button showButton={true} onClick={() => {openModal('modalResult'); setStatus('approve'); setShouldExecute(true)}}>
           Одобрить
         </Button>
-        <Button showButton={true} styles={buttonStyle} onClick={() => {openModal('modalComment'); setStatus('reject')}}>
+        <Button showButton={true} styles='w-full bg-white p-2 mb-3 text-gray-500 rounded-3xl border-gray-500 border' onClick={() => {openModal('modalComment'); setStatus('reject')}}>
           Отклонить
         </Button>
 
@@ -110,14 +110,6 @@ const div1Style: BlockStyle = {
     spacing: 'm-auto mt-10',
     container: 'flex flex-col gap-2'
 }
-
-const buttonStyle: BlockStyle = {
-  blockSize: "w-full",
-  background: "bg-white",
-  spacing: "p-2 mb-3",
-  text: "text-gray-500",
-  border: "rounded-3xl border-gray-500 border",
-};
 
 const additionalStyles: BlockStyle = {
   spacing: "p-0",

@@ -2,19 +2,19 @@ import React from "react";
 import { ItemsList } from "../../../Components/common/ItemGroup/ItemsList";
 import { Route, Routes } from "react-router-dom";
 import { RequestsPage } from "./Requests/RequestsPage";
-import { UsersPage } from "./Users/UsersPage";
+import { UsersListPage } from "./Users/UsersListPage";
 import { BrandsPage } from "./Brands/BrandsPage";
 import { PostListPage } from "./PostListPage";
-import { AdminsPage } from "./AdminsPage";
+import { AdminsPage } from "./Admins/AdminsPage";
 
 
 export const ControlPage = () => {
     const items = [
-        { title: "Заявки на создание бренда", path: "./requests" },
-        { title: "Администраторы", path: "./admins" },
-        { title: "Пользователи", path: "./users" },
-        { title: "Бренды", path: "./brands" },
-        { title: "Публикации", path: "./posts" },
+        { name: "Заявки на создание бренда", path: "./requests" },
+        { name: "Администраторы", path: "./admins" },
+        { name: "Пользователи", path: "./users" },
+        { name: "Бренды", path: "./brands" },
+        { name: "Публикации", path: "./posts" },
     ];
     return (
         <>
@@ -25,7 +25,7 @@ export const ControlPage = () => {
                 />
                 <Route path='requests/*' element={ <RequestsPage /> }/>
                 <Route path='admins/*' element={ <AdminsPage /> }/>
-                <Route path="users/*" element={<UsersPage />} />
+                <Route path="users/*" element={<UsersListPage />} />
                 <Route path="brands/*" element={<BrandsPage />} />
                 <Route path="posts" element={<PostListPage />} />
             </Routes>

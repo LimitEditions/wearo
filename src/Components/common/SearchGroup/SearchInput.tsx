@@ -2,7 +2,7 @@ import React, { Dispatch, Fragment, SetStateAction, useState } from 'react'
 import { Button } from '../Button'
 import getStyles from '../../../utils/getStyles';
 import { BlockStyle } from '../../../types/interfaces/IStyles';
-import { Transition } from '@headlessui/react';
+import { Transition, TransitionChild } from '@headlessui/react';
 import { Input } from '../InputGroup/Input';
 
 
@@ -21,7 +21,7 @@ export const SearchInput = ({show, setShow, callback }: { show: boolean, setShow
     
     return (
         <Transition show={show} as={Fragment}>
-            <Transition.Child
+            <TransitionChild
                 as={Fragment}
                 enter="ease-out duration-700"
                 enterFrom="opacity-0 translate-x-full"
@@ -37,10 +37,10 @@ export const SearchInput = ({show, setShow, callback }: { show: boolean, setShow
                         placeholder='Поиск'
                         value={inputValue}
                         onChange={handleChange}
-                        />
+                    />
                     <Button showButton={true} onClick={setShow} className={getStyles(btnStyle)}>Скрыть</Button>
                 </form>
-            </Transition.Child>
+            </TransitionChild>
         </Transition>
     );
 };

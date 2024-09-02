@@ -1,9 +1,8 @@
 import React, { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { IItemProps } from "../../../types/interfaces/IItemProps";
-import { BlockStyle } from "../../../types/interfaces/IStyles";
-import getStyles from "../../../utils/getStyles";
 import { Arrow } from "../Arrow";
+
 
 const Item: React.FC<IItemProps> = ({ path, children, arrow=true }) => {
   // const location = useLocation();
@@ -17,11 +16,13 @@ const Item: React.FC<IItemProps> = ({ path, children, arrow=true }) => {
   }, [path, navigate]);
 
   // Если указан путь, то добавляем hover-эффекты
-  const containerStyle = path ? `${getStyles(divStyle)} ${getStyles(hoverStyle)}` : getStyles(divStyle)
+  const containerStyle = path ? `${divStyle} ${hoverStyle}` : divStyle
 
   return (
     <div
-      className={containerStyle}
+      // className={containerStyle}
+      className={`relative flex items-center justify-between border-t border-gray-300 py-4 px-2 text-sm ${path ? 'cursor-pointer focus:outline-none hover:animate-pulse': ''}`}
+      // className={`relative flex items-center justify-between border-t border-gray-300 py-4 px-2 text-sm`}
       onClick={handleClick}
     >
       {children}
@@ -32,13 +33,6 @@ const Item: React.FC<IItemProps> = ({ path, children, arrow=true }) => {
 
 export default Item;
 
-const divStyle: BlockStyle = {
-  blockSize: "relative flex items-center justify-between",
-  border: 'border-t divide-gray-400',
-  spacing: "py-4 px-2",
-  text: "text-sm",
-};
+const divStyle = 'relative flex items-center justify-between border-t border-gray-300 py-4 px-2 text-sm';
 
-const hoverStyle: BlockStyle = {
-  hover: "cursor-pointer focus:outline-none hover:animate-pulse",
-};
+const hoverStyle = 'cursor-pointer focus:outline-none hover:animate-pulse';

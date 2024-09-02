@@ -7,7 +7,7 @@ import { Input } from "../../../../Components/common/InputGroup/Input";
 import { Button } from "../../../../Components/common/Button";
 import { useUserUpdate } from "../../../../hooks/useUserUpdate";
 
-
+// проверить и удалить
 export const TextItemsList: React.FC<ITextItemsListProps> = ({
     info,
     type,

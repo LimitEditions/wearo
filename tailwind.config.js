@@ -8,7 +8,8 @@ export const theme = {
             'custom-blue': '#3447BC',
             'navy-blue': '#24316B',
             'medium-gray': '#797C8E',
-            'light-gray': '#9095B5',
+            'normal-gray': '#9095B5',
+            'light-gray': '#EDEDF9',
             'white-fon': '#F9F8FF',
             'violet': '#C6C2FF',
             'yellow': '#DFF37D'
@@ -33,6 +34,7 @@ export const theme = {
         },
         animation: {
             'fade-in': 'fade-in 1s ease-in-out',
+            'fade-in-long': 'fade-in 3s ease-in-out',
             'slide-up': 'slide-up 2s ease-in-out',
             'slide-diagonal': 'slide-diagonal 3s ease-in-out 1.5s infinite',
         },

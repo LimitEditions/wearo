@@ -6,7 +6,6 @@ import { retrieve } from '../../../utils/encryption';
 import { IsLoading } from '../../common/InfoGroup/IsLoading';
 import { ErrorReq } from '../../common/InfoGroup/ErrorReq';
 import { Button } from '../../common/Button';
-import { BlockStyle } from '../../../types/interfaces/IStyles';
 import { Photo } from '../../common/Photo';
 import moment from 'moment';
 
@@ -122,7 +121,7 @@ export const Promo = () => {
                                 return (
                                     <li key={code} className=''>
                                         {code}
-                                        <Button showButton={true} styles={copyStyle} onClick={copyCode}>Copy</Button>
+                                        <Button showButton={true} styles='ml-3 text-xs cursor-pointer' onClick={copyCode}>Copy</Button>
                                     </li>
                                 );
                             })
@@ -130,7 +129,13 @@ export const Promo = () => {
                     </ul>
                 </div>
             }
-            <Button showButton={true} styles={btnStyle} onClick={() => {setShouldExecuteNewCode(true); } }>Активировать промокод</Button>
+            <Button 
+                showButton={true}
+                styles='w-full bg-violet h-20 rounded-2xl my-4 float-right px-2 py-1 text-md uppercase cursor-pointer' 
+                onClick={() => {setShouldExecuteNewCode(true); } }
+            >
+                Активировать промокод
+            </Button>
             <Link to={brandLink} target="_blank" rel="noopener noreferrer">
                 <div className='w-3/4 absolute bottom-0 left-1/2 transform -translate-x-1/2'>
                     <Button showButton={true}>Перейти на сайт</Button>
@@ -138,18 +143,4 @@ export const Promo = () => {
             </Link>
         </div>
     );
-};
-
-
-const copyStyle: BlockStyle = {
-    spacing: 'ml-3',
-    text: 'text-xs',
-    hover: 'cursor-pointer'
-};
-
-const btnStyle: BlockStyle = {
-    container: 'w-full bg-violet h-20 rounded-2xl my-4',
-    spacing: 'float-right px-2 py-1',
-    text: 'text-md uppercase',
-    hover: 'cursor-pointer'
 };
