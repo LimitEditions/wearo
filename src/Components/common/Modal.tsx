@@ -60,9 +60,13 @@ export const Modal = ({isOpen, setIsOpen, title, children, additionalStyles, swi
                         leaveTo="opacity-0 scale-95"
                     >
                         <DialogPanel className={additionalStyles?.panel? additionalStyles.panel: getStyles(panelStyle)}>
-                            <DialogTitle as="h3" className={getStyles(titleStyle)}>
-                                {title}
-                            </DialogTitle>
+                            {
+                                title && (
+                                    <DialogTitle as="h3" className={getStyles(titleStyle)}>
+                                        {title}
+                                    </DialogTitle>
+                                )
+                            }
                             <div className={getStyles(contentStyle)}>
                                 {children}
                             </div>

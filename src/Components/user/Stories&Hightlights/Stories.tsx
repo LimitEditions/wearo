@@ -11,22 +11,20 @@ interface StoriesProps {
     stories: string[]
 }
 
-const STORIES = ['https://media.sproutsocial.com/uploads/2022/12/IMG_6187.png', 'https://q5n8c8q9.rocketcdn.me/wp-content/uploads/2022/01/img_61d46dbe26b3a.png', 'https://i.pinimg.com/236x/e6/65/c0/e665c028e0f8330971cea535bae4e05f.jpg']
-
 export const Stories = ({ close, stories }: StoriesProps) => {
     const [currentStoryIndex, setCurrentStoryIndex] = useState(0);
     const [showMore, setShowMore] = useState(false);
     const [pressedScreen, setPressedScreen] = useState(true);
 
     const changeIndex = (operation : (x: number) => number) => {
-        if (STORIES[operation(currentStoryIndex)] !== undefined) {
+        if (stories[operation(currentStoryIndex)] !== undefined) {
             setCurrentStoryIndex(operation);
         } else {
             close(false);
         }
     }
 
-    const src = STORIES[currentStoryIndex];
+    const src = `https://vne.su:8081/api/Files/${stories[currentStoryIndex]}`;
 
     const handler = useSwipeable({
         onSwipedUp: () => {
@@ -57,24 +55,24 @@ export const Stories = ({ close, stories }: StoriesProps) => {
             setIsOpen={close}
             swipeable={false}
             additionalStyles={{
-                container: 'fixed top-12 w-full px-2',
-                panel: 'p-10'
+                container: 'fixed top-0 w-full h-full p-0',
+                panel: 'p-0'
             }}
         >
-            <div {...handler}>
-                <div>
+            <div {...handler} className='relative'>
+                <div className="absolute top-4 left-2 right-2 z-[15]">
                     <Progress
                         needChangeIndex={() => changeIndex((x) => x + 1)}
                         currentStoryIndex={currentStoryIndex}
-                        storiesCount={STORIES.length}
+                        storiesCount={stories.length}
                         pause={showMore || src === null || pressedScreen}
-                        key={STORIES.length}
+                        key={stories.length}
                     />
                 </div>
                 <div className="relative flex justify-center align-center bg-[black] rounded-[4px]">
                     <div className={Style.img__container}>
                         {
-                            STORIES[currentStoryIndex] &&
+                            stories[currentStoryIndex] &&
                             src &&
                             <img rel="preload" className="h-full w-full object-contain object-center" src={src} alt='asd'/>}
                     </div>

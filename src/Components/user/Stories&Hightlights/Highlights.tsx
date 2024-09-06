@@ -20,20 +20,12 @@ export const Highlights = ({ brandId }: { brandId: string | null}) => {
     
     const highlights = data?.data as HighlightModel[];
 
-    if (highlights) {
-        highlights[0].mainPhotoGuid = 'https://media.sproutsocial.com/uploads/2022/12/IMG_6187.png'
-        highlights[0].stories = ['https://media.sproutsocial.com/uploads/2022/12/IMG_6187.png' as any]
-        highlights[1].mainPhotoGuid = 'https://media.sproutsocial.com/uploads/2022/12/IMG_6187.png'
-    }
-
-    const res = highlights && highlights.length > 0 ? highlights: HighlightsData;
-
     return (
         <>
             <IsLoading show={isLoading} />
             <ErrorReq show={!!error} error={error} />
             <div className='flex space-x-2 px-2 py-3'>
-                {res.map((highlight) => (
+                {highlights && highlights.map((highlight) => (
                     <Highlight highlight={highlight} key={highlight.guid} />))}
             </div>
         </>
