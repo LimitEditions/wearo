@@ -80,7 +80,7 @@ export const ModalsDelete = ({
                         Ошибка запроса, повторите позже.
                     </span>
                 ) : (
-                    <ResultInModal message={messageSuccess} path="/images/successful.png"/>
+                    <ResultInModal message={messageSuccess} imgPath="/images/success.png"/>
                 )}
             </Modal>
         </>

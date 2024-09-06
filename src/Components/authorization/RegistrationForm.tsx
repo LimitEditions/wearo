@@ -91,7 +91,7 @@ export const RegistrationForm = ({
             <Modal isOpen={mod} setIsOpen={setMod} swipeable={false}>
                 <ResultInModal 
                     message={type === "reg" ? "Регистрация прошла успешно!" : "Администратор создан."}
-                    path="/images/successful.png"
+                    imgPath="/images/success.png"
                 />
             </Modal>
         </>

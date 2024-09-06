@@ -149,7 +149,7 @@ function ImageCrop({ aspect, setGuidImg }: { aspect: number, setGuidImg: React.D
                         className={getStyles(btnStyle)}
                     >
                         {/* &#10004; Галочка */}
-                        <img src={'/images/successful.png'} alt='галочка' />
+                        <img src={'/images/success.png'} alt='галочка' />
                     </Button>
                     <Button
                         onClick={handleCancel}

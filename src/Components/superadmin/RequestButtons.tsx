@@ -97,7 +97,7 @@ export const RequestButtons = () => {
             :
             <ResultInModal 
               message={`Заявка успешно ${status === 'approve'? 'одобрена': 'отклонена'}`}
-              path="/images/successful.png"
+              imgPath="/images/success.png"
             />
           }
         </Modal>

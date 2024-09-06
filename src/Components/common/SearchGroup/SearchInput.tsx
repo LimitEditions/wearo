@@ -1,7 +1,5 @@
 import React, { Dispatch, Fragment, SetStateAction, useState } from 'react'
 import { Button } from '../Button'
-import getStyles from '../../../utils/getStyles';
-import { BlockStyle } from '../../../types/interfaces/IStyles';
 import { Transition, TransitionChild } from '@headlessui/react';
 import { Input } from '../InputGroup/Input';
 
@@ -30,32 +28,23 @@ export const SearchInput = ({show, setShow, callback }: { show: boolean, setShow
                 leaveFrom="opacity-100 translate-x-0"
                 leaveTo="opacity-0 translate-x-full"
             >
-                <form className={getStyles(containerStyle)} onSubmit={handleSubmit}>
+                <form className='mx-4' onSubmit={handleSubmit}>
                     <Input 
-                        className={getStyles(inputStyle)} 
+                        className='w-3/4 bg-light-gray p-1 border border-gray-300 rounded-md'
                         type='text' 
                         placeholder='Поиск'
                         value={inputValue}
                         onChange={handleChange}
                     />
-                    <Button showButton={true} onClick={setShow} className={getStyles(btnStyle)}>Скрыть</Button>
+                    <Button showButton={true} onClick={setShow} className='w-1/4 text-sm'>
+                        {
+                            inputValue === '' ?
+                            'Скрыть':
+                            'Принять'
+                        }
+                    </Button>
                 </form>
             </TransitionChild>
         </Transition>
     );
-};
-
-const containerStyle: BlockStyle = {
-    spacing: ' mx-2',
-};
-
-const btnStyle: BlockStyle = {
-    container: 'w-1/4',
-    text: 'text-sm'
-};
-
-const inputStyle: BlockStyle = {
-    container: 'w-3/4',
-    spacing: 'p-1',
-    border: "border border-gray-300 rounded-md",
 };

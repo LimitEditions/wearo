@@ -13,7 +13,7 @@ export const AuthForm = ({
     formData: IFormData[];
     type: "reg" | "createAdmin" | "login";
 }) => {
-    const formStyle = type === "reg" ? 'flex flex-col gap-3' : 'flex flex-col gap-3 bg-gray-200 px-2 py-4';
+    const formStyle = type === "reg" ? 'flex flex-col gap-3' : 'flex flex-col gap-3 px-2 py-4';
     return (
         <>
             {type === "reg" && <h1 className='text-center text-2xl pb-4'>Регистрация</h1>}

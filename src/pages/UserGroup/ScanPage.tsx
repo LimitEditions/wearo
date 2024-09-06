@@ -30,9 +30,9 @@ export const ScanPage = () => {
                 swipeable={true}
             >
                 {modal === 'success' && 
-                    <ResultInModal message={'Оригинальность подтверждена'} path="/images/successful.png"/>}
+                    <ResultInModal message={'Оригинальность подтверждена'} imgPath="/images/success.png"/>}
                 {modal === 'failure' && 
-                    <ResultInModal message={'Оригинальность не подтверждена'} path="/images/failure.png"/>}
+                    <ResultInModal message={'Оригинальность не подтверждена'} imgPath="/images/failure.png"/>}
                 <div className='w-3/4 mx-auto my-4'>
                     <Button showButton={modal === 'failure'} onClick={handleModal}>Повторить</Button>
                 </div>

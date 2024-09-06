@@ -52,7 +52,7 @@ export const UserInfoPage = () => {
                 index
                 element={
                     <>
-                        <div className='bg-gray-100 min-h-screen pb-12'>
+                        <div className='min-h-screen pb-12'>
                             <h3 className="w-full text-center uppercase">Профиль</h3>
                             {userData && (
                                 <>
