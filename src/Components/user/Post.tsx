@@ -66,7 +66,7 @@ export const Post = ({ id }: { id: string }) => {
                             styles="object-contain max-h-full"
                             alt="изображение поста"
                         />
-                        <div className={`absolute inset-0 bg-black opacity-${readingMode.opacity}`}></div>
+                        <div className={`absolute inset-0 bg-black ${readingMode.opacity}`}></div>
                     </div>
                     <div className={`absolute bottom-4 left-8 w-3/4 animate-fade-in ${readingMode.slide}`}>
                         <div className="flex space-x-3 mb-3 cursor-pointer">

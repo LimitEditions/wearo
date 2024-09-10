@@ -8,9 +8,8 @@ const ProtectedRoute: React.FC<{children: JSX.Element}> = ({ children }) => {
     const location = useLocation();
 
     if (isAuth.status) {
-        // Если пользователь авторизован, перенаправляем его с страниц регистрации или логина
-        // на главную страницу или страницу профиля, например
-        return <Navigate to="/" state={{ from: location }} replace />;
+        // Если пользователь авторизован, перенаправляем его со страниц регистрации/логина на страницу профиля
+        return <Navigate to="/wardrobe/profile" state={{ from: location }} replace />;
     }
 
     return children; // Если не авторизован, рендерим запрашиваемый компонент

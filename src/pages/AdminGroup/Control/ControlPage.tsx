@@ -6,6 +6,8 @@ import { UsersListPage } from "./Users/UsersListPage";
 import { BrandsPage } from "./Brands/BrandsPage";
 import { PostListPage } from "./Posts/PostListPage";
 import { AdminsPage } from "./Admins/AdminsPage";
+import { RouteAccessControl } from "../../../Components/common/RouteAccessControl";
+import { UserType } from "../../../api/data-contracts";
 
 
 export const ControlPage = () => {
@@ -18,17 +20,19 @@ export const ControlPage = () => {
     ];
     return (
         <>
-            <Routes>
-                <Route index element={
-                        <ItemsList items={items}/>
-                    } 
-                />
-                <Route path='requests/*' element={ <RequestsPage /> }/>
-                <Route path='admins/*' element={ <AdminsPage /> }/>
-                <Route path="users/*" element={<UsersListPage />} />
-                <Route path="brands/*" element={<BrandsPage />} />
-                <Route path="posts/*" element={<PostListPage />} />
-            </Routes>
+            <RouteAccessControl roleArr={[UserType.Admin, UserType.SuperAdmin]}>
+                <Routes>
+                    <Route index element={
+                            <ItemsList items={items}/>
+                        } 
+                    />
+                    <Route path='requests/*' element={ <RequestsPage /> }/>
+                    <Route path='admins/*' element={ <AdminsPage /> }/>
+                    <Route path="users/*" element={<UsersListPage />} />
+                    <Route path="brands/*" element={<BrandsPage />} />
+                    <Route path="posts/*" element={<PostListPage />} />
+                </Routes>
+            </RouteAccessControl>
         </>
     );
 };
