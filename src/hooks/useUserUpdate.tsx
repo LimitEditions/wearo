@@ -14,7 +14,7 @@ export const useUserUpdate = (
 ) => {
     const { isAuth } = useContext(AuthContext);
     const [updateContext, setUpdateContext] = useState<boolean>(false)
-    const x = useAuth(updateContext);
+    useAuth(updateContext);
     const [params, setParams] = useState<UpdateUserModel | null>(null);
 
     const getUpdatedParams = useCallback((): UpdateUserModel => {

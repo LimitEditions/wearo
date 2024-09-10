@@ -5,6 +5,7 @@ import { Nav } from './Components/common/Nav';
 import { Logo } from './Components/common/Logo';
 import AnimatedWrapper from './animation/AnimatedWrapper';
 import { endPoints } from './utils/endPoints';
+import { Page404 } from './Components/common/Page404';
 
 
 function App() {
@@ -21,7 +22,7 @@ function App() {
                                 return <Route key={endPoint.path} path={endPoint.path} element={<AnimatedWrapper><endPoint.component /></AnimatedWrapper>}/>
                             })
                         }
-                        <Route path="*" element={<AnimatedWrapper><p>no content</p></AnimatedWrapper>} />
+                        <Route path="*" element={<AnimatedWrapper><Page404/></AnimatedWrapper>} />
                     </Routes>
                 </AnimatePresence>
             </div>
