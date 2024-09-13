@@ -2919,7 +2919,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @tags Stories
    * @name StoriesHighlightsDetail
    * @summary Получить хайлайт по ид
-   * @request GET:/api/Stories/Highlights/{id}
+   * @request GET:/api/Stories/{id}
    * @secure
    */
   storiesHighlightsDetail = (id: string, params: RequestParams = {}) =>

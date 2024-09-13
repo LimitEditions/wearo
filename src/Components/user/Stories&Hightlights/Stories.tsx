@@ -7,7 +7,6 @@ import { Controll } from './Stories/Control';
 import { useSwipeable } from 'react-swipeable';
 import useApi from '../../../hooks/useApi'
 import { retrieve } from '../../../utils/encryption'
-import { HighlightStoryModel } from '../../../api/data-contracts'
 
 interface StoriesProps {
     close: React.Dispatch<React.SetStateAction<boolean>>;
@@ -20,7 +19,7 @@ export const Stories = ({ close, stories }: StoriesProps) => {
     const [pressedScreen, setPressedScreen] = useState(true);
 
     const token = useMemo(() => retrieve("token"), []);
-    const [ data, isLoading, error ] = useApi<'storiesHighlightsDetail', any>('storiesHighlightsDetail', stories[currentStoryIndex], { headers: { Authorization: `Bearer ${token}` } }, true)
+    const [ data, isLoading ] = useApi<'storiesHighlightsDetail', any>('storiesHighlightsDetail', stories[currentStoryIndex], { headers: { Authorization: `Bearer ${token}` } }, true)
 
     const changeIndex = (operation : (x: number) => number) => {
         if (stories[operation(currentStoryIndex)] !== undefined) {
