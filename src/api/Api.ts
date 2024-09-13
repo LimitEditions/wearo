@@ -2924,7 +2924,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    */
   storiesHighlightsDetail = (id: string, params: RequestParams = {}) =>
     this.request<HighlightModel, ProblemDetails>({
-      path: `/api/Stories/Highlights/${id}`,
+      path: `/api/Stories/${id}`,
       method: "GET",
       secure: true,
       format: "json",
