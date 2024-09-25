@@ -1,20 +1,19 @@
 name: Build and deploy
 
-on:
-  workflow_dispatch:
-    inputs:
-      branch:
-        required: true
-
 jobs:
   build:
     runs-on: ubuntu-latest
     continue-on-error: false
     steps:
-      - name: Get code from (${{ github.event.inputs.branch }})
+      - name: Extract branch name
+        shell: bash
+        run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
+        id: extract_branch
+
+      - name: Get code from (${{ steps.extract_branch.outputs.branch }})
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.inputs.branch }}
+          ref: ${{ steps.extract_branch.outputs.branch }}
       - name: Install dependencies
         run: npm install
         # working-directory: wear-front
