@@ -1,14 +1,20 @@
 name: Build and deploy
-on: workflow_dispatch
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        required: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
     continue-on-error: false
     steps:
-      - name: Get code
+      - name: Get code from (${{ github.event.inputs.branch }})
         uses: actions/checkout@v4
         with:
-          ref: develop
+          ref: ${{ github.event.inputs.branch }}
       - name: Install dependencies
         run: npm install
         # working-directory: wear-front
