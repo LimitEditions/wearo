@@ -3,7 +3,7 @@ import { Api } from '../api/Api';
 import { IApiResponse } from '../types/interfaces/ApiResponses/IApiResponse';
 import { IApiError } from "../types/interfaces/IApiError";
 import axios from "axios";
-console.log(process.env)
+
 const api = new Api({ baseURL: process.env.REACT_APP_URL_REQUEST });
 
 const useApi = <T extends keyof Api, Data >(
