@@ -1,20 +1,42 @@
 import React, { useState } from "react";
 import { Button } from "../common/Button";
-import { BlockStyle } from "../../types/interfaces/IStyles";
-import getStyles from "../../utils/getStyles";
 import withMask from "../common/hoc/withMask";
 import { Input } from "../common/InputGroup/Input";
+import { ChangeEvent } from "react";
+import { nanoid } from "nanoid";
 
 const InputWithMask = withMask(Input);
-
+type MyFile = {
+    file: File;
+    id: string;
+};
 export const BrandForm = () => {
     const [modal, setModal] = useState<boolean>(false);
+    const [files, setFiles] = useState<MyFile[]>([]);
+    const [brandData, setBrandData] = useState<MyFile[]>([]);
+
+    const onChange = (
+        e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) => {
+        const f = (e.target as HTMLInputElement).files;
+        if (f === null) {
+            return;
+        }
+        const newMyFiles = Array.from(f).map((element) => {
+            return { file: element, id: nanoid() } as MyFile;
+        });
+
+        setFiles((oldF) => {
+            return [...newMyFiles, ...oldF];
+        });
+    };
+
     //here will be use state <BrandCreateData>
     //form html + onchanges
     //button with onClick console.log(<BrandCreateData>)
     return (
         <>
-            <form className={getStyles(formStyle)}>
+            <form className="flex flex-col items-start justify-center px-4 py-5 space-y-3 ">
                 <div className="w-full border-b border-grey-300 relative">
                     <h3 className="uppercase mb-2 ">
                         Заявка на открытие бренда
@@ -41,11 +63,26 @@ export const BrandForm = () => {
                     Предоставьте презентацию или описание вашего бренда
                 </p>
 
-                <a className="flex flex-row gap-2">
+                <label className="flex flex-row gap-2 justify-center items-center cursor-pointer">
                     <img src="/images/attachment.svg" />
-                    <span> Прикрепить файл</span>
-                </a>
-                <h3 className="uppercase mb-2">Реквизиты</h3>
+                    Прикрепить файл
+                    <input
+                        className="hidden"
+                        type="file"
+                        style={{ color: "transparent" }}
+                        onChange={onChange}
+                    />
+                </label>
+                {files.map((element) => {
+                    return (
+                        <div className="flex flex-row gap-2 justify-center items-center">
+                            <img src="/images/multPages.svg" />
+                            <h1>{element.file.name}</h1>
+                        </div>
+                    );
+                })}
+
+                <h3 className="uppercase mb-2 ">Реквизиты</h3>
 
                 <label>Полное наименование</label>
                 <InputWithMask placeholder="ИП/ООО" />
@@ -72,18 +109,28 @@ export const BrandForm = () => {
                 <p className="text-sm text-gray-400">
                     Предоставьте свидетельство на товарный знак
                 </p>
-                <a className="flex flex-row gap-2">
+                <label className="flex flex-row gap-2 justify-center items-center cursor-pointer">
                     <img src="/images/attachment.svg" />
-                    <span> Прикрепить файл</span>
-                </a>
+                    Прикрепить файл
+                    <input
+                        className="hidden"
+                        type="file"
+                        style={{ color: "transparent" }}
+                        onChange={onChange}
+                    />
+                </label>
+                {files.map((element) => {
+                    return (
+                        <div className="flex flex-row gap-2 justify-center items-center">
+                            <img src="/images/multPages.svg" />
+                            <h1>{element.file.name}</h1>
+                        </div>
+                    );
+                })}
             </form>
             <div className="w-2/3 m-auto">
                 <Button showButton={true}>Отправить заявку</Button>
             </div>
         </>
     );
-};
-const formStyle: BlockStyle = {
-    container: "flex flex-col items-start justify-center",
-    spacing: "px-4 py-5 space-y-3",
 };
