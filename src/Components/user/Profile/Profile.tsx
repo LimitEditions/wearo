@@ -104,7 +104,14 @@ export const Profile = () => {
                 </div>
             </Item>
             <Item path="/password">Пароль</Item>
-
+            <div className="w-2/3 m-auto">
+                <Button
+                    showButton={true}
+                    onClick={() => navigate("/brand/create")}
+                >
+                    Отправить заявку
+                </Button>
+            </div>
             <LogOut show={true} />
             <Modal
                 isOpen={modal}
