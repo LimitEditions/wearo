@@ -4,16 +4,35 @@ import withMask from "../common/hoc/withMask";
 import { Input } from "../common/InputGroup/Input";
 import { ChangeEvent } from "react";
 import { nanoid } from "nanoid";
+import { MyFile } from "../../types/BrandDataType";
+import { BrandDataType } from "../../types/BrandDataType";
 
 const InputWithMask = withMask(Input);
-type MyFile = {
-    file: File;
-    id: string;
-};
+
 export const BrandForm = () => {
     const [modal, setModal] = useState<boolean>(false);
-    const [files, setFiles] = useState<MyFile[]>([]);
-    const [brandData, setBrandData] = useState<MyFile[]>([]);
+    const [brandData, setBrandData] = useState<BrandDataType>({
+        name: "",
+        site: "",
+        socialMedia: [],
+        uploadPresentation: [],
+        fullName: "",
+        address: "",
+        inn: 0,
+        ogrn: 0,
+        kpp: 0,
+        email: "",
+        phone: 0,
+        uploadLabel: [],
+    });
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setBrandData((prevData) => ({
+            ...prevData,
+            [name]: value,
+        }));
+    };
 
     const onChange = (
         e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -26,14 +45,21 @@ export const BrandForm = () => {
             return { file: element, id: nanoid() } as MyFile;
         });
 
-        setFiles((oldF) => {
-            return [...newMyFiles, ...oldF];
+        setBrandData((prevData) => ({
+            ...prevData,
+            uploadPresentation: [...newMyFiles, ...prevData.uploadPresentation],
+        }));
+    };
+    const deleteFile = (id: string) => {
+        const filtered = brandData.uploadPresentation.filter((element) => {
+            return element.id !== id;
         });
+        setBrandData((prevData) => ({
+            ...prevData,
+            uploadPresentation: [...filtered],
+        }));
     };
 
-    //here will be use state <BrandCreateData>
-    //form html + onchanges
-    //button with onClick console.log(<BrandCreateData>)
     return (
         <>
             <form className="flex flex-col items-start justify-center px-4 py-5 space-y-3 ">
@@ -50,13 +76,28 @@ export const BrandForm = () => {
                     </Button>
                 </div>
                 <label>Наименование бренда</label>
-                <InputWithMask placeholder="Наименование" />
+                <InputWithMask
+                    placeholder="Наименование"
+                    value={brandData.name}
+                    onChange={handleChange}
+                    name="name"
+                />
 
                 <label>Сайт бренда</label>
-                <InputWithMask placeholder="Ссылка на сайт" />
+                <InputWithMask
+                    placeholder="Ссылка на сайт"
+                    value={brandData.site}
+                    onChange={handleChange}
+                    name="site"
+                />
 
                 <label>Социальные сети бренда</label>
-                <InputWithMask placeholder="Ссылка на социальные сети" />
+                <InputWithMask
+                    placeholder="Ссылка на социальные сети"
+                    value={brandData.socialMedia}
+                    onChange={handleChange}
+                    name="socialMedia"
+                />
 
                 <label>Рич-контент</label>
                 <p className="text-sm text-gray-400 ">
@@ -73,11 +114,18 @@ export const BrandForm = () => {
                         onChange={onChange}
                     />
                 </label>
-                {files.map((element) => {
+                {brandData.uploadPresentation.map((element) => {
                     return (
-                        <div className="flex flex-row gap-2 justify-center items-center">
+                        <div className="flex flex-row w-full gap-2 justify-start items-center">
                             <img src="/images/multPages.svg" />
                             <h1>{element.file.name}</h1>
+                            <button
+                                onClick={() => {
+                                    deleteFile(element.id);
+                                }}
+                            >
+                                Удалить
+                            </button>
                         </div>
                     );
                 })}
@@ -85,26 +133,65 @@ export const BrandForm = () => {
                 <h3 className="uppercase mb-2 ">Реквизиты</h3>
 
                 <label>Полное наименование</label>
-                <InputWithMask placeholder="ИП/ООО" />
+                <InputWithMask
+                    placeholder="ИП/ООО"
+                    value={brandData.fullName}
+                    onChange={handleChange}
+                    name="fullName"
+                />
 
                 <label>Юридический адрес</label>
-                <InputWithMask placeholder="Адрес" />
+                <InputWithMask
+                    placeholder="Адрес"
+                    value={brandData.address}
+                    onChange={handleChange}
+                    name="address"
+                />
 
                 <label>ИНН</label>
-                <InputWithMask placeholder="48496269594" />
+                <InputWithMask
+                    placeholder="48496269594"
+                    value={brandData.inn}
+                    onChange={handleChange}
+                    name="inn"
+                />
 
                 <label>ОГРН / ОГРНИП</label>
-                <InputWithMask placeholder="48496269594" />
+                <InputWithMask
+                    placeholder="48496269594"
+                    value={brandData.ogrn}
+                    onChange={handleChange}
+                    name="ogrn"
+                />
+
                 <label>КПП</label>
                 <p className="text-sm text-gray-400">
                     Заполняется только для организаций, зарегистрированных как
                     ООО
                 </p>
-                <InputWithMask placeholder="48496269594" />
+                <InputWithMask
+                    placeholder="48496269594"
+                    value={brandData.kpp}
+                    onChange={handleChange}
+                    name="kpp"
+                />
+
                 <label>Электронная почта</label>
-                <InputWithMask placeholder="example@gmail.com" />
+                <InputWithMask
+                    placeholder="example@gmail.com"
+                    value={brandData.email}
+                    onChange={handleChange}
+                    name="email"
+                />
+
                 <label>Номер телефона</label>
-                <InputWithMask placeholder="" />
+                <InputWithMask
+                    placeholder=""
+                    value={brandData.phone}
+                    onChange={handleChange}
+                    name="phone"
+                />
+
                 <label>Свидетельство на товарный знак</label>
                 <p className="text-sm text-gray-400">
                     Предоставьте свидетельство на товарный знак
@@ -119,11 +206,18 @@ export const BrandForm = () => {
                         onChange={onChange}
                     />
                 </label>
-                {files.map((element) => {
+                {brandData.uploadLabel.map((element) => {
                     return (
                         <div className="flex flex-row gap-2 justify-center items-center">
                             <img src="/images/multPages.svg" />
                             <h1>{element.file.name}</h1>
+                            <button
+                                onClick={() => {
+                                    deleteFile(element.id);
+                                }}
+                            >
+                                Удалить
+                            </button>
                         </div>
                     );
                 })}
