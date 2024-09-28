@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import { Api } from '../api/Api';
 import { IApiResponse } from '../types/interfaces/ApiResponses/IApiResponse';
 import { IApiError } from "../types/interfaces/IApiError";
-import axios from "axios";
+import axios, { AxiosResponse, Method } from "axios";
 import { retrieve } from "../utils/encryption";
 
 const api = new Api({ baseURL: process.env.REACT_APP_URL_REQUEST });
@@ -93,14 +93,16 @@ const buildParams = (params: Params, config: Config): Params => {
     return params;
 }
 
-export const useApiNew = (method: keyof Api, body: Body, config: Config = {}) => {
-    const [data, setData] = useState<any>(null);
+
+
+export function useApiNew<Answer>(method: keyof Api, body: Body, config: Config = {}){
+    const [data, setData] = useState<Answer | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<IApiError | null>(null);
 
     const localParams: Params = config.params ?? {};
 
-    const execute = async (body: any) => {
+    const execute = async (body: Body) => {
         const request = api[method] as (...args: any[]) => Promise<any>;
         const _params = buildParams(localParams, config);
 
@@ -110,7 +112,7 @@ export const useApiNew = (method: keyof Api, body: Body, config: Config = {}) =>
 
             try {
                 const res = await request(body, _params);
-                setData(res);
+                setData(res.data);
             } catch (error) {
                 if(axios.isAxiosError(error)){
                     setError({
