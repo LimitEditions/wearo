@@ -108,7 +108,7 @@ const buildParams = (params: Params, config: Config): Params => {
 //         } catch (error) {
 //             setError(error);
 //         } finally {
-//             setIsLoading(true);
+//             setIsLoading(false);
 //         }
 //     }
 
