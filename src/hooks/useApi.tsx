@@ -99,11 +99,11 @@ const buildParams = (params: Params, config: Config): Params => {
 //     const [isLoading, setIsLoading] = useState(false);
 //     const [error, setError] = useState<any>(null);
 
-//     const worker = async () => {
+//     const worker = async (body: Body) => {
 //         setIsLoading(true);
 //         setError(null);
 //         try {
-//             const res = await execute();
+//             const res = await execute(body);
 //             setData(res);
 //         } catch (error) {
 //             setError(error);
@@ -114,7 +114,11 @@ const buildParams = (params: Params, config: Config): Params => {
 
 //     useEffect(() => {
 //         if (config.immediate !== false) {
-//             worker();
+//             if (!config.body) {
+//                  console.warn('Вы не передали body');
+//             } else {
+//                  worker(config.body);
+//             }
 //         }
 //     // eslint-disable-next-line react-hooks/exhaustive-deps
 //     }, [])
