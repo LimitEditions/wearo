@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { HighlightModel, HighlightModelDataResult } from '../../../api/data-contracts';
 import { Highlight } from './Highlight';
 import { HighlightsData } from './HighlightsData';
@@ -18,7 +18,17 @@ export const Highlights = ({ brandId }: { brandId: string | null}) => {
     //     true
     // );
 
-    const { data, isLoading, error } = useApiNew<HighlightModelDataResult>('storiesHighlightsList', { BrandGuid: brandId }, { token: true, autoExecute: true })
+    const [_brandId, setBrandId] = useState(null)
+
+    const { data, isLoading, error, execute } = useApiNew<HighlightModelDataResult>('storiesHighlightsList', 
+        { token: true, immediate: false }
+    )
+
+    const serch = () => {
+        const id = _brandId; // тип тут допустим id ввели
+        execute({BrandGuid: id});
+    }
+
     
     const highlights = data?.data;
     const res = highlights && highlights.length > 0 ? highlights: HighlightsData;

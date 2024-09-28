@@ -75,8 +75,9 @@ type Params = {
 };
 type Config = {
     token ?: boolean // Необходимо ли подставить токен авторизации
-    autoExecute ?: boolean // При объявление хука, запустит запрос. 
-    params?: Params
+    immediate ?: boolean // При объявление хука, запустит запрос. 
+    params?: Params,
+    body?: Body
 }
 
 const buildParams = (params: Params, config: Config): Params => {
@@ -93,9 +94,35 @@ const buildParams = (params: Params, config: Config): Params => {
     return params;
 }
 
+// function useAsyncState(execute: ((...args: any[]) => Promise<any>), config: Config) {
+//     const [data, setData] = useState<any>(null);
+//     const [isLoading, setIsLoading] = useState(false);
+//     const [error, setError] = useState<any>(null);
 
+//     const worker = async () => {
+//         setIsLoading(true);
+//         setError(null);
+//         try {
+//             const res = await execute();
+//             setData(res);
+//         } catch (error) {
+//             setError(error);
+//         } finally {
+//             setIsLoading(true);
+//         }
+//     }
 
-export function useApiNew<Answer>(method: keyof Api, body: Body, config: Config = {}){
+//     useEffect(() => {
+//         if (config.immediate !== false) {
+//             worker();
+//         }
+//     // eslint-disable-next-line react-hooks/exhaustive-deps
+//     }, [])
+
+//     return { data, error, isLoading, execute: worker };
+// }
+
+export function useApiNew<Answer>(method: keyof Api, config: Config = {}){
     const [data, setData] = useState<Answer | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<IApiError | null>(null);
@@ -130,8 +157,12 @@ export function useApiNew<Answer>(method: keyof Api, body: Body, config: Config 
     }
 
     useEffect(() => {
-        if (config.autoExecute !== false) {
-            execute(body);
+        if (config.immediate !== false) {
+            if (!config.body) {
+                console.warn('Вы не передали body');
+            } else {
+                execute(config.body);
+            }
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
