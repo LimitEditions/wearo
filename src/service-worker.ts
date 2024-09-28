@@ -23,6 +23,8 @@ precacheAndRoute(self.__WB_MANIFEST);
 // обрабатывались вашим index.html shell. Подробнее: 
 // https://developers.google.com/web/fundamentals/architecture/app-shell
 const fileExtensionRegexp = new RegExp('/[^/?]+\\.[^/]+$');
+
+console.log('worker', process.env.PUBLIC_URL);
 registerRoute(
     // Возвращает false для исключения запросов, которые не должны обрабатываться index.html.
     ({ request, url }: { request: Request; url: URL }) => {

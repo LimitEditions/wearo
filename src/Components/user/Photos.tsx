@@ -33,7 +33,7 @@ export const Photos = ({ photos, imgSize }: {photos: FileModel[] | null, imgSize
       <Slider {...settings} dotsClass="slick-dots">
         {displayPhotos.map(photo => (
           <div key={photo.guid} className={getStyles(photoStyle)}>
-            <img src={photos ? `/api/Files/${photo.fileGuid}`: photo.fileGuid} alt="Slide" className={getStyles(imgStyle) + ' ' + imgSize} />
+            <img src={photos ? `${process.env.REACT_APP_URL_REQUEST}/api/Files/${photo.fileGuid}`: photo.fileGuid} alt="Slide" className={getStyles(imgStyle) + ' ' + imgSize} />
           </div>
         ))}
       </Slider>
