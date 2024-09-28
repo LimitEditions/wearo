@@ -76,6 +76,7 @@ type Params = {
 type Config = {
     token ?: boolean // Необходимо ли подставить токен авторизации
     autoExecute ?: boolean // При объявление хука, запустит запрос. 
+    params?: Params
 }
 
 const buildParams = (params: Params, config: Config): Params => {
@@ -92,12 +93,12 @@ const buildParams = (params: Params, config: Config): Params => {
     return params;
 }
 
-export const useApiNew = (method: keyof Api, body: Body, params: Params | null, config: Config) => {
+export const useApiNew = (method: keyof Api, body: Body, config: Config = {}) => {
     const [data, setData] = useState<any>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<IApiError | null>(null);
 
-    const localParams: Params = params ?? {};
+    const localParams: Params = config.params ?? {};
 
     const execute = async (body: any) => {
         const request = api[method] as (...args: any[]) => Promise<any>;

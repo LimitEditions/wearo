@@ -18,7 +18,7 @@ export const Highlights = ({ brandId }: { brandId: string | null}) => {
     //     true
     // );
 
-    const { data, isLoading, error } = useApiNew('storiesHighlightsList', { BrandGuid: brandId }, null, { token: true, autoExecute: true })
+    const { data, isLoading, error } = useApiNew('storiesHighlightsList', { BrandGuid: brandId }, { token: true, autoExecute: true })
     
     const highlights = data?.data as HighlightModel[];
     const res = highlights && highlights.length > 0 ? highlights: HighlightsData;
