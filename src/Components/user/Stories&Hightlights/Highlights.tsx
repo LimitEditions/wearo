@@ -9,7 +9,7 @@ import { ErrorReq } from '../../common/InfoGroup/ErrorReq';
 
 
 export const Highlights = ({ brandId }: { brandId: string | null}) => {
-    const token = useMemo(() => retrieve("token"), []);
+    // const token = useMemo(() => retrieve("token"), []);
 
     // const [data, isLoading, error] = useApi<'storiesHighlightsList', HighlightModelDataResult>(
     //     'storiesHighlightsList',
@@ -18,18 +18,10 @@ export const Highlights = ({ brandId }: { brandId: string | null}) => {
     //     true
     // );
 
-    const [_brandId, setBrandId] = useState(null)
-
-    const { data, isLoading, error, execute } = useApiNew<HighlightModelDataResult>('storiesHighlightsList', 
-        { token: true, immediate: false }
+    const { data, isLoading, error } = useApiNew<HighlightModelDataResult>('storiesHighlightsList', 
+        { token: true,  body: {BrandGuid: brandId} }
     )
 
-    const serch = () => {
-        const id = _brandId; // тип тут допустим id ввели
-        execute({BrandGuid: id});
-    }
-
-    
     const highlights = data?.data;
     const res = highlights && highlights.length > 0 ? highlights: HighlightsData;
 
