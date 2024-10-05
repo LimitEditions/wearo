@@ -12,9 +12,9 @@ function App() {
     const location = useLocation();
 
     return (
-        <div className='relative overflow-hidden min-h-screen font-sf-pro bg-white-fon pb-20'>
+        <div className='relative overflow-hidden min-h-screen font-sf-pro bg-white-fon pb-20 flex flex-col max-h-screen'>
             <Logo />
-            <div>
+            <div className='flex-[2_1_0%] overflow-auto pb-[5px]'>
                 <AnimatePresence mode="wait">
                     <Routes location={location} key={location.pathname}>
                         {
