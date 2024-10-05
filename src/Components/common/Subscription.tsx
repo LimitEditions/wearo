@@ -40,7 +40,7 @@ export const Subscription = ({
             <span className={getStyles(spanStyle)}>{data.name}</span>
           </div>
           {/* По нажатию на кнопку отмены подписки появляется окно с кнопками Удалить и Отменить */}
-          <Button showButton={true} styles={btnStyle} onClick={() => setMod(true)}>Отменить подписку</Button>
+          <Button showButton={true} styles='w-max text-xs' onClick={() => setMod(true)}>Отменить подписку</Button>
         </div>
       )}
       <ModalsDelete 
@@ -73,11 +73,6 @@ const containerStyle: BlockStyle = {
 
 const divStyle: BlockStyle = {
     container: 'flex items-center gap-2'
-}
-
-const btnStyle: BlockStyle = {
-    blockSize: 'w-max',
-    text: 'text-xs'
 }
 
 const spanStyle: BlockStyle = {

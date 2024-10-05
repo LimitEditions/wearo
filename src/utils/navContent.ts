@@ -3,16 +3,19 @@ import { NavContentType } from "../types/NavContentType";
 export const navContent: NavContentType = {
     'Admin': [
         {
-            path: "/options",
-            name: "Настройки"
+            path: "/settings",
+            name: "Настройки",
+            image: "/images/nav/settings.png"
         },
         {
             path: "/control",
-            name: "Управление"
+            name: "Управление",
+            image: "/images/nav/control.png"
         },
         {
             path: "/analytics",
-            name: "Аналитика"
+            name: "Аналитика",
+            image: "/images/nav/analytics.png"
         },
     ],
     'BrandAdmin': [
@@ -33,17 +36,17 @@ export const navContent: NavContentType = {
         {
             path: "/promotions",
             name: "Промокоды",
-            image: "/images/promo.png"
+            image: "/images/nav/promo.png"
         },
         {
             path: "/posts",
             name: "Лента",
-            image: "/images/posts.png"
+            image: "/images/nav/posts.png"
         },
         {
             path: "/wardrobe",
             name: "Мой гардероб",
-            image: "/images/wardrobe.png"
+            image: "/images/nav/wardrobe.png"
         },
     ],
 };

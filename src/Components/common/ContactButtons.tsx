@@ -1,56 +1,30 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { FaTelegramPlane, FaWhatsapp, FaEnvelope, FaVk } from 'react-icons/fa';
-import { Button } from './Button';
+import React from 'react';
+import { SlPhone, SlEnvolope } from 'react-icons/sl';
+import { PiWhatsappLogo, PiTelegramLogo } from "react-icons/pi";
 import { Link } from 'react-router-dom';
 
 interface ContactButtonProps {
   telegram?: string;
   whatsapp?: string;
   email?: string;
-  vk?: string;
+  phone?: string;
 }
 
-export const ContactButtons: React.FC<ContactButtonProps> = ({ telegram, whatsapp, email, vk }) => {
-    const [isExpanded, setIsExpanded] = useState(false);
-    const ref = useRef<HTMLDivElement>(null);
-
-    // Обработчик клика вне компонента
-    const handleClickOutside = useCallback((event: MouseEvent) => {
-    if (ref.current && !ref.current.contains(event.target as Node)) {
-        setIsExpanded(false);
-    }
-    }, []);
-
-    useEffect(() => {
-        document.addEventListener('mousedown', handleClickOutside);
-    }, [handleClickOutside]);
-
+export const ContactButtons: React.FC<ContactButtonProps> = ({ telegram, whatsapp, email, phone }) => {
     return (
-        <div ref={ref} className="relative flex items-center">
-            {!isExpanded ? (
-            <Button showButton={true} onClick={() => setIsExpanded(true)}>
-                Контакты
-            </Button>
-            ) : (
-            <div className="flex space-x-4 animate-bounce">
-                {telegram && 
-                <Link to={`https://t.me/${telegram}`} target="_blank" rel="noopener noreferrer">
-                    <FaTelegramPlane className="text-blue-500 w-7 h-7 hover:text-blue-600 transition-all duration-300" />
-                </Link>}
-                {whatsapp && 
-                <Link to={`https://wa.me/${whatsapp}`} target="_blank" rel="noopener noreferrer">
-                    <FaWhatsapp className="text-green-500 w-7 h-7 hover:text-green-600 transition-all duration-300" />
-                </Link>}
-                {email &&
-                <Link to={`mailto:${email}`} target="_blank" rel="noopener noreferrer">
-                    <FaEnvelope className="text-red-500 w-7 h-7 hover:text-red-600 transition-all duration-300" />
-                </Link>}
-                {vk &&
-                <Link to={`mailto:${email}`} target="_blank" rel="noopener noreferrer">
-                    <FaVk className="text-blue-500 w-7 h-7 hover:text-red-600 transition-all duration-300" />
-                </Link>}
-            </div>
-            )}
+        <div className="flex items-center justify-between px-20">
+            <Link to={`https://wa.me/${whatsapp}`} target="_blank" rel="noopener noreferrer">
+                <PiWhatsappLogo className="text-gray-500 w-6 h-6 hover:text-gray-900 transition-all duration-300" />
+            </Link>
+            <Link to={`https://t.me/${telegram}`} target="_blank" rel="noopener noreferrer">
+                <PiTelegramLogo className="text-gray-500 w-6 h-6 hover:text-gray-900 transition-all duration-300" />
+            </Link>
+            <Link to={`mailto:${email}`} target="_blank" rel="noopener noreferrer">
+                <SlEnvolope className="text-gray-500 w-6 h-6 hover:text-gray-900 transition-all duration-300" />
+            </Link>
+            <Link to={`tel:${phone}`} target="_blank" rel="noopener noreferrer">
+                <SlPhone className="text-gray-500 w-6 h-6 hover:text-gray-900 transition-all duration-300" />
+            </Link>
         </div>
     );
 };

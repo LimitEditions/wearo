@@ -5,7 +5,6 @@ import { ProductItemModel } from '../../api/data-contracts';
 import { ErrorReq } from '../../Components/common/InfoGroup/ErrorReq';
 import { IsLoading } from '../../Components/common/InfoGroup/IsLoading';
 import { Button } from '../../Components/common/Button';
-import { BlockStyle } from '../../types/interfaces/IStyles';
 
 
 export const ProductItemPage = () => {
@@ -69,9 +68,4 @@ export const ProductItemPage = () => {
     );
 };
 
-const btnStyle: BlockStyle = {
-    container: 'rounded-md',
-    spacing: 'px-2 py-3',
-    background: 'bg-violet',
-    text: 'text-sm'
-};
+const btnStyle = 'rounded-md px-2 py-3 bg-violet text-sm';

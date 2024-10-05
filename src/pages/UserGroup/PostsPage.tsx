@@ -3,6 +3,10 @@ import useApi from '../../hooks/useApi';
 import { PostModel, PostModelDataResult } from '../../api/data-contracts';
 import { Post } from '../../Components/user/Post';
 import { IsLoading } from '../../Components/common/InfoGroup/IsLoading';
+import { ErrorReq } from '../../Components/common/InfoGroup/ErrorReq';
+import { Route, Routes } from 'react-router-dom';
+import { PostProducts } from '../../Components/user/PostProducts';
+
 
 export const PostsPage = () => {
     const [posts, setPosts] = useState<PostModel[] | undefined>()
@@ -17,13 +21,21 @@ export const PostsPage = () => {
     }, [data, error])
 
     return (
-        <div>
-           <IsLoading show={isLoading} />
-           { 
-                posts?.map(post => {
-                    return <Post key={post.guid} id={post.guid as string}/>
-                })
-           }
-        </div>
+        <>
+            <Routes>
+                <Route index element={
+                    <>
+                        <IsLoading show={isLoading} />
+                        <ErrorReq show={!!error} error={error} />
+                        { 
+                            posts?.map(post => {
+                                return <Post key={post.guid} id={post.guid as string}/>
+                            })
+                        }
+                    </>
+                } />
+                <Route path='/post_products/*' element={<PostProducts />} />
+            </Routes>
+        </>
     );
 };

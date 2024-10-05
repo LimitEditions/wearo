@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { SectionsTitle } from "../../../../Components/common/SectionsTitle";
 import useApi from "../../../../hooks/useApi";
 import { BrandRequestModelDataResult, RequestStatus } from "../../../../api/data-contracts";
 import { retrieve } from "../../../../utils/encryption";
@@ -9,6 +8,7 @@ import { RequestInfoPage } from "./RequestInfoPage";
 import { Item } from "../../../../types/interfaces/componentsProps/IItemsListProps";
 import { IsLoading } from "../../../../Components/common/InfoGroup/IsLoading";
 import { ErrorReq } from "../../../../Components/common/InfoGroup/ErrorReq";
+
 
 export const RequestsPage = () => {
   const [items, setItems] = useState<Item[]>([])
@@ -25,7 +25,7 @@ export const RequestsPage = () => {
       // Список заявок, по клику на конкретную заявку открывается страница с подробной информацией
       setItems(data.data.map((item) => {
         return {
-           title: item.name || '', path: `/${item.guid}` 
+          name: item.name || '', path: `/${item.guid}` 
         }
       }))
     }
@@ -35,7 +35,7 @@ export const RequestsPage = () => {
     <Routes>
       <Route index element={
           <>
-            <SectionsTitle title="Заявки на создание бренда" needsClose={true} />
+            <h3 className="w-full text-center uppercase py-3">Заявки на создание бренда</h3>
             {items && <ItemsList items={items}/>}
             <IsLoading show={isLoading} />
             <ErrorReq show={!!dataError} error={dataError} />
@@ -43,7 +43,5 @@ export const RequestsPage = () => {
       }/>
       <Route path=":id" element={<RequestInfoPage />} />
     </Routes>
-
-
   );
 };

@@ -1,27 +1,31 @@
 export interface IReading {
     state: 'on' | 'off' | 'incr_dark';
-    opacity: number;
+    opacity: string;
     lines: string;
     slide: string;
+    z_index: string;
 }
 
 export const readingOn: IReading = {
     state: 'on',
-    opacity: 40,
-    lines: '',
-    slide: 'animate-slide-up'
+    opacity: 'opacity-40',
+    lines: 'max-h-80 overflow-scroll',
+    slide: 'animate-slide-up',
+    z_index: 'z-0',
 };
 
 export const readingOff: IReading = {
     state: 'off',
-    opacity: 0,
-    lines: 'line-clamp-2',
-    slide: ''
+    opacity: 'opacity-0',
+    lines: 'line-clamp-3',
+    slide: '',
+    z_index: 'z-10',
 };
 
 export const readingOnDark: IReading = {
     state: 'incr_dark',
-    opacity: 70,
-    lines: '',
-    slide: 'animate-slide-up'
+    opacity: 'opacity-70',
+    lines: 'max-h-80 overflow-scroll',
+    slide: 'animate-slide-up',
+    z_index: 'z-0',
 };

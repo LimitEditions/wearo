@@ -1,121 +1,77 @@
-import React, { useState } from "react";
-import { BlockStyle } from "../../../../types/interfaces/IStyles";
-import getStyles from "../../../../utils/getStyles";
-import { SectionsTitle } from "../../../../Components/common/SectionsTitle";
+import React, { useEffect, useState } from "react";
 import useApi from "../../../../hooks/useApi";
 import { UserModel } from "../../../../api/data-contracts";
 import { Route, Routes, useParams } from "react-router-dom";
 import { retrieve } from "../../../../utils/encryption";
 import { ItemsList } from "../../../../Components/common/ItemGroup/ItemsList";
-import { ModalsDelete } from "../../../../Components/common/ModalsDelete";
-import { Button } from "../../../../Components/common/Button";
 import { AvatarAndName } from "../../../../Components/common/AvatarAndName";
 import { UserFavoritesPage } from "./UserFavoritesPage";
 import { UserSubscriptionsPage } from "./UserSubscriptionsPage";
 import { UserScansPage } from "./UserScansPage";
-import { EditUserInfo } from "./EditUserInfo";
-import { TextItemsList } from "../Admins/TextItemsList";
+import { UserProducts } from "./UserProducts";
 import { IsLoading } from "../../../../Components/common/InfoGroup/IsLoading";
 import { ErrorReq } from "../../../../Components/common/InfoGroup/ErrorReq";
+import { UserSubscribersPage } from "./UserSubscribersPage";
+import { UserDetails } from "../../../../Components/superadmin/UserDetails";
 
-export const UserInfo = () => {
-  // Флаг для открытия окна удаления пользователя
-  const [mod, setMod] = useState<boolean>(false);
-  const { id } = useParams();
-  // Запрос для получения информации о пользователе
-  const [data, isLoading, dataError] = useApi<"usersDetail", UserModel>(
-    "usersDetail",
-    id,
-    { headers: { Authorization: `Bearer ${retrieve("token")}` } },
-    true
-  );
 
-  const items = [
+export const UserInfoPage = () => {
+    const { id } = useParams();
+    const [userData, setUserData] = useState<UserModel>({});
+    const [data, isLoading, dataError] = useApi<"usersDetail", UserModel>(
+        "usersDetail",
+        id,
+        { headers: { Authorization: `Bearer ${retrieve("token")}` } },
+        true
+    );
+    useEffect(() => {
+        if(data && !dataError) setUserData(data);
+    }, [data, dataError]);
+
+    const items = [
         {
-          title: "Избранное",
-          path: `/favorites`,
-          needPhoto: false,
+            name: "Избранное", path: `./favorites`, needPhoto: false,
         },
         {
-          title: "Подписки",
-          path: `/subscriptions`,
-          needPhoto: false,
+            name: "Подписки", path: `./subscriptions`, needPhoto: false,
         },
         {
-          title: "Сканирования",
-          path: `/scans`,
-          needPhoto: false,
+            name: "Подписчики", path: `./subscribers`, needPhoto: false,
         },
         {
-          title: "Настройки",
-          path: `/edit`,
-          needPhoto: false,
+            name: "Сканирования", path: `./scans`, needPhoto: false,
         },
-      ]
+        {
+            name: "Изделия", path: `./products`, needPhoto: false,
+        },
+    ];
 
-  return (
-    <Routes>
-      <Route
-        index
-        element={
-          <>
-            <div className={getStyles(containerStyle)}>
-              <SectionsTitle
-                needsClose={false}
-                title="Профиль"
-                needBottomSpasing={true}
-              />
-              {items && data && (
-                <>
-                  <AvatarAndName
-                    name={data.firstName || null}
-                    photoId={data.mainAvatarGuid || null}
-                  />
-                  {/* Разделы Избранное, Подписки, Сканирования, настройки. Каждый со стрелкой вправо и с переходом на страницу */}
-                  <ItemsList items={items} />
-                  {/* Информаци о пользователе */}
-                  <div className={getStyles(divStyle)}>
-                    <TextItemsList info={data} type="user"/>
-                  </div>
-                  <div className={getStyles(btnContainer)}>
-                    <Button showButton={true} onClick={() => setMod(true)}>
-                      Удалить пользователя
-                    </Button>
-                  </div>
-                  <ModalsDelete
-                    apiMethod="usersDelete"
-                    isOpen1={mod}
-                    setIsOpen1={setMod}
-                    messageSuccess="Пользователь удален"
-                    messageSure="Вы уверены, что хотите удалить пользователя?"
-                  />
-                </>
-              )}
-            </div>
-            <IsLoading show={isLoading} />
-            <ErrorReq show={!!dataError} error={dataError} />
-          </>
-        }
-      />
-      <Route path="favorites" element={<UserFavoritesPage />} />
-      <Route path="subscriptions" element={<UserSubscriptionsPage />} />
-      <Route path="scans" element={<UserScansPage />} />
-      <Route path="edit" element={<EditUserInfo />} />
-    </Routes>
-  );
-};
-
-const containerStyle: BlockStyle = {
-  background: "bg-gray-100",
-  blockSize: "min-h-screen",
-  spacing: "pb-12",
-};
-
-const divStyle: BlockStyle = {
-  spacing: "pt-12",
-};
-
-const btnContainer: BlockStyle = {
-  blockSize: "w-3/4 max-w-96",
-  spacing: "m-auto",
+    return (
+        <Routes>
+            <Route
+                index
+                element={
+                    <>
+                        <div className='min-h-screen pb-12'>
+                            <h3 className="w-full text-center uppercase">Профиль</h3>
+                            {userData && (
+                                <>
+                                    <AvatarAndName name={userData.username || null} photoId={userData.mainAvatarGuid || null} />
+                                    <ItemsList items={items} />
+                                    <UserDetails userData={userData} setUserData={setUserData}/>
+                                </>
+                            )}
+                        </div>
+                        <IsLoading show={isLoading} />
+                        <ErrorReq show={!!dataError} error={dataError} />
+                    </>
+                }
+            />
+            <Route path="favorites" element={<UserFavoritesPage />} />
+            <Route path="subscriptions" element={<UserSubscriptionsPage />} />
+            <Route path="subscribers" element={<UserSubscribersPage />} />
+            <Route path="scans" element={<UserScansPage />} />
+            <Route path="products" element={<UserProducts />} />
+        </Routes>
+    );
 };

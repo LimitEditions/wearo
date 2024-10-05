@@ -1,7 +1,7 @@
 import React, { memo, useEffect, useMemo, useState } from 'react'
 import useAuth from '../../hooks/useAuth';
 import { Route, Routes, useNavigate } from 'react-router-dom';
-import { ProductItemModel, ProductItemModelDataResult, ProductModel } from '../../api/data-contracts';
+import { ProductItemModel, ProductItemModelDataResult } from '../../api/data-contracts';
 import useApi from '../../hooks/useApi';
 import { IsLoading } from '../../Components/common/InfoGroup/IsLoading';
 import { ProfilePage } from './ProfilePage';

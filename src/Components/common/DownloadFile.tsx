@@ -22,7 +22,7 @@ export const DownloadFile = ({ id }: { id: string | null }) => {
       {data && (
         <>
           <img src="/images/downloadFile.png" alt="Иконка скачивания файла"/>
-          <a href={`/api/Files/${id}`} download>
+          <a href={`${process.env.REACT_APP_URL_REQUEST}/api/Files/${id}`} download>
             {data?.name || "Название не указано"}
           </a>
         </>

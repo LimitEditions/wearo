@@ -27,7 +27,6 @@ export const Confirm = ({ mode, navigate }: { mode?: string; navigate: NavigateF
             encrypt(key, newGuid);
         };
     }, [mode]);
-    
 
     const [text, setText] = useState<string>('');
 
@@ -91,34 +90,32 @@ export const Confirm = ({ mode, navigate }: { mode?: string; navigate: NavigateF
             <div>
                 { mode === 'phone' ?
                     <>
-                        <h3 className='uppercase'>изменение телефон</h3>
-                        <label htmlFor="inputField">Укажите номер телефона</label>
+                        <h3 className='uppercase mb-2'>изменение телефона</h3>
+                        <label htmlFor="phone">Укажите номер телефона</label>
                         <InputWithMask
                             type={ mode }
                             name={ mode }
-                            id='inputField'
+                            id='phone'
                             placeholder='Телефон'
                             ref={ref}
                             value={text}
                             onChange={handleChange}
                             mask={mask}
-                            className={getStyles(inpitStyle)}
                         /> 
                     </>
                     :
                     <>
-                        <h3 className='uppercase'>изменение электронной почты</h3>
-                        <label htmlFor="inputField">Укажите адрес электронной почты</label>
-                        <div className='text-gray-400 text-sm'>Текущая почта {isAuth.userInfo?.email}</div>
+                        <h3 className='uppercase mb-2'>изменение почты</h3>
+                        {isAuth.userInfo?.email && <div className='text-gray-400 text-sm'>Текущая почта {isAuth.userInfo?.email}</div>}
+                        <label htmlFor="email">Укажите адрес электронной почты</label>
                         <Input
                             type={ mode }
                             name={ mode }
-                            id='inputField'
+                            id='email'
                             placeholder='Электронная почта'
                             reflink={ref}
                             value={text}
                             onChange={handleChange}
-                            className={getStyles(inpitStyle)}
                         />
                     </>
                 }
@@ -133,14 +130,6 @@ export const Confirm = ({ mode, navigate }: { mode?: string; navigate: NavigateF
 };
 
 const formStyle: BlockStyle = {
-    container: 'flex flex-col items-center justify-center',
-    spacing: 'p-4 space-y-7'
-};
-
-const inpitStyle: BlockStyle = {
-    spacing: "py-2 px-5",
-    background: "bg-white-fon",
-    border: "rounded-lg",
-    text: "placeholder-gray-700",
-    blockSize: "w-full",
+    container: 'flex flex-col items-start justify-center',
+    spacing: 'px-4 py-5 space-y-3'
 };

@@ -1,5 +1,5 @@
 export type Item = {
-    title: string,
+    name: string,
     path: string,
     photoId?: string | null,
     needPhoto?: boolean,
