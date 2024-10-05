@@ -3,7 +3,6 @@ import { ProductItemModel, ProductModel } from '../../../api/data-contracts';
 import { useNavigate } from 'react-router-dom';
 import { Photo } from '../../common/Photo';
 import ItemSizeSlider from '../../common/ItemSizeSlider';
-import { v4 as uuidv4 } from 'uuid';
 
 
 export const Products = ({productsList}: {productsList: ProductModel[] | ProductItemModel[] }) => {
@@ -42,7 +41,7 @@ export const Products = ({productsList}: {productsList: ProductModel[] | Product
                 return (
                     product && 
                     <div
-                        key={uuidv4()}
+                        key={product.guid}
                         className={`${getItemWidth()} m-0 p-1 flex flex-col items-center justify-around`}
                         onClick={() => navigate(endPoint, {
                             state: {

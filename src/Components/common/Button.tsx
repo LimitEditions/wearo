@@ -1,6 +1,4 @@
 import React from 'react';
-import { BlockStyle } from '../../types/interfaces/IStyles';
-import getStyles from '../../utils/getStyles';
 import { IButtonProps } from '../../types/interfaces/componentsProps/IButtonProps';
 
 
@@ -9,19 +7,11 @@ export const Button: React.FC<IButtonProps> = ({ showButton, styles, children, .
 
     return (
         <>
-            <button className={styles ? getStyles(styles) : getStyles(buttonStyle)} {...props}>
+            <button className={styles ? styles : buttonStyle} {...props}>
                 {children}
             </button> 
         </>
     );
 };
 
-const buttonStyle: BlockStyle = {
-    blockSize: "w-full",
-    background: "bg-custom-blue hover:bg-navy-blue disabled:bg-light-gray",
-    spacing: 'p-3 m-auto',
-    text: 'text-white text-sm',
-    border: 'rounded-full shadow-lg',
-    transitionsAnimation: 'transition-all duration-300'
-};
-
+const buttonStyle: string = "w-full bg-custom-blue hover:bg-navy-blue disabled:bg-light-gray p-3 m-auto text-white text-sm rounded-full shadow-lg transition-all duration-300";

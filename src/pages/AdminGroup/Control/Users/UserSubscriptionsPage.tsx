@@ -4,7 +4,6 @@ import useApi from "../../../../hooks/useApi";
 import { retrieve } from "../../../../utils/encryption";
 import { Subscription } from "../../../../Components/common/Subscription";
 import { useParams } from "react-router-dom";
-import { SectionsTitle } from "../../../../Components/common/SectionsTitle";
 import { IsLoading } from "../../../../Components/common/InfoGroup/IsLoading";
 import { ErrorReq } from "../../../../Components/common/InfoGroup/ErrorReq";
 
@@ -20,11 +19,7 @@ export const UserSubscriptionsPage = () => {
 
     return (
         <div className='bg-gray-100 min-h-screen pb-10'>
-            <SectionsTitle
-                needsClose={false}
-                title="Подписки"
-                needBottomSpasing={true}
-            />
+            <h3 className="w-full text-center uppercase py-3">Подписки</h3>
             {
                 data?.data?.map((el: SubscriptionModel) => {
                     return (

@@ -72,7 +72,7 @@ export const Product = ({ data, color, size }:{ data: ProductModel, color?: stri
         mode: 'delete',
         id: favGuid
     });
-    // console.log(isDeleted)
+    console.log(isDeleted)
 
     return (
         <>

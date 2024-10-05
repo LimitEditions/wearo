@@ -158,15 +158,17 @@ const publicVapidKey = 'BG-d_Ln_C7s7I_MFQpHim75qy2Gx21RI9X03H1SVpayU7F53Esz9aGJQ
  */
 function subscribeUserToPush(registration: ServiceWorkerRegistration) {
     const convertedVapidKey = urlBase64ToUint8Array(publicVapidKey);
+    const userId = retrieve('guid');
+    if(!userId) return console.error('Залогиньтесь для начала');
 
     registration.pushManager.subscribe({
         userVisibleOnly: true,
         applicationServerKey: convertedVapidKey
     }).then((subscription: PushSubscription) => {
-        console.log('Подписка на push-уведомления выполнена:', subscription);
+        console.log('Подписка на push-уведомления выполнена (на клиенте):', subscription);
         
         const pushData = {
-            "userGuid": retrieve('guid'),
+            "userGuid": userId,
             "pushAuth": arrayBufferToBase64(subscription.getKey('auth') as Uint8Array),
             "pushEndpoint": subscription.endpoint,
             "pushP256DH": arrayBufferToBase64(subscription.getKey('p256dh') as Uint8Array)
@@ -182,18 +184,23 @@ function subscribeUserToPush(registration: ServiceWorkerRegistration) {
             }
         })
         .then(response => {
+            console.log(response)
             if (!response.ok) {
                 throw new Error('Ошибка сети: ' + response.statusText);
             }
-            return response.json();
+            return response.status;
         })
         .then(data => {
             console.log('Успешно отправлено:', data);
         })
         .catch(err => {
-            console.error('Ошибка при отправке:', err);
+            registration.pushManager.getSubscription().then(existingSubscription => {
+                if(existingSubscription) existingSubscription.unsubscribe().then(() => {
+                    console.log('Подписка на клиенте отменена из-за ошибки отправки данных на сервер:', err)
+                });
+            });
         });
-    }).catch((err: Error) => console.error('Ошибка подписки на push-уведомления:', err));
+    }).catch((err: Error) => console.error('Ошибка подписки на push-уведомления (на клиенте):', err));
 }
 
 // Функция для проверки текущей подписки и подписки пользователя на push-уведомления
@@ -206,8 +213,8 @@ function checkAndSubscribeUserToPush(registration: ServiceWorkerRegistration) {
         } else {
             // Пользователь уже подписан
             console.log('Пользователь уже подписан на push-уведомления:', existingSubscription);
-            existingSubscription.unsubscribe()
-        }
+            // existingSubscription.unsubscribe();
+        };
     }).catch((err) => {
         console.error('Ошибка проверки подписки на push-уведомления:', err);
     });
