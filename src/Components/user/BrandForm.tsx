@@ -3,7 +3,7 @@ import { Button } from "../common/Button";
 import withMask from "../common/hoc/withMask";
 import { Input } from "../common/InputGroup/Input";
 import { ChangeEvent } from "react";
-import { nanoid } from "nanoid";
+import { useId } from "react";
 import { MyFile } from "../../types/BrandDataType";
 import { BrandDataType } from "../../types/BrandDataType";
 
@@ -26,6 +26,8 @@ export const BrandForm = () => {
         uploadLabel: [],
     });
 
+    const id = useId();
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setBrandData((prevData) => ({
@@ -42,7 +44,7 @@ export const BrandForm = () => {
             return;
         }
         const newMyFiles = Array.from(f).map((element) => {
-            return { file: element, id: nanoid() } as MyFile;
+            return { file: element, id: id } as MyFile;
         });
 
         setBrandData((prevData) => ({
@@ -72,7 +74,7 @@ export const BrandForm = () => {
                         className="absolute top-1.5 right-1 "
                         onClick={() => setModal(false)}
                     >
-                        <img src="images/closeBtn.svg" alt="крестик" />
+                        <img src="images/nav/closeBtn.svg" alt="крестик" />
                     </Button>
                 </div>
                 <label>Наименование бренда</label>
