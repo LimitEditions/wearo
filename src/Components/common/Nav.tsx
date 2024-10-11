@@ -6,6 +6,9 @@ import { navContent } from "../../utils/navContent";
 import { INavItem } from "../../types/NavContentType";
 import { showEl } from "../../utils/showEl";
 import AuthContext from "../../context/AuthProvider";
+import { IconPromo } from "./icons/IconPromo";
+import { IconPosts } from "./icons/IconPosts";
+import { IconWardrobe } from "./icons/IconWardrobe";
 
 export const Nav: React.FC = memo(() => {
     const { isAuth } = useContext(AuthContext);
@@ -46,7 +49,10 @@ export const Nav: React.FC = memo(() => {
                                 className={getStyles(linkStyle)}
                             >
                                 <div className="w-5">
-                                    <img src={e.image} alt="значок навигации" />
+                                    <e.component hoverColor="red" />
+                                    {/* <IconPosts hoverColor="#3447BC" />
+                                    <IconPromo hoverColor="#3447BC" />
+                                    <IconWardrobe hoverColor="#3447BC" /> */}
                                 </div>
                                 <div>{e.name}</div>
                             </Link>

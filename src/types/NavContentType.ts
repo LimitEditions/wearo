@@ -1,3 +1,4 @@
+import { FC } from "react";
 import { UserType } from "../api/data-contracts";
 
 export interface INavItem {
