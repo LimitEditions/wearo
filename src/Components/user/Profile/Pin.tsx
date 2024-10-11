@@ -103,14 +103,19 @@ export const Pin = ({ navigate }: { navigate: NavigateFunction }) => {
                     Подтвердить
                 </Button>
             </div>
-            <Modal isOpen={modal} setIsOpen={setModal} swipeable={false}>
-                <img src="/images/success.svg" />
-                <p className="text-center text-lg text-[#3447BC]" tabIndex={0}>
-                    {data === ""
-                        ? "Почта подтверждена"
-                        : `Ошибка - ${error?.message}`}
-                </p>
-            </Modal>
+            <div className="flex items-center justify-center">
+                <Modal isOpen={modal} setIsOpen={setModal} swipeable={false}>
+                    <img src="/images/success.svg" />
+                    <p
+                        className="text-center text-lg text-[#3447BC]"
+                        tabIndex={0}
+                    >
+                        {data === ""
+                            ? "Почта подтверждена"
+                            : `Ошибка - ${error?.message}`}
+                    </p>
+                </Modal>
+            </div>
         </div>
     );
 };

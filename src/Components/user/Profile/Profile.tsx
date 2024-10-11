@@ -119,6 +119,7 @@ export const Profile = () => {
                 {showImageCrop && (
                     <ImageCrop aspect={1} setGuidImg={setGuidImg} />
                 )}
+
                 <Button
                     showButton={!profileInfo.mainAvatarGuid && !showImageCrop}
                     onClick={() => setShowImageCrop(true)}
