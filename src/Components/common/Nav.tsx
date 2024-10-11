@@ -49,7 +49,7 @@ export const Nav: React.FC = memo(() => {
                                 className={getStyles(linkStyle)}
                             >
                                 <div className="w-5">
-                                    {/* <e.component hoverColor="red" /> */}
+                                    {e.component}
                                     {/* <IconPosts hoverColor="#3447BC" />
                                     <IconPromo hoverColor="#3447BC" />
                                     <IconWardrobe hoverColor="#3447BC" /> */}

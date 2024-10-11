@@ -42,6 +42,7 @@ export const navContent: NavContentType = {
         {
             path: "/posts",
             name: "Лента",
+            component: <IconPosts hoverColor="red" />,
         },
         {
             path: "/wardrobe",
