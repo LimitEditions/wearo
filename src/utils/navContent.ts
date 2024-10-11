@@ -42,7 +42,6 @@ export const navContent: NavContentType = {
         {
             path: "/posts",
             name: "Лента",
-            component: IconPosts,
         },
         {
             path: "/wardrobe",
