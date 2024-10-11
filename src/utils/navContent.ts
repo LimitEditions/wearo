@@ -1,4 +1,5 @@
 import { NavContentType } from "../types/NavContentType";
+import { IconPosts } from "../Components/common/icons/IconPosts";
 
 export const navContent: NavContentType = {
     Admin: [
@@ -36,12 +37,12 @@ export const navContent: NavContentType = {
         {
             path: "/promotions",
             name: "Промокоды",
-            image: "/images/nav/prom.svg",
+            image: "/images/nav/promo.svg",
         },
         {
             path: "/posts",
             name: "Лента",
-            image: "/images/nav/posts.svg",
+            component: IconPosts,
         },
         {
             path: "/wardrobe",
