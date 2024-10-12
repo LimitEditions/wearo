@@ -17,7 +17,7 @@ jobs:
         with:
           ref: ${{ steps.extract_branch.outputs.branch }}
       - name: Install dependencies
-        run: npm install
+        run: npm ci
         # working-directory: wear-front
       - name: Remove old builds
         run: rm -rf build.zip build || true
