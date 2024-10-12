@@ -23,7 +23,6 @@ export const IconPromo = ({ hoverColor }: IconProps) => {
         >
             <path
                 d="M22 12C22 17.523 17.523 22 12 22C6.477 22 2 17.523 2 12C2 6.477 6.477 2 12 2"
-                stroke="#9095B5"
                 stroke-width="1.2"
                 stroke-linecap="round"
                 stroke-linejoin="round"

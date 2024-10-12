@@ -1,5 +1,7 @@
 import { NavContentType } from "../types/NavContentType";
 import { IconPosts } from "../Components/common/icons/IconPosts";
+import { IconPromo } from "../Components/common/icons/IconPromo";
+import { IconWardrobe } from "../Components/common/icons/IconWardrobe";
 
 export const navContent: NavContentType = {
     Admin: [
@@ -38,16 +40,18 @@ export const navContent: NavContentType = {
             path: "/promotions",
             name: "Промокоды",
             image: "/images/nav/promo.svg",
+            component: <IconPromo hoverColor="#3447BC" />,
         },
         {
             path: "/posts",
             name: "Лента",
-            component: <IconPosts hoverColor="red" />,
+            component: <IconPosts hoverColor="#3447BC" />,
         },
         {
             path: "/wardrobe",
             name: "Мой гардероб",
             image: "/images/nav/wardrobe.svg",
+            component: <IconWardrobe hoverColor="#3447BC" />,
         },
     ],
 };
