@@ -39,11 +39,11 @@ export const BrandForm = () => {
     const onChange = (
         e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) => {
-        const f = (e.target as HTMLInputElement).files;
-        if (f === null) {
+        const file = (e.target as HTMLInputElement).files;
+        if (file === null) {
             return;
         }
-        const newMyFiles = Array.from(f).map((element) => {
+        const newMyFiles = Array.from(file).map((element) => {
             return { file: element, id: id } as MyFile;
         });
 
@@ -58,7 +58,7 @@ export const BrandForm = () => {
         });
         setBrandData((prevData) => ({
             ...prevData,
-            uploadPresentation: [...filtered],
+            uploadPresentation: [],
         }));
     };
 
@@ -213,13 +213,14 @@ export const BrandForm = () => {
                         <div className="flex flex-row gap-2 justify-center items-center">
                             <img src="/images/multPages.svg" />
                             <h1>{element.file.name}</h1>
-                            <button
+                            <Button
+                                showButton={false}
                                 onClick={() => {
                                     deleteFile(element.id);
                                 }}
                             >
                                 Удалить
-                            </button>
+                            </Button>
                         </div>
                     );
                 })}
