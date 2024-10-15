@@ -9,10 +9,10 @@ export type BrandDataType = {
     uploadPresentation: MyFile[];
     fullName: string;
     address: string;
-    inn: number;
-    ogrn: number;
-    kpp: number;
+    inn: "";
+    ogrn: "";
+    kpp: "";
     email: string;
-    phone: number;
+    phone: "";
     uploadLabel: MyFile[];
 };
