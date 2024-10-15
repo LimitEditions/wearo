@@ -18,11 +18,11 @@ export const BrandForm = () => {
         uploadPresentation: [],
         fullName: "",
         address: "",
-        inn: 0,
-        ogrn: 0,
-        kpp: 0,
+        inn: "",
+        ogrn: "",
+        kpp: "",
         email: "",
-        phone: 0,
+        phone: "",
         uploadLabel: [],
     });
 
@@ -36,10 +36,10 @@ export const BrandForm = () => {
         }));
     };
 
-    const onChange = (
+    const onChangePresentation = (
         e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) => {
-        const file = (e.target as HTMLInputElement).files;
+        const file = (e.target as HTMLInputElement)?.files;
         if (file === null) {
             return;
         }
@@ -52,13 +52,29 @@ export const BrandForm = () => {
             uploadPresentation: [...newMyFiles, ...prevData.uploadPresentation],
         }));
     };
+    const onChangeLabel = (
+        e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) => {
+        const file = (e.target as HTMLInputElement)?.files;
+        if (file === null) {
+            return;
+        }
+        const newMyFiles = Array.from(file).map((element) => {
+            return { file: element, id: id } as MyFile;
+        });
+
+        setBrandData((prevData) => ({
+            ...prevData,
+            uploadLabel: [...newMyFiles, ...prevData.uploadLabel],
+        }));
+    };
     const deleteFile = (id: string) => {
         const filtered = brandData.uploadPresentation.filter((element) => {
             return element.id !== id;
         });
         setBrandData((prevData) => ({
             ...prevData,
-            uploadPresentation: [],
+            uploadPresentation: filtered,
         }));
     };
 
@@ -109,25 +125,31 @@ export const BrandForm = () => {
                 <label className="flex flex-row gap-2 justify-center items-center cursor-pointer">
                     <img src="/images/attachment.svg" />
                     Прикрепить файл
-                    <input
+                    <Input
                         className="hidden"
                         type="file"
                         style={{ color: "transparent" }}
-                        onChange={onChange}
+                        onChange={onChangePresentation}
                     />
                 </label>
                 {brandData.uploadPresentation.map((element) => {
                     return (
-                        <div className="flex flex-row w-full gap-2 justify-start items-center">
-                            <img src="/images/multPages.svg" />
-                            <h1>{element.file.name}</h1>
-                            <button
-                                onClick={() => {
-                                    deleteFile(element.id);
-                                }}
-                            >
-                                Удалить
-                            </button>
+                        <div className="flex w-full">
+                            <div className="flex flex-row gap-2 justify-start items-center">
+                                <img src="/images/multPages.svg" />
+                                <h1>{element.file.name}</h1>
+                            </div>
+                            <div className="flex w-full justify-end items-center">
+                                <Button
+                                    showButton={true}
+                                    styles="false"
+                                    onClick={() => {
+                                        deleteFile(element.id);
+                                    }}
+                                >
+                                    Удалить
+                                </Button>
+                            </div>
                         </div>
                     );
                 })}
@@ -156,6 +178,7 @@ export const BrandForm = () => {
                     value={brandData.inn}
                     onChange={handleChange}
                     name="inn"
+                    type="number"
                 />
 
                 <label>ОГРН / ОГРНИП</label>
@@ -164,6 +187,7 @@ export const BrandForm = () => {
                     value={brandData.ogrn}
                     onChange={handleChange}
                     name="ogrn"
+                    type="number"
                 />
 
                 <label>КПП</label>
@@ -176,6 +200,7 @@ export const BrandForm = () => {
                     value={brandData.kpp}
                     onChange={handleChange}
                     name="kpp"
+                    type="number"
                 />
 
                 <label>Электронная почта</label>
@@ -192,6 +217,7 @@ export const BrandForm = () => {
                     value={brandData.phone}
                     onChange={handleChange}
                     name="phone"
+                    type="number"
                 />
 
                 <label>Свидетельство на товарный знак</label>
@@ -201,26 +227,31 @@ export const BrandForm = () => {
                 <label className="flex flex-row gap-2 justify-center items-center cursor-pointer">
                     <img src="/images/attachment.svg" />
                     Прикрепить файл
-                    <input
+                    <Input
                         className="hidden"
                         type="file"
                         style={{ color: "transparent" }}
-                        onChange={onChange}
+                        onChange={onChangeLabel}
                     />
                 </label>
                 {brandData.uploadLabel.map((element) => {
                     return (
-                        <div className="flex flex-row gap-2 justify-center items-center">
-                            <img src="/images/multPages.svg" />
-                            <h1>{element.file.name}</h1>
-                            <Button
-                                showButton={false}
-                                onClick={() => {
-                                    deleteFile(element.id);
-                                }}
-                            >
-                                Удалить
-                            </Button>
+                        <div className="flex w-full">
+                            <div className="flex flex-row gap-2 justify-start items-center">
+                                <img src="/images/multPages.svg" />
+                                <h1>{element.file.name}</h1>
+                            </div>
+                            <div className="flex w-full justify-end items-center">
+                                <Button
+                                    showButton={true}
+                                    styles="false"
+                                    onClick={() => {
+                                        deleteFile(element.id);
+                                    }}
+                                >
+                                    Удалить
+                                </Button>
+                            </div>
                         </div>
                     );
                 })}
