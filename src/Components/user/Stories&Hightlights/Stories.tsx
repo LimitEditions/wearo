@@ -1,12 +1,12 @@
-import React, { useMemo, useState} from 'react'
+import React, { useEffect, useMemo, useState} from 'react'
 import { Modal } from '../../common/Modal'
 import Style from './Stories/style.module.css'
 import { More } from './Stories/More'
 import { Progress } from './Stories/Progress'
 import { Controll } from './Stories/Control';
 import { useSwipeable } from 'react-swipeable';
-import useApi from '../../../hooks/useApi'
-import { retrieve } from '../../../utils/encryption'
+import { useApiNew } from '../../../hooks/useApi'
+import { HighlightModel } from '../../../api/data-contracts'
 
 interface StoriesProps {
     close: React.Dispatch<React.SetStateAction<boolean>>;
@@ -16,10 +16,16 @@ interface StoriesProps {
 export const Stories = ({ close, stories }: StoriesProps) => {
     const [currentStoryIndex, setCurrentStoryIndex] = useState(0);
     const [showMore, setShowMore] = useState(false);
-    const [pressedScreen, setPressedScreen] = useState(true);
+    const [pressedScreen, setPressedScreen] = useState(false);
 
-    const token = useMemo(() => retrieve("token"), []);
-    const [ data, isLoading ] = useApi<'storiesHighlightsDetail', any>('storiesHighlightsDetail', stories[currentStoryIndex], { headers: { Authorization: `Bearer ${token}` } }, true)
+    const { data, isLoading, execute } = useApiNew<HighlightModel>('storiesHighlightsDetail', {
+        token: true,
+        immediate: false,
+    })
+
+    useEffect(() => {
+        execute(stories[currentStoryIndex])
+    }, [currentStoryIndex])
 
     const changeIndex = (operation : (x: number) => number) => {
         if (stories[operation(currentStoryIndex)] !== undefined) {
@@ -29,7 +35,7 @@ export const Stories = ({ close, stories }: StoriesProps) => {
         }
     }
 
-    const src = `https://vne.su:8081/api/Files/${data?.fileGuid}`;
+    const src = `https://vne.su:8081/api/Files/${(data as any)?.fileGuid}`;
 
     const handler = useSwipeable({
         onSwipedUp: () => {
@@ -64,11 +70,11 @@ export const Stories = ({ close, stories }: StoriesProps) => {
             setIsOpen={close}
             swipeable={false}
             additionalStyles={{
-                container: 'fixed top-0 w-full h-full p-0',
-                panel: 'p-0'
+                panel: 'p-0',
+                container: 'fixed inset-0 overflow-y-auto flex min-h-full items-center justify-center'
             }}
         >
-            <div {...handler} className='relative'>
+            <div {...handler} className='relative flex flex-col h-[100dvh]'>
                 <div className="absolute top-4 left-2 right-2 z-[15]">
                     <Progress
                         needChangeIndex={() => changeIndex((x) => x + 1)}
@@ -87,7 +93,7 @@ export const Stories = ({ close, stories }: StoriesProps) => {
                     :
                     (
                         <>
-                            <div className="relative flex justify-center align-center bg-[black] rounded-[4px]">
+                            <div className="relative flex justify-center align-center bg-[black] rounded-[4px] flex-1">
                                 <div className={Style.img__container}>
                                     {
                                         stories[currentStoryIndex] &&

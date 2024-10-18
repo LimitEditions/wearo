@@ -28,32 +28,37 @@ export const Controll = ({ changeIndex, currentStoryIndex, showMoreClick, change
   }, [changePressed])
 
   const pressEvent = (e: React.MouseEvent<HTMLDivElement, MouseEvent> | React.TouchEvent<HTMLDivElement>, operation: () => void) => {
+    console.log(e);
     operation();
   }
 
   const EventPack = {
     onTouchStart: (e: React.TouchEvent<HTMLDivElement>) => pressEvent(e, () => changePressed(true)),
     onTouchEnd: (e: React.TouchEvent<HTMLDivElement>) => pressEvent(e, () => changePressed(false)),
-    onMouseEnter: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => pressEvent(e, () => changePressed(true)),
-    onMouseLeave: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => pressEvent(e, () => changePressed(false))
+  }
+
+  const stopPropagination = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, fn : () => void) => {
+    e.stopPropagation();
+    fn();
   }
 
   return (
-    <div className={[Style.stories__control, !isShowControllHelper ? Style.stories__control__show : ''].join(' ')}>
+    <div
+      className={[Style.stories__control, !isShowControllHelper ? Style.stories__control__show : ''].join(' ')}
+      {...EventPack}
+    >
         <div className={Style.controller__wrapper}>
             {(currentStoryIndex !== 0 || isShowControllHelper) && (
                 <div
                   className={Style.controller__outline}
-                  onClick={() => changeIndex((x) => x - 1)}
-                  {...EventPack}
+                  onClick={(e) => stopPropagination(e, () => changeIndex((x) => x - 1))}
                 >
                   {isShowControllHelper ? "← Left" : ''}
                 </div>
             )}
             <div
               className={Style.controller__outline}
-              onClick={() => changeIndex((x) => x + 1)}
-              {...EventPack}
+              onClick={(e) => stopPropagination(e, () => changeIndex((x) => x + 1))}
             >
               {isShowControllHelper ? "Right →" : ''}
             </div>

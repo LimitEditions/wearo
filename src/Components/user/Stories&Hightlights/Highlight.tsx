@@ -13,7 +13,6 @@ export const Highlight = ({ highlight }: { highlight: HighlightModel}) => {
             {
                 open && <Stories close={setOpen} stories={highlight.storiesGuids as string[]}/>
             }
-            {/* <Stories highlightStories={highlight.stories || []} open={open} setOpen={setOpen} /> */}
         </div>
     );
 };

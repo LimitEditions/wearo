@@ -22,7 +22,6 @@ function ProgressItem({ doneFunc, index, currentIndex, isPause }: ProgressItemPr
     if (index !== currentIndex && progressValue > 0) {
       setProgressValue(0);
     }
-
     if (index !== currentIndex || isPause) return
 
     if (progressValue >= 100) {
