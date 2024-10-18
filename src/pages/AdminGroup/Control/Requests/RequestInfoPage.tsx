@@ -1,5 +1,4 @@
 import React from "react";
-import { SectionsTitle } from "../../../../Components/common/SectionsTitle";
 import { useParams } from "react-router-dom";
 import { BrandRequestModel, FileModel } from "../../../../api/data-contracts";
 import useApi from "../../../../hooks/useApi";
@@ -26,7 +25,7 @@ export const RequestInfoPage = () => {
 
   return (
     <div className={getStyles(divStyle)}>
-      <SectionsTitle needsClose={true} title="Заявка на открытие бренда" />
+      <h3 className="w-full text-center uppercase py-3">Заявка на открытие бренда</h3>
       {data && (
         <>
           {/* Отображаем логитип и название */}

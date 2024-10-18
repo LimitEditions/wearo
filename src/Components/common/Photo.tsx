@@ -2,11 +2,10 @@ import React, { useEffect, useState } from 'react'
 
 export const Photo = ({id, styles, alt}: {id: string | null, styles: string, alt: string}) => {
     // Если id не пришел, то устанавливаем дефолтное фото
-    const [src, setSrc] = useState(id ? `/api/Files/${id}` : '/images/photonone.png');
-    
+    const [src, setSrc] = useState(id ? `${process.env.REACT_APP_URL_REQUEST}/api/Files/${id}` : '/images/photonone.png');
     // при изменении статуса id
     useEffect(() => {
-        if(id) setSrc(`/api/Files/${id}`);
+        if(id) setSrc(`${process.env.REACT_APP_URL_REQUEST}/api/Files/${id}`);
     }, [id])
 
     // Если запрос на фото произошел с ошибкой, то устанавливаем дефолтное фото

@@ -47,20 +47,20 @@ export const Promotions = ({ promotionsList, params, config }: { promotionsList:
 
     return (
         <div>
-            <ItemSizeSlider onChange={setItemSize} defaultValue={2} maxValue={2}/>
+            {filtredPromotionsList.length > 0 && <ItemSizeSlider onChange={setItemSize} defaultValue={2} maxValue={2}/>}
             {filtredPromotionsList && (
                 <div className="w-full flex flex-wrap justify-around px-2 text-sm">
                     {filtredPromotionsList.map((el) => (
                         <div
                             key={el.guid}
-                            className={`relative ${getItemWidth()} h-36 bg-yellow shadow-md box-border space-y-2 p-4 m-0.5`}
+                            className={`relative ${getItemWidth()}  bg-yellow shadow-md box-border space-y-2 px-4 pt-4 pb-8 m-0.5`}
                             onClick={() => navigate(`./${el.guid}`)}
                         >
                             <h1 className="uppercase font-semibold">{el.name}</h1>
                             <p>{el.text}</p>
                             <p className='text-xs'>{moment(el.start).format('DD.MM.YYYY')} - {moment(el.end).format('DD.MM.YYYY')}</p>
 
-                            <Photo id={el.imageGuid || ''} styles={'absolute bottom-1 left-1 w-16 object-cover m-1'} alt={'фото'} />
+                            <Photo id={el.imageGuid || ''} styles={'absolute bottom-2 left-4 w-16 object-cover m-1'} alt={'фото'} />
                         </div>
                     ))}
                 </div>

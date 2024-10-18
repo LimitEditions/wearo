@@ -3,6 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 import { Profile } from '../../Components/user/Profile/Profile';
 import { ConfirmPage } from './ConfirmPage';
 import { ScanPage } from './ScanPage';
+import { FavoritesPage } from './FavoritesPage';
 
 
 export const ProfilePage = () => {
@@ -13,6 +14,7 @@ export const ProfilePage = () => {
                 <Route path='email/*' element={<ConfirmPage />} />
                 <Route path='phone/*' element={<ConfirmPage />} />
                 <Route path='scan/' element={<ScanPage />} />
+                <Route path='favorites/' element={<FavoritesPage />} />
             </Routes>
         </div>
     );

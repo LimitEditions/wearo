@@ -1,9 +1,6 @@
 import React from "react";
-import { SectionsTitle } from "../../../../Components/common/SectionsTitle";
 import { withAuthLogic } from "../../../../Components/common/hoc/withAuthLogic";
 import { RegistrationForm } from "../../../../Components/authorization/RegistrationForm";
-import { BlockStyle } from "../../../../types/interfaces/IStyles";
-import getStyles from "../../../../utils/getStyles";
 
 
 export const AddAdminPage = () => {
@@ -15,14 +12,10 @@ export const AddAdminPage = () => {
 
     return (
         <>
-            <SectionsTitle needsClose={true} title="Добавить администратора" />
-            <div className={getStyles(divStyle)}>
+            <h3 className="w-full text-center uppercase py-3">Добавить администратора</h3>
+            <div className='w-full'>
                 <CreateAdmin />
             </div>
         </>
     );
-};
-
-const divStyle: BlockStyle = {
-    blockSize: "w-full",
 };

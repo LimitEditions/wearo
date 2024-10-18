@@ -7,7 +7,6 @@ import { IsLoading } from '../../Components/common/InfoGroup/IsLoading';
 import { ErrorReq } from '../../Components/common/InfoGroup/ErrorReq';
 import { Photo } from '../../Components/common/Photo';
 import { Button } from '../../Components/common/Button';
-import { BlockStyle } from '../../types/interfaces/IStyles';
 import Item from '../../Components/common/ItemGroup/Item';
 import { Products } from '../../Components/user/Product/Products';
 
@@ -57,6 +56,19 @@ export const UserPage = () => {
         };
     };
 
+    const getStyleBtn = (type: 'write' | 'subscribe') => {
+        let additionStyle;
+        switch(type) {
+            case('write'):
+                additionStyle = 'bg-white-fon hover:bg-custom-blue text-custom-blue hover:text-white';
+                break;
+            case('subscribe'):
+                additionStyle = 'bg-custom-blue hover:bg-white-fon text-white hover:text-custom-blue';
+                break;
+        };
+        return `w-full border border-custom-blue p-1 ${additionStyle} text-sm rounded-lg shadow-lg transition-all duration-300`
+    };
+
     return (
         <>
             <h1 className='w-full my-3 text-center text-lg uppercase'>Профиль</h1>
@@ -67,8 +79,19 @@ export const UserPage = () => {
                 <span className='text-md uppercase'>{userData?.username}</span>
             </div>
             <div className='w-full flex space-x-1 px-2'>
-                <Button showButton={true} styles={btnWriteStyle} onClick={handleWrite}>Написать</Button>
-                <Button showButton={true} styles={btnSubscrStyle}>Подписаться</Button>
+                <Button 
+                    showButton={true}
+                    styles={getStyleBtn('write')} 
+                    onClick={handleWrite}
+                >
+                    Написать
+                </Button>
+                <Button 
+                    showButton={true}
+                    styles={getStyleBtn('subscribe')}
+                >
+                    Подписаться
+                </Button>
             </div>
             <div className='mt-4 mx-2'>
                 <Item path=''><span className='text-md uppercase'>Подписки</span></Item>
@@ -82,22 +105,4 @@ export const UserPage = () => {
             }
         </>
     );
-};
-
-const btnWriteStyle: BlockStyle = {
-    blockSize: "w-full border border-custom-blue",
-    background: "bg-white-fon hover:bg-custom-blue",
-    spacing: 'p-1',
-    text: 'text-custom-blue hover:text-white text-sm',
-    border: 'rounded-lg shadow-lg',
-    transitionsAnimation: 'transition-all duration-300'
-};
-
-const btnSubscrStyle: BlockStyle = {
-    blockSize: "w-full border border-custom-blue",
-    background: "bg-custom-blue hover:bg-white-fon",
-    spacing: 'p-1',
-    text: 'text-white hover:text-custom-blue text-sm',
-    border: 'rounded-lg shadow-lg',
-    transitionsAnimation: 'transition-all duration-300'
 };

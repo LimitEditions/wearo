@@ -1,3 +1,7 @@
+import { retrieve } from "./utils/encryption";
+import { arrayBufferToBase64, urlBase64ToUint8Array } from "./utils/format";
+
+
 const isLocalhost = Boolean(
     window.location.hostname === 'localhost' ||
     // [::1] is the IPv6 localhost address.
@@ -17,6 +21,7 @@ type Config = {
  */
 export function register(config?: Config) {
     if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
+    // if (process.env.NODE_ENV === 'development' && 'serviceWorker' in navigator) {
         // Конструктор URL доступен во всех браузерах, поддерживающих SW.
         const publicUrl = new URL(process.env.PUBLIC_URL, window.location.href);
         if (publicUrl.origin !== window.location.origin) {
@@ -26,21 +31,29 @@ export function register(config?: Config) {
         }
 
         window.addEventListener('load', () => {
-            const swUrl = `${process.env.PUBLIC_URL}/service-worker.js`;
-
-            if (isLocalhost) {
-                // Это работает на localhost. Давайте проверим, существует ли сервис-воркер или нет.
-                checkValidServiceWorker(swUrl, config);
-
-                // Добавьте дополнительный лог для localhost, указывая разработчикам
-                // на документацию по service worker/PWA.
-                navigator.serviceWorker.ready.then(() => {
-                    console.log('Это веб-приложение обслуживается кешем первым сервис-воркером.');
-                });
-            } else {
-                // Не localhost. Просто регистрируем сервис-воркер
-                registerValidSW(swUrl, config);
-            }
+            const swUrl = '/service-worker.js';
+    
+            // Проверка на наличие уже зарегистрированного Service Worker
+            navigator.serviceWorker.getRegistration().then((registration) => {
+                if (registration) {
+                    console.log('Service Worker уже зарегистрирован:', registration);
+                    checkAndSubscribeUserToPush(registration)
+                } else {
+                    // Если Service Worker не зарегистрирован, регистрируем новый
+                    if (isLocalhost) {
+                        checkValidServiceWorker(swUrl, config);
+    
+                        navigator.serviceWorker.ready.then(() => {
+                            console.log('Это веб-приложение обслуживается кешем первым сервис-воркером.');
+                        });
+                    } else {
+                        console.log(swUrl)
+                        registerValidSW(swUrl, config);
+                    }
+                }
+            }).catch((error) => {
+                console.error('Ошибка при проверке регистрации Service Worker:', error);
+            });
         });
     }
 }
@@ -80,8 +93,8 @@ function registerValidSW(swUrl: string, config?: Config) {
                 };
             };
 
-            // Подписка пользователя на push-уведомления
-            subscribeUserToPush(registration);
+            // Проверяем и подписываем пользователя на push-уведомления, если он еще не подписан
+            checkAndSubscribeUserToPush(registration);
         })
         .catch((error) => {
             console.error('Ошибка во время регистрации сервис-воркера:', error);
@@ -140,45 +153,69 @@ export function unregister() {
 const publicVapidKey = 'BG-d_Ln_C7s7I_MFQpHim75qy2Gx21RI9X03H1SVpayU7F53Esz9aGJQeNSIiPn9fqydD-J51J7CvSj2wwYwSAA';
 
 /**
- * Функция для преобразования base64 строки в Uint8Array
- * @param {string} base64String - base64 строка
- * @returns {Uint8Array} - массив байтов
- */
-function urlBase64ToUint8Array(base64String: string): Uint8Array {
-    const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
-    const base64 = (base64String + padding)
-        .replace(/\-/g, '+')
-        .replace(/_/g, '/');
-
-    const rawData = window.atob(base64);
-    const outputArray = new Uint8Array(rawData.length);
-
-    for (let i = 0; i < rawData.length; ++i) {
-        outputArray[i] = rawData.charCodeAt(i);
-    }
-    return outputArray;
-}
-
-/**
  * Функция для подписки пользователя на push-уведомления
  * @param {ServiceWorkerRegistration} registration - регистрация сервис-воркера
  */
 function subscribeUserToPush(registration: ServiceWorkerRegistration) {
     const convertedVapidKey = urlBase64ToUint8Array(publicVapidKey);
+    const userId = retrieve('guid');
+    if(!userId) return console.error('Залогиньтесь для начала');
 
     registration.pushManager.subscribe({
         userVisibleOnly: true,
         applicationServerKey: convertedVapidKey
     }).then((subscription: PushSubscription) => {
-        console.log('Подписка на push-уведомления выполнена:', subscription);
+        console.log('Подписка на push-уведомления выполнена (на клиенте):', subscription);
+        
+        const pushData = {
+            "userGuid": userId,
+            "pushAuth": arrayBufferToBase64(subscription.getKey('auth') as Uint8Array),
+            "pushEndpoint": subscription.endpoint,
+            "pushP256DH": arrayBufferToBase64(subscription.getKey('p256dh') as Uint8Array)
+        };
 
         // Отправка подписки на сервер
-        fetch('/api/subscribe', {
+        fetch('/api/Push', {
             method: 'POST',
-            body: JSON.stringify(subscription),
+            body: JSON.stringify(pushData),
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${retrieve('token')}`
             }
+        })
+        .then(response => {
+            console.log(response)
+            if (!response.ok) {
+                throw new Error('Ошибка сети: ' + response.statusText);
+            }
+            return response.status;
+        })
+        .then(data => {
+            console.log('Успешно отправлено:', data);
+        })
+        .catch(err => {
+            registration.pushManager.getSubscription().then(existingSubscription => {
+                if(existingSubscription) existingSubscription.unsubscribe().then(() => {
+                    console.log('Подписка на клиенте отменена из-за ошибки отправки данных на сервер:', err)
+                });
+            });
         });
-    }).catch((err: Error) => console.error('Ошибка подписки на push-уведомления:', err));
+    }).catch((err: Error) => console.error('Ошибка подписки на push-уведомления (на клиенте):', err));
 }
+
+// Функция для проверки текущей подписки и подписки пользователя на push-уведомления
+function checkAndSubscribeUserToPush(registration: ServiceWorkerRegistration) {
+    registration.pushManager.getSubscription().then((existingSubscription) => {
+        if (existingSubscription === null) {
+            // Пользователь еще не подписан, подписываем его
+            console.log('Пользователь еще не подписан на push-уведомления. Подписываем...');
+            subscribeUserToPush(registration);
+        } else {
+            // Пользователь уже подписан
+            console.log('Пользователь уже подписан на push-уведомления:', existingSubscription);
+            // existingSubscription.unsubscribe();
+        };
+    }).catch((err) => {
+        console.error('Ошибка проверки подписки на push-уведомления:', err);
+    });
+};

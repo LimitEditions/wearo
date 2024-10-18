@@ -15,13 +15,13 @@ export class Id<SecurityDataType = unknown> extends HttpClient<SecurityDataType>
   /**
    * No description
    *
-   * @tags Subscriptions
+   * @tags Push
    * @name DeleteId
    * @request DELETE:/{id}
    * @secure
    */
   deleteId = (id: string, params: RequestParams = {}) =>
-    this.request<void, void>({
+    this.request<void, any>({
       path: `/${id}`,
       method: "DELETE",
       secure: true,

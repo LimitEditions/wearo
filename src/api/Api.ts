@@ -50,6 +50,7 @@ import {
   CreateProductModel,
   CreatePromotionCodeModel,
   CreatePromotionModel,
+  CreatePushSubscribtionModel,
   CreateScanModel,
   CreateStoryModel,
   CreateSubscriptionModel,
@@ -90,7 +91,6 @@ import {
   ProductStatus,
   PromotionModel,
   PromotionModelDataResult,
-  PushSubscription,
   RefreshModel,
   RejectRequestModel,
   RequestStatus,
@@ -105,6 +105,7 @@ import {
   TipModel,
   TokenModel,
   UpdateBrandModel,
+  UpdateClothingCollectionModel,
   UpdateCommentModel,
   UpdateHighlightModel,
   UpdateLookModel,
@@ -572,7 +573,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @request PUT:/api/ClothingCollections
    * @secure
    */
-  clothingCollectionsUpdate = (data: ClothingCollectionModel, params: RequestParams = {}) =>
+  clothingCollectionsUpdate = (data: UpdateClothingCollectionModel, params: RequestParams = {}) =>
     this.request<ClothingCollectionModel, ProblemDetails>({
       path: `/api/ClothingCollections`,
       method: "PUT",
@@ -1057,7 +1058,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @secure
    */
   filesProductsCreate = (data: CreateFileProductModel, params: RequestParams = {}) =>
-    this.request<FileProductModel, ProblemDetails>({
+    this.request<FileProductModel, ProblemDetails | void>({
       path: `/api/Files/Products`,
       method: "POST",
       body: data,
@@ -1142,12 +1143,32 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
        * Начало периода.
        * @format double
        */
-      modelWidthStart?: number;
+      modelHipStart?: number;
       /**
        * Конец периода.
        * @format double
        */
-      modelWidthEnd?: number;
+      modelHipEnd?: number;
+      /**
+       * Начало периода.
+       * @format double
+       */
+      modelChestStart?: number;
+      /**
+       * Конец периода.
+       * @format double
+       */
+      modelChestEnd?: number;
+      /**
+       * Начало периода.
+       * @format double
+       */
+      modelWaistStart?: number;
+      /**
+       * Конец периода.
+       * @format double
+       */
+      modelWaistEnd?: number;
       ModelShape?: BodyShape;
       Tags?: string[];
       Products?: string[];
@@ -1181,7 +1202,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags Looks
    * @name LooksCreate
-   * @summary Публикация образа
+   * @summary Публикация образа со всеми связанными сущностями
    * @request POST:/api/Looks
    * @secure
    */
@@ -1215,14 +1236,15 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
       ...params,
     });
   /**
-   * No description
-   *
-   * @tags Looks
-   * @name LooksFileCreate
-   * @summary Добавление файла к образу
-   * @request POST:/api/Looks/File
-   * @secure
-   */
+ * No description
+ *
+ * @tags Looks
+ * @name LooksFileCreate
+ * @summary Добавление файла к образу
+Будут изменены позиции файлов
+ * @request POST:/api/Looks/File
+ * @secure
+ */
   looksFileCreate = (data: AddFileToLookModel, params: RequestParams = {}) =>
     this.request<LookModel, ProblemDetails>({
       path: `/api/Looks/File`,
@@ -1234,16 +1256,17 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
       ...params,
     });
   /**
-   * No description
-   *
-   * @tags Looks
-   * @name LooksFileCreate2
-   * @summary Удаление продукта от лука
-   * @request POST:/api/Looks/File/{guid}
-   * @originalName looksFileCreate
-   * @duplicate
-   * @secure
-   */
+ * No description
+ *
+ * @tags Looks
+ * @name LooksFileCreate2
+ * @summary Удаление продукта от лука
+Так же у других файлов лука будет изменена позиция
+ * @request POST:/api/Looks/File/{guid}
+ * @originalName looksFileCreate
+ * @duplicate
+ * @secure
+ */
   looksFileCreate2 = (guid: string, params: RequestParams = {}) =>
     this.request<void, ProblemDetails>({
       path: `/api/Looks/File/${guid}`,
@@ -2047,6 +2070,11 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
        */
       ProductGuid?: string;
       /**
+       * ИД Бренда
+       * @format uuid
+       */
+      BrandGuid?: string;
+      /**
        * ИД пользователя-владельца
        * @format uuid
        */
@@ -2093,7 +2121,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @secure
    */
   productItemsCreate = (data: CreateProductItemModel, params: RequestParams = {}) =>
-    this.request<ProductItemModel, ProblemDetails>({
+    this.request<ProductItemModel[], ProblemDetails>({
       path: `/api/ProductItems`,
       method: "POST",
       body: data,
@@ -2103,14 +2131,15 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
       ...params,
     });
   /**
-   * No description
-   *
-   * @tags ProductItems
-   * @name ProductItemsUpdate
-   * @summary Редактирование единицы продукта
-   * @request PUT:/api/ProductItems
-   * @secure
-   */
+ * No description
+ *
+ * @tags ProductItems
+ * @name ProductItemsUpdate
+ * @summary Редактирование единицы продукта
+Позваляет присоеденить тег для будущей идентификации
+ * @request PUT:/api/ProductItems
+ * @secure
+ */
   productItemsUpdate = (data: UpdateProductItemModel, params: RequestParams = {}) =>
     this.request<ProductItemModel, ProblemDetails>({
       path: `/api/ProductItems`,
@@ -2161,6 +2190,8 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
       Coloring?: Coloring[];
       /** Категория товара */
       Catigories?: string[];
+      /** Набор идентификаторов */
+      Guids?: string[];
       /**
        * Номер страницы (по умолчанию = 1).
        * @format int32
@@ -2673,13 +2704,13 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * No description
    *
    * @tags Push
-   * @name PushSubscribeCreate
-   * @request POST:/api/Push/subscribe
+   * @name PushCreate
+   * @request POST:/api/Push
    * @secure
    */
-  pushSubscribeCreate = (data: PushSubscription, params: RequestParams = {}) =>
+  pushCreate = (data: CreatePushSubscribtionModel, params: RequestParams = {}) =>
     this.request<void, any>({
-      path: `/api/Push/subscribe`,
+      path: `/api/Push`,
       method: "POST",
       body: data,
       secure: true,
@@ -2691,12 +2722,12 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags Push
    * @name PushSendCreate
-   * @request POST:/api/Push/send
+   * @request POST:/api/Push/Send
    * @secure
    */
   pushSendCreate = (data: NotificationData, params: RequestParams = {}) =>
     this.request<void, any>({
-      path: `/api/Push/send`,
+      path: `/api/Push/Send`,
       method: "POST",
       body: data,
       secure: true,

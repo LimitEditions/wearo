@@ -38,6 +38,11 @@ export interface AddFileToLookModel {
    * @format uuid
    */
   lookGuid?: string;
+  /**
+   * Позиция файла
+   * @format int32
+   */
+  position?: number;
 }
 
 export interface AddProductToLookModel {
@@ -340,12 +345,30 @@ export interface ColorModelDataResult {
 
 export enum Coloring {
   Monocolor = "Monocolor",
-  Bicolor = "Bicolor",
-  Multicolor = "Multicolor",
-  Pattern = "Pattern",
-  Print = "Print",
-  Jeans = "Jeans",
-  Effect = "Effect",
+  Abstract = "Abstract",
+  Animalistic = "Animalistic",
+  Argyle = "Argyle",
+  Geometric = "Geometric",
+  PolkaDot = "PolkaDot",
+  Houndstooth = "Houndstooth",
+  Dip = "Dip",
+  Other = "Other",
+  Check = "Check",
+  Logo = "Logo",
+  Military = "Military",
+  Marine = "Marine",
+  Lettering = "Lettering",
+  Monochrome = "Monochrome",
+  Ornament = "Ornament",
+  Landscape = "Landscape",
+  Paisley = "Paisley",
+  Stripe = "Stripe",
+  Patchwork = "Patchwork",
+  Multicolored = "Multicolored",
+  Religious = "Religious",
+  GlowInTheDark = "GlowInTheDark",
+  TieDye = "TieDye",
+  Ethnic = "Ethnic",
 }
 
 /** Комментарий */
@@ -543,6 +566,11 @@ export interface CreateFileProductModel {
    * @format double
    */
   y?: number;
+  /**
+   * Ссылка на цвет вещи
+   * @format uuid
+   */
+  productColorGuid?: string | null;
 }
 
 export interface CreateHighlightModel {
@@ -574,18 +602,44 @@ export interface CreateLookModel {
    */
   modelHeight?: number | null;
   /**
-   * Ширина модели
+   * Обхват бедер
    * @format double
    */
-  modelWidth?: number | null;
+  modelHip?: number | null;
   modelShape?: BodyShape;
   /** Набор файлов */
   files?: string[] | null;
+  /** Набор тегов */
+  tags?: CreateLookModelTag[] | null;
+  /** Набор продуктов */
+  products?: CreateLookModelProduct[] | null;
   /**
    * Заглавная фото
    * @format uuid
    */
   mainFileGuid?: string | null;
+  /**
+   * Обхват груди
+   * @format double
+   */
+  modelChest?: number | null;
+  /**
+   * Обхват талии
+   * @format double
+   */
+  waist?: number | null;
+}
+
+export interface CreateLookModelProduct {
+  /** @format uuid */
+  productGuid?: string;
+  /** @format uuid */
+  productColorGuid?: string | null;
+}
+
+export interface CreateLookModelTag {
+  name?: string;
+  type?: LookTagType;
 }
 
 /** Материал */
@@ -725,6 +779,11 @@ export interface CreateProductItemModel {
    */
   productGuid?: string | null;
   /**
+   * Бренд, усли продукт не задан
+   * @format uuid
+   */
+  brandGuid?: string | null;
+  /**
    * Пользователь-владелец
    * @format uuid
    */
@@ -739,6 +798,11 @@ export interface CreateProductItemModel {
    * @format uuid
    */
   clothingPartyGuid?: string | null;
+  /**
+   * Количество создаваемых элементов
+   * @format int32
+   */
+  count?: number | null;
 }
 
 /** Материал продукта */
@@ -793,6 +857,8 @@ export interface CreateProductModel {
   gender?: Gender;
   /** URI Продукта */
   uri?: string | null;
+  /** Код изделия */
+  code?: string | null;
 }
 
 export interface CreatePromotionCodeModel {
@@ -852,6 +918,18 @@ export interface CreatePromotionModel {
    * @format int32
    */
   codePerUserLimit?: number | null;
+}
+
+/** Подписка на уведомления */
+export interface CreatePushSubscribtionModel {
+  /**
+   * Пользователь
+   * @format uuid
+   */
+  userGuid?: string;
+  pushAuth?: string;
+  pushEndpoint?: string;
+  pushP256DH?: string;
 }
 
 export interface CreateScanModel {
@@ -1096,6 +1174,11 @@ export interface FileProductModel {
    * @format double
    */
   y?: number;
+  /**
+   * Ссылка на цвет вещи
+   * @format uuid
+   */
+  productColorGuid?: string | null;
 }
 
 export enum FileType {
@@ -1287,10 +1370,10 @@ export interface LookModel {
    */
   modelHeight?: number | null;
   /**
-   * Ширина модели
+   * Обхват бедер
    * @format double
    */
-  modelWidth?: number | null;
+  modelHip?: number | null;
   modelShape?: BodyShape;
   /** Продукт */
   products?: LookProductModel[] | null;
@@ -1303,6 +1386,16 @@ export interface LookModel {
    * @format uuid
    */
   mainFileGuid?: string | null;
+  /**
+   * Обхват груди
+   * @format double
+   */
+  modelChest?: number | null;
+  /**
+   * Обхват талии
+   * @format double
+   */
+  waist?: number | null;
 }
 
 /** Результат чтения данных. */
@@ -1391,7 +1484,7 @@ export interface LookTagModel {
 export enum LookTagType {
   Event = "Event",
   Style = "Style",
-  Wether = "Wether",
+  Weather = "Weather",
 }
 
 /** Материал */
@@ -1490,10 +1583,10 @@ export interface MessageModelDataResult {
 }
 
 export interface NotificationData {
-  endpoint?: string;
-  p256DH?: string;
-  auth?: string;
-  payload?: string;
+  /** @format uuid */
+  userGuid?: string;
+  title?: string;
+  message?: string;
 }
 
 /** Дополнительные файлы к посту */
@@ -1781,6 +1874,8 @@ export interface ProductItemModel {
    * @format uuid
    */
   clothingPartyGuid?: string | null;
+  /** @format uuid */
+  brandGuid?: string | null;
 }
 
 /** Результат чтения данных. */
@@ -1937,6 +2032,8 @@ export interface ProductModel {
   measurement?: ProductMeasurementModel[] | null;
   /** Пол */
   gender?: Gender;
+  /** Код изделия */
+  code?: string | null;
 }
 
 /** Результат чтения данных. */
@@ -2068,11 +2165,6 @@ export interface PromotionProductModel {
   promotion?: PromotionModel;
   /** Продукт */
   product?: ProductModel;
-}
-
-export interface PushSubscription {
-  endpoint?: string | null;
-  keys?: Record<string, string>;
 }
 
 export interface RefreshModel {
@@ -2314,6 +2406,30 @@ export interface UpdateBrandModel {
   whatsappId?: string | null;
 }
 
+/** Коллекция одежды */
+export interface UpdateClothingCollectionModel {
+  /**
+   * Идентификатор
+   * @format uuid
+   */
+  guid?: string;
+  /** Наименование */
+  name?: string;
+  /** Описание */
+  description?: string;
+  /**
+   * Дата публикации
+   * @format date-time
+   */
+  publishDate?: string;
+  /**
+   * Бренд
+   * @format uuid
+   */
+  brandGuid?: string;
+  season?: Season;
+}
+
 /** Комментарий */
 export interface UpdateCommentModel {
   /**
@@ -2371,16 +2487,26 @@ export interface UpdateLookModel {
    */
   modelHeight?: number | null;
   /**
-   * Ширина модели
+   * Обхват бедер
    * @format double
    */
-  modelWidth?: number | null;
+  modelHip?: number | null;
   modelShape?: BodyShape;
   /**
    * Заглавная фото
    * @format uuid
    */
   mainFileGuid?: string | null;
+  /**
+   * Обхват груди
+   * @format double
+   */
+  modelChest?: number | null;
+  /**
+   * Обхват талии
+   * @format double
+   */
+  waist?: number | null;
 }
 
 /** Материал */
@@ -2485,6 +2611,8 @@ export interface UpdateProductItemModel {
   colorGuid?: string | null;
   /** @format uuid */
   clothingPartyGuid?: string | null;
+  /** Идентификационный номер устройства */
+  tagUID?: string | null;
 }
 
 /** Продукт */
@@ -2525,6 +2653,8 @@ export interface UpdateProductModel {
   gender?: Gender;
   /** URI Продукта */
   uri?: string | null;
+  /** Код изделия */
+  code?: string | null;
 }
 
 /** Модель редактирования промо */

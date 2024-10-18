@@ -41,14 +41,14 @@ export const Logo = () => {
                 <Button 
                     showButton={showProfileButton}
                     onClick={handleProfileClick}
-                    styles={btnProfile}
+                    styles='absolute right-3'
                 >
                     <Photo id={isAuth.mainAvatarGuid || null} styles='h-8 w-8 rounded-2xl transform translate-y-1/5' alt='фото профиля'/>
                 </Button>
                 <Button 
                     showButton={showBackButton}
                     onClick={handleBackClick}
-                    styles={btnsStyle}>
+                    styles='absolute left-3'>
                     <Arrow direct='left' />
                 </Button>
                 <h1 className='font-bold uppercase text-2xl'>wear</h1>
@@ -65,14 +65,4 @@ const logoStyle: BlockStyle = {
     blockSize: "h-[50px] ralative grid place-items-center",
     background:'bg-white-fon shadow-md',
     text: "text-center tracking-wider text-lg font-semibold",
-};
-
-const btnsStyle: BlockStyle = {
-    blockSize: "absolute",
-    spacing: "left-3",
-};
-
-const btnProfile: BlockStyle = {
-    blockSize: "absolute",
-    spacing: "right-3",
 };
