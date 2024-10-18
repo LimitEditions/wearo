@@ -35,7 +35,7 @@ export const Stories = ({ close, stories }: StoriesProps) => {
         }
     }
 
-    const src = `https://vne.su:8081/api/Files/${(data as any)?.fileGuid}`;
+    const src = `${process.env.REACT_APP_URL_REQUEST}/api/Files/${(data as any)?.fileGuid}`;
 
     const handler = useSwipeable({
         onSwipedUp: () => {
