@@ -31,12 +31,18 @@ export const theme = {
                 '50%': { transform: 'translateX(-80%) translateY(-30%)' },
                 '100%': { transform: 'translateX(-80%) translateY(-30%)' },
             },
+            'loading-logo': {
+                '0%': { transform: 'translateY(0)' },
+                '50%': { transform: 'translateY(1rem)' },
+                '100%': { transform: 'translateY(0)' }
+            }
         },
         animation: {
             'fade-in': 'fade-in 1s ease-in-out',
             'fade-in-long': 'fade-in 3s ease-in-out',
             'slide-up': 'slide-up 2s ease-in-out',
             'slide-diagonal': 'slide-diagonal 3s ease-in-out 1.5s infinite',
+            'logo-loading': 'loading-logo 3s infinite linear'
         },
     },
 };
