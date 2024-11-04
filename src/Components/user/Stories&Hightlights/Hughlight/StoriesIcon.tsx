@@ -12,7 +12,7 @@ export const StoriesIcon = ({ image, caller, name }: StoriesIconProps) => {
       <div 
           className={[`h-14 w-14 object-contain rounded-full border-2 border-black bg-cover bg-center`, !image && Styles.img ].join(' ')}
           style={{
-            backgroundImage: image ? `url(https://vne.su:8081/api/Files/${image})` : undefined
+            backgroundImage: image ? `url(${process.env.REACT_APP_URL_REQUEST}/api/Files/${image})` : undefined
           }}
       />
       <h3 className='text-xs'>{name ?? "Нет названия"}</h3>
