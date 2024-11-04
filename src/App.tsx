@@ -1,5 +1,5 @@
-import React from 'react';
-import { Route, Routes, useLocation } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import { Nav } from './Components/common/Nav';
 import { Logo } from './Components/common/Logo';
@@ -10,6 +10,13 @@ import { Page404 } from './Components/common/Page404';
 
 function App() {
     const location = useLocation();
+    const nav = useNavigate();
+
+    useEffect(() => {
+        if (location.pathname === '/') {
+            nav('/posts')
+        }
+    }, [])
 
     return (
         <div className='relative overflow-hidden min-h-screen font-sf-pro bg-white-fon pb-20 flex flex-col max-h-screen'>
@@ -22,6 +29,7 @@ function App() {
                                 return <Route key={endPoint.path} path={endPoint.path} element={<AnimatedWrapper><endPoint.component /></AnimatedWrapper>}/>
                             })
                         }
+                        <Route path="/" element={<div></div>}/>
                         <Route path="*" element={<AnimatedWrapper><Page404/></AnimatedWrapper>} />
                     </Routes>
                 </AnimatePresence>

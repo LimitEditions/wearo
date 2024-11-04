@@ -4,7 +4,7 @@ import { IApiResponse } from '../types/interfaces/ApiResponses/IApiResponse';
 import { IApiError } from "../types/interfaces/IApiError";
 import axios, { AxiosResponse, Method } from "axios";
 import { retrieve } from "../utils/encryption";
-
+import { useNavigate } from "react-router-dom";
 const api = new Api({ baseURL: process.env.REACT_APP_URL_REQUEST });
 
 const useApi = <T extends keyof Api, Data >(
@@ -13,6 +13,7 @@ const useApi = <T extends keyof Api, Data >(
   config?: any,
   execute: boolean = false // Флаг выполннеия запроса, по умолчанию false
 ): [Data | null, boolean, IApiError | null] => {
+    const navigator = useNavigate();
     const [data, setData] = useState<Data | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<IApiError | null>(null);
@@ -40,6 +41,9 @@ const useApi = <T extends keyof Api, Data >(
                 } catch (e) {
                     if (isMounted) {
                         if(axios.isAxiosError(e)){
+                            if (e.response?.status === 401) {
+                                navigator('/auth')
+                            }
                             setError({
                                 code: e.code,
                                 message: e.message,
@@ -77,7 +81,8 @@ type Config = {
     token ?: boolean // Необходимо ли подставить токен авторизации
     immediate ?: boolean // При объявление хука, запустит запрос. 
     params?: Params,
-    body?: Body
+    body?: Body,
+    skipAuthCheck?: boolean // Если true, не будет переадрисовывать на страницу авторизацииы
 }
 
 const buildParams = (params: Params, config: Config): Params => {
@@ -127,6 +132,7 @@ const buildParams = (params: Params, config: Config): Params => {
 // }
 
 export function useApiNew<Answer>(method: keyof Api, config: Config = {}){
+    const navigator = useNavigate();
     const [data, setData] = useState<Answer | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<IApiError | null>(null);
@@ -146,6 +152,15 @@ export function useApiNew<Answer>(method: keyof Api, config: Config = {}){
                 setData(res.data);
             } catch (error) {
                 if(axios.isAxiosError(error)){
+                    if (config.skipAuthCheck) {
+                        if (error.response?.status === 401) {
+                            try {
+                                navigator('/auth')
+                            } catch (e) {
+                                console.warn('')
+                            }
+                        }
+                    }
                     setError({
                         code: error.code,
                         message: error.message,
