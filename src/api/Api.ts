@@ -2950,12 +2950,12 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @tags Stories
    * @name StoriesHighlightsDetail
    * @summary Получить хайлайт по ид
-   * @request GET:/api/Stories/Highlights/{id}
+   * @request GET:/api/Stories/{id}
    * @secure
    */
   storiesHighlightsDetail = (id: string, params: RequestParams = {}) =>
     this.request<HighlightModel, ProblemDetails>({
-      path: `/api/Stories/Highlights/${id}`,
+      path: `/api/Stories/${id}`,
       method: "GET",
       secure: true,
       format: "json",

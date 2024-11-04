@@ -23,14 +23,13 @@ export const Highlights = ({ brandId }: { brandId: string | null}) => {
     )
 
     const highlights = data?.data;
-    const res = highlights && highlights.length > 0 ? highlights: HighlightsData;
 
     return (
         <>
             <IsLoading show={isLoading} />
             <ErrorReq show={!!error} error={error} />
             <div className='flex space-x-2 px-2 py-3'>
-                {res.map((highlight) => (
+                {highlights && highlights.map((highlight) => (
                     <Highlight highlight={highlight} key={highlight.guid} />))}
             </div>
         </>

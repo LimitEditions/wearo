@@ -1253,6 +1253,7 @@ export interface HighlightModel {
   updateDT?: string;
   /** Набор вложенных сторис */
   stories?: HighlightStoryModel[] | null;
+  storiesGuids?: string[]
   /**
    * Бренд
    * @format uuid
