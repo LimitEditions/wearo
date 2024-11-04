@@ -152,7 +152,7 @@ export function useApiNew<Answer>(method: keyof Api, config: Config = {}){
                 setData(res.data);
             } catch (error) {
                 if(axios.isAxiosError(error)){
-                    if (config.skipAuthCheck) {
+                    if (!config.skipAuthCheck) {
                         if (error.response?.status === 401) {
                             try {
                                 navigator('/auth')
