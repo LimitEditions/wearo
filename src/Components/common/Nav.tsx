@@ -35,7 +35,7 @@ export const Nav: React.FC = memo(() => {
     return (
         <>
             {showNav && (
-                <nav className="fixed bottom-0 left-1/2 w-full h-auto z-20 flex justify-between py-4 box-border border border-gray-300 rounded-md transform -translate-x-1/2 bg-white-fon shadow-md">
+                <nav className="fixed bottom-0 left-1/2 w-full h-auto z-20 flex justify-between py-4 box-border border border-gray-300 rounded-t-md transform -translate-x-1/2 bg-white-fon shadow-md">
                     {data.map((e) => {
                         return (
                             <Link

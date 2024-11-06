@@ -2,6 +2,7 @@ import { NavContentType } from "../types/NavContentType";
 import { IconPosts } from "../Components/common/icons/IconPosts";
 import { IconPromo } from "../Components/common/icons/IconPromo";
 import { IconWardrobe } from "../Components/common/icons/IconWardrobe";
+import { IconGoods } from "../Components/common/icons/IconGoods";
 
 export const navContent: NavContentType = {
     Admin: [
@@ -25,14 +26,17 @@ export const navContent: NavContentType = {
         {
             path: "/products",
             name: "Изделия",
+            component: <IconGoods hoverColor="#3447BC" />,
         },
         {
             path: "/posts",
             name: "Лента",
+            component: <IconPosts hoverColor="#3447BC" />,
         },
         {
             path: "/brand",
             name: "Мой бренд",
+            component: <IconWardrobe hoverColor="#3447BC" />,
         },
     ],
     User: [
@@ -50,7 +54,6 @@ export const navContent: NavContentType = {
         {
             path: "/wardrobe",
             name: "Мой гардероб",
-            image: "/images/nav/wardrobe.svg",
             component: <IconWardrobe hoverColor="#3447BC" />,
         },
     ],
