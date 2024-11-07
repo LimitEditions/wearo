@@ -3,23 +3,26 @@ import { IconPosts } from "../Components/common/icons/IconPosts";
 import { IconPromo } from "../Components/common/icons/IconPromo";
 import { IconWardrobe } from "../Components/common/icons/IconWardrobe";
 import { IconGoods } from "../Components/common/icons/IconGoods";
+import { IconSettings } from "../Components/common/icons/IconSettings";
+import { IconAnalytic } from "../Components/common/icons/IconAnalytic";
+import { IconManage } from "../Components/common/icons/IconManage";
 
 export const navContent: NavContentType = {
     Admin: [
         {
             path: "/settings",
             name: "Настройки",
-            image: "/images/nav/settings.png",
+            component: <IconSettings hoverColor="#3447BC" />,
         },
         {
             path: "/control",
             name: "Управление",
-            image: "/images/nav/control.png",
+            component: <IconManage hoverColor="#3447BC" />,
         },
         {
             path: "/analytics",
             name: "Аналитика",
-            image: "/images/nav/analytics.png",
+            component: <IconAnalytic hoverColor="#3447BC" />,
         },
     ],
     BrandAdmin: [

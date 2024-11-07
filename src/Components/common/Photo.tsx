@@ -11,7 +11,7 @@ export const Photo = ({
 }) => {
     // Если id не пришел, то устанавливаем дефолтное фото
     const [src, setSrc] = useState(
-        id ? `/api/Files/${id}` : "/images/noPhoto.svg"
+        id ? `/api/Files/${id}` : "/images/defaultPhoto.svg"
     );
     // при изменении статуса id
     useEffect(() => {
