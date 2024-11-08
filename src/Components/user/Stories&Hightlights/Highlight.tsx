@@ -8,7 +8,7 @@ export const Highlight = ({ highlight }: { highlight: HighlightModel }) => {
     return (
         <div>
             <div
-                className="flex flex-col items-centerspace-y-1"
+                className="flex flex-col items-center justify-center"
                 onClick={() => setOpen(true)}
             >
                 <img

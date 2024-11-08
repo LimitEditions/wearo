@@ -15,6 +15,7 @@ import { Arrow } from "../common/Arrow";
 import { Modal } from "../common/Modal";
 import { RingLoader } from "react-spinners";
 import Item from "../common/ItemGroup/Item";
+import { SlPhone, SlEnvolope } from "react-icons/sl";
 import { PiWhatsappLogo, PiTelegramLogo } from "react-icons/pi";
 
 export const Brand = ({ brandInfo }: { brandInfo: BrandModel }) => {
@@ -46,7 +47,7 @@ export const Brand = ({ brandInfo }: { brandInfo: BrandModel }) => {
                 styles={"border-4"}
                 alt={"фото бренда"}
             />
-            <div className="flex justify-between ">
+            <div className="flex flex-col justify-between">
                 <Link
                     to={`${brandInfo.link}`}
                     target="_blank"
@@ -54,10 +55,11 @@ export const Brand = ({ brandInfo }: { brandInfo: BrandModel }) => {
                 >
                     {brandInfo?.name}
                 </Link>
-                <Button showButton={true} onClick={() => setModal(true)}>
-                    Поддержка
-                </Button>
-                <div className="flex space-x-2">
+                <div className="flex flex-row w-full gap-3 pt-5">
+                    <Button showButton={true} onClick={() => setModal(true)}>
+                        Поддержка
+                    </Button>
+
                     <Button showButton={true} onClick={handleClick}>
                         {subStatus ? "Вы подписаны" : "Подписаться"}
                     </Button>
@@ -98,12 +100,15 @@ export const Brand = ({ brandInfo }: { brandInfo: BrandModel }) => {
                 setIsOpen={setModal}
                 swipeable={false}
                 additionalStyles={{
-                    panel: "w-full bg-transparent flex justify-center",
+                    container:
+                        "fixed inset-0 overflow-hidden flex items-end justify-center",
+                    panel: "w-full h-[42%] transform overflow-hidden rounded-t-2xl bg-white p-4",
                 }}
             >
-                <div className="fixed bottom-0 h-[400px] bg-white left-0 w-full">
-                    <h3 className="text-center mb-2">Служба поддержки</h3>
-                    <Item path={`https://t.me/${brandInfo.telegramId}`}>
+                <h3 className="p-4 uppercase">Служба поддержки</h3>
+
+                <Item path={`https://t.me/${brandInfo.telegramId}`}>
+                    <div className="flex flex-row justify-center items-center gap-2">
                         <Link
                             to={`https://t.me/${brandInfo.telegramId}`}
                             target="_blank"
@@ -111,14 +116,46 @@ export const Brand = ({ brandInfo }: { brandInfo: BrandModel }) => {
                         >
                             <PiTelegramLogo className="text-gray-500 w-6 h-6 hover:text-gray-900 transition-all duration-300" />
                         </Link>
-                    </Item>
-                    <ContactButtons
-                        telegram={brandInfo.telegramId || ""}
-                        whatsapp={brandInfo.whatsappId || ""}
-                        email={brandInfo.email || ""}
-                        phone={"+78005558607"}
-                    />
-                </div>
+                        Telegram
+                    </div>
+                </Item>
+
+                <Item path={`https://wa.me/${brandInfo.whatsappId || ""}`}>
+                    <div className="flex flex-row justify-center items-center gap-2">
+                        <Link
+                            to={`https://wa.me/${brandInfo.whatsappId || ""}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            <PiWhatsappLogo className="text-gray-500 w-6 h-6 hover:text-gray-900 transition-all duration-300" />
+                        </Link>
+                        WhatsApp
+                    </div>
+                </Item>
+                <Item path={brandInfo.email || ""}>
+                    <div className="flex flex-row justify-center items-center gap-2">
+                        <Link
+                            to={brandInfo.email || ""}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            <SlEnvolope className="text-gray-500 w-6 h-6 hover:text-gray-900 transition-all duration-300" />
+                        </Link>
+                        E-mail
+                    </div>
+                </Item>
+                <Item path={`tel:${"+78005558607"}`}>
+                    <div className="flex flex-row justify-center items-center gap-2">
+                        <Link
+                            to={`tel:${"+78005558607"}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            <SlPhone className="text-gray-500 w-6 h-6 hover:text-gray-900 transition-all duration-300" />
+                        </Link>
+                        +78005558607
+                    </div>
+                </Item>
             </Modal>
         </>
     );
