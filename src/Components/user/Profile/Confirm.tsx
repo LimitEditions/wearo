@@ -1,23 +1,26 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react'
-import { v4 as uuidv4 } from 'uuid';
-import { NavigateFunction } from 'react-router-dom';
-import { Input } from '../../common/InputGroup/Input';
-import { Button } from '../../common/Button';
-import { BlockStyle } from '../../../types/interfaces/IStyles';
-import getStyles from '../../../utils/getStyles';
-import { validateField } from '../../../utils/validation';
-import useApi from '../../../hooks/useApi';
-import { encrypt, retrieve } from '../../../utils/encryption';
-import { IsLoading } from '../../common/InfoGroup/IsLoading';
-import { Api } from '../../../api/Api';
-import { ErrorReq } from '../../common/InfoGroup/ErrorReq';
-import withMask from '../../common/hoc/withMask';
-import useAuth from '../../../hooks/useAuth';
-
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import { v4 as uuidv4 } from "uuid";
+import { NavigateFunction } from "react-router-dom";
+import { Input } from "../../common/InputGroup/Input";
+import { Button } from "../../common/Button";
+import { validateField } from "../../../utils/validation";
+import useApi from "../../../hooks/useApi";
+import { encrypt, retrieve } from "../../../utils/encryption";
+import { IsLoading } from "../../common/InfoGroup/IsLoading";
+import { Api } from "../../../api/Api";
+import { ErrorReq } from "../../common/InfoGroup/ErrorReq";
+import withMask from "../../common/hoc/withMask";
+import useAuth from "../../../hooks/useAuth";
 
 const InputWithMask = withMask(Input);
 
-export const Confirm = ({ mode, navigate }: { mode?: string; navigate: NavigateFunction }) => {
+export const Confirm = ({
+    mode,
+    navigate,
+}: {
+    mode?: string;
+    navigate: NavigateFunction;
+}) => {
     const isAuth = useAuth(true);
     // создание уникального id запроса и внесение его в LS
     useEffect(() => {
@@ -25,18 +28,37 @@ export const Confirm = ({ mode, navigate }: { mode?: string; navigate: NavigateF
         if (!localStorage.getItem(key)) {
             const newGuid = uuidv4();
             encrypt(key, newGuid);
-        };
+        }
     }, [mode]);
 
-    const [text, setText] = useState<string>('');
+    const [text, setText] = useState<string>("");
+    const [modal, setModal] = useState<boolean>(false);
 
-    const phoneMask = ['+', '7', ' ', '(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
-    const mask = mode === 'phone' ? phoneMask: undefined;
+    const phoneMask = [
+        "+",
+        "7",
+        " ",
+        "(",
+        /[1-9]/,
+        /\d/,
+        /\d/,
+        ")",
+        " ",
+        /\d/,
+        /\d/,
+        /\d/,
+        "-",
+        /\d/,
+        /\d/,
+        /\d/,
+        /\d/,
+    ];
+    const mask = mode === "phone" ? phoneMask : undefined;
 
     // колбек на ввод в инпут
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setText(event.target.value);
-        ref.current?.setCustomValidity('');
+        ref.current?.setCustomValidity("");
     };
 
     // флаг отправки запроса и референс на инпут
@@ -47,89 +69,104 @@ export const Confirm = ({ mode, navigate }: { mode?: string; navigate: NavigateF
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const curRef = ref.current;
-        if(curRef) {
+        if (curRef) {
             // сперва проверяем валидность
             const msg = validateField(curRef.value, curRef.name);
             curRef.setCustomValidity(msg);
             curRef.reportValidity();
-            // затем отправляем на сервер
-            if(msg === '') {
+            // затем отправляем на  сервер
+            if (msg === "") {
                 setShouldExecute(true);
-            };
-        };
+            }
+        }
     };
 
     // описание метода отправки данных на сервер
     const guid = retrieve(`${mode}-guid`);
     const token = useMemo(() => retrieve("token"), []);
     const params_config: [keyof Api<unknown>, any, any, boolean] = [
-        mode === 'email' ? 'confirmationRequestsEmailCreate': 'confirmationRequestsPhoneCreate',
-        mode === 'email' ? { "guid": guid, email: text } : { "guid": guid, phone: text },
+        mode === "email"
+            ? "confirmationRequestsEmailCreate"
+            : "confirmationRequestsPhoneCreate",
+        mode === "email"
+            ? { guid: guid, email: text }
+            : { guid: guid, phone: text },
         { headers: { Authorization: `Bearer ${token}` } },
-        shouldExecute
+        shouldExecute,
     ];
- 
+
     const [data, isLoading, error] = useApi(...params_config);
 
     // остановка запроса
     useEffect(() => {
-        if(isLoading) {
+        if (isLoading) {
             setShouldExecute(false);
-        };
+        }
     }, [isLoading]);
 
     // дальнейшие действия после успешного ответа после основного запроса
     useEffect(() => {
-        if(data === '' && !error) {
-            mode === 'email' ? navigate('pin'): navigate('callme');
-        };
+        if (data === "" && !error) {
+            mode === "email" ? navigate("pin") : navigate("callme");
+        }
     }, [navigate, data, error, mode]);
 
     return (
-        <form className={getStyles(formStyle)} onSubmit={handleSubmit}>
-            <div>
-                { mode === 'phone' ?
+        <form
+            className="flex flex-col items-start justify-center px-4 py-5 space-y-3 gap-5"
+            onSubmit={handleSubmit}
+        >
+            <div className="flex flex-col w-full gap-3">
+                {mode === "phone" ? (
                     <>
-                        <h3 className='uppercase mb-2'>изменение телефона</h3>
+                        <h3 className="uppercase mb-2 border-b border-grey-300">
+                            изменение телефона
+                        </h3>
                         <label htmlFor="phone">Укажите номер телефона</label>
                         <InputWithMask
-                            type={ mode }
-                            name={ mode }
-                            id='phone'
-                            placeholder='Телефон'
+                            type={mode}
+                            name={mode}
+                            id="phone"
+                            placeholder="Телефон"
                             ref={ref}
                             value={text}
                             onChange={handleChange}
                             mask={mask}
-                        /> 
+                            className="w-full py-2 px-5 bg-light-gray rounded-lg placeholder-gray-400 text-sm "
+                        />
                     </>
-                    :
+                ) : (
                     <>
-                        <h3 className='uppercase mb-2'>изменение почты</h3>
-                        {isAuth.userInfo?.email && <div className='text-gray-400 text-sm'>Текущая почта {isAuth.userInfo?.email}</div>}
-                        <label htmlFor="email">Укажите адрес электронной почты</label>
+                        <h3 className="uppercase mb-2 border-b border-grey-300">
+                            изменение почты
+                        </h3>
+                        {isAuth.userInfo?.email && (
+                            <div className="text-gray-400 text-sm">
+                                Текущая почта {isAuth.userInfo?.email}
+                            </div>
+                        )}
+                        <label htmlFor="email">
+                            Укажите адрес электронной почты
+                        </label>
                         <Input
-                            type={ mode }
-                            name={ mode }
-                            id='email'
-                            placeholder='Электронная почта'
+                            type={mode}
+                            name={mode}
+                            id="email"
+                            placeholder="Электронная почта"
                             reflink={ref}
                             value={text}
                             onChange={handleChange}
                         />
                     </>
-                }
+                )}
             </div>
-            <div className='w-1/2 m-auto'>
-                <Button showButton={true}>Получить { mode === 'email'? 'код': 'номер телефона' }</Button>
+            <div className="w-2/3 m-auto">
+                <Button showButton={true}>
+                    Получить {mode === "email" ? "код" : "номер телефона"}
+                </Button>
             </div>
             <IsLoading show={isLoading} />
-            <ErrorReq show={!!error} error={error}/>
+            <ErrorReq show={!!error} error={error} />
         </form>
     );
-};
-
-const formStyle: BlockStyle = {
-    container: 'flex flex-col items-start justify-center',
-    spacing: 'px-4 py-5 space-y-3'
 };
