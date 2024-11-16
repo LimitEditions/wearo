@@ -6,7 +6,6 @@ import { IFormData } from "../../types/interfaces/componentsProps/IInputsListPro
 import { IsLoading } from "../common/InfoGroup/IsLoading";
 import { ErrorReq } from "../common/InfoGroup/ErrorReq";
 
-
 export const LoginForm = ({
     user,
     onSubmit,
@@ -25,18 +24,33 @@ export const LoginForm = ({
     }, [setRefs]);
 
     const formData = [
-        {'name': 'username', 'placeholder': 'логин', 'value': username, 'ref': nameRef, onChange: onChange},
-        {'name': 'password', 'type': 'password', 'placeholder': 'пароль', 'value': password, 'ref': passwordRef, onChange: onChange},
+        {
+            name: "username",
+            placeholder: "логин",
+            value: username,
+            ref: nameRef,
+            onChange: onChange,
+        },
+        {
+            name: "password",
+            type: "password",
+            placeholder: "пароль",
+            value: password,
+            ref: passwordRef,
+            onChange: onChange,
+        },
     ] as IFormData[];
 
     return (
         <>
-            <div>
-                <h1 className='text-center text-2xl pb-4'>Вход</h1>
-                <form className='flex flex-col gap-3' onSubmit={onSubmit}>
-                    <InputsList formData={formData} needLabel={false}/>
-                    <ErrorReq show={!!error} error={error}/>
-                    <Button showButton={true} type="submit">Войти</Button>
+            <div className="w-full flex flex-col gap-3 mt-5">
+                <h1 className="text-center text-2xl pb-4">Вход</h1>
+                <form className="flex flex-col gap-3" onSubmit={onSubmit}>
+                    <InputsList formData={formData} needLabel={false} />
+                    <ErrorReq show={!!error} error={error} />
+                    <Button showButton={true} type="submit">
+                        Войти
+                    </Button>
                 </form>
             </div>
             <IsLoading show={isLoading} />

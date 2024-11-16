@@ -3,8 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { IItemProps } from "../../../types/interfaces/IItemProps";
 import { Arrow } from "../Arrow";
 
-
-const Item: React.FC<IItemProps> = ({ path, children, arrow=true }) => {
+const Item: React.FC<IItemProps> = ({ path, children, arrow = true }) => {
     // const location = useLocation();
     const navigate = useNavigate();
     // Если задан путь, то по клику будет осуществлен переход на другую страницу
@@ -16,13 +15,10 @@ const Item: React.FC<IItemProps> = ({ path, children, arrow=true }) => {
     }, [path, navigate]);
 
     // Если указан путь, то добавляем hover-эффекты
-    const containerStyle = path ? `${divStyle} ${hoverStyle}` : divStyle
+    const containerStyle = path ? `${divStyle} ${hoverStyle}` : divStyle;
 
     return (
-        <div
-            className={containerStyle}
-            onClick={handleClick}
-        >
+        <div className={containerStyle} onClick={handleClick}>
             {children}
             {arrow && <Arrow direct="right" />}
         </div>
@@ -31,6 +27,7 @@ const Item: React.FC<IItemProps> = ({ path, children, arrow=true }) => {
 
 export default Item;
 
-const divStyle = 'relative flex items-center justify-between border-t border-gray-300 py-4 px-2 text-sm space-x-4';
+const divStyle =
+    "relative flex items-center justify-between border-t border-gray-300 py-4 px-2 uppercase space-x-4";
 
-const hoverStyle = 'cursor-pointer focus:outline-none hover:animate-pulse';
+const hoverStyle = "cursor-pointer focus:outline-none hover:animate-pulse";
