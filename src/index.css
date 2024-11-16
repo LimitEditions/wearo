@@ -3,15 +3,15 @@
 @tailwind utilities;
 
 @font-face {
-    font-family: 'SF Pro Text';
-    src: url('./fonts/SFProText-Regular.ttf') format('truetype');
+    font-family: "SF Pro Text";
+    src: url("./fonts/SFProText-Regular.ttf") format("truetype");
     font-weight: 400;
     font-style: normal;
 }
-  
+
 @font-face {
-    font-family: 'SF Pro Text';
-    src: url('./fonts/SFProText-Semibold.ttf') format('truetype');
+    font-family: "SF Pro Text";
+    src: url("./fonts/SFProText-Semibold.ttf") format("truetype");
     font-weight: 600;
     font-style: normal;
 }
