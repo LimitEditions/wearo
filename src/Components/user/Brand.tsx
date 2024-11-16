@@ -3,7 +3,6 @@ import { BrandModel } from "../../api/data-contracts";
 import useSubscribe from "../../hooks/useSubscribe";
 import { Link } from "react-router-dom";
 import { Photo } from "../common/Photo";
-import { ContactButtons } from "../common/ContactButtons";
 import { Button } from "../common/Button";
 import { Highlights } from "./Stories&Hightlights/Highlights";
 import {
@@ -13,7 +12,6 @@ import {
 } from "@headlessui/react";
 import { Arrow } from "../common/Arrow";
 import { Modal } from "../common/Modal";
-import { RingLoader } from "react-spinners";
 import Item from "../common/ItemGroup/Item";
 import { SlPhone, SlEnvolope } from "react-icons/sl";
 import { PiWhatsappLogo, PiTelegramLogo } from "react-icons/pi";
@@ -39,7 +37,7 @@ export const Brand = ({ brandInfo }: { brandInfo: BrandModel }) => {
     const handleRotate = () => {
         setIsRotated(!isRotated);
     };
-
+    console.log(brandInfo)
     return (
         <>
             <Photo
@@ -94,19 +92,6 @@ export const Brand = ({ brandInfo }: { brandInfo: BrandModel }) => {
             </Disclosure>
             <Item path={`/products/${brandInfo.guid}`}>Изделия</Item>
             <div className="uppercase px-2">Публикации</div>
-
-            <div>
-                Публикации
-            </div>
-            <div className='w-full'>
-                <h3 className='text-center mb-2'>Служба поддержки</h3>
-                <ContactButtons 
-                    telegram={brandInfo.telegramId || ''} 
-                    whatsapp={brandInfo.whatsappId || ''} 
-                    email={brandInfo.email || ''}
-                    phone={'+78005558607'}
-                />
-            </div>
             
             <Modal
                 isOpen={modal}
