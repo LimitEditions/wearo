@@ -10,6 +10,18 @@ import { BlockStyle } from "../../types/interfaces/IStyles";
 import getStyles from "../../utils/getStyles";
 import { IModalProps } from "../../types/interfaces/componentsProps/IModalProps";
 import { useSwipeable } from "react-swipeable";
+import React, { Fragment, useState } from "react";
+import {
+    Dialog,
+    DialogPanel,
+    DialogTitle,
+    Transition,
+    TransitionChild,
+} from "@headlessui/react";
+import { BlockStyle } from "../../types/interfaces/IStyles";
+import getStyles from "../../utils/getStyles";
+import { IModalProps } from "../../types/interfaces/componentsProps/IModalProps";
+import { useSwipeable } from "react-swipeable";
 
 export const Modal = ({
     isOpen,

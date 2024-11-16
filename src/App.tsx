@@ -1,11 +1,3 @@
-import React, { useEffect } from "react";
-import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
-import { AnimatePresence } from "framer-motion";
-import { Nav } from "./Components/common/Nav";
-import { Logo } from "./Components/common/Logo";
-import AnimatedWrapper from "./animation/AnimatedWrapper";
-import { endPoints } from "./utils/endPoints";
-import { Page404 } from "./Components/common/Page404";
 import React from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
