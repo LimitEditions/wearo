@@ -6,6 +6,8 @@ import { Logo } from "./Components/common/Logo";
 import AnimatedWrapper from "./animation/AnimatedWrapper";
 import { endPoints } from "./utils/endPoints";
 import { Page404 } from "./Components/common/Page404";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 function App() {
     const location = useLocation();

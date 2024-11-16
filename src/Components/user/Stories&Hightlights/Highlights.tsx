@@ -5,17 +5,6 @@ import {
 } from "../../../api/data-contracts";
 import { Highlight } from "./Highlight";
 import { HighlightsData } from "./HighlightsData";
-import useApi from "../../../hooks/useApi";
-import { retrieve } from "../../../utils/encryption";
-import { IsLoading } from "../../common/InfoGroup/IsLoading";
-import { ErrorReq } from "../../common/InfoGroup/ErrorReq";
-import React, { useEffect, useMemo, useState } from "react";
-import {
-    HighlightModel,
-    HighlightModelDataResult,
-} from "../../../api/data-contracts";
-import { Highlight } from "./Highlight";
-import { HighlightsData } from "./HighlightsData";
 import useApi, { useApiNew } from "../../../hooks/useApi";
 import { retrieve } from "../../../utils/encryption";
 import { IsLoading } from "../../common/InfoGroup/IsLoading";
@@ -34,17 +23,6 @@ export const Highlights = ({ brandId }: { brandId: string | null }) => {
     const { data, isLoading, error } = useApiNew<HighlightModelDataResult>(
         "storiesHighlightsList",
         { token: true, body: { BrandGuid: brandId } }
-    );
-
-    const highlights = data?.data;
-    const [data, isLoading, error] = useApi<
-        "storiesHighlightsList",
-        HighlightModelDataResult
-    >(
-        "storiesHighlightsList",
-        { BrandGuid: brandId },
-        { headers: { Authorization: `Bearer ${token}` } },
-        true
     );
 
     const highlights = data?.data as HighlightModel[];

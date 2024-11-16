@@ -1,15 +1,5 @@
 import React, { useEffect, useState } from "react";
-import React, { useEffect, useState } from "react";
 
-export const Photo = ({
-    id,
-    styles,
-    alt,
-}: {
-    id: string | null;
-    styles: string;
-    alt: string;
-}) => {
 export const Photo = ({
     id,
     styles,
