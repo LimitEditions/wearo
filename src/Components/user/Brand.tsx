@@ -67,7 +67,7 @@ export const Brand = ({ brandInfo }: { brandInfo: BrandModel}) => {
             <div>
                 Публикации
             </div>
-            <div className='fixed bottom-24 w-full'>
+            <div className='w-full'>
                 <h3 className='text-center mb-2'>Служба поддержки</h3>
                 <ContactButtons 
                     telegram={brandInfo.telegramId || ''} 

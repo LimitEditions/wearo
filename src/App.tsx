@@ -6,6 +6,7 @@ import { Logo } from './Components/common/Logo';
 import AnimatedWrapper from './animation/AnimatedWrapper';
 import { endPoints } from './utils/endPoints';
 import { Page404 } from './Components/common/Page404';
+import { FooterApp } from './Components/common/FooterApp';
 
 
 function App() {
@@ -16,12 +17,13 @@ function App() {
         if (location.pathname === '/') {
             nav('/posts')
         }
-    }, [])
+    }, []);
 
     return (
         <div className='relative overflow-hidden min-h-screen font-sf-pro bg-white-fon pb-20 flex flex-col max-h-screen'>
             <Logo />
-            <div className='flex-[2_1_0%] overflow-auto pb-[5px]'>
+            {/* <div className='relative flex-[2_1_0%] overflow-auto'> */}
+            <div className='h-screen flex flex-col justify-between overflow-auto pt-2'>
                 <AnimatePresence mode="wait">
                     <Routes location={location} key={location.pathname}>
                         {
@@ -33,6 +35,7 @@ function App() {
                         <Route path="*" element={<AnimatedWrapper><Page404/></AnimatedWrapper>} />
                     </Routes>
                 </AnimatePresence>
+                <FooterApp />
             </div>
             <Nav />
         </div>
