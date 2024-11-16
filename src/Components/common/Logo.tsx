@@ -1,6 +1,4 @@
 import React, { useContext } from 'react'
-import { BlockStyle } from '../../types/interfaces/IStyles';
-import getStyles from '../../utils/getStyles';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { showEl } from '../../utils/showEl';
 import { Button } from './Button';
@@ -36,14 +34,14 @@ export const Logo = () => {
     };
 
     return (
-        <div className={getStyles(contStyle)}>
-            <div className={getStyles(logoStyle)}>
+        <div className='w-full shadow-lg bg-white-fon'>
+            <div className='h-14 ralative grid place-items-center'>
                 <Button 
                     showButton={showProfileButton}
                     onClick={handleProfileClick}
                     styles='absolute right-3'
                 >
-                    <Photo id={isAuth.mainAvatarGuid || null} styles='h-8 w-8 rounded-2xl transform translate-y-1/5' alt='фото профиля'/>
+                    <Photo id={isAuth.mainAvatarGuid ?? null} styles='h-8 w-8 rounded-2xl transform translate-y-1/5' alt='фото профиля'/>
                 </Button>
                 <Button 
                     showButton={showBackButton}
@@ -51,18 +49,8 @@ export const Logo = () => {
                     styles='absolute left-3'>
                     <Arrow direct='left' />
                 </Button>
-                <h1 className='font-bold uppercase text-2xl'>wear</h1>
+                <h1 className='font-bold text-2xl text-center font-semibold tracking-wider'>WEAR</h1>
             </div>
         </div>
     );
-};
-
-const contStyle: BlockStyle = {
-    blockSize: "w-full",
-}; 
-
-const logoStyle: BlockStyle = {
-    blockSize: "h-[50px] ralative grid place-items-center",
-    background:'bg-white-fon shadow-md',
-    text: "text-center tracking-wider text-lg font-semibold",
 };

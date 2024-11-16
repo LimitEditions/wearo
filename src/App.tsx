@@ -8,6 +8,7 @@ import { endPoints } from "./utils/endPoints";
 import { Page404 } from "./Components/common/Page404";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import { FooterApp } from './Components/common/FooterApp';
 
 function App() {
     const location = useLocation();
@@ -22,7 +23,7 @@ function App() {
     return (
         <div className="relative overflow-hidden min-h-screen font-sf-pro bg-white-fon pb-20 flex flex-col max-h-screen">
             <Logo />
-            <div className="flex-[2_1_0%] overflow-auto pb-[5px]">
+            <div className='h-screen flex flex-col justify-between overflow-auto pt-2'>
                 <AnimatePresence mode="wait">
                     <Routes location={location} key={location.pathname}>
                         {endPoints.map((endPoint) => {
@@ -48,6 +49,7 @@ function App() {
                         />
                     </Routes>
                 </AnimatePresence>
+                <FooterApp />
             </div>
             <Nav />
         </div>
