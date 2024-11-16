@@ -10,60 +10,62 @@ import { ProductsPage } from "../pages/UserGroup/ProductsPage";
 import { PromotionsPage } from "../pages/UserGroup/PromotionsPage";
 import { UserPage } from "../pages/UserGroup/UserPage";
 import { WardrobePage } from "../pages/UserGroup/WardrobePage";
-
+import { CreateBrandPage } from "../pages/UserGroup/CreateBrandPage";
 
 export const endPoints = [
-
     //user
     {
-        path: '/auth/*',
-        component: Authorization
+        path: "/auth/*",
+        component: Authorization,
     },
     {
-        path: '/wardrobe/*',
-        component: WardrobePage
+        path: "/wardrobe/*",
+        component: WardrobePage,
     },
     {
-        path: '/product/:id/*',
-        component: ProductPage
+        path: "/product/:id/*",
+        component: ProductPage,
     },
     {
-        path: '/posts/*',
-        component: PostsPage
+        path: "/posts/*",
+        component: PostsPage,
     },
     {
-        path: '/brand/:id/*',
-        component: BrandPage
+        path: "/brand/:id/*",
+        component: BrandPage,
     },
     {
-        path: '/promotions/*',
-        component: PromotionsPage
+        path: "/brand/create/",
+        component: CreateBrandPage,
     },
     {
-        path: '/collection/:id',
-        component: CollectionPage
+        path: "/promotions/*",
+        component: PromotionsPage,
     },
     {
-        path: '/products/:id',
-        component: ProductsPage
+        path: "/collection/:id",
+        component: CollectionPage,
     },
     {
-        path: '/user/:id',
-        component: UserPage
+        path: "/products/:id",
+        component: ProductsPage,
     },
     {
-        path: '/pi/:code',
-        component: ProductItemPage
+        path: "/user/:id",
+        component: UserPage,
+    },
+    {
+        path: "/pi/:code",
+        component: ProductItemPage,
     },
 
     //admin
     {
-        path: '/settings/*',
-        component: SettingsPage
+        path: "/settings/*",
+        component: SettingsPage,
     },
     {
-        path: '/control/*',
-        component: ControlPage
+        path: "/control/*",
+        component: ControlPage,
     },
-
 ];
