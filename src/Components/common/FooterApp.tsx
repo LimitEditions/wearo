@@ -15,12 +15,12 @@ const LINKS = [
         alt: 'tarasoft',
         size: 'w-24 h-24'
     },
-    {
-        href: 'https://wearo.online/',
-        src: '/images/wearo-logo.svg',
-        alt: 'wearo',
-        size: 'w-16 h-16'
-    }
+    // {
+    //     href: 'https://wearo.online/',
+    //     src: '/images/wearo-logo.svg',
+    //     alt: 'wearo',
+    //     size: 'w-16 h-16'
+    // }
 ];
 const TEXT_FSI = 
     `Сервис создан при поддержке гранта Фонда содействия инновациям, 
@@ -30,7 +30,7 @@ const YEAR = Number(moment().format('YYYY'));
 
 export const FooterApp = () => {
     return (
-        <Footer className='px-2 py-0 bg-white-fon'>
+        <Footer className='px-2 pb-1 bg-white-fon'>
             <Footer.Divider/>
             <p className=' text-gray-500 text-justify text-xs'>{TEXT_FSI}</p>
             <Footer.LinkGroup className='flex items-center justify-center space-x-4'>
