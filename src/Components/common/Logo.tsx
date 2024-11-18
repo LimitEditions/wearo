@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { showEl } from '../../utils/showEl';
 import { Button } from './Button';
 import { Arrow } from './Arrow';
@@ -49,7 +49,7 @@ export const Logo = () => {
                     styles='absolute left-3'>
                     <Arrow direct='left' />
                 </Button>
-                <h1 className='font-bold text-2xl text-center font-semibold tracking-wider'>WEAR</h1>
+                <Link to='https://wearo.online/'><img src="/images/wearo-logo.svg" alt="wearo" className='w-20 h-10'/></Link>
             </div>
         </div>
     );
