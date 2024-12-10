@@ -1,14 +1,19 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { LogOut } from "../../common/LogOut";
 import Item from "../../common/ItemGroup/Item";
 import { Photo } from "../../common/Photo";
 import { Modal } from "../../common/Modal";
-import ImageCrop from "../../common/ImageCrop";
+
 import { useUserUpdate } from "../../../hooks/useUserUpdate";
 import { IAuthMeList } from "../../../types/interfaces/ApiResponses/IAuthMeList";
 import useAuth from "../../../hooks/useAuth";
 import { Button } from "../../common/Button";
 import { useNavigate } from "react-router-dom";
+import ProfilePhotoFileSelector from "../../common/ProfilePhotoSelector/File/ProfilePhotoFileSelector";
+import { WebcamPhotoSelector } from "../../common/ProfilePhotoSelector/Webcam/WebcamPhotoSelector";
+
+//add to Profile.tsx buttons  i peremennlike in ImageCrop ()
+//Webcam.tsx remove  input, replace inputfile to webcamfile
 
 export const Profile = () => {
     const navigate = useNavigate();
@@ -19,8 +24,10 @@ export const Profile = () => {
     }, [isAuth]);
 
     const [showImageCrop, setShowImageCrop] = useState<boolean>(false);
+    const [showWebcamCrop, setShowWebcamCrop] = useState<boolean>(false);
     const [modal, setModal] = useState<boolean>(false);
     const [guidImg, setGuidImg] = useState<string | null>(null);
+
     useEffect(() => {
         if (profileInfo.mainAvatarGuid) setGuidImg(profileInfo.mainAvatarGuid);
     }, [profileInfo.mainAvatarGuid]);
@@ -35,6 +42,7 @@ export const Profile = () => {
         if (guidImg) {
             setSendData(true);
             setShowImageCrop(false);
+            setShowWebcamCrop(false);
         }
     }, [guidImg]);
 
@@ -49,11 +57,13 @@ export const Profile = () => {
         <div className="w-full px-3">
             <h2 className="text-xl font-bold my-4">Профиль</h2>
             <div className="flex items-center" onClick={() => setModal(true)}>
-                <Photo
-                    id={profileInfo.mainAvatarGuid || null}
-                    styles="w-20 h-20 rounded-full mr-3"
-                    alt={"foto"}
-                />
+                <div className="rounded-full mr-3 bg-[#84848466] bg-opacity-50 p-5">
+                    <Photo
+                        id={profileInfo.mainAvatarGuid || null}
+                        styles="w-11 h-11"
+                        alt={"foto"}
+                    />
+                </div>
                 <p>{profileInfo.username}</p>
             </div>
             <Button
@@ -120,28 +130,51 @@ export const Profile = () => {
                 additionalStyles={{
                     container:
                         "fixed inset-0 overflow-hidden flex items-end justify-center",
-                    panel: "w-full h-1/4 transform overflow-hidden rounded-t-2xl bg-white p-16",
+                    panel: "w-full h-[40%] transform overflow-hidden rounded-t-2xl bg-white px-16 py-10",
                 }}
             >
                 {showImageCrop && (
-                    <ImageCrop aspect={1} setGuidImg={setGuidImg} />
+                    <ProfilePhotoFileSelector
+                        aspect={1}
+                        setGuidImg={setGuidImg}
+                    />
                 )}
 
-                <Button
-                    showButton={!profileInfo.mainAvatarGuid && !showImageCrop}
-                    onClick={() => setShowImageCrop(true)}
-                >
-                    Добавить фото
-                </Button>
-                <Button
-                    showButton={!!profileInfo.mainAvatarGuid}
-                    onClick={() => {
-                        setGuidImg(null);
-                        setSendData(true);
-                    }}
-                >
-                    Удалить фото
-                </Button>
+                {showWebcamCrop && (
+                    <WebcamPhotoSelector setGuidImg={setGuidImg} />
+                )}
+
+                <div className="flex flex-col gap-2">
+                    <Button
+                        showButton={!showWebcamCrop && !showImageCrop}
+                        onClick={() => {
+                            setShowWebcamCrop(true);
+                        }}
+                    >
+                        Сделать фото
+                    </Button>
+
+                    <Button
+                        showButton={!showImageCrop && !showWebcamCrop}
+                        onClick={() => setShowImageCrop(true)}
+                    >
+                        Добавить фото
+                    </Button>
+
+                    <Button
+                        showButton={
+                            profileInfo.mainAvatarGuid !== null &&
+                            !showImageCrop &&
+                            !showWebcamCrop
+                        }
+                        onClick={() => {
+                            setGuidImg(null);
+                            setSendData(true);
+                        }}
+                    >
+                        Удалить фото
+                    </Button>
+                </div>
             </Modal>
         </div>
     );

@@ -107,3 +107,36 @@ export const Modal = ({
         </Transition>
     );
 };
+
+const dialogStyle: BlockStyle = {
+    container: "relative z-10",
+};
+
+const backgroundStyle: BlockStyle = {
+    container: "fixed inset-0 ",
+    background: "bg-black/80",
+};
+
+const containerStyle: BlockStyle = {
+    container:
+        "fixed inset-0 overflow-y-auto flex min-h-full items-center justify-center",
+    spacing: "p-10",
+    text: "text-center",
+};
+
+const panelStyle: BlockStyle = {
+    blockSize: "w-full transform overflow-hidden",
+    container: "rounded-2xl",
+    spacing: "p-6",
+    background: "bg-white",
+    text: "text-left align-middle",
+    transitionsAnimation: "shadow-xl transition-all",
+};
+
+const titleStyle: BlockStyle = {
+    text: "text-lg font-medium leading-6 text-gray-900",
+};
+
+const contentStyle: BlockStyle = {
+    text: "text-sm text-gray-500",
+};
