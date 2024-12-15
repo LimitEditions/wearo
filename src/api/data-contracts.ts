@@ -1660,6 +1660,10 @@ export interface PostModel {
   brand?: BrandModel;
   /** Комментарии */
   comments?: CommentModel[] | null;
+  /** Количество комментариев */
+  commentsCount?: number,
+  /** Количество лайков */
+  likesCount?: number,
   /** Ссылка на файл */
   file?: FileModel;
   /** Дополнительные файлы */
@@ -2846,6 +2850,19 @@ export interface UserModelDataResult {
   data?: UserModel[];
 }
 
+export interface CreateLikeModel {
+  /**
+   * Id сущности
+   * @format uuid
+   */
+  entityGuid?: string;
+  /**
+   * Id юзера
+   * @format uuid
+   */
+  fromGuid?: string;
+}
+
 export enum UserType {
   Unauthorized = "Unauthorized",
   User = "User",
@@ -2853,4 +2870,11 @@ export enum UserType {
   BrandAdmin = "BrandAdmin",
   Admin = "Admin",
   SuperAdmin = "SuperAdmin",
+}
+
+export enum EntityType {
+  Story = "Story",
+  ProductComment = "ProductComment",
+  Post = "Post",
+  PostComment = "PostComment",
 }

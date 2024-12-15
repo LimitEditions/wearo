@@ -131,7 +131,7 @@ const buildParams = (params: Params, config: Config): Params => {
 //     return { data, error, isLoading, execute: worker };
 // }
 
-export function useApiNew<Answer>(method: keyof Api, config: Config = {}){
+export function useApiNew<Answer>(method: keyof Api, config: Config = {}, pathParams = {}){
     const navigator = useNavigate();
     const [data, setData] = useState<Answer | null>(null);
     const [isLoading, setIsLoading] = useState(false);
@@ -148,8 +148,9 @@ export function useApiNew<Answer>(method: keyof Api, config: Config = {}){
             setError(null);
 
             try {
-                const res = await request(body, _params);
+                const res = await request(body, _params, pathParams);
                 setData(res.data);
+                return res.data
             } catch (error) {
                 if(axios.isAxiosError(error)){
                     if (!config.skipAuthCheck) {

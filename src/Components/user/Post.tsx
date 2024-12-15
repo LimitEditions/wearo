@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import useApi from "../../hooks/useApi";
-import { BrandModel, PostModel } from "../../api/data-contracts";
+import useApi, { useApiNew } from "../../hooks/useApi";
+import { BrandModel, EntityType, PostModel } from "../../api/data-contracts";
 import { Photo } from "../common/Photo";
 import { useNavigate } from "react-router-dom";
 import { Switcher } from "../common/Switcher";
@@ -10,30 +10,41 @@ import {
     readingOn,
     readingOnDark,
 } from "../../types/interfaces/IReading";
+import { retrieve } from "../../utils/encryption";
+import { IconLike } from "../common/icons/IconLike";
+import { IconComment } from "../common/icons/IconComment";
+import { IconMenu } from "../common/icons/IconMenu";
+import { CommentsList } from "./CommentsList";
+import { Modal } from "../common/Modal";
 
 export const Post = ({ id }: { id: string }) => {
     const navigate = useNavigate();
     // данные по посту
-    const [data, , error] = useApi<"postsDetail", PostModel>(
-        "postsDetail",
-        id,
-        {},
-        true
-    );
+    const getPostDataApi = useApiNew<PostModel>("postsDetail", { token: true, immediate: false})
+    const [postData, setPostData] = useState<PostModel>({})
+    useEffect(() => {
+        getPostDataApi.execute(id).then((data) => {
+            setPostData(data)
+        })
+    }, [])
 
     // данные по бренду
     const [getInfo, setGetInfo] = useState<boolean>(false);
     const [brandInfo, ,] = useApi<"brandsDetail", BrandModel>(
         "brandsDetail",
-        data?.brandGuid,
+        postData?.brandGuid,
         {},
         getInfo
     );
+    const userId = retrieve('guid');
+    
+    const sendLikeApi = useApiNew('addLike', { token: true, immediate: false}, { entity: EntityType.Post})
+    const getLikesApi = useApiNew('getLikesCount', { token: true, immediate: false}, { entity: EntityType.Post})
     useEffect(() => {
-        if (data) {
+        if (postData) {
             setGetInfo(true);
         }
-    }, [data]);
+    }, [postData]);
 
     const [readingMode, setReadingMode] = useState<IReading>(readingOff);
 
@@ -61,7 +72,7 @@ export const Post = ({ id }: { id: string }) => {
 
     // переход к отмеченным изделиям
     const handleProdsBag = () => {
-        const prods = data?.products?.map((prod) => prod.productGuid);
+        const prods = postData?.products?.map((prod) => prod.productGuid);
         return (
             prods &&
             prods.length > 0 &&
@@ -69,9 +80,23 @@ export const Post = ({ id }: { id: string }) => {
         );
     };
 
+    const [commentsOpen, setCommentsOpen] = useState(false)
+
     return (
         <div className="w-full pb-2">
-            {!error && data && (
+            <Modal
+                isOpen={commentsOpen} 
+                setIsOpen={setCommentsOpen} 
+                swipeable={false}
+                additionalStyles={{
+                    container:
+                        "fixed inset-0 overflow-hidden flex items-end justify-center",
+                    panel: "w-full h-[80%] transform overflow-hidden rounded-t-2xl bg-white px-16 py-10",
+                }}
+            >
+                <CommentsList entityId={id} updateCommentsCount={(newCount: number) => setPostData({...postData, commentsCount: newCount})}/>
+            </Modal>
+            {!getPostDataApi.error && postData && (
                 <div
                     className="relative w-full bg-light-gray"
                     style={{ paddingBottom: "175%" }}
@@ -90,7 +115,7 @@ export const Post = ({ id }: { id: string }) => {
                     </div>
                     <div className="absolute inset-0 flex items-center justify-center z-0">
                         <Photo
-                            id={data.file?.guid ?? null}
+                            id={postData.file?.guid ?? null}
                             styles="object-contain max-h-full"
                             alt="изображение поста"
                         />
@@ -99,7 +124,7 @@ export const Post = ({ id }: { id: string }) => {
                         ></div>
                     </div>
                     <div
-                        className={`absolute bottom-4 left-8 w-3/4 animate-fade-in ${readingMode.slide}`}
+                        className={`absolute bottom-4 left-8 animate-fade-in ${readingMode.slide}`}
                     >
                         <div className="flex space-x-3 mb-3 cursor-pointer">
                             <Photo
@@ -109,19 +134,55 @@ export const Post = ({ id }: { id: string }) => {
                             />
                             <div
                                 onClick={() =>
-                                    navigate(`.././brand/${data.brandGuid}`)
+                                    navigate(`.././brand/${postData.brandGuid}`)
                                 }
                                 className="text-white text-sm my-auto"
                             >
                                 {brandInfo?.name}
                             </div>
                         </div>
-                        <p
-                            className={`text-white text-sm overflow-hidden ${readingMode.lines}`}
-                            onClick={hanldeReadingMode}
-                        >
-                            {data.text}
-                        </p>
+                        <div style={{display:"flex",justifyContent: "space-between", marginRight: "32px", marginLeft: "10px"}}>
+                            <div>
+                                <p
+                                    className={`text-white text-sm overflow-hidden ${readingMode.lines}`}
+                                    onClick={hanldeReadingMode}
+                                >
+                                    {postData.text}
+                                </p>
+                            </div>
+
+                            <div style={{justifyContent: "center", alignItems: "center"}}>
+                                <div onClick={() => {
+                                    sendLikeApi.execute({fromGuid: userId, entityGuid: id}).then(() => {
+                                        getLikesApi.execute(id).then((newLikes) => {
+                                            setPostData(
+                                                {
+                                                    ...postData,
+                                                    likesCount: newLikes
+                                                }
+                                            )
+                                        })
+                                    })
+                                }}>
+                                    <IconLike hoverColor="white" hoverable={false} defaultColor="black"/>
+                                </div>
+                                <p style={{margin: "0px"}} className={`text-black ${readingMode.lines}`}>
+                                    {postData.likesCount}
+                                </p>
+                                <div onClick={() => {
+                                    setCommentsOpen((prev) => !prev)
+                                }}>
+                                    <IconComment defaultColor="black"/>
+                                </div>
+                                <p style={{margin: "0px"}} className={`text-black ${readingMode.lines}`}>
+                                    {postData.commentsCount}
+                                </p>
+                                <div onClick={() => {/* TODO ADD COMMENTS */}}>
+                                    <IconMenu strokeColor="black"/>
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
                 </div>
             )}

@@ -38,6 +38,7 @@ import {
   CreateFavoriteModel,
   CreateFileProductModel,
   CreateHighlightModel,
+  CreateLikeModel,
   CreateLookModel,
   CreateMaterialModel,
   CreateMessageModel,
@@ -57,6 +58,7 @@ import {
   CreateTipModel,
   CreateUserModel,
   EnitityViewType,
+  EntityType,
   EntityViewModelDataResult,
   FavoriteModel,
   FavoriteModelDataResult,
@@ -3665,6 +3667,45 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
       method: "GET",
       query: query,
       secure: true,
+      format: "json",
+      ...params,
+    });
+
+    /**
+   * No description
+   *
+   * @tags Likes
+   * @name addLike
+   * @summary Добавить лайк сущности
+   * @request POST:/api/Likes/{entity}
+   * @secure
+   */
+  addLike = (data: CreateLikeModel, params: RequestParams = {}, pathParams: any = {}) =>
+    this.request<any, ProblemDetails>({
+      path: `/api/Likes/${pathParams['entity'] ?? ""}`,
+      method: "POST",
+      body: data,
+      secure: true,
+      type: ContentType.Json,
+      format: "json",
+      ...params,
+    });
+    
+    /**
+   * No description
+   *
+   * @tags Likes
+   * @name get Likes
+   * @summary получить лайк сущностей
+   * @request GET:/api/Likes/{entity}/{id}/Count
+   * @secure
+   */
+  getLikesCount = (entityId: string, params: RequestParams = {}, pathParams: any = {}) =>
+    this.request<any, ProblemDetails>({
+      path: `/api/Likes/${pathParams['entity'] ?? ""}/${entityId}/Count`,
+      method: "GET",
+      secure: true,
+      type: ContentType.Json,
       format: "json",
       ...params,
     });
