@@ -25,14 +25,14 @@ export const IconSettings = ({ hoverColor }: IconProps) => {
         stroke={isHovered ? hoverColor : "#9095B5"}
         strokeWidth="1.2"
         strokeLinecap="round"
-        stroke-linejoin="round"
+        strokeLinejoin="round"
       />
       <path
         d="M18.622 9.395L17.525 6.745L19 5L17 3L15.265 4.483L12.558 3.37L11.935 1H9.981L9.349 3.401L6.704 4.516L5 3L3 5L4.453 6.789L3.373 9.446L1 10V12L3.401 12.656L4.516 15.3L3 17L5 19L6.791 17.54L9.397 18.612L10 21H12L12.604 18.613L15.255 17.515C15.697 17.832 17 19 17 19L19 17L17.516 15.25L18.614 12.598L21 11.978V10L18.622 9.395Z"
         stroke={isHovered ? hoverColor : "#9095B5"}
         strokeWidth="1.2"
         strokeLinecap="round"
-        stroke-linejoin="round"
+        strokeLinejoin="round"
       />
     </svg>
   );
