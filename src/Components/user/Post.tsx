@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import useApi, { useApiNew } from "../../hooks/useApi";
-import { BrandModel, EntityType, PostModel } from "../../api/data-contracts";
+import { BrandModel, EnitityLikeType, PostModel } from "../../api/data-contracts";
 import { Photo } from "../common/Photo";
 import { useNavigate } from "react-router-dom";
 import { Switcher } from "../common/Switcher";
@@ -38,10 +38,10 @@ export const Post = ({ id }: { id: string }) => {
     );
     const userId = retrieve('guid');
     
-    const sendLikeApi = useApiNew('addLike', { token: true, immediate: false}, { entity: EntityType.Post})
-    const getLikesApi = useApiNew('getLikesCount', { token: true, immediate: false}, { entity: EntityType.Post})
+    const sendLikeApi = useApiNew('likesCreate', { token: true, immediate: false}, { entity: EnitityLikeType.Post})
+    const getLikesApi = useApiNew('likesCountDetail', { token: true, immediate: false}, { entity: EnitityLikeType.Post})
     useEffect(() => {
-        if (postData) {
+        if (postData && postData?.brandGuid) {
             setGetInfo(true);
         }
     }, [postData]);
