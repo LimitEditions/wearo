@@ -26,7 +26,7 @@ export const IconMenu = ({ strokeColor }: IconProps) => {
         fill={strokeColor}
         stroke={strokeColor}
         strokeWidth="1.5"
-        stroke-linecap="round"
+        strokeLinecap="round"
         stroke-linejoin="round"
       />
     </svg>

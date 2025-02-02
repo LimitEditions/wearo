@@ -24,7 +24,7 @@ export const IconAnalytic = ({ hoverColor }: IconProps) => {
         d="M14 14V6M10 14V9M6 14V11"
         stroke={isHovered ? hoverColor : "#9095B5"}
         strokeWidth="1.2"
-        stroke-linecap="round"
+        strokeLinecap="round"
         stroke-linejoin="round"
       />
       <path

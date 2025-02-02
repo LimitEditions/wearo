@@ -24,7 +24,7 @@ export const IconManage = ({ hoverColor }: IconProps) => {
         d="M6 21H16"
         stroke={isHovered ? hoverColor : "#9095B5"}
         strokeWidth="1.2"
-        stroke-linecap="round"
+        strokeLinecap="round"
         stroke-linejoin="round"
       />
       <path
@@ -36,7 +36,7 @@ export const IconManage = ({ hoverColor }: IconProps) => {
         d="M8 9.5L10 11.5L14 7.5"
         stroke={isHovered ? hoverColor : "#9095B5"}
         strokeWidth="1.2"
-        stroke-linecap="round"
+        strokeLinecap="round"
         stroke-linejoin="round"
       />
     </svg>
