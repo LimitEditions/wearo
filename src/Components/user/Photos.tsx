@@ -22,9 +22,9 @@ export const Photos = ({ photos, imgSize }: {photos: FileModel[] | null, imgSize
 
  // Заглушка для пустых фото
   const placeholderPhotos = [
-    { fileGuid: 'https://via.placeholder.com/150?text=1', guid: 'placeholder1' },
-    { fileGuid: 'https://via.placeholder.com/150?text=2', guid: 'placeholder2' },
-    { fileGuid: 'https://via.placeholder.com/150?text=3', guid: 'placeholder3' }
+    { fileGuid: "/images/defaultPhoto.svg", guid: 'placeholder1' },
+    { fileGuid: "/images/defaultPhoto.svg", guid: 'placeholder2' },
+    { fileGuid: "/images/defaultPhoto.svg", guid: 'placeholder3' }
   ];
   const displayPhotos = photos && photos.length > 0 ? photos : placeholderPhotos;
 
