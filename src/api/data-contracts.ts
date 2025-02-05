@@ -81,6 +81,14 @@ export interface AuthModel {
 }
 
 export enum BodyPart {
+  Chest = "Chest",
+  Neck = "Neck",
+  SleeveLength = "SleeveLength",
+  ShoulderWidth = "ShoulderWidth",
+  LegLength = "LegLength",
+  Height = "Height",
+  BicepWristCircumference = "BicepWristCircumference",
+  CalfAnkleCircumference = "CalfAnkleCircumference",
   Bust = "Bust",
   Hip = "Hip",
   Waist = "Waist",
@@ -110,12 +118,12 @@ export interface BrandModel {
    * Дата создания
    * @format date-time
    */
-  createDT?: string;
+  createDT?: string | null;
   /**
    * Дата обнавления
    * @format date-time
    */
-  updateDT?: string;
+  updateDT?: string | null;
   /** Название бренда */
   name?: string;
   /** Некое описание */
@@ -165,12 +173,12 @@ export interface BrandRequestModel {
    * Дата создания
    * @format date-time
    */
-  createDT?: string;
+  createDT?: string | null;
   /**
    * Дата обнавления
    * @format date-time
    */
-  updateDT?: string;
+  updateDT?: string | null;
   /** Название бренда */
   name?: string;
   /** Некое описание */
@@ -207,6 +215,18 @@ export interface BrandRequestModel {
   telegramId?: string | null;
   /** Логин WhatsApp */
   whatsappId?: string | null;
+  /** Полное наименование. */
+  fullName?: string;
+  /** Юр адрес. */
+  address?: string;
+  /** ИНН. */
+  inn?: string;
+  /** КПП. */
+  kpp?: string;
+  /** ОГРН. */
+  ogrn?: string;
+  /** Номер телефона. */
+  phoneNumber?: string;
 }
 
 /** Результат чтения данных. */
@@ -233,12 +253,12 @@ export interface ClothingCollectionModel {
    * Дата создания
    * @format date-time
    */
-  createDT?: string;
+  createDT?: string | null;
   /**
    * Дата обнавления
    * @format date-time
    */
-  updateDT?: string;
+  updateDT?: string | null;
   /** Бренд */
   brand?: BrandModel;
   /** Список продуктов */
@@ -284,12 +304,12 @@ export interface ClothingPartyModel {
    * Дата создания
    * @format date-time
    */
-  createDT?: string;
+  createDT?: string | null;
   /**
    * Дата обнавления
    * @format date-time
    */
-  updateDT?: string;
+  updateDT?: string | null;
   /** Продукт */
   product?: ProductModel;
   /** Единицы продуктов */
@@ -320,12 +340,12 @@ export interface ColorModel {
    * Дата создания
    * @format date-time
    */
-  createDT?: string;
+  createDT?: string | null;
   /**
    * Дата обнавления
    * @format date-time
    */
-  updateDT?: string;
+  updateDT?: string | null;
   /** Название цвета */
   name?: string;
   /** Код */
@@ -384,12 +404,12 @@ export interface CommentModel {
    * Дата создания
    * @format date-time
    */
-  createDT?: string;
+  createDT?: string | null;
   /**
    * Дата обнавления
    * @format date-time
    */
-  updateDT?: string;
+  updateDT?: string | null;
   /** Пользователь */
   user?: UserModel;
   /**
@@ -399,13 +419,33 @@ export interface CommentModel {
   userGuid?: string;
   /** Текст */
   text?: string | null;
-  /** Нравится ли */
   isLike?: boolean | null;
+  /** Отсканирована ли вещь комментатором. */
+  isSсanned?: boolean | null;
+  /** Лайкнул ли пользователь этот коммент */
+  isLikedByUser?: boolean | null;
   /**
    * Ид сущности
    * @format uuid
    */
   entityGuid?: string;
+  /**
+   * Ответ на коммент
+   * @format uuid
+   */
+  replyAtGuid?: string | null;
+  /**
+   * Количество ответов на комментарий.
+   * @format int32
+   */
+  repliesCount?: number;
+  /**
+   * Количество ответов с лайками
+   * @format int32
+   */
+  likesCount?: number;
+  /** Привязанные файлы. */
+  files?: FileModel[] | null;
 }
 
 /** Результат чтения данных. */
@@ -473,6 +513,18 @@ export interface CreateBrandRequestModel {
   telegramId?: string | null;
   /** Логин WhatsApp */
   whatsappId?: string | null;
+  /** Полное наименование. */
+  fullName?: string;
+  /** Юр адрес. */
+  address?: string;
+  /** ИНН. */
+  inn?: string;
+  /** КПП. */
+  kpp?: string;
+  /** ОГРН. */
+  ogrn?: string;
+  /** Номер телефона. */
+  phoneNumber?: string;
 }
 
 /** Коллекция одежды */
@@ -511,13 +563,19 @@ export interface CreateCommentModel {
   userGuid?: string;
   /** Текст */
   text?: string | null;
-  /** Нравится ли */
   isLike?: boolean | null;
   /**
    * Ид сущности
    * @format uuid
    */
   entityGuid?: string;
+  /**
+   * Ответ на коммент
+   * @format uuid
+   */
+  replyAtGuid?: string | null;
+  /** Прикрепляемые файлы. */
+  files?: string[] | null;
 }
 
 export interface CreateConfiramtionEmailModel {
@@ -575,7 +633,7 @@ export interface CreateFileProductModel {
 
 export interface CreateHighlightModel {
   /**
-   * Бренд
+   * Бренд ИД
    * @format uuid
    */
   brandGuid?: string;
@@ -588,6 +646,20 @@ export interface CreateHighlightModel {
   mainPhotoGuid?: string | null;
   /** Набор входящих сторис */
   stories?: string[];
+}
+
+/** Модель создания лайка. */
+export interface CreateLikeModel {
+  /**
+   * Сущность.
+   * @format uuid
+   */
+  entityGuid?: string;
+  /**
+   * Ид пользователя.
+   * @format uuid
+   */
+  fromGuid?: string;
 }
 
 /** Образ/лукбук */
@@ -938,6 +1010,28 @@ export interface CreateScanModel {
   code?: string;
 }
 
+export interface CreateSizeChartModel {
+  /** Наименование. */
+  name?: string;
+  /** Массив гуидов категорий */
+  categories?: string[];
+  /**
+   * Бренд ИД
+   * @format uuid
+   */
+  brandGuid?: string;
+  unit?: MeasurementUnits;
+  /** Измерения */
+  measures?: CreateSizeSizeChartMeasureModel[];
+}
+
+export interface CreateSizeSizeChartMeasureModel {
+  sizeName?: string;
+  /** @format double */
+  measurement?: number;
+  part?: BodyPart;
+}
+
 export interface CreateStoryModel {
   /**
    * Файл сторис
@@ -945,7 +1039,7 @@ export interface CreateStoryModel {
    */
   fileGuid?: string;
   /**
-   * Публикующий чел
+   * Бренд ИД
    * @format uuid
    */
   brandGuid?: string;
@@ -1009,6 +1103,13 @@ export enum EditType {
   Add = "Add",
 }
 
+export enum EnitityLikeType {
+  Story = "Story",
+  ProductComment = "ProductComment",
+  Post = "Post",
+  PostComment = "PostComment",
+}
+
 export enum EnitityViewType {
   Story = "Story",
   Product = "Product",
@@ -1028,12 +1129,12 @@ export interface EntityViewModel {
    * Дата создания
    * @format date-time
    */
-  createDT?: string;
+  createDT?: string | null;
   /**
    * Дата обнавления
    * @format date-time
    */
-  updateDT?: string;
+  updateDT?: string | null;
   /**
    * Ид Сущности
    * @format uuid
@@ -1070,12 +1171,12 @@ export interface FavoriteModel {
    * Дата создания
    * @format date-time
    */
-  createDT?: string;
+  createDT?: string | null;
   /**
    * Дата обнавления
    * @format date-time
    */
-  updateDT?: string;
+  updateDT?: string | null;
   /**
    * Пользователь
    * @format uuid
@@ -1112,12 +1213,12 @@ export interface FileModel {
    * Дата создания
    * @format date-time
    */
-  createDT?: string;
+  createDT?: string | null;
   /**
    * Дата обнавления
    * @format date-time
    */
-  updateDT?: string;
+  updateDT?: string | null;
   /**
    * Позиция файла
    * @format int64
@@ -1133,6 +1234,11 @@ export interface FileModel {
   fileGuid?: string;
   /** Ссылки на продукты */
   products?: FileProductModel[] | null;
+  /**
+   * Ид сущности
+   * @format uuid
+   */
+  entityGuid?: string;
 }
 
 /** Отображение файла на изображении */
@@ -1148,12 +1254,12 @@ export interface FileProductModel {
    * Дата создания
    * @format date-time
    */
-  createDT?: string;
+  createDT?: string | null;
   /**
    * Дата обнавления
    * @format date-time
    */
-  updateDT?: string;
+  updateDT?: string | null;
   /**
    * Гуид файла
    * @format uuid
@@ -1185,13 +1291,9 @@ export enum FileType {
   Jpg = "Jpg",
   Jpeg = "Jpeg",
   Png = "Png",
-  Svg = "Svg",
-  Gif = "Gif",
-  Tiff = "Tiff",
-  Tif = "Tif",
-  Mp4 = "Mp4",
-  Mpeg = "Mpeg",
   Webm = "Webm",
+  Webp = "Webp",
+  Mp4 = "Mp4",
 }
 
 export enum FilterType {
@@ -1222,6 +1324,17 @@ export enum Gender {
   UnisexKid = "UnisexKid",
 }
 
+export interface GetPushSubscribtionsModel {
+  /** @format uuid */
+  userGuid?: string | null;
+  /** @format int32 */
+  page?: number;
+  /** @format int32 */
+  pageSize?: number;
+  sortMember?: string | null;
+  ascending?: boolean;
+}
+
 /** Модель редактирования */
 export interface GuidEditModel {
   /**
@@ -1245,17 +1358,16 @@ export interface HighlightModel {
    * Дата создания
    * @format date-time
    */
-  createDT?: string;
+  createDT?: string | null;
   /**
    * Дата обнавления
    * @format date-time
    */
-  updateDT?: string;
+  updateDT?: string | null;
   /** Набор вложенных сторис */
   stories?: HighlightStoryModel[] | null;
-  storiesGuids?: string[]
   /**
-   * Бренд
+   * Бренд ИД
    * @format uuid
    */
   brandGuid?: string;
@@ -1266,6 +1378,8 @@ export interface HighlightModel {
    * @format uuid
    */
   mainPhotoGuid?: string | null;
+  /** Список сторей */
+  storiesGuids?: string[] | null;
 }
 
 /** Результат чтения данных. */
@@ -1292,12 +1406,12 @@ export interface HighlightStoryModel {
    * Дата создания
    * @format date-time
    */
-  createDT?: string;
+  createDT?: string | null;
   /**
    * Дата обнавления
    * @format date-time
    */
-  updateDT?: string;
+  updateDT?: string | null;
   /** Сторис */
   story?: StoryModel;
   /** Хайлайт из набора сторис */
@@ -1330,15 +1444,46 @@ export enum ImportResultCode {
   EntityExists = "EntityExists",
 }
 
+/** Сущность лайкосика. */
+export interface LikeModel {
+  /**
+   * Идентификатор
+   * @format uuid
+   */
+  guid?: string;
+  /** Отметка удаления */
+  isDeleted?: boolean;
+  /**
+   * Дата создания
+   * @format date-time
+   */
+  createDT?: string | null;
+  /**
+   * Дата обнавления
+   * @format date-time
+   */
+  updateDT?: string | null;
+  /**
+   * Сущность.
+   * @format uuid
+   */
+  entityGuid?: string;
+  /**
+   * Ид пользователя.
+   * @format uuid
+   */
+  fromGuid?: string;
+}
+
 /** Результат чтения данных. */
-export interface Int32DataResult {
+export interface LikeModelDataResult {
   /**
    * Общее количество найденных элементов.
    * @format int32
    */
   total?: number;
   /** Данные. */
-  data?: number[];
+  data?: LikeModel[];
 }
 
 /** Образ/лукбук */
@@ -1354,12 +1499,12 @@ export interface LookModel {
    * Дата создания
    * @format date-time
    */
-  createDT?: string;
+  createDT?: string | null;
   /**
    * Дата обнавления
    * @format date-time
    */
-  updateDT?: string;
+  updateDT?: string | null;
   /** Наименование */
   name?: string;
   /** Описание */
@@ -1422,12 +1567,12 @@ export interface LookProductModel {
    * Дата создания
    * @format date-time
    */
-  createDT?: string;
+  createDT?: string | null;
   /**
    * Дата обнавления
    * @format date-time
    */
-  updateDT?: string;
+  updateDT?: string | null;
   /** Образ/лукбук */
   look?: LookModel;
   /** Продукт */
@@ -1463,12 +1608,12 @@ export interface LookTagModel {
    * Дата создания
    * @format date-time
    */
-  createDT?: string;
+  createDT?: string | null;
   /**
    * Дата обнавления
    * @format date-time
    */
-  updateDT?: string;
+  updateDT?: string | null;
   /** Образ/лукбук */
   look?: LookModel;
   /**
@@ -1500,12 +1645,12 @@ export interface MaterialModel {
    * Дата создания
    * @format date-time
    */
-  createDT?: string;
+  createDT?: string | null;
   /**
    * Дата обнавления
    * @format date-time
    */
-  updateDT?: string;
+  updateDT?: string | null;
   /** Название бренда */
   name?: string;
   /** Некое описание */
@@ -1516,6 +1661,7 @@ export enum MeasurementUnits {
   ValueСentimeter = "Сentimeter",
   Millimeter = "Millimeter",
   Meter = "Meter",
+  Inch = "Inch",
 }
 
 /** Сообщение одного пользователя другому */
@@ -1531,12 +1677,12 @@ export interface MessageModel {
    * Дата создания
    * @format date-time
    */
-  createDT?: string;
+  createDT?: string | null;
   /**
    * Дата обнавления
    * @format date-time
    */
-  updateDT?: string;
+  updateDT?: string | null;
   /**
    * От пользователя
    * @format uuid
@@ -1589,6 +1735,37 @@ export interface NotificationData {
   message?: string;
 }
 
+export interface NotificationSubscriptionModel {
+  /**
+   * Идентификатор
+   * @format uuid
+   */
+  guid?: string;
+  /** Отметка удаления */
+  isDeleted?: boolean;
+  /**
+   * Дата создания
+   * @format date-time
+   */
+  createDT?: string | null;
+  /**
+   * Дата обнавления
+   * @format date-time
+   */
+  updateDT?: string | null;
+}
+
+/** Результат чтения данных. */
+export interface NotificationSubscriptionModelDataResult {
+  /**
+   * Общее количество найденных элементов.
+   * @format int32
+   */
+  total?: number;
+  /** Данные. */
+  data?: NotificationSubscriptionModel[];
+}
+
 /** Дополнительные файлы к посту */
 export interface PostFileModel {
   /**
@@ -1602,12 +1779,12 @@ export interface PostFileModel {
    * Дата создания
    * @format date-time
    */
-  createDT?: string;
+  createDT?: string | null;
   /**
    * Дата обнавления
    * @format date-time
    */
-  updateDT?: string;
+  updateDT?: string | null;
   /**
    * Ид поста
    * @format uuid
@@ -1638,12 +1815,12 @@ export interface PostModel {
    * Дата создания
    * @format date-time
    */
-  createDT?: string;
+  createDT?: string | null;
   /**
    * Дата обнавления
    * @format date-time
    */
-  updateDT?: string;
+  updateDT?: string | null;
   /** Текст */
   text?: string;
   /**
@@ -1660,10 +1837,6 @@ export interface PostModel {
   brand?: BrandModel;
   /** Комментарии */
   comments?: CommentModel[] | null;
-  /** Количество комментариев */
-  commentsCount?: number,
-  /** Количество лайков */
-  likesCount?: number,
   /** Ссылка на файл */
   file?: FileModel;
   /** Дополнительные файлы */
@@ -1698,6 +1871,11 @@ export interface PostModel {
   promoGuid?: string | null;
   /** Ссылки на товары при наличии */
   products?: PostProductModel[] | null;
+  /** @format int32 */
+  likesCount?: number;
+  /** @format int32 */
+  commentsCount?: number;
+  isLikedByCurrentUser?: boolean;
 }
 
 /** Результат чтения данных. */
@@ -1723,12 +1901,12 @@ export interface PostProductModel {
    * Дата создания
    * @format date-time
    */
-  createDT?: string;
+  createDT?: string | null;
   /**
    * Дата обнавления
    * @format date-time
    */
-  updateDT?: string;
+  updateDT?: string | null;
   /**
    * Ид поста
    * @format uuid
@@ -1764,12 +1942,12 @@ export interface ProductCategoryModel {
    * Дата создания
    * @format date-time
    */
-  createDT?: string;
+  createDT?: string | null;
   /**
    * Дата обнавления
    * @format date-time
    */
-  updateDT?: string;
+  updateDT?: string | null;
   /** Наименование */
   name?: string;
   /** Описание */
@@ -1810,12 +1988,12 @@ export interface ProductColorModel {
    * Дата создания
    * @format date-time
    */
-  createDT?: string;
+  createDT?: string | null;
   /**
    * Дата обнавления
    * @format date-time
    */
-  updateDT?: string;
+  updateDT?: string | null;
   /**
    * Продукт
    * @format uuid
@@ -1844,12 +2022,12 @@ export interface ProductItemModel {
    * Дата создания
    * @format date-time
    */
-  createDT?: string;
+  createDT?: string | null;
   /**
    * Дата обнавления
    * @format date-time
    */
-  updateDT?: string;
+  updateDT?: string | null;
   uniqeCode?: string;
   /**
    * Продукт
@@ -1906,12 +2084,12 @@ export interface ProductMaterialModel {
    * Дата создания
    * @format date-time
    */
-  createDT?: string;
+  createDT?: string | null;
   /**
    * Дата обнавления
    * @format date-time
    */
-  updateDT?: string;
+  updateDT?: string | null;
   /**
    * Продукт
    * @format uuid
@@ -1946,12 +2124,12 @@ export interface ProductMeasurementModel {
    * Дата создания
    * @format date-time
    */
-  createDT?: string;
+  createDT?: string | null;
   /**
    * Дата обнавления
    * @format date-time
    */
-  updateDT?: string;
+  updateDT?: string | null;
   /** Размер, по которому будет произведена группировка */
   size?: string;
   /**
@@ -1981,12 +2159,12 @@ export interface ProductModel {
    * Дата создания
    * @format date-time
    */
-  createDT?: string;
+  createDT?: string | null;
   /**
    * Дата обнавления
    * @format date-time
    */
-  updateDT?: string;
+  updateDT?: string | null;
   /** Название продукта */
   name?: string;
   /** Описание */
@@ -2038,6 +2216,16 @@ export interface ProductModel {
   gender?: Gender;
   /** Код изделия */
   code?: string | null;
+  /**
+   * Количество отзывов.
+   * @format int32
+   */
+  commentsCount?: number | null;
+  /**
+   * Процент лаков
+   * @format double
+   */
+  likePercent?: number | null;
 }
 
 /** Результат чтения данных. */
@@ -2070,12 +2258,12 @@ export interface PromotionModel {
    * Дата создания
    * @format date-time
    */
-  createDT?: string;
+  createDT?: string | null;
   /**
    * Дата обнавления
    * @format date-time
    */
-  updateDT?: string;
+  updateDT?: string | null;
   /** Бренд */
   brand?: BrandModel;
   /** Продукты участвующие в акции */
@@ -2149,12 +2337,12 @@ export interface PromotionProductModel {
    * Дата создания
    * @format date-time
    */
-  createDT?: string;
+  createDT?: string | null;
   /**
    * Дата обнавления
    * @format date-time
    */
-  updateDT?: string;
+  updateDT?: string | null;
   /**
    * Ид продукта
    * @format uuid
@@ -2206,12 +2394,12 @@ export interface ScanModel {
    * Дата создания
    * @format date-time
    */
-  createDT?: string;
+  createDT?: string | null;
   /**
    * Дата обнавления
    * @format date-time
    */
-  updateDT?: string;
+  updateDT?: string | null;
   /** Пользователь */
   user?: UserModel;
   /** Конкретное изделие */
@@ -2246,6 +2434,86 @@ export enum Season {
   Demiseason = "Demiseason",
 }
 
+/** Измерение */
+export interface SizeChartMeasureModel {
+  /**
+   * Идентификатор
+   * @format uuid
+   */
+  guid?: string;
+  /** Отметка удаления */
+  isDeleted?: boolean;
+  /**
+   * Дата создания
+   * @format date-time
+   */
+  createDT?: string | null;
+  /**
+   * Дата обнавления
+   * @format date-time
+   */
+  updateDT?: string | null;
+  /** Имя размера. */
+  sizeName?: string;
+  /**
+   * Ссылка на размерную сетку.
+   * @format uuid
+   */
+  sizeChartGuid?: string;
+  /**
+   * Измерение
+   * @format double
+   */
+  measurement?: number;
+  part?: BodyPart;
+}
+
+/** Размерная сетка. */
+export interface SizeChartModel {
+  /**
+   * Идентификатор
+   * @format uuid
+   */
+  guid?: string;
+  /** Отметка удаления */
+  isDeleted?: boolean;
+  /**
+   * Дата создания
+   * @format date-time
+   */
+  createDT?: string | null;
+  /**
+   * Дата обнавления
+   * @format date-time
+   */
+  updateDT?: string | null;
+  /** Наименование. */
+  name?: string;
+  /** Массив гуидов категорий */
+  categories?: string[];
+  /**
+   * Бренд ИД
+   * @format uuid
+   */
+  brandGuid?: string;
+  unit?: MeasurementUnits;
+  /** Измерения. */
+  measures?: SizeChartMeasureModel[] | null;
+  /** Бренд */
+  brand?: BrandModel;
+}
+
+/** Результат чтения данных. */
+export interface SizeChartModelDataResult {
+  /**
+   * Общее количество найденных элементов.
+   * @format int32
+   */
+  total?: number;
+  /** Данные. */
+  data?: SizeChartModel[];
+}
+
 /** Сторис */
 export interface StoryModel {
   /**
@@ -2259,19 +2527,19 @@ export interface StoryModel {
    * Дата создания
    * @format date-time
    */
-  createDT?: string;
+  createDT?: string | null;
   /**
    * Дата обнавления
    * @format date-time
    */
-  updateDT?: string;
+  updateDT?: string | null;
   /**
    * Файл сторис
    * @format uuid
    */
   fileGuid?: string;
   /**
-   * Публикующий чел
+   * Бренд ИД
    * @format uuid
    */
   brandGuid?: string;
@@ -2312,12 +2580,12 @@ export interface SubscriptionModel {
    * Дата создания
    * @format date-time
    */
-  createDT?: string;
+  createDT?: string | null;
   /**
    * Дата обнавления
    * @format date-time
    */
-  updateDT?: string;
+  updateDT?: string | null;
   /** Пользователь */
   user?: UserModel;
   /** Бренд */
@@ -2358,12 +2626,12 @@ export interface TipModel {
    * Дата создания
    * @format date-time
    */
-  createDT?: string;
+  createDT?: string | null;
   /**
    * Дата обнавления
    * @format date-time
    */
-  updateDT?: string;
+  updateDT?: string | null;
   /** Текст */
   text?: string;
   /** @format uuid */
@@ -2448,8 +2716,14 @@ export interface UpdateCommentModel {
   userGuid?: string;
   /** Текст */
   text?: string | null;
-  /** Нравится ли */
   isLike?: boolean | null;
+  /**
+   * Ответ на коммент
+   * @format uuid
+   */
+  replyAtGuid?: string | null;
+  /** Модель редактирования набора файлов. */
+  files?: GuidEditModel[] | null;
 }
 
 export interface UpdateHighlightModel {
@@ -2459,7 +2733,7 @@ export interface UpdateHighlightModel {
    */
   guid?: string;
   /**
-   * Бренд
+   * Бренд ИД
    * @format uuid
    */
   brandGuid?: string;
@@ -2471,7 +2745,7 @@ export interface UpdateHighlightModel {
    */
   mainPhotoGuid?: string | null;
   /** Модель редактирования набора сторис */
-  stories?: GuidEditModel[];
+  stories?: GuidEditModel[] | null;
 }
 
 /** Образ/лукбук */
@@ -2810,12 +3084,17 @@ export interface UserModel {
    * Дата создания
    * @format date-time
    */
-  createDT?: string;
+  createDT?: string | null;
   /**
    * Дата обнавления
    * @format date-time
    */
-  updateDT?: string;
+  updateDT?: string | null;
+  /**
+   * ИД бренда
+   * @format uuid
+   */
+  brandGuid?: string | null;
   /** UserName */
   username?: string;
   /** Имя */
@@ -2850,19 +3129,6 @@ export interface UserModelDataResult {
   data?: UserModel[];
 }
 
-export interface CreateLikeModel {
-  /**
-   * Id сущности
-   * @format uuid
-   */
-  entityGuid?: string;
-  /**
-   * Id юзера
-   * @format uuid
-   */
-  fromGuid?: string;
-}
-
 export enum UserType {
   Unauthorized = "Unauthorized",
   User = "User",
@@ -2870,11 +3136,4 @@ export enum UserType {
   BrandAdmin = "BrandAdmin",
   Admin = "Admin",
   SuperAdmin = "SuperAdmin",
-}
-
-export enum EntityType {
-  Story = "Story",
-  ProductComment = "ProductComment",
-  Post = "Post",
-  PostComment = "PostComment",
 }
