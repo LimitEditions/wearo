@@ -32,8 +32,8 @@ export const Photos = ({ photos, imgSize }: {photos: FileModel[] | null, imgSize
     <>
       <Slider {...settings} dotsClass="slick-dots">
         {displayPhotos.map(photo => (
-          <div key={photo.guid} className={getStyles(photoStyle)}>
-            <img src={photos ? `${process.env.REACT_APP_URL_REQUEST}/api/Files/${photo.fileGuid}`: photo.fileGuid} alt="Slide" className={getStyles(imgStyle) + ' ' + imgSize} />
+          <div key={photo.guid} className={'w-full max-h-1/2 bg-gray-100 my-2'}>
+            <img src={photos ? `${process.env.REACT_APP_URL_REQUEST}/api/Files/${photo.fileGuid}`: photo.fileGuid} alt="Slide" className={"m-auto" + ' ' + imgSize} />
           </div>
         ))}
       </Slider>
@@ -41,13 +41,3 @@ export const Photos = ({ photos, imgSize }: {photos: FileModel[] | null, imgSize
   );
 };
 
-
-const photoStyle: BlockStyle = {
-  container: 'w-full max-h-1/2',
-  background: 'bg-gray-100',
-  spacing: 'my-2',
-};
-
-const imgStyle: BlockStyle = {
-  spacing: 'm-auto',
-};
