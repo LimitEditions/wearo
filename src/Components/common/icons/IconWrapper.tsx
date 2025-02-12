@@ -1,5 +1,5 @@
 import { Fragment, memo, useState } from "react";
-import IconSvbSelector from "./IconSvgSelector";
+import IconSvgSelector from "./IconSvgSelector";
 
 //При добавлении новой иконки, ее надо сюда прописать, и использовать  в селекторе
 export enum IconNameEnum {
@@ -31,7 +31,7 @@ export type iconParams = {
   hoverColor: string;
 };
 
-export default  memo(function IconWrapper({ iconName, params }: IconWrapperProps) {
+export default function IconWrapper({ iconName, params }: IconWrapperProps) {
   const [isHovered, setIsHovered] = useState(false);
   const handleMouseEnter = () => setIsHovered(true);
   const handleMouseLeave = () => setIsHovered(false);
@@ -44,11 +44,11 @@ export default  memo(function IconWrapper({ iconName, params }: IconWrapperProps
   };
 
   return (
-    <IconSvbSelector
+    <IconSvgSelector
       name={iconName}
       iconParams={iconParams}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     />
   );
-})
+}
