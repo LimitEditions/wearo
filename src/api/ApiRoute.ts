@@ -71,7 +71,6 @@ import {
   GetPushSubscribtionsModel,
   HighlightModel,
   HighlightModelDataResult,
-  ImportResult,
   LikeModel,
   LikeModelDataResult,
   LookModel,
@@ -85,7 +84,6 @@ import {
   PostFileModel,
   PostModel,
   PostModelDataResult,
-  ProblemDetails,
   ProductCategoryModel,
   ProductCategoryModelDataResult,
   ProductColorModel,
@@ -131,109 +129,112 @@ import {
   UserModelDataResult,
   UserType,
 } from "./data-contracts";
-import { ContentType, HttpClient, RequestParams } from "./http-client";
 
-export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType> {
+export namespace Api {
   /**
    * No description
-   *
    * @tags Auth
    * @name AuthCreate
    * @summary Авторизация в сервисе
    * @request POST:/api/Auth
    * @secure
    */
-  authCreate = (data: AuthModel, params: RequestParams = {}) =>
-    this.request<TokenModel, ProblemDetails>({
-      path: `/api/Auth`,
-      method: "POST",
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      format: "json",
-      ...params,
-    });
+  export namespace AuthCreate {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = AuthModel;
+    export type RequestHeaders = {};
+    export type ResponseBody = TokenModel;
+  }
+
   /**
    * No description
-   *
    * @tags Auth
    * @name AuthMeList
    * @summary Получить информацию по авторизированному пользователю
    * @request GET:/api/Auth/Me
    * @secure
    */
-  authMeList = (params: RequestParams = {}) =>
-    this.request<UserModel, ProblemDetails>({
-      path: `/api/Auth/Me`,
-      method: "GET",
-      secure: true,
-      format: "json",
-      ...params,
-    });
+  export namespace AuthMeList {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = UserModel;
+  }
+
   /**
    * No description
-   *
    * @tags Auth
    * @name AuthRefreshTokenCreate
    * @summary Обновить токен
    * @request POST:/api/Auth/RefreshToken
    * @secure
    */
-  authRefreshTokenCreate = (data: RefreshModel, params: RequestParams = {}) =>
-    this.request<TokenModel, ProblemDetails>({
-      path: `/api/Auth/RefreshToken`,
-      method: "POST",
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      format: "json",
-      ...params,
-    });
+  export namespace AuthRefreshTokenCreate {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = RefreshModel;
+    export type RequestHeaders = {};
+    export type ResponseBody = TokenModel;
+  }
+
   /**
    * No description
-   *
    * @tags Brands
    * @name BrandsDetail
    * @summary Получение бренда по идентификатору
    * @request GET:/api/Brands/{id}
    * @secure
    */
-  brandsDetail = (id: string, params: RequestParams = {}) =>
-    this.request<BrandModel, ProblemDetails>({
-      path: `/api/Brands/${id}`,
-      method: "GET",
-      secure: true,
-      format: "json",
-      ...params,
-    });
+  export namespace BrandsDetail {
+    export type RequestParams = {
+      /**
+       * Ид
+       * @format uuid
+       */
+      id: string;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = BrandModel;
+  }
+
   /**
    * No description
-   *
    * @tags Brands
    * @name BrandsDelete
    * @summary Удаление бренда
    * @request DELETE:/api/Brands/{id}
    * @secure
    */
-  brandsDelete = (id: string, params: RequestParams = {}) =>
-    this.request<void, ProblemDetails>({
-      path: `/api/Brands/${id}`,
-      method: "DELETE",
-      secure: true,
-      ...params,
-    });
+  export namespace BrandsDelete {
+    export type RequestParams = {
+      /**
+       * Ид
+       * @format uuid
+       */
+      id: string;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = void;
+  }
+
   /**
  * No description
- *
  * @tags Brands
  * @name BrandsList
  * @summary Поиск брендов по фильтрам
 Для неадминов возвращает не удалённые записи
  * @request GET:/api/Brands
  * @secure
- */
-  brandsList = (
-    query?: {
+*/
+  export namespace BrandsList {
+    export type RequestParams = {};
+    export type RequestQuery = {
       /** Наименование */
       Name?: string;
       /** Описание */
@@ -274,86 +275,72 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
       updateDtEnd?: string;
       /** Отметка удаления */
       IsDeleted?: boolean;
-    },
-    params: RequestParams = {},
-  ) =>
-    this.request<BrandModelDataResult, any>({
-      path: `/api/Brands`,
-      method: "GET",
-      query: query,
-      secure: true,
-      format: "json",
-      ...params,
-    });
+    };
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = BrandModelDataResult;
+  }
+
   /**
    * No description
-   *
    * @tags Brands
    * @name BrandsCreate
    * @summary Создание нового бренда
    * @request POST:/api/Brands
    * @secure
    */
-  brandsCreate = (data: CreateBrandModel, params: RequestParams = {}) =>
-    this.request<BrandModel, ProblemDetails>({
-      path: `/api/Brands`,
-      method: "POST",
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      format: "json",
-      ...params,
-    });
+  export namespace BrandsCreate {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = CreateBrandModel;
+    export type RequestHeaders = {};
+    export type ResponseBody = BrandModel;
+  }
+
   /**
    * No description
-   *
    * @tags Brands
    * @name BrandsUpdate
    * @summary Редактирование информации по бренду
    * @request PUT:/api/Brands
    * @secure
    */
-  brandsUpdate = (data: UpdateBrandModel, params: RequestParams = {}) =>
-    this.request<BrandModel, ProblemDetails>({
-      path: `/api/Brands`,
-      method: "PUT",
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      format: "json",
-      ...params,
-    });
+  export namespace BrandsUpdate {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = UpdateBrandModel;
+    export type RequestHeaders = {};
+    export type ResponseBody = BrandModel;
+  }
+
   /**
    * No description
-   *
    * @tags Brands
    * @name BrandsRequestsCreate
    * @summary Создание запроса на создание бренда
    * @request POST:/api/Brands/Requests
    * @secure
    */
-  brandsRequestsCreate = (data: CreateBrandRequestModel, params: RequestParams = {}) =>
-    this.request<BrandRequestModel, ProblemDetails>({
-      path: `/api/Brands/Requests`,
-      method: "POST",
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      format: "json",
-      ...params,
-    });
+  export namespace BrandsRequestsCreate {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = CreateBrandRequestModel;
+    export type RequestHeaders = {};
+    export type ResponseBody = BrandRequestModel;
+  }
+
   /**
  * No description
- *
  * @tags Brands
  * @name BrandsRequestsList
  * @summary Поиск запросов на создание брендов по фильтрам
 Если пользователь не админ, то вернёт только его заявки
  * @request GET:/api/Brands/Requests
  * @secure
- */
-  brandsRequestsList = (
-    query?: {
+*/
+  export namespace BrandsRequestsList {
+    export type RequestParams = {};
+    export type RequestQuery = {
       /**
        * Заявитель
        * @format uuid
@@ -406,55 +393,52 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
       updateDtEnd?: string;
       /** Отметка удаления */
       IsDeleted?: boolean;
-    },
-    params: RequestParams = {},
-  ) =>
-    this.request<BrandRequestModelDataResult, any>({
-      path: `/api/Brands/Requests`,
-      method: "GET",
-      query: query,
-      secure: true,
-      format: "json",
-      ...params,
-    });
+    };
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = BrandRequestModelDataResult;
+  }
+
   /**
    * No description
-   *
    * @tags Brands
    * @name BrandsRequestsUpdate
    * @summary Отклонить заявку на бренд
    * @request PUT:/api/Brands/Requests
    * @secure
    */
-  brandsRequestsUpdate = (data: RejectRequestModel, params: RequestParams = {}) =>
-    this.request<void, ProblemDetails>({
-      path: `/api/Brands/Requests`,
-      method: "PUT",
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      ...params,
-    });
+  export namespace BrandsRequestsUpdate {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = RejectRequestModel;
+    export type RequestHeaders = {};
+    export type ResponseBody = void;
+  }
+
   /**
    * No description
-   *
    * @tags Brands
    * @name BrandsRequestsDetail
    * @summary Запросить запрос на создание бренда
    * @request GET:/api/Brands/Requests/{guid}
    * @secure
    */
-  brandsRequestsDetail = (guid: string, params: RequestParams = {}) =>
-    this.request<BrandRequestModel, ProblemDetails>({
-      path: `/api/Brands/Requests/${guid}`,
-      method: "GET",
-      secure: true,
-      format: "json",
-      ...params,
-    });
+  export namespace BrandsRequestsDetail {
+    export type RequestParams = {
+      /**
+       * Идентификатор
+       * @format uuid
+       */
+      guid: string;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = BrandRequestModel;
+  }
+
   /**
  * No description
- *
  * @tags Brands
  * @name BrandsRequestsCreate2
  * @summary Одобрить заявку на создание бренда
@@ -463,58 +447,72 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
  * @originalName brandsRequestsCreate
  * @duplicate
  * @secure
- */
-  brandsRequestsCreate2 = (id: string, params: RequestParams = {}) =>
-    this.request<BrandModel, ProblemDetails>({
-      path: `/api/Brands/Requests/${id}`,
-      method: "POST",
-      secure: true,
-      format: "json",
-      ...params,
-    });
+*/
+  export namespace BrandsRequestsCreate2 {
+    export type RequestParams = {
+      /**
+       * ИД запроса
+       * @format uuid
+       */
+      id: string;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = BrandModel;
+  }
+
   /**
    * No description
-   *
    * @tags ClothingCollections
    * @name ClothingCollectionsDetail
    * @summary Запрос коллекции
    * @request GET:/api/ClothingCollections/{id}
    * @secure
    */
-  clothingCollectionsDetail = (id: string, params: RequestParams = {}) =>
-    this.request<ClothingCollectionModel, ProblemDetails>({
-      path: `/api/ClothingCollections/${id}`,
-      method: "GET",
-      secure: true,
-      format: "json",
-      ...params,
-    });
+  export namespace ClothingCollectionsDetail {
+    export type RequestParams = {
+      /**
+       * ИД
+       * @format uuid
+       */
+      id: string;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = ClothingCollectionModel;
+  }
+
   /**
    * No description
-   *
    * @tags ClothingCollections
    * @name ClothingCollectionsDelete
    * @request DELETE:/api/ClothingCollections/{id}
    * @secure
    */
-  clothingCollectionsDelete = (id: string, params: RequestParams = {}) =>
-    this.request<void, ProblemDetails>({
-      path: `/api/ClothingCollections/${id}`,
-      method: "DELETE",
-      secure: true,
-      ...params,
-    });
+  export namespace ClothingCollectionsDelete {
+    export type RequestParams = {
+      /** @format uuid */
+      id: string;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = void;
+  }
+
   /**
    * No description
-   *
    * @tags ClothingCollections
    * @name ClothingCollectionsList
    * @summary Поиск коллекций
    * @request GET:/api/ClothingCollections
    * @secure
    */
-  clothingCollectionsList = (
-    query?: {
+  export namespace ClothingCollectionsList {
+    export type RequestParams = {};
+    export type RequestQuery = {
       Name?: string;
       Description?: string;
       /**
@@ -544,99 +542,99 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
       SortMember?: string;
       /** Направление сортировки - по возрастанию */
       Ascending?: boolean;
-    },
-    params: RequestParams = {},
-  ) =>
-    this.request<ClothingCollectionModelDataResult, any>({
-      path: `/api/ClothingCollections`,
-      method: "GET",
-      query: query,
-      secure: true,
-      format: "json",
-      ...params,
-    });
+    };
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = ClothingCollectionModelDataResult;
+  }
+
   /**
    * No description
-   *
    * @tags ClothingCollections
    * @name ClothingCollectionsCreate
    * @summary Создание коллекции
    * @request POST:/api/ClothingCollections
    * @secure
    */
-  clothingCollectionsCreate = (data: CreateClothingCollectionModel, params: RequestParams = {}) =>
-    this.request<ClothingCollectionModel, ProblemDetails>({
-      path: `/api/ClothingCollections`,
-      method: "POST",
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      format: "json",
-      ...params,
-    });
+  export namespace ClothingCollectionsCreate {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = CreateClothingCollectionModel;
+    export type RequestHeaders = {};
+    export type ResponseBody = ClothingCollectionModel;
+  }
+
   /**
    * No description
-   *
    * @tags ClothingCollections
    * @name ClothingCollectionsUpdate
    * @request PUT:/api/ClothingCollections
    * @secure
    */
-  clothingCollectionsUpdate = (data: UpdateClothingCollectionModel, params: RequestParams = {}) =>
-    this.request<ClothingCollectionModel, ProblemDetails>({
-      path: `/api/ClothingCollections`,
-      method: "PUT",
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      format: "json",
-      ...params,
-    });
+  export namespace ClothingCollectionsUpdate {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = UpdateClothingCollectionModel;
+    export type RequestHeaders = {};
+    export type ResponseBody = ClothingCollectionModel;
+  }
+
   /**
    * No description
-   *
    * @tags Colors
    * @name ColorsDetail
    * @summary Получить цвет по ид
    * @request GET:/api/Colors/{id}
    * @secure
    */
-  colorsDetail = (id: string, params: RequestParams = {}) =>
-    this.request<ColorModel, ProblemDetails>({
-      path: `/api/Colors/${id}`,
-      method: "GET",
-      secure: true,
-      format: "json",
-      ...params,
-    });
+  export namespace ColorsDetail {
+    export type RequestParams = {
+      /**
+       * ИД
+       * @format uuid
+       */
+      id: string;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = ColorModel;
+  }
+
   /**
  * No description
- *
  * @tags Colors
  * @name ColorsDelete
  * @summary Удалить цвет
 Доступ только супер-админам
  * @request DELETE:/api/Colors/{id}
  * @secure
- */
-  colorsDelete = (id: string, params: RequestParams = {}) =>
-    this.request<void, ProblemDetails>({
-      path: `/api/Colors/${id}`,
-      method: "DELETE",
-      secure: true,
-      ...params,
-    });
+*/
+  export namespace ColorsDelete {
+    export type RequestParams = {
+      /**
+       * Ид цвета
+       * @format uuid
+       */
+      id: string;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = void;
+  }
+
   /**
    * No description
-   *
    * @tags Colors
    * @name ColorsList
    * @summary Поиск цветов по параметрам
    * @request GET:/api/Colors
    * @secure
    */
-  colorsList = (
-    query?: {
+  export namespace ColorsList {
+    export type RequestParams = {};
+    export type RequestQuery = {
       /** Имя */
       Name?: string;
       /** Цвет */
@@ -655,49 +653,41 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
       SortMember?: string;
       /** Направление сортировки - по возрастанию */
       Ascending?: boolean;
-    },
-    params: RequestParams = {},
-  ) =>
-    this.request<ColorModelDataResult, any>({
-      path: `/api/Colors`,
-      method: "GET",
-      query: query,
-      secure: true,
-      format: "json",
-      ...params,
-    });
+    };
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = ColorModelDataResult;
+  }
+
   /**
  * No description
- *
  * @tags Colors
  * @name ColorsCreate
  * @summary Создание цвета
 Доступно админам
  * @request POST:/api/Colors
  * @secure
- */
-  colorsCreate = (data: CreateColorsModel, params: RequestParams = {}) =>
-    this.request<ColorModel, ProblemDetails>({
-      path: `/api/Colors`,
-      method: "POST",
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      format: "json",
-      ...params,
-    });
+*/
+  export namespace ColorsCreate {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = CreateColorsModel;
+    export type RequestHeaders = {};
+    export type ResponseBody = ColorModel;
+  }
+
   /**
  * No description
- *
  * @tags Colors
  * @name ColorsUpdate
  * @summary Редактирование цвета
 Доступ только админам сайта
  * @request PUT:/api/Colors
  * @secure
- */
-  colorsUpdate = (
-    query?: {
+*/
+  export namespace ColorsUpdate {
+    export type RequestParams = {};
+    export type RequestQuery = {
       /**
        * Идентификатор
        * @format uuid
@@ -707,162 +697,145 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
       Name?: string;
       /** Код */
       Hex?: string;
-    },
-    params: RequestParams = {},
-  ) =>
-    this.request<ColorModel, ProblemDetails>({
-      path: `/api/Colors`,
-      method: "PUT",
-      query: query,
-      secure: true,
-      format: "json",
-      ...params,
-    });
+    };
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = ColorModel;
+  }
+
   /**
    * No description
-   *
    * @tags ConfirmationRequests
    * @name ConfirmationRequestsEmailCreate
    * @summary Установка email через запрос сообщения на почту
    * @request POST:/api/ConfirmationRequests/Email
    * @secure
    */
-  confirmationRequestsEmailCreate = (data: CreateConfiramtionEmailModel, params: RequestParams = {}) =>
-    this.request<void, ProblemDetails>({
-      path: `/api/ConfirmationRequests/Email`,
-      method: "POST",
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      ...params,
-    });
+  export namespace ConfirmationRequestsEmailCreate {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = CreateConfiramtionEmailModel;
+    export type RequestHeaders = {};
+    export type ResponseBody = void;
+  }
+
   /**
    * No description
-   *
    * @tags ConfirmationRequests
    * @name ConfirmationRequestsEmailConfirmCreate
    * @summary Установка email через запрос сообщения на почту
    * @request POST:/api/ConfirmationRequests/Email/Confirm
    * @secure
    */
-  confirmationRequestsEmailConfirmCreate = (data: ConfirmConfirmitionModel, params: RequestParams = {}) =>
-    this.request<void, ProblemDetails>({
-      path: `/api/ConfirmationRequests/Email/Confirm`,
-      method: "POST",
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      ...params,
-    });
+  export namespace ConfirmationRequestsEmailConfirmCreate {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = ConfirmConfirmitionModel;
+    export type RequestHeaders = {};
+    export type ResponseBody = void;
+  }
+
   /**
    * No description
-   *
    * @tags ConfirmationRequests
    * @name ConfirmationRequestsPhoneCreate
    * @summary Установка номера через обратный flashcall
    * @request POST:/api/ConfirmationRequests/Phone
    * @secure
    */
-  confirmationRequestsPhoneCreate = (data: CreateConfiramtionPhoneModel, params: RequestParams = {}) =>
-    this.request<void, ProblemDetails>({
-      path: `/api/ConfirmationRequests/Phone`,
-      method: "POST",
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      ...params,
-    });
+  export namespace ConfirmationRequestsPhoneCreate {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = CreateConfiramtionPhoneModel;
+    export type RequestHeaders = {};
+    export type ResponseBody = void;
+  }
+
   /**
    * No description
-   *
    * @tags ConfirmationRequests
    * @name ConfirmationRequestsPhoneCheckCreate
    * @summary Проверить статус запроса
    * @request POST:/api/ConfirmationRequests/Phone/Check/{guid}
    * @secure
    */
-  confirmationRequestsPhoneCheckCreate = (guid: string, params: RequestParams = {}) =>
-    this.request<void, ProblemDetails>({
-      path: `/api/ConfirmationRequests/Phone/Check/${guid}`,
-      method: "POST",
-      secure: true,
-      ...params,
-    });
+  export namespace ConfirmationRequestsPhoneCheckCreate {
+    export type RequestParams = {
+      /** @format uuid */
+      guid: string;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = void;
+  }
+
   /**
  * No description
- *
  * @tags ConfirmationRequests
  * @name ConfirmationRequestsPhoneNumberList
  * @summary Получить номер, на который надо звонить.
 (сейчас номер статичный)
  * @request GET:/api/ConfirmationRequests/Phone/Number
  * @secure
- */
-  confirmationRequestsPhoneNumberList = (params: RequestParams = {}) =>
-    this.request<string, ProblemDetails>({
-      path: `/api/ConfirmationRequests/Phone/Number`,
-      method: "GET",
-      secure: true,
-      format: "json",
-      ...params,
-    });
+*/
+  export namespace ConfirmationRequestsPhoneNumberList {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = string;
+  }
+
   /**
    * No description
-   *
    * @tags ConfirmationRequests
    * @name ConfirmationRequestsPhonePostbackCreate
    * @summary Метод для автоматического одабрения внешним сервисом
    * @request POST:/api/ConfirmationRequests/Phone/Postback
    * @secure
    */
-  confirmationRequestsPhonePostbackCreate = (
-    query?: {
+  export namespace ConfirmationRequestsPhonePostbackCreate {
+    export type RequestParams = {};
+    export type RequestQuery = {
       status?: string;
       callId?: string;
       phone?: string;
       secretCode?: string;
-    },
-    params: RequestParams = {},
-  ) =>
-    this.request<void, ProblemDetails>({
-      path: `/api/ConfirmationRequests/Phone/Postback`,
-      method: "POST",
-      query: query,
-      secure: true,
-      ...params,
-    });
+    };
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = void;
+  }
+
   /**
    * No description
-   *
    * @tags Enums
    * @name EnumsList
    * @request GET:/api/Enums
    * @secure
    */
-  enumsList = (
-    query?: {
+  export namespace EnumsList {
+    export type RequestParams = {};
+    export type RequestQuery = {
       name?: string;
-    },
-    params: RequestParams = {},
-  ) =>
-    this.request<void, ProblemDetails>({
-      path: `/api/Enums`,
-      method: "GET",
-      query: query,
-      secure: true,
-      ...params,
-    });
+    };
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = void;
+  }
+
   /**
    * No description
-   *
    * @tags Favorites
    * @name FavoritesList
    * @summary Поиск фаворитов
    * @request GET:/api/Favorites
    * @secure
    */
-  favoritesList = (
-    query?: {
+  export namespace FavoritesList {
+    export type RequestParams = {};
+    export type RequestQuery = {
       /**
        * Ид пользователя
        * Должно быть заполнено оно либо продукт
@@ -889,223 +862,222 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
       SortMember?: string;
       /** Направление сортировки - по возрастанию */
       Ascending?: boolean;
-    },
-    params: RequestParams = {},
-  ) =>
-    this.request<FavoriteModelDataResult, ProblemDetails>({
-      path: `/api/Favorites`,
-      method: "GET",
-      query: query,
-      secure: true,
-      format: "json",
-      ...params,
-    });
+    };
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = FavoriteModelDataResult;
+  }
+
   /**
    * No description
-   *
    * @tags Favorites
    * @name FavoritesCreate
    * @summary Создание избранного
    * @request POST:/api/Favorites
    * @secure
    */
-  favoritesCreate = (data: CreateFavoriteModel, params: RequestParams = {}) =>
-    this.request<FavoriteModel, ProblemDetails>({
-      path: `/api/Favorites`,
-      method: "POST",
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      format: "json",
-      ...params,
-    });
+  export namespace FavoritesCreate {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = CreateFavoriteModel;
+    export type RequestHeaders = {};
+    export type ResponseBody = FavoriteModel;
+  }
+
   /**
    * No description
-   *
    * @tags Favorites
    * @name FavoritesDelete
    * @summary Удаление избранного
    * @request DELETE:/api/Favorites/{id}
    * @secure
    */
-  favoritesDelete = (id: string, params: RequestParams = {}) =>
-    this.request<void, ProblemDetails>({
-      path: `/api/Favorites/${id}`,
-      method: "DELETE",
-      secure: true,
-      ...params,
-    });
+  export namespace FavoritesDelete {
+    export type RequestParams = {
+      /**
+       * ИД подписки
+       * @format uuid
+       */
+      id: string;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = void;
+  }
+
   /**
    * No description
-   *
    * @tags Files
    * @name FilesDetail
    * @summary Получить файл
    * @request GET:/api/Files/{id}
    * @secure
    */
-  filesDetail = (
-    id: string,
-    query?: {
+  export namespace FilesDetail {
+    export type RequestParams = {
+      /**
+       * ИД
+       * @format uuid
+       */
+      id: string;
+    };
+    export type RequestQuery = {
       /**
        * S или XS для фото
        * @default ""
        */
       size?: string;
-    },
-    params: RequestParams = {},
-  ) =>
-    this.request<void, ProblemDetails>({
-      path: `/api/Files/${id}`,
-      method: "GET",
-      query: query,
-      secure: true,
-      ...params,
-    });
+    };
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = void;
+  }
+
   /**
    * No description
-   *
    * @tags Files
    * @name FilesDelete
    * @summary Удаление файлов
    * @request DELETE:/api/Files/{id}
    * @secure
    */
-  filesDelete = (id: string, params: RequestParams = {}) =>
-    this.request<FileModel, ProblemDetails>({
-      path: `/api/Files/${id}`,
-      method: "DELETE",
-      secure: true,
-      format: "json",
-      ...params,
-    });
+  export namespace FilesDelete {
+    export type RequestParams = {
+      /**
+       * ИД
+       * @format uuid
+       */
+      id: string;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = FileModel;
+  }
+
   /**
    * No description
-   *
    * @tags Files
    * @name FilesModelDetail
    * @summary Получить файл
    * @request GET:/api/Files/{id}/Model
    * @secure
    */
-  filesModelDetail = (
-    id: string,
-    query?: {
+  export namespace FilesModelDetail {
+    export type RequestParams = {
+      /**
+       * ИД
+       * @format uuid
+       */
+      id: string;
+    };
+    export type RequestQuery = {
       /** @default false */
       includeProducts?: boolean;
-    },
-    params: RequestParams = {},
-  ) =>
-    this.request<FileModel, ProblemDetails>({
-      path: `/api/Files/${id}/Model`,
-      method: "GET",
-      query: query,
-      secure: true,
-      format: "json",
-      ...params,
-    });
+    };
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = FileModel;
+  }
+
   /**
    * No description
-   *
    * @tags Files
    * @name FilesCreate
    * @summary Загрузка файла
    * @request POST:/api/Files
    * @secure
    */
-  filesCreate = (
-    data: {
+  export namespace FilesCreate {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = {
       Name?: string;
       Type?: FileType;
       /** @format binary */
       File?: File;
-    },
-    params: RequestParams = {},
-  ) =>
-    this.request<string, ProblemDetails>({
-      path: `/api/Files`,
-      method: "POST",
-      body: data,
-      secure: true,
-      type: ContentType.FormData,
-      format: "json",
-      ...params,
-    });
+    };
+    export type RequestHeaders = {};
+    export type ResponseBody = string;
+  }
+
   /**
    * No description
-   *
    * @tags Files
    * @name FilesPartialUpdate
    * @summary Метод пока не закончен
    * @request PATCH:/api/Files/{type}/{field}/{id}
    * @secure
    */
-  filesPartialUpdate = (
-    type: string,
-    field: string,
-    id: string,
-    query?: {
+  export namespace FilesPartialUpdate {
+    export type RequestParams = {
+      type: string;
+      field: string;
+      /** @format uuid */
+      id: string;
+    };
+    export type RequestQuery = {
       value?: string;
-    },
-    params: RequestParams = {},
-  ) =>
-    this.request<FileModel, ProblemDetails>({
-      path: `/api/Files/${type}/${field}/${id}`,
-      method: "PATCH",
-      query: query,
-      secure: true,
-      format: "json",
-      ...params,
-    });
+    };
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = FileModel;
+  }
+
   /**
    * No description
-   *
    * @tags Files
    * @name FilesProductsCreate
    * @summary Привязать ссылку на продукт к файлу
    * @request POST:/api/Files/Products
    * @secure
    */
-  filesProductsCreate = (data: CreateFileProductModel, params: RequestParams = {}) =>
-    this.request<FileProductModel, ProblemDetails | void>({
-      path: `/api/Files/Products`,
-      method: "POST",
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      format: "json",
-      ...params,
-    });
+  export namespace FilesProductsCreate {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = CreateFileProductModel;
+    export type RequestHeaders = {};
+    export type ResponseBody = FileProductModel;
+  }
+
   /**
    * No description
-   *
    * @tags Files
    * @name FilesProductsDelete
    * @summary Удаление привязки продукта к файлу
    * @request DELETE:/api/Files/Products/{id}
    * @secure
    */
-  filesProductsDelete = (id: string, params: RequestParams = {}) =>
-    this.request<FileModel, ProblemDetails>({
-      path: `/api/Files/Products/${id}`,
-      method: "DELETE",
-      secure: true,
-      format: "json",
-      ...params,
-    });
+  export namespace FilesProductsDelete {
+    export type RequestParams = {
+      /**
+       * ИД
+       * @format uuid
+       */
+      id: string;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = FileModel;
+  }
+
   /**
    * No description
-   *
    * @tags Likes
    * @name LikesDetail
    * @summary Запрос лайков для сущностей
    * @request GET:/api/Likes/{entity}/{id}
    * @secure
    */
-  likesDetail = (
-    id: string,
-    entity: EnitityLikeType,
-    query?: {
+  export namespace LikesDetail {
+    export type RequestParams = {
+      /** @format uuid */
+      id: string;
+      entity: EnitityLikeType;
+    };
+    export type RequestQuery = {
       /**
        * Номер страницы (по умолчанию = 1).
        * @format int32
@@ -1116,113 +1088,125 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
        * @format int32
        */
       PageSize?: number;
-    },
-    params: RequestParams = {},
-  ) =>
-    this.request<LikeModelDataResult, ProblemDetails>({
-      path: `/api/Likes/${entity}/${id}`,
-      method: "GET",
-      query: query,
-      secure: true,
-      format: "json",
-      ...params,
-    });
+    };
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = LikeModelDataResult;
+  }
+
   /**
    * No description
-   *
    * @tags Likes
    * @name LikesDelete
    * @summary Удалить лайк.
    * @request DELETE:/api/Likes/{entity}/{id}
    * @secure
    */
-  likesDelete = (id: string, entity: EnitityLikeType, params: RequestParams = {}) =>
-    this.request<void, ProblemDetails>({
-      path: `/api/Likes/${entity}/${id}`,
-      method: "DELETE",
-      secure: true,
-      ...params,
-    });
+  export namespace LikesDelete {
+    export type RequestParams = {
+      /**
+       * Ид цвета
+       * @format uuid
+       */
+      id: string;
+      entity: EnitityLikeType;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = void;
+  }
+
   /**
    * No description
-   *
    * @tags Likes
    * @name LikesCountDetail
    * @summary Запрос кол-ва лайков для сущностей
    * @request GET:/api/Likes/{entity}/{id}/Count
    * @secure
    */
-  likesCountDetail = (id: string, entity: EnitityLikeType, params: RequestParams = {}) =>
-    this.request<number, ProblemDetails>({
-      path: `/api/Likes/${entity}/${id}/Count`,
-      method: "GET",
-      secure: true,
-      format: "json",
-      ...params,
-    });
+  export namespace LikesCountDetail {
+    export type RequestParams = {
+      /** @format uuid */
+      id: string;
+      entity: EnitityLikeType;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = number;
+  }
+
   /**
    * No description
-   *
    * @tags Likes
    * @name LikesCreate
    * @summary Запрос лайков для сущностей
    * @request POST:/api/Likes/{entity}
    * @secure
    */
-  likesCreate = (entity: EnitityLikeType, data: CreateLikeModel, params: RequestParams = {}) =>
-    this.request<LikeModel, ProblemDetails>({
-      path: `/api/Likes/${entity}`,
-      method: "POST",
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      format: "json",
-      ...params,
-    });
+  export namespace LikesCreate {
+    export type RequestParams = {
+      entity: EnitityLikeType;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = CreateLikeModel;
+    export type RequestHeaders = {};
+    export type ResponseBody = LikeModel;
+  }
+
   /**
    * No description
-   *
    * @tags Looks
    * @name LooksDetail
    * @summary Получить образ по ИД
    * @request GET:/api/Looks/{id}
    * @secure
    */
-  looksDetail = (id: string, params: RequestParams = {}) =>
-    this.request<LookModel, ProblemDetails>({
-      path: `/api/Looks/${id}`,
-      method: "GET",
-      secure: true,
-      format: "json",
-      ...params,
-    });
+  export namespace LooksDetail {
+    export type RequestParams = {
+      /**
+       * ИД
+       * @format uuid
+       */
+      id: string;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = LookModel;
+  }
+
   /**
    * No description
-   *
    * @tags Looks
    * @name LooksDelete
    * @summary Удаление образа
    * @request DELETE:/api/Looks/{id}
    * @secure
    */
-  looksDelete = (id: string, params: RequestParams = {}) =>
-    this.request<void, ProblemDetails>({
-      path: `/api/Looks/${id}`,
-      method: "DELETE",
-      secure: true,
-      ...params,
-    });
+  export namespace LooksDelete {
+    export type RequestParams = {
+      /** @format uuid */
+      id: string;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = void;
+  }
+
   /**
    * No description
-   *
    * @tags Looks
    * @name LooksList
    * @summary Поиск образов по параметрам
    * @request GET:/api/Looks
    * @secure
    */
-  looksList = (
-    query?: {
+  export namespace LooksList {
+    export type RequestParams = {};
+    export type RequestQuery = {
       Name?: string;
       /**
        * Начало периода.
@@ -1281,206 +1265,206 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
       SortMember?: string;
       /** Направление сортировки - по возрастанию */
       Ascending?: boolean;
-    },
-    params: RequestParams = {},
-  ) =>
-    this.request<LookModelDataResult, any>({
-      path: `/api/Looks`,
-      method: "GET",
-      query: query,
-      secure: true,
-      format: "json",
-      ...params,
-    });
+    };
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = LookModelDataResult;
+  }
+
   /**
    * No description
-   *
    * @tags Looks
    * @name LooksCreate
    * @summary Публикация образа со всеми связанными сущностями
    * @request POST:/api/Looks
    * @secure
    */
-  looksCreate = (data: CreateLookModel, params: RequestParams = {}) =>
-    this.request<LookModel, ProblemDetails>({
-      path: `/api/Looks`,
-      method: "POST",
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      format: "json",
-      ...params,
-    });
+  export namespace LooksCreate {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = CreateLookModel;
+    export type RequestHeaders = {};
+    export type ResponseBody = LookModel;
+  }
+
   /**
    * No description
-   *
    * @tags Looks
    * @name LooksUpdate
    * @summary Обновление образа
    * @request PUT:/api/Looks
    * @secure
    */
-  looksUpdate = (data: UpdateLookModel, params: RequestParams = {}) =>
-    this.request<LookModel, ProblemDetails>({
-      path: `/api/Looks`,
-      method: "PUT",
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      format: "json",
-      ...params,
-    });
+  export namespace LooksUpdate {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = UpdateLookModel;
+    export type RequestHeaders = {};
+    export type ResponseBody = LookModel;
+  }
+
   /**
  * No description
- *
  * @tags Looks
  * @name LooksFileCreate
  * @summary Добавление файла к образу
 Будут изменены позиции файлов
  * @request POST:/api/Looks/File
  * @secure
- */
-  looksFileCreate = (data: AddFileToLookModel, params: RequestParams = {}) =>
-    this.request<LookModel, ProblemDetails>({
-      path: `/api/Looks/File`,
-      method: "POST",
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      format: "json",
-      ...params,
-    });
+*/
+  export namespace LooksFileCreate {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = AddFileToLookModel;
+    export type RequestHeaders = {};
+    export type ResponseBody = LookModel;
+  }
+
   /**
  * No description
- *
  * @tags Looks
  * @name LooksFileDelete
  * @summary Удаление продукта от лука
 Так же у других файлов лука будет изменена позиция
  * @request DELETE:/api/Looks/File/{guid}
  * @secure
- */
-  looksFileDelete = (guid: string, params: RequestParams = {}) =>
-    this.request<void, ProblemDetails>({
-      path: `/api/Looks/File/${guid}`,
-      method: "DELETE",
-      secure: true,
-      ...params,
-    });
+*/
+  export namespace LooksFileDelete {
+    export type RequestParams = {
+      /** @format uuid */
+      guid: string;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = void;
+  }
+
   /**
    * No description
-   *
    * @tags Looks
    * @name LooksProductCreate
    * @summary Добавление продукта к образу
    * @request POST:/api/Looks/Product
    * @secure
    */
-  looksProductCreate = (data: AddProductToLookModel, params: RequestParams = {}) =>
-    this.request<LookModel, ProblemDetails>({
-      path: `/api/Looks/Product`,
-      method: "POST",
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      format: "json",
-      ...params,
-    });
+  export namespace LooksProductCreate {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = AddProductToLookModel;
+    export type RequestHeaders = {};
+    export type ResponseBody = LookModel;
+  }
+
   /**
    * No description
-   *
    * @tags Looks
    * @name LooksProductDelete
    * @summary Удаление продукта от лука
    * @request DELETE:/api/Looks/Product/{guid}
    * @secure
    */
-  looksProductDelete = (guid: string, params: RequestParams = {}) =>
-    this.request<void, ProblemDetails>({
-      path: `/api/Looks/Product/${guid}`,
-      method: "DELETE",
-      secure: true,
-      ...params,
-    });
+  export namespace LooksProductDelete {
+    export type RequestParams = {
+      /** @format uuid */
+      guid: string;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = void;
+  }
+
   /**
    * No description
-   *
    * @tags Looks
    * @name LooksTagCreate
    * @summary Добавление тега к образу
    * @request POST:/api/Looks/Tag
    * @secure
    */
-  looksTagCreate = (data: AddTagToLookModel, params: RequestParams = {}) =>
-    this.request<LookModel, ProblemDetails>({
-      path: `/api/Looks/Tag`,
-      method: "POST",
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      format: "json",
-      ...params,
-    });
+  export namespace LooksTagCreate {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = AddTagToLookModel;
+    export type RequestHeaders = {};
+    export type ResponseBody = LookModel;
+  }
+
   /**
    * No description
-   *
    * @tags Looks
    * @name LooksTagDelete
    * @summary Удаление тега от лука
    * @request DELETE:/api/Looks/Tag/{guid}
    * @secure
    */
-  looksTagDelete = (guid: string, params: RequestParams = {}) =>
-    this.request<void, ProblemDetails>({
-      path: `/api/Looks/Tag/${guid}`,
-      method: "DELETE",
-      secure: true,
-      ...params,
-    });
+  export namespace LooksTagDelete {
+    export type RequestParams = {
+      /** @format uuid */
+      guid: string;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = void;
+  }
+
   /**
    * No description
-   *
    * @tags Materials
    * @name MaterialsDetail
    * @summary Получить материал по ид
    * @request GET:/api/Materials/{id}
    * @secure
    */
-  materialsDetail = (id: string, params: RequestParams = {}) =>
-    this.request<MaterialModel, ProblemDetails>({
-      path: `/api/Materials/${id}`,
-      method: "GET",
-      secure: true,
-      format: "json",
-      ...params,
-    });
+  export namespace MaterialsDetail {
+    export type RequestParams = {
+      /**
+       * ид
+       * @format uuid
+       */
+      id: string;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = MaterialModel;
+  }
+
   /**
    * No description
-   *
    * @tags Materials
    * @name MaterialsDelete
    * @summary Удалить материал
    * @request DELETE:/api/Materials/{id}
    * @secure
    */
-  materialsDelete = (id: string, params: RequestParams = {}) =>
-    this.request<void, ProblemDetails>({
-      path: `/api/Materials/${id}`,
-      method: "DELETE",
-      secure: true,
-      ...params,
-    });
+  export namespace MaterialsDelete {
+    export type RequestParams = {
+      /**
+       * ИД
+       * @format uuid
+       */
+      id: string;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = void;
+  }
+
   /**
    * No description
-   *
    * @tags Materials
    * @name MaterialsList
    * @summary Поиск материалов по фильтру
    * @request GET:/api/Materials
    * @secure
    */
-  materialsList = (
-    query?: {
+  export namespace MaterialsList {
+    export type RequestParams = {};
+    export type RequestQuery = {
       /** Тело фильтра */
       nameBody?: string;
       /** Тип фильтра */
@@ -1504,58 +1488,46 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
       SortMember?: string;
       /** Направление сортировки - по возрастанию */
       Ascending?: boolean;
-    },
-    params: RequestParams = {},
-  ) =>
-    this.request<MaterialModel, ProblemDetails>({
-      path: `/api/Materials`,
-      method: "GET",
-      query: query,
-      secure: true,
-      format: "json",
-      ...params,
-    });
+    };
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = MaterialModel;
+  }
+
   /**
    * No description
-   *
    * @tags Materials
    * @name MaterialsCreate
    * @summary Создать материал
    * @request POST:/api/Materials
    * @secure
    */
-  materialsCreate = (data: CreateMaterialModel, params: RequestParams = {}) =>
-    this.request<MaterialModel, ProblemDetails>({
-      path: `/api/Materials`,
-      method: "POST",
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      format: "json",
-      ...params,
-    });
+  export namespace MaterialsCreate {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = CreateMaterialModel;
+    export type RequestHeaders = {};
+    export type ResponseBody = MaterialModel;
+  }
+
   /**
    * No description
-   *
    * @tags Materials
    * @name MaterialsUpdate
    * @summary Обновить материал
    * @request PUT:/api/Materials
    * @secure
    */
-  materialsUpdate = (data: UpdateMaterialModel, params: RequestParams = {}) =>
-    this.request<MaterialModel, ProblemDetails>({
-      path: `/api/Materials`,
-      method: "PUT",
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      format: "json",
-      ...params,
-    });
+  export namespace MaterialsUpdate {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = UpdateMaterialModel;
+    export type RequestHeaders = {};
+    export type ResponseBody = MaterialModel;
+  }
+
   /**
    * No description
-   *
    * @tags Messages
    * @name MessagesDetail
    * @summary Получить по ид
@@ -1563,17 +1535,22 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @deprecated
    * @secure
    */
-  messagesDetail = (id: string, params: RequestParams = {}) =>
-    this.request<MessageModel, ProblemDetails>({
-      path: `/api/Messages/${id}`,
-      method: "GET",
-      secure: true,
-      format: "json",
-      ...params,
-    });
+  export namespace MessagesDetail {
+    export type RequestParams = {
+      /**
+       * ид
+       * @format uuid
+       */
+      id: string;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = MessageModel;
+  }
+
   /**
    * No description
-   *
    * @tags Messages
    * @name MessagesDelete
    * @summary Удаление сообщения
@@ -1581,16 +1558,22 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @deprecated
    * @secure
    */
-  messagesDelete = (id: string, params: RequestParams = {}) =>
-    this.request<void, ProblemDetails>({
-      path: `/api/Messages/${id}`,
-      method: "DELETE",
-      secure: true,
-      ...params,
-    });
+  export namespace MessagesDelete {
+    export type RequestParams = {
+      /**
+       * ИД
+       * @format uuid
+       */
+      id: string;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = void;
+  }
+
   /**
    * No description
-   *
    * @tags Messages
    * @name MessagesList
    * @summary Поиск сообщений
@@ -1598,8 +1581,9 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @deprecated
    * @secure
    */
-  messagesList = (
-    query?: {
+  export namespace MessagesList {
+    export type RequestParams = {};
+    export type RequestQuery = {
       /**
        * От пользователя
        * @format uuid
@@ -1648,20 +1632,14 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
       updateDtEnd?: string;
       /** Отметка удаления */
       IsDeleted?: boolean;
-    },
-    params: RequestParams = {},
-  ) =>
-    this.request<MessageModelDataResult, ProblemDetails>({
-      path: `/api/Messages`,
-      method: "GET",
-      query: query,
-      secure: true,
-      format: "json",
-      ...params,
-    });
+    };
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = MessageModelDataResult;
+  }
+
   /**
    * No description
-   *
    * @tags Messages
    * @name MessagesCreate
    * @summary Отправка сообщений
@@ -1669,19 +1647,16 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @deprecated
    * @secure
    */
-  messagesCreate = (data: CreateMessageModel, params: RequestParams = {}) =>
-    this.request<MessageModel, ProblemDetails>({
-      path: `/api/Messages`,
-      method: "POST",
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      format: "json",
-      ...params,
-    });
+  export namespace MessagesCreate {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = CreateMessageModel;
+    export type RequestHeaders = {};
+    export type ResponseBody = MessageModel;
+  }
+
   /**
    * No description
-   *
    * @tags Messages
    * @name MessagesUpdate
    * @summary Редактирование сообщения
@@ -1689,19 +1664,16 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @deprecated
    * @secure
    */
-  messagesUpdate = (data: UpdateMessageModel, params: RequestParams = {}) =>
-    this.request<MessageModel, ProblemDetails>({
-      path: `/api/Messages`,
-      method: "PUT",
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      format: "json",
-      ...params,
-    });
+  export namespace MessagesUpdate {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = UpdateMessageModel;
+    export type RequestHeaders = {};
+    export type ResponseBody = MessageModel;
+  }
+
   /**
    * No description
-   *
    * @tags Messages
    * @name MessagesForwardCreate
    * @summary Переслать сообщения
@@ -1709,19 +1681,16 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @deprecated
    * @secure
    */
-  messagesForwardCreate = (data: ForwardMessagesModel, params: RequestParams = {}) =>
-    this.request<MessageModel[], ProblemDetails>({
-      path: `/api/Messages/Forward`,
-      method: "POST",
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      format: "json",
-      ...params,
-    });
+  export namespace MessagesForwardCreate {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = ForwardMessagesModel;
+    export type RequestHeaders = {};
+    export type ResponseBody = MessageModel[];
+  }
+
   /**
    * No description
-   *
    * @tags Messages
    * @name MessagesMarkReadedUpdate
    * @summary Пометить сообщения как прочитанные
@@ -1729,58 +1698,65 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @deprecated
    * @secure
    */
-  messagesMarkReadedUpdate = (data: string[], params: RequestParams = {}) =>
-    this.request<void, ProblemDetails>({
-      path: `/api/Messages/MarkReaded`,
-      method: "PUT",
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      ...params,
-    });
+  export namespace MessagesMarkReadedUpdate {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = string[];
+    export type RequestHeaders = {};
+    export type ResponseBody = void;
+  }
+
   /**
    * No description
-   *
    * @tags PostComments
    * @name PostCommentsDetail
    * @summary Получить по ид
    * @request GET:/api/PostComments/{id}
    * @secure
    */
-  postCommentsDetail = (id: string, params: RequestParams = {}) =>
-    this.request<CommentModel, ProblemDetails>({
-      path: `/api/PostComments/${id}`,
-      method: "GET",
-      secure: true,
-      format: "json",
-      ...params,
-    });
+  export namespace PostCommentsDetail {
+    export type RequestParams = {
+      /**
+       * ид
+       * @format uuid
+       */
+      id: string;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = CommentModel;
+  }
+
   /**
    * No description
-   *
    * @tags PostComments
    * @name PostCommentsDelete
    * @request DELETE:/api/PostComments/{id}
    * @secure
    */
-  postCommentsDelete = (id: string, params: RequestParams = {}) =>
-    this.request<void, ProblemDetails>({
-      path: `/api/PostComments/${id}`,
-      method: "DELETE",
-      secure: true,
-      ...params,
-    });
+  export namespace PostCommentsDelete {
+    export type RequestParams = {
+      /** @format uuid */
+      id: string;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = void;
+  }
+
   /**
    * No description
-   *
    * @tags PostComments
    * @name PostCommentsList
    * @summary Поиск коментов
    * @request GET:/api/PostComments
    * @secure
    */
-  postCommentsList = (
-    query?: {
+  export namespace PostCommentsList {
+    export type RequestParams = {};
+    export type RequestQuery = {
       /** @format uuid */
       UserGuid?: string;
       /** @format uuid */
@@ -1799,99 +1775,99 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
        * @format int32
        */
       PageSize?: number;
-    },
-    params: RequestParams = {},
-  ) =>
-    this.request<CommentModelDataResult, any>({
-      path: `/api/PostComments`,
-      method: "GET",
-      query: query,
-      secure: true,
-      format: "json",
-      ...params,
-    });
+    };
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = CommentModelDataResult;
+  }
+
   /**
    * No description
-   *
    * @tags PostComments
    * @name PostCommentsCreate
    * @summary Создание комментария
    * @request POST:/api/PostComments
    * @secure
    */
-  postCommentsCreate = (data: CreateCommentModel, params: RequestParams = {}) =>
-    this.request<CommentModel, ProblemDetails>({
-      path: `/api/PostComments`,
-      method: "POST",
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      format: "json",
-      ...params,
-    });
+  export namespace PostCommentsCreate {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = CreateCommentModel;
+    export type RequestHeaders = {};
+    export type ResponseBody = CommentModel;
+  }
+
   /**
    * No description
-   *
    * @tags PostComments
    * @name PostCommentsUpdate
    * @summary Модель редактирования коммента
    * @request PUT:/api/PostComments
    * @secure
    */
-  postCommentsUpdate = (data: UpdateCommentModel, params: RequestParams = {}) =>
-    this.request<CommentModel, ProblemDetails>({
-      path: `/api/PostComments`,
-      method: "PUT",
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      format: "json",
-      ...params,
-    });
+  export namespace PostCommentsUpdate {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = UpdateCommentModel;
+    export type RequestHeaders = {};
+    export type ResponseBody = CommentModel;
+  }
+
   /**
    * No description
-   *
    * @tags Posts
    * @name PostsDetail
    * @summary Получить по ид
    * @request GET:/api/Posts/{id}
    * @secure
    */
-  postsDetail = (id: string, params: RequestParams = {}) =>
-    this.request<PostModel, ProblemDetails>({
-      path: `/api/Posts/${id}`,
-      method: "GET",
-      secure: true,
-      format: "json",
-      ...params,
-    });
+  export namespace PostsDetail {
+    export type RequestParams = {
+      /**
+       * ид
+       * @format uuid
+       */
+      id: string;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = PostModel;
+  }
+
   /**
    * No description
-   *
    * @tags Posts
    * @name PostsDelete
    * @summary Удаление поста
    * @request DELETE:/api/Posts/{id}
    * @secure
    */
-  postsDelete = (id: string, params: RequestParams = {}) =>
-    this.request<void, ProblemDetails>({
-      path: `/api/Posts/${id}`,
-      method: "DELETE",
-      secure: true,
-      ...params,
-    });
+  export namespace PostsDelete {
+    export type RequestParams = {
+      /**
+       * ИД
+       * @format uuid
+       */
+      id: string;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = void;
+  }
+
   /**
    * No description
-   *
    * @tags Posts
    * @name PostsList
    * @summary Поиск постов
    * @request GET:/api/Posts
    * @secure
    */
-  postsList = (
-    query?: {
+  export namespace PostsList {
+    export type RequestParams = {};
+    export type RequestQuery = {
       /** @format uuid */
       BrandGuid?: string;
       Text?: string;
@@ -1909,142 +1885,129 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
       Page?: number;
       /** @format int32 */
       PageSize?: number;
-    },
-    params: RequestParams = {},
-  ) =>
-    this.request<PostModelDataResult, any>({
-      path: `/api/Posts`,
-      method: "GET",
-      query: query,
-      secure: true,
-      format: "json",
-      ...params,
-    });
+    };
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = PostModelDataResult;
+  }
+
   /**
    * No description
-   *
    * @tags Posts
    * @name PostsCreate
    * @summary Создание поста
    * @request POST:/api/Posts
    * @secure
    */
-  postsCreate = (data: CreatePostModel, params: RequestParams = {}) =>
-    this.request<PostModel, ProblemDetails>({
-      path: `/api/Posts`,
-      method: "POST",
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      format: "json",
-      ...params,
-    });
+  export namespace PostsCreate {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = CreatePostModel;
+    export type RequestHeaders = {};
+    export type ResponseBody = PostModel;
+  }
+
   /**
    * No description
-   *
    * @tags Posts
    * @name PostsUpdate
    * @summary Редактирование поста
    * @request PUT:/api/Posts
    * @secure
    */
-  postsUpdate = (data: UpdatePostModel, params: RequestParams = {}) =>
-    this.request<PostModel, ProblemDetails>({
-      path: `/api/Posts`,
-      method: "PUT",
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      format: "json",
-      ...params,
-    });
+  export namespace PostsUpdate {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = UpdatePostModel;
+    export type RequestHeaders = {};
+    export type ResponseBody = PostModel;
+  }
+
   /**
    * No description
-   *
    * @tags Posts
    * @name PostsFilesCreate
    * @summary Добавить файл к посту
    * @request POST:/api/Posts/Files
    * @secure
    */
-  postsFilesCreate = (data: AddExtraFileToPostModel, params: RequestParams = {}) =>
-    this.request<PostFileModel, ProblemDetails>({
-      path: `/api/Posts/Files`,
-      method: "POST",
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      format: "json",
-      ...params,
-    });
+  export namespace PostsFilesCreate {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = AddExtraFileToPostModel;
+    export type RequestHeaders = {};
+    export type ResponseBody = PostFileModel;
+  }
+
   /**
    * No description
-   *
    * @tags Posts
    * @name PostsFilesDelete
    * @summary Отвязать файл от поста
    * @request DELETE:/api/Posts/Files
    * @secure
    */
-  postsFilesDelete = (
-    query?: {
+  export namespace PostsFilesDelete {
+    export type RequestParams = {};
+    export type RequestQuery = {
       /** @format uuid */
       id?: string;
-    },
-    params: RequestParams = {},
-  ) =>
-    this.request<void, ProblemDetails>({
-      path: `/api/Posts/Files`,
-      method: "DELETE",
-      query: query,
-      secure: true,
-      ...params,
-    });
+    };
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = void;
+  }
+
   /**
  * No description
- *
  * @tags ProductCategories
  * @name ProductCategoriesDetail
  * @summary Получить категорию по ИД
 Придёт вместе с детьми и родителем
  * @request GET:/api/ProductCategories/{id}
  * @secure
- */
-  productCategoriesDetail = (id: string, params: RequestParams = {}) =>
-    this.request<ProductCategoryModel, ProblemDetails>({
-      path: `/api/ProductCategories/${id}`,
-      method: "GET",
-      secure: true,
-      format: "json",
-      ...params,
-    });
+*/
+  export namespace ProductCategoriesDetail {
+    export type RequestParams = {
+      /** @format uuid */
+      id: string;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = ProductCategoryModel;
+  }
+
   /**
    * No description
-   *
    * @tags ProductCategories
    * @name ProductCategoriesDelete
    * @summary Удалить категорию
    * @request DELETE:/api/ProductCategories/{id}
    * @secure
    */
-  productCategoriesDelete = (id: string, params: RequestParams = {}) =>
-    this.request<void, ProblemDetails>({
-      path: `/api/ProductCategories/${id}`,
-      method: "DELETE",
-      secure: true,
-      ...params,
-    });
+  export namespace ProductCategoriesDelete {
+    export type RequestParams = {
+      /** @format uuid */
+      id: string;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = void;
+  }
+
   /**
    * No description
-   *
    * @tags ProductCategories
    * @name ProductCategoriesList
    * @summary Поиск категорий по параметрам
    * @request GET:/api/ProductCategories
    * @secure
    */
-  productCategoriesList = (
-    query?: {
+  export namespace ProductCategoriesList {
+    export type RequestParams = {};
+    export type RequestQuery = {
       Name?: string;
       /** @format uuid */
       ParentCategoryGuid?: string;
@@ -2052,133 +2015,135 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
       Page?: number;
       /** @format int32 */
       PageSize?: number;
-    },
-    params: RequestParams = {},
-  ) =>
-    this.request<ProductCategoryModelDataResult, any>({
-      path: `/api/ProductCategories`,
-      method: "GET",
-      query: query,
-      secure: true,
-      format: "json",
-      ...params,
-    });
+    };
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = ProductCategoryModelDataResult;
+  }
+
   /**
    * No description
-   *
    * @tags ProductCategories
    * @name ProductCategoriesCreate
    * @summary Публикация новой продуктовой категории
    * @request POST:/api/ProductCategories
    * @secure
    */
-  productCategoriesCreate = (data: CreateProductCategoryModel, params: RequestParams = {}) =>
-    this.request<ProductCategoryModel, ProblemDetails>({
-      path: `/api/ProductCategories`,
-      method: "POST",
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      format: "json",
-      ...params,
-    });
+  export namespace ProductCategoriesCreate {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = CreateProductCategoryModel;
+    export type RequestHeaders = {};
+    export type ResponseBody = ProductCategoryModel;
+  }
+
   /**
    * No description
-   *
    * @tags ProductCategories
    * @name ProductCategoriesUpdate
    * @summary Редактировать категорию
    * @request PUT:/api/ProductCategories
    * @secure
    */
-  productCategoriesUpdate = (data: UpdateProductCategoryModel, params: RequestParams = {}) =>
-    this.request<ProductCategoryModel, ProblemDetails>({
-      path: `/api/ProductCategories`,
-      method: "PUT",
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      format: "json",
-      ...params,
-    });
+  export namespace ProductCategoriesUpdate {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = UpdateProductCategoryModel;
+    export type RequestHeaders = {};
+    export type ResponseBody = ProductCategoryModel;
+  }
+
   /**
    * No description
-   *
    * @tags ProductItems
    * @name ProductItemsDetail
    * @request GET:/api/ProductItems/{id}
    * @secure
    */
-  productItemsDetail = (id: string, params: RequestParams = {}) =>
-    this.request<ProductItemModel, ProblemDetails>({
-      path: `/api/ProductItems/${id}`,
-      method: "GET",
-      secure: true,
-      format: "json",
-      ...params,
-    });
+  export namespace ProductItemsDetail {
+    export type RequestParams = {
+      /** @format uuid */
+      id: string;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = ProductItemModel;
+  }
+
   /**
    * No description
-   *
    * @tags ProductItems
    * @name ProductItemsDelete
    * @summary Удалить единицы одежды
    * @request DELETE:/api/ProductItems/{id}
    * @secure
    */
-  productItemsDelete = (id: string, params: RequestParams = {}) =>
-    this.request<ProductItemModel, ProblemDetails>({
-      path: `/api/ProductItems/${id}`,
-      method: "DELETE",
-      secure: true,
-      format: "json",
-      ...params,
-    });
+  export namespace ProductItemsDelete {
+    export type RequestParams = {
+      /**
+       * ИД
+       * @format uuid
+       */
+      id: string;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = ProductItemModel;
+  }
+
   /**
    * No description
-   *
    * @tags ProductItems
    * @name ProductItemsByCodeDetail
    * @summary Запрос вещи по её коду
    * @request GET:/api/ProductItems/ByCode/{code}
    * @secure
    */
-  productItemsByCodeDetail = (code: string, params: RequestParams = {}) =>
-    this.request<ProductItemModel, ProblemDetails>({
-      path: `/api/ProductItems/ByCode/${code}`,
-      method: "GET",
-      secure: true,
-      format: "json",
-      ...params,
-    });
+  export namespace ProductItemsByCodeDetail {
+    export type RequestParams = {
+      /** Уникальный код */
+      code: string;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = ProductItemModel;
+  }
+
   /**
    * No description
-   *
    * @tags ProductItems
    * @name ProductItemsByCodeCheckDetail
    * @summary Проверка оригинальности вещи
    * @request GET:/api/ProductItems/ByCode/{code}/Check/{tagUid}
    * @secure
    */
-  productItemsByCodeCheckDetail = (code: string, tagUid: string, params: RequestParams = {}) =>
-    this.request<boolean, ProblemDetails>({
-      path: `/api/ProductItems/ByCode/${code}/Check/${tagUid}`,
-      method: "GET",
-      secure: true,
-      format: "json",
-      ...params,
-    });
+  export namespace ProductItemsByCodeCheckDetail {
+    export type RequestParams = {
+      /** Уникальный код вещи */
+      code: string;
+      /** Ид тега */
+      tagUid: string;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = boolean;
+  }
+
   /**
    * No description
-   *
    * @tags ProductItems
    * @name ProductItemsList
    * @summary Поиск едениц изделий
    * @request GET:/api/ProductItems
    * @secure
    */
-  productItemsList = (
-    query?: {
+  export namespace ProductItemsList {
+    export type RequestParams = {};
+    export type RequestQuery = {
       /**
        * ИД продукта
        * @format uuid
@@ -2215,116 +2180,118 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
       Ascending?: boolean;
       /** Включить в выборку продукт */
       IncludeProduct?: boolean;
-    },
-    params: RequestParams = {},
-  ) =>
-    this.request<ProductItemModelDataResult, any>({
-      path: `/api/ProductItems`,
-      method: "GET",
-      query: query,
-      secure: true,
-      format: "json",
-      ...params,
-    });
+    };
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = ProductItemModelDataResult;
+  }
+
   /**
    * No description
-   *
    * @tags ProductItems
    * @name ProductItemsCreate
    * @summary Создание единицы продукта
    * @request POST:/api/ProductItems
    * @secure
    */
-  productItemsCreate = (data: CreateProductItemModel, params: RequestParams = {}) =>
-    this.request<ProductItemModel[], ProblemDetails>({
-      path: `/api/ProductItems`,
-      method: "POST",
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      format: "json",
-      ...params,
-    });
+  export namespace ProductItemsCreate {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = CreateProductItemModel;
+    export type RequestHeaders = {};
+    export type ResponseBody = ProductItemModel[];
+  }
+
   /**
  * No description
- *
  * @tags ProductItems
  * @name ProductItemsUpdate
  * @summary Редактирование единицы продукта
 Позваляет присоеденить тег для будущей идентификации
  * @request PUT:/api/ProductItems
  * @secure
- */
-  productItemsUpdate = (data: UpdateProductItemModel, params: RequestParams = {}) =>
-    this.request<ProductItemModel, ProblemDetails>({
-      path: `/api/ProductItems`,
-      method: "PUT",
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      format: "json",
-      ...params,
-    });
+*/
+  export namespace ProductItemsUpdate {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = UpdateProductItemModel;
+    export type RequestHeaders = {};
+    export type ResponseBody = ProductItemModel;
+  }
+
   /**
    * No description
-   *
    * @tags ProductReviews
    * @name ProductReviewsDetail
    * @summary Получить по ид
    * @request GET:/api/ProductReviews/{id}
    * @secure
    */
-  productReviewsDetail = (id: string, params: RequestParams = {}) =>
-    this.request<CommentModel, ProblemDetails>({
-      path: `/api/ProductReviews/${id}`,
-      method: "GET",
-      secure: true,
-      format: "json",
-      ...params,
-    });
+  export namespace ProductReviewsDetail {
+    export type RequestParams = {
+      /**
+       * ид
+       * @format uuid
+       */
+      id: string;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = CommentModel;
+  }
+
   /**
    * No description
-   *
    * @tags ProductReviews
    * @name ProductReviewsDelete
    * @request DELETE:/api/ProductReviews/{id}
    * @secure
    */
-  productReviewsDelete = (id: string, params: RequestParams = {}) =>
-    this.request<void, ProblemDetails>({
-      path: `/api/ProductReviews/${id}`,
-      method: "DELETE",
-      secure: true,
-      ...params,
-    });
+  export namespace ProductReviewsDelete {
+    export type RequestParams = {
+      /** @format uuid */
+      id: string;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = void;
+  }
+
   /**
    * No description
-   *
    * @tags ProductReviews
    * @name ProductReviewsLikesDetail
    * @summary Получить количество лайков на обзоре
    * @request GET:/api/ProductReviews/{id}/likes
    * @secure
    */
-  productReviewsLikesDetail = (id: string, params: RequestParams = {}) =>
-    this.request<number, ProblemDetails>({
-      path: `/api/ProductReviews/${id}/likes`,
-      method: "GET",
-      secure: true,
-      format: "json",
-      ...params,
-    });
+  export namespace ProductReviewsLikesDetail {
+    export type RequestParams = {
+      /**
+       * ид коммента
+       * @format uuid
+       */
+      id: string;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = number;
+  }
+
   /**
    * No description
-   *
    * @tags ProductReviews
    * @name ProductReviewsList
    * @summary Поиск коментов
    * @request GET:/api/ProductReviews
    * @secure
    */
-  productReviewsList = (
-    query?: {
+  export namespace ProductReviewsList {
+    export type RequestParams = {};
+    export type RequestQuery = {
       /** @format uuid */
       UserGuid?: string;
       /** @format uuid */
@@ -2343,99 +2310,99 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
        * @format int32
        */
       PageSize?: number;
-    },
-    params: RequestParams = {},
-  ) =>
-    this.request<CommentModelDataResult, any>({
-      path: `/api/ProductReviews`,
-      method: "GET",
-      query: query,
-      secure: true,
-      format: "json",
-      ...params,
-    });
+    };
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = CommentModelDataResult;
+  }
+
   /**
    * No description
-   *
    * @tags ProductReviews
    * @name ProductReviewsCreate
    * @summary Создание комментария
    * @request POST:/api/ProductReviews
    * @secure
    */
-  productReviewsCreate = (data: CreateCommentModel, params: RequestParams = {}) =>
-    this.request<CommentModel, ProblemDetails>({
-      path: `/api/ProductReviews`,
-      method: "POST",
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      format: "json",
-      ...params,
-    });
+  export namespace ProductReviewsCreate {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = CreateCommentModel;
+    export type RequestHeaders = {};
+    export type ResponseBody = CommentModel;
+  }
+
   /**
    * No description
-   *
    * @tags ProductReviews
    * @name ProductReviewsUpdate
    * @summary Модель редактирования коммента
    * @request PUT:/api/ProductReviews
    * @secure
    */
-  productReviewsUpdate = (data: UpdateCommentModel, params: RequestParams = {}) =>
-    this.request<CommentModel, ProblemDetails>({
-      path: `/api/ProductReviews`,
-      method: "PUT",
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      format: "json",
-      ...params,
-    });
+  export namespace ProductReviewsUpdate {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = UpdateCommentModel;
+    export type RequestHeaders = {};
+    export type ResponseBody = CommentModel;
+  }
+
   /**
    * No description
-   *
    * @tags Products
    * @name ProductsDetail
    * @summary Получить конкретный продукт
    * @request GET:/api/Products/{id}
    * @secure
    */
-  productsDetail = (id: string, params: RequestParams = {}) =>
-    this.request<ProductModel, ProblemDetails>({
-      path: `/api/Products/${id}`,
-      method: "GET",
-      secure: true,
-      format: "json",
-      ...params,
-    });
+  export namespace ProductsDetail {
+    export type RequestParams = {
+      /**
+       * Идентификатор продукта
+       * @format uuid
+       */
+      id: string;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = ProductModel;
+  }
+
   /**
    * No description
-   *
    * @tags Products
    * @name ProductsDelete
    * @summary Удалить продукт
    * @request DELETE:/api/Products/{id}
    * @secure
    */
-  productsDelete = (id: string, params: RequestParams = {}) =>
-    this.request<void, ProblemDetails>({
-      path: `/api/Products/${id}`,
-      method: "DELETE",
-      secure: true,
-      ...params,
-    });
+  export namespace ProductsDelete {
+    export type RequestParams = {
+      /**
+       * ИД продукта
+       * @format uuid
+       */
+      id: string;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = void;
+  }
+
   /**
    * No description
-   *
    * @tags Products
    * @name ProductsList
    * @summary Поиск продуктов по фильтрам
    * @request GET:/api/Products
    * @secure
    */
-  productsList = (
-    query?: {
+  export namespace ProductsList {
+    export type RequestParams = {};
+    export type RequestQuery = {
       /** Поиск по тексту */
       Text?: string;
       /** Бренд */
@@ -2466,291 +2433,289 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
       SortMember?: string;
       /** Направление сортировки - по возрастанию */
       Ascending?: boolean;
-    },
-    params: RequestParams = {},
-  ) =>
-    this.request<ProductModelDataResult, any>({
-      path: `/api/Products`,
-      method: "GET",
-      query: query,
-      secure: true,
-      format: "json",
-      ...params,
-    });
+    };
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = ProductModelDataResult;
+  }
+
   /**
    * No description
-   *
    * @tags Products
    * @name ProductsCreate
    * @summary Создать продукт
    * @request POST:/api/Products
    * @secure
    */
-  productsCreate = (data: CreateProductModel, params: RequestParams = {}) =>
-    this.request<ProductModel, ProblemDetails>({
-      path: `/api/Products`,
-      method: "POST",
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      format: "json",
-      ...params,
-    });
+  export namespace ProductsCreate {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = CreateProductModel;
+    export type RequestHeaders = {};
+    export type ResponseBody = ProductModel;
+  }
+
   /**
    * No description
-   *
    * @tags Products
    * @name ProductsUpdate
    * @summary Редактировать продукт
    * @request PUT:/api/Products
    * @secure
    */
-  productsUpdate = (data: UpdateProductModel, params: RequestParams = {}) =>
-    this.request<ProductModel, ProblemDetails>({
-      path: `/api/Products`,
-      method: "PUT",
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      format: "json",
-      ...params,
-    });
+  export namespace ProductsUpdate {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = UpdateProductModel;
+    export type RequestHeaders = {};
+    export type ResponseBody = ProductModel;
+  }
+
   /**
    * No description
-   *
    * @tags Products
    * @name ProductsColorsCreate
    * @summary Добавить цвет к продукту
    * @request POST:/api/Products/Colors
    * @secure
    */
-  productsColorsCreate = (data: CreateProductColor, params: RequestParams = {}) =>
-    this.request<ProductColorModel, ProblemDetails>({
-      path: `/api/Products/Colors`,
-      method: "POST",
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      format: "json",
-      ...params,
-    });
+  export namespace ProductsColorsCreate {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = CreateProductColor;
+    export type RequestHeaders = {};
+    export type ResponseBody = ProductColorModel;
+  }
+
   /**
    * No description
-   *
    * @tags Products
    * @name ProductsColorsDelete
    * @summary Отвязать цвет от продукта
    * @request DELETE:/api/Products/Colors/{productColorId}
    * @secure
    */
-  productsColorsDelete = (productColorId: string, params: RequestParams = {}) =>
-    this.request<void, ProblemDetails>({
-      path: `/api/Products/Colors/${productColorId}`,
-      method: "DELETE",
-      secure: true,
-      ...params,
-    });
+  export namespace ProductsColorsDelete {
+    export type RequestParams = {
+      /**
+       * Идентификатор связки продукт-цвет
+       * @format uuid
+       */
+      productColorId: string;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = void;
+  }
+
   /**
    * No description
-   *
    * @tags Products
    * @name ProductsFilesCreate
    * @summary Привязать файл к продукту
    * @request POST:/api/Products/files
    * @secure
    */
-  productsFilesCreate = (data: CreateProductFileModel, params: RequestParams = {}) =>
-    this.request<FileModel, ProblemDetails>({
-      path: `/api/Products/files`,
-      method: "POST",
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      format: "json",
-      ...params,
-    });
+  export namespace ProductsFilesCreate {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = CreateProductFileModel;
+    export type RequestHeaders = {};
+    export type ResponseBody = FileModel;
+  }
+
   /**
    * No description
-   *
    * @tags Products
    * @name ProductsFilesDelete
    * @summary Отвязать файл
    * @request DELETE:/api/Products/files/{id}
    * @secure
    */
-  productsFilesDelete = (id: string, params: RequestParams = {}) =>
-    this.request<void, ProblemDetails>({
-      path: `/api/Products/files/${id}`,
-      method: "DELETE",
-      secure: true,
-      ...params,
-    });
+  export namespace ProductsFilesDelete {
+    export type RequestParams = {
+      /** @format uuid */
+      id: string;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = void;
+  }
+
   /**
    * No description
-   *
    * @tags Products
    * @name ProductsMaterialsCreate
    * @summary Добавить к продукту один из материалов
    * @request POST:/api/Products/Materials
    * @secure
    */
-  productsMaterialsCreate = (data: CreateProductMaterialModel, params: RequestParams = {}) =>
-    this.request<ProductMaterialModel, ProblemDetails>({
-      path: `/api/Products/Materials`,
-      method: "POST",
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      format: "json",
-      ...params,
-    });
+  export namespace ProductsMaterialsCreate {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = CreateProductMaterialModel;
+    export type RequestHeaders = {};
+    export type ResponseBody = ProductMaterialModel;
+  }
+
   /**
    * No description
-   *
    * @tags Products
    * @name ProductsMaterialsDelete
    * @summary Удалить связку продукта с материалом
    * @request DELETE:/api/Products/Materials/{productMaterialId}
    * @secure
    */
-  productsMaterialsDelete = (productMaterialId: string, params: RequestParams = {}) =>
-    this.request<void, ProblemDetails>({
-      path: `/api/Products/Materials/${productMaterialId}`,
-      method: "DELETE",
-      secure: true,
-      ...params,
-    });
+  export namespace ProductsMaterialsDelete {
+    export type RequestParams = {
+      /**
+       * Ид связи
+       * @format uuid
+       */
+      productMaterialId: string;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = void;
+  }
+
   /**
    * No description
-   *
    * @tags Products
    * @name ProductsMeasurementsCreate
    * @summary Добавить к продукту измерение
    * @request POST:/api/Products/Measurements
    * @secure
    */
-  productsMeasurementsCreate = (data: ProductMeasurementModel, params: RequestParams = {}) =>
-    this.request<ProductMeasurementModel, ProblemDetails>({
-      path: `/api/Products/Measurements`,
-      method: "POST",
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      format: "json",
-      ...params,
-    });
+  export namespace ProductsMeasurementsCreate {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = ProductMeasurementModel;
+    export type RequestHeaders = {};
+    export type ResponseBody = ProductMeasurementModel;
+  }
+
   /**
    * No description
-   *
    * @tags Products
    * @name ProductsMeasurementsDelete
    * @summary Удалить измерение вещи
    * @request DELETE:/api/Products/Measurements/{productMeasurementId}
    * @secure
    */
-  productsMeasurementsDelete = (productMeasurementId: string, params: RequestParams = {}) =>
-    this.request<void, ProblemDetails>({
-      path: `/api/Products/Measurements/${productMeasurementId}`,
-      method: "DELETE",
-      secure: true,
-      ...params,
-    });
+  export namespace ProductsMeasurementsDelete {
+    export type RequestParams = {
+      /**
+       * Ид связки
+       * @format uuid
+       */
+      productMeasurementId: string;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = void;
+  }
+
   /**
    * No description
-   *
    * @tags Products
    * @name ProductsExportList
    * @request GET:/api/Products/Export
    * @secure
    */
-  productsExportList = (
-    query?: {
+  export namespace ProductsExportList {
+    export type RequestParams = {};
+    export type RequestQuery = {
       /** @format uuid */
       brandId?: string;
-    },
-    params: RequestParams = {},
-  ) =>
-    this.request<File, ProblemDetails>({
-      path: `/api/Products/Export`,
-      method: "GET",
-      query: query,
-      secure: true,
-      ...params,
-    });
+    };
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = File;
+  }
+
   /**
    * No description
-   *
    * @tags Products
    * @name ProductsImportCreate
    * @request POST:/api/Products/Import
    * @secure
    */
-  productsImportCreate = (
-    data: {
-      /** @format binary */
-      xlsx: File;
-    },
-    query?: {
+  export namespace ProductsImportCreate {
+    export type RequestParams = {};
+    export type RequestQuery = {
       /** @format uuid */
       brandGuid?: string;
       /** @default true */
       testMode?: boolean;
-    },
-    params: RequestParams = {},
-  ) =>
-    this.request<void, ProblemDetails | ImportResult>({
-      path: `/api/Products/Import`,
-      method: "POST",
-      query: query,
-      body: data,
-      secure: true,
-      type: ContentType.FormData,
-      ...params,
-    });
+    };
+    export type RequestBody = {
+      /** @format binary */
+      xlsx: File;
+    };
+    export type RequestHeaders = {};
+    export type ResponseBody = void;
+  }
+
   /**
    * No description
-   *
    * @tags Promotions
    * @name PromotionsDetail
    * @summary Получить по ид
    * @request GET:/api/Promotions/{id}
    * @secure
    */
-  promotionsDetail = (id: string, params: RequestParams = {}) =>
-    this.request<PromotionModel, ProblemDetails>({
-      path: `/api/Promotions/${id}`,
-      method: "GET",
-      secure: true,
-      format: "json",
-      ...params,
-    });
+  export namespace PromotionsDetail {
+    export type RequestParams = {
+      /**
+       * ид
+       * @format uuid
+       */
+      id: string;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = PromotionModel;
+  }
+
   /**
    * No description
-   *
    * @tags Promotions
    * @name PromotionsDelete
    * @summary Удаление промика
    * @request DELETE:/api/Promotions/{id}
    * @secure
    */
-  promotionsDelete = (id: string, params: RequestParams = {}) =>
-    this.request<void, ProblemDetails>({
-      path: `/api/Promotions/${id}`,
-      method: "DELETE",
-      secure: true,
-      ...params,
-    });
+  export namespace PromotionsDelete {
+    export type RequestParams = {
+      /**
+       * Идентификатор
+       * @format uuid
+       */
+      id: string;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = void;
+  }
+
   /**
    * No description
-   *
    * @tags Promotions
    * @name PromotionsList
    * @summary Поиск промиков
    * @request GET:/api/Promotions
    * @secure
    */
-  promotionsList = (
-    query?: {
+  export namespace PromotionsList {
+    export type RequestParams = {};
+    export type RequestQuery = {
       /** Часть имени */
       Name?: string;
       /** Часть текста */
@@ -2802,84 +2767,71 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
       SortMember?: string;
       /** Направление сортировки - по возрастанию */
       Ascending?: boolean;
-    },
-    params: RequestParams = {},
-  ) =>
-    this.request<PromotionModelDataResult, ProblemDetails>({
-      path: `/api/Promotions`,
-      method: "GET",
-      query: query,
-      secure: true,
-      format: "json",
-      ...params,
-    });
+    };
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = PromotionModelDataResult;
+  }
+
   /**
    * No description
-   *
    * @tags Promotions
    * @name PromotionsCreate
    * @summary Создание промика
    * @request POST:/api/Promotions
    * @secure
    */
-  promotionsCreate = (data: CreatePromotionModel, params: RequestParams = {}) =>
-    this.request<PromotionModel, ProblemDetails>({
-      path: `/api/Promotions`,
-      method: "POST",
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      format: "json",
-      ...params,
-    });
+  export namespace PromotionsCreate {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = CreatePromotionModel;
+    export type RequestHeaders = {};
+    export type ResponseBody = PromotionModel;
+  }
+
   /**
    * No description
-   *
    * @tags Promotions
    * @name PromotionsUpdate
    * @summary Модель редактирования промо-акции
    * @request PUT:/api/Promotions
    * @secure
    */
-  promotionsUpdate = (data: UpdatePromotionModel, params: RequestParams = {}) =>
-    this.request<PromotionModel, ProblemDetails>({
-      path: `/api/Promotions`,
-      method: "PUT",
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      format: "json",
-      ...params,
-    });
+  export namespace PromotionsUpdate {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = UpdatePromotionModel;
+    export type RequestHeaders = {};
+    export type ResponseBody = PromotionModel;
+  }
+
   /**
    * No description
-   *
    * @tags Promotions
    * @name PromotionsCodesCreate
    * @summary Залить пачку кодов
    * @request POST:/api/Promotions/Codes
    * @secure
    */
-  promotionsCodesCreate = (data: CreatePromotionCodeModel, params: RequestParams = {}) =>
-    this.request<void, ProblemDetails>({
-      path: `/api/Promotions/Codes`,
-      method: "POST",
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      ...params,
-    });
+  export namespace PromotionsCodesCreate {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = CreatePromotionCodeModel;
+    export type RequestHeaders = {};
+    export type ResponseBody = void;
+  }
+
   /**
    * No description
-   *
    * @tags Promotions
    * @name PromotionsCodesList
    * @summary Поиск промиков
    * @request GET:/api/Promotions/Codes
    * @secure
    */
-  promotionsCodesList = (
-    query?: {
+  export namespace PromotionsCodesList {
+    export type RequestParams = {};
+    export type RequestQuery = {
       /** @format uuid */
       UserGuid?: string;
       /** @format uuid */
@@ -2896,140 +2848,127 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
        * @format int32
        */
       PageSize?: number;
-    },
-    params: RequestParams = {},
-  ) =>
-    this.request<StringDataResult, ProblemDetails>({
-      path: `/api/Promotions/Codes`,
-      method: "GET",
-      query: query,
-      secure: true,
-      format: "json",
-      ...params,
-    });
+    };
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = StringDataResult;
+  }
+
   /**
    * No description
-   *
    * @tags Promotions
    * @name PromotionsCodesUpdate
    * @summary Активировать код
    * @request PUT:/api/Promotions/Codes
    * @secure
    */
-  promotionsCodesUpdate = (
-    query?: {
+  export namespace PromotionsCodesUpdate {
+    export type RequestParams = {};
+    export type RequestQuery = {
       /**
        * ИД промо акции
        * @format uuid
        */
       id?: string;
-    },
-    params: RequestParams = {},
-  ) =>
-    this.request<string, ProblemDetails>({
-      path: `/api/Promotions/Codes`,
-      method: "PUT",
-      query: query,
-      secure: true,
-      format: "json",
-      ...params,
-    });
+    };
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = string;
+  }
+
   /**
    * No description
-   *
    * @tags Push
    * @name PushCreate
    * @request POST:/api/Push
    * @secure
    */
-  pushCreate = (data: CreatePushSubscribtionModel, params: RequestParams = {}) =>
-    this.request<void, any>({
-      path: `/api/Push`,
-      method: "POST",
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      ...params,
-    });
+  export namespace PushCreate {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = CreatePushSubscribtionModel;
+    export type RequestHeaders = {};
+    export type ResponseBody = void;
+  }
+
   /**
    * No description
-   *
    * @tags Push
    * @name PushList
    * @request GET:/api/Push
    * @secure
    */
-  pushList = (data: GetPushSubscribtionsModel, params: RequestParams = {}) =>
-    this.request<NotificationSubscriptionModelDataResult, any>({
-      path: `/api/Push`,
-      method: "GET",
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      format: "json",
-      ...params,
-    });
+  export namespace PushList {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = GetPushSubscribtionsModel;
+    export type RequestHeaders = {};
+    export type ResponseBody = NotificationSubscriptionModelDataResult;
+  }
+
   /**
    * No description
-   *
    * @tags Push
    * @name PushMyList
    * @request GET:/api/Push/My
    * @secure
    */
-  pushMyList = (params: RequestParams = {}) =>
-    this.request<NotificationSubscriptionModel, any>({
-      path: `/api/Push/My`,
-      method: "GET",
-      secure: true,
-      format: "json",
-      ...params,
-    });
+  export namespace PushMyList {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = NotificationSubscriptionModel;
+  }
+
   /**
    * No description
-   *
    * @tags Push
    * @name PushSendCreate
    * @request POST:/api/Push/Send
    * @secure
    */
-  pushSendCreate = (data: NotificationData, params: RequestParams = {}) =>
-    this.request<void, any>({
-      path: `/api/Push/Send`,
-      method: "POST",
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      ...params,
-    });
+  export namespace PushSendCreate {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = NotificationData;
+    export type RequestHeaders = {};
+    export type ResponseBody = void;
+  }
+
   /**
    * No description
-   *
    * @tags Scans
    * @name ScansDetail
    * @summary Получить скан по ИД
    * @request GET:/api/Scans/{id}
    * @secure
    */
-  scansDetail = (id: string, params: RequestParams = {}) =>
-    this.request<ScanModel, ProblemDetails>({
-      path: `/api/Scans/${id}`,
-      method: "GET",
-      secure: true,
-      format: "json",
-      ...params,
-    });
+  export namespace ScansDetail {
+    export type RequestParams = {
+      /**
+       * ИД
+       * @format uuid
+       */
+      id: string;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = ScanModel;
+  }
+
   /**
    * No description
-   *
    * @tags Scans
    * @name ScansList
    * @summary Поиск сканирований по ИД
    * @request GET:/api/Scans
    * @secure
    */
-  scansList = (
-    query?: {
+  export namespace ScansList {
+    export type RequestParams = {};
+    export type RequestQuery = {
       /**
        * Пользователь
        * @format uuid
@@ -3070,81 +3009,84 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
        * @format int32
        */
       PageSize?: number;
-    },
-    params: RequestParams = {},
-  ) =>
-    this.request<ScanModelDataResult, ProblemDetails>({
-      path: `/api/Scans`,
-      method: "GET",
-      query: query,
-      secure: true,
-      format: "json",
-      ...params,
-    });
+    };
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = ScanModelDataResult;
+  }
+
   /**
    * No description
-   *
    * @tags Scans
    * @name ScansCreate
    * @summary Создать запись сканирования
    * @request POST:/api/Scans
    * @secure
    */
-  scansCreate = (data: CreateScanModel, params: RequestParams = {}) =>
-    this.request<ScanModel, ProblemDetails>({
-      path: `/api/Scans`,
-      method: "POST",
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      format: "json",
-      ...params,
-    });
+  export namespace ScansCreate {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = CreateScanModel;
+    export type RequestHeaders = {};
+    export type ResponseBody = ScanModel;
+  }
+
   /**
    * No description
-   *
    * @tags SizeCharts
    * @name SizeChartsDetail
    * @summary Получение размерной сетки по идентификатору
    * @request GET:/api/SizeCharts/{id}
    * @secure
    */
-  sizeChartsDetail = (id: string, params: RequestParams = {}) =>
-    this.request<SizeChartModel, ProblemDetails>({
-      path: `/api/SizeCharts/${id}`,
-      method: "GET",
-      secure: true,
-      format: "json",
-      ...params,
-    });
+  export namespace SizeChartsDetail {
+    export type RequestParams = {
+      /**
+       * Ид
+       * @format uuid
+       */
+      id: string;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = SizeChartModel;
+  }
+
   /**
    * No description
-   *
    * @tags SizeCharts
    * @name SizeChartsDelete
    * @summary Удаление размерной сетки
    * @request DELETE:/api/SizeCharts/{id}
    * @secure
    */
-  sizeChartsDelete = (id: string, params: RequestParams = {}) =>
-    this.request<void, ProblemDetails>({
-      path: `/api/SizeCharts/${id}`,
-      method: "DELETE",
-      secure: true,
-      ...params,
-    });
+  export namespace SizeChartsDelete {
+    export type RequestParams = {
+      /**
+       * Ид
+       * @format uuid
+       */
+      id: string;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = void;
+  }
+
   /**
  * No description
- *
  * @tags SizeCharts
  * @name SizeChartsList
  * @summary Поиск брендов по фильтрам
 Для неадминов возвращает не удалённые записи
  * @request GET:/api/SizeCharts
  * @secure
- */
-  sizeChartsList = (
-    query?: {
+*/
+  export namespace SizeChartsList {
+    export type RequestParams = {};
+    export type RequestQuery = {
       /**
        * Бренд.
        * @format uuid
@@ -3168,99 +3110,99 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
       SortMember?: string;
       /** Направление сортировки - по возрастанию */
       Ascending?: boolean;
-    },
-    params: RequestParams = {},
-  ) =>
-    this.request<SizeChartModelDataResult, any>({
-      path: `/api/SizeCharts`,
-      method: "GET",
-      query: query,
-      secure: true,
-      format: "json",
-      ...params,
-    });
+    };
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = SizeChartModelDataResult;
+  }
+
   /**
    * No description
-   *
    * @tags SizeCharts
    * @name SizeChartsCreate
    * @summary Создание новой размерной сетки
    * @request POST:/api/SizeCharts
    * @secure
    */
-  sizeChartsCreate = (data: CreateSizeChartModel, params: RequestParams = {}) =>
-    this.request<SizeChartModel, ProblemDetails>({
-      path: `/api/SizeCharts`,
-      method: "POST",
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      format: "json",
-      ...params,
-    });
+  export namespace SizeChartsCreate {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = CreateSizeChartModel;
+    export type RequestHeaders = {};
+    export type ResponseBody = SizeChartModel;
+  }
+
   /**
    * No description
-   *
    * @tags SizeCharts
    * @name SizeChartsUpdate
    * @summary Изменение размерной сетки
    * @request PUT:/api/SizeCharts
    * @secure
    */
-  sizeChartsUpdate = (data: any, params: RequestParams = {}) =>
-    this.request<SizeChartModel, ProblemDetails>({
-      path: `/api/SizeCharts`,
-      method: "PUT",
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      format: "json",
-      ...params,
-    });
+  export namespace SizeChartsUpdate {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = any;
+    export type RequestHeaders = {};
+    export type ResponseBody = SizeChartModel;
+  }
+
   /**
    * No description
-   *
    * @tags Stories
    * @name StoriesDetail
    * @summary Получить сторис по ид
    * @request GET:/api/Stories/{id}
    * @secure
    */
-  storiesDetail = (id: string, params: RequestParams = {}) =>
-    this.request<StoryModel, ProblemDetails>({
-      path: `/api/Stories/${id}`,
-      method: "GET",
-      secure: true,
-      format: "json",
-      ...params,
-    });
+  export namespace StoriesDetail {
+    export type RequestParams = {
+      /**
+       * ИД
+       * @format uuid
+       */
+      id: string;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = StoryModel;
+  }
+
   /**
    * No description
-   *
    * @tags Stories
    * @name StoriesDelete
    * @summary Удалить сторис
    * @request DELETE:/api/Stories/{id}
    * @secure
    */
-  storiesDelete = (id: string, params: RequestParams = {}) =>
-    this.request<void, ProblemDetails>({
-      path: `/api/Stories/${id}`,
-      method: "DELETE",
-      secure: true,
-      ...params,
-    });
+  export namespace StoriesDelete {
+    export type RequestParams = {
+      /**
+       * Ид цвета
+       * @format uuid
+       */
+      id: string;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = void;
+  }
+
   /**
    * No description
-   *
    * @tags Stories
    * @name StoriesList
    * @summary Поиск сторис по параметрам
    * @request GET:/api/Stories
    * @secure
    */
-  storiesList = (
-    query?: {
+  export namespace StoriesList {
+    export type RequestParams = {};
+    export type RequestQuery = {
       /**
        * Бренд
        * @format uuid
@@ -3298,81 +3240,84 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
       updateDtEnd?: string;
       /** Отметка удаления */
       IsDeleted?: boolean;
-    },
-    params: RequestParams = {},
-  ) =>
-    this.request<StoryModelDataResult, any>({
-      path: `/api/Stories`,
-      method: "GET",
-      query: query,
-      secure: true,
-      format: "json",
-      ...params,
-    });
+    };
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = StoryModelDataResult;
+  }
+
   /**
  * No description
- *
  * @tags Stories
  * @name StoriesCreate
  * @summary Создание сторис
 Доступно админам
  * @request POST:/api/Stories
  * @secure
- */
-  storiesCreate = (data: CreateStoryModel, params: RequestParams = {}) =>
-    this.request<StoryModel, ProblemDetails>({
-      path: `/api/Stories`,
-      method: "POST",
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      format: "json",
-      ...params,
-    });
+*/
+  export namespace StoriesCreate {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = CreateStoryModel;
+    export type RequestHeaders = {};
+    export type ResponseBody = StoryModel;
+  }
+
   /**
    * No description
-   *
    * @tags Stories
    * @name StoriesHighlightsDetail
    * @summary Получить хайлайт по ид
    * @request GET:/api/Stories/Highlights/{id}
    * @secure
    */
-  storiesHighlightsDetail = (id: string, params: RequestParams = {}) =>
-    this.request<HighlightModel, ProblemDetails>({
-      path: `/api/Stories/Highlights/${id}`,
-      method: "GET",
-      secure: true,
-      format: "json",
-      ...params,
-    });
+  export namespace StoriesHighlightsDetail {
+    export type RequestParams = {
+      /**
+       * ИД
+       * @format uuid
+       */
+      id: string;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = HighlightModel;
+  }
+
   /**
    * No description
-   *
    * @tags Stories
    * @name StoriesHighlightsDelete
    * @summary Удалить хайлайт
    * @request DELETE:/api/Stories/Highlights/{id}
    * @secure
    */
-  storiesHighlightsDelete = (id: string, params: RequestParams = {}) =>
-    this.request<void, ProblemDetails>({
-      path: `/api/Stories/Highlights/${id}`,
-      method: "DELETE",
-      secure: true,
-      ...params,
-    });
+  export namespace StoriesHighlightsDelete {
+    export type RequestParams = {
+      /**
+       * Ид цвета
+       * @format uuid
+       */
+      id: string;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = void;
+  }
+
   /**
    * No description
-   *
    * @tags Stories
    * @name StoriesHighlightsList
    * @summary Поиск хайлайта по параметрам
    * @request GET:/api/Stories/Highlights
    * @secure
    */
-  storiesHighlightsList = (
-    query?: {
+  export namespace StoriesHighlightsList {
+    export type RequestParams = {};
+    export type RequestQuery = {
       /**
        * ИД бренда
        * @format uuid
@@ -3414,66 +3359,55 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
       updateDtEnd?: string;
       /** Отметка удаления */
       IsDeleted?: boolean;
-    },
-    params: RequestParams = {},
-  ) =>
-    this.request<HighlightModelDataResult, any>({
-      path: `/api/Stories/Highlights`,
-      method: "GET",
-      query: query,
-      secure: true,
-      format: "json",
-      ...params,
-    });
+    };
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = HighlightModelDataResult;
+  }
+
   /**
    * No description
-   *
    * @tags Stories
    * @name StoriesHighlightsCreate
    * @summary Создание хайлайта
    * @request POST:/api/Stories/Highlights
    * @secure
    */
-  storiesHighlightsCreate = (data: CreateHighlightModel, params: RequestParams = {}) =>
-    this.request<HighlightModel, ProblemDetails>({
-      path: `/api/Stories/Highlights`,
-      method: "POST",
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      format: "json",
-      ...params,
-    });
+  export namespace StoriesHighlightsCreate {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = CreateHighlightModel;
+    export type RequestHeaders = {};
+    export type ResponseBody = HighlightModel;
+  }
+
   /**
    * No description
-   *
    * @tags Stories
    * @name StoriesHighlightsUpdate
    * @summary Редактирование хайлайта
    * @request PUT:/api/Stories/Highlights
    * @secure
    */
-  storiesHighlightsUpdate = (data: UpdateHighlightModel, params: RequestParams = {}) =>
-    this.request<HighlightModel, ProblemDetails>({
-      path: `/api/Stories/Highlights`,
-      method: "PUT",
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      format: "json",
-      ...params,
-    });
+  export namespace StoriesHighlightsUpdate {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = UpdateHighlightModel;
+    export type RequestHeaders = {};
+    export type ResponseBody = HighlightModel;
+  }
+
   /**
    * No description
-   *
    * @tags Subscriptions
    * @name SubscriptionsList
    * @summary Поиск подписок
    * @request GET:/api/Subscriptions
    * @secure
    */
-  subscriptionsList = (
-    query?: {
+  export namespace SubscriptionsList {
+    export type RequestParams = {};
+    export type RequestQuery = {
       /**
        * Ид юзера
        * @format uuid
@@ -3520,339 +3454,352 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
       updateDtEnd?: string;
       /** Отметка удаления */
       IsDeleted?: boolean;
-    },
-    params: RequestParams = {},
-  ) =>
-    this.request<SubscriptionModelDataResult, ProblemDetails>({
-      path: `/api/Subscriptions`,
-      method: "GET",
-      query: query,
-      secure: true,
-      format: "json",
-      ...params,
-    });
+    };
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = SubscriptionModelDataResult;
+  }
+
   /**
    * No description
-   *
    * @tags Subscriptions
    * @name SubscriptionsCreate
    * @summary Создание подписки
    * @request POST:/api/Subscriptions
    * @secure
    */
-  subscriptionsCreate = (data: CreateSubscriptionModel, params: RequestParams = {}) =>
-    this.request<SubscriptionModel, ProblemDetails>({
-      path: `/api/Subscriptions`,
-      method: "POST",
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      format: "json",
-      ...params,
-    });
+  export namespace SubscriptionsCreate {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = CreateSubscriptionModel;
+    export type RequestHeaders = {};
+    export type ResponseBody = SubscriptionModel;
+  }
+
   /**
    * No description
-   *
    * @tags Subscriptions
    * @name SubscriptionsDelete
    * @summary Удаление подписки
    * @request DELETE:/api/Subscriptions/{id}
    * @secure
    */
-  subscriptionsDelete = (id: string, params: RequestParams = {}) =>
-    this.request<void, ProblemDetails>({
-      path: `/api/Subscriptions/${id}`,
-      method: "DELETE",
-      secure: true,
-      ...params,
-    });
+  export namespace SubscriptionsDelete {
+    export type RequestParams = {
+      /**
+       * ИД подписки
+       * @format uuid
+       */
+      id: string;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = void;
+  }
+
   /**
    * No description
-   *
    * @tags Test
    * @name TestList
    * @request GET:/api/Test
    * @secure
    */
-  testList = (params: RequestParams = {}) =>
-    this.request<string, any>({
-      path: `/api/Test`,
-      method: "GET",
-      secure: true,
-      format: "json",
-      ...params,
-    });
+  export namespace TestList {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = string;
+  }
+
   /**
    * No description
-   *
    * @tags Tips
    * @name TipsProductsDetail
    * @summary Получить совет по продукту
    * @request GET:/api/Tips/Products/{id}
    * @secure
    */
-  tipsProductsDetail = (id: string, params: RequestParams = {}) =>
-    this.request<TipModel, ProblemDetails>({
-      path: `/api/Tips/Products/${id}`,
-      method: "GET",
-      secure: true,
-      format: "json",
-      ...params,
-    });
+  export namespace TipsProductsDetail {
+    export type RequestParams = {
+      /**
+       * ИД
+       * @format uuid
+       */
+      id: string;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = TipModel;
+  }
+
   /**
    * No description
-   *
    * @tags Tips
    * @name TipsProductsDelete
    * @summary Удаление продуктового совета
    * @request DELETE:/api/Tips/Products/{id}
    * @secure
    */
-  tipsProductsDelete = (id: string, params: RequestParams = {}) =>
-    this.request<void, ProblemDetails>({
-      path: `/api/Tips/Products/${id}`,
-      method: "DELETE",
-      secure: true,
-      ...params,
-    });
+  export namespace TipsProductsDelete {
+    export type RequestParams = {
+      /**
+       * ИД
+       * @format uuid
+       */
+      id: string;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = void;
+  }
+
   /**
    * No description
-   *
    * @tags Tips
    * @name TipsProductsCreate
    * @summary Создание совета для продукта
    * @request POST:/api/Tips/Products
    * @secure
    */
-  tipsProductsCreate = (data: CreateTipModel, params: RequestParams = {}) =>
-    this.request<TipModel, ProblemDetails>({
-      path: `/api/Tips/Products`,
-      method: "POST",
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      format: "json",
-      ...params,
-    });
+  export namespace TipsProductsCreate {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = CreateTipModel;
+    export type RequestHeaders = {};
+    export type ResponseBody = TipModel;
+  }
+
   /**
    * No description
-   *
    * @tags Tips
    * @name TipsProductsUpdate
    * @summary Редактирование совета продукта
    * @request PUT:/api/Tips/Products
    * @secure
    */
-  tipsProductsUpdate = (data: UpdateTipModel, params: RequestParams = {}) =>
-    this.request<TipModel, ProblemDetails>({
-      path: `/api/Tips/Products`,
-      method: "PUT",
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      format: "json",
-      ...params,
-    });
+  export namespace TipsProductsUpdate {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = UpdateTipModel;
+    export type RequestHeaders = {};
+    export type ResponseBody = TipModel;
+  }
+
   /**
    * No description
-   *
    * @tags Tips
    * @name TipsProductsFilesCreate
    * @summary Добавить файл к совету
    * @request POST:/api/Tips/Products/Files/{id}
    * @secure
    */
-  tipsProductsFilesCreate = (id: string, data: FileModel, params: RequestParams = {}) =>
-    this.request<TipModel, ProblemDetails>({
-      path: `/api/Tips/Products/Files/${id}`,
-      method: "POST",
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      format: "json",
-      ...params,
-    });
+  export namespace TipsProductsFilesCreate {
+    export type RequestParams = {
+      /**
+       * ИД
+       * @format uuid
+       */
+      id: string;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = FileModel;
+    export type RequestHeaders = {};
+    export type ResponseBody = TipModel;
+  }
+
   /**
    * No description
-   *
    * @tags Tips
    * @name TipsProductsFilesDelete
    * @summary Отвязать файл от совета
    * @request DELETE:/api/Tips/Products/Files
    * @secure
    */
-  tipsProductsFilesDelete = (
-    query?: {
+  export namespace TipsProductsFilesDelete {
+    export type RequestParams = {};
+    export type RequestQuery = {
       /** @format uuid */
       id?: string;
-    },
-    params: RequestParams = {},
-  ) =>
-    this.request<void, ProblemDetails>({
-      path: `/api/Tips/Products/Files`,
-      method: "DELETE",
-      query: query,
-      secure: true,
-      ...params,
-    });
+    };
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = void;
+  }
+
   /**
    * No description
-   *
    * @tags Tips
    * @name TipsMaterialsDetail
    * @summary Получить совет по материалу по ИД
    * @request GET:/api/Tips/Materials/{id}
    * @secure
    */
-  tipsMaterialsDetail = (id: string, params: RequestParams = {}) =>
-    this.request<TipModel, ProblemDetails>({
-      path: `/api/Tips/Materials/${id}`,
-      method: "GET",
-      secure: true,
-      format: "json",
-      ...params,
-    });
+  export namespace TipsMaterialsDetail {
+    export type RequestParams = {
+      /**
+       * ИД
+       * @format uuid
+       */
+      id: string;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = TipModel;
+  }
+
   /**
    * No description
-   *
    * @tags Tips
    * @name TipsMaterialsDelete
    * @summary Удалить совет по материалу
    * @request DELETE:/api/Tips/Materials/{id}
    * @secure
    */
-  tipsMaterialsDelete = (id: string, params: RequestParams = {}) =>
-    this.request<void, ProblemDetails>({
-      path: `/api/Tips/Materials/${id}`,
-      method: "DELETE",
-      secure: true,
-      ...params,
-    });
+  export namespace TipsMaterialsDelete {
+    export type RequestParams = {
+      /**
+       * ИД совета
+       * @format uuid
+       */
+      id: string;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = void;
+  }
+
   /**
    * No description
-   *
    * @tags Tips
    * @name TipsMaterialsCreate
    * @request POST:/api/Tips/Materials
    * @secure
    */
-  tipsMaterialsCreate = (data: CreateTipModel, params: RequestParams = {}) =>
-    this.request<TipModel, ProblemDetails>({
-      path: `/api/Tips/Materials`,
-      method: "POST",
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      format: "json",
-      ...params,
-    });
+  export namespace TipsMaterialsCreate {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = CreateTipModel;
+    export type RequestHeaders = {};
+    export type ResponseBody = TipModel;
+  }
+
   /**
    * No description
-   *
    * @tags Tips
    * @name TipsMaterialsUpdate
    * @summary Редактировать совет по материалу
    * @request PUT:/api/Tips/Materials
    * @secure
    */
-  tipsMaterialsUpdate = (data: UpdateTipModel, params: RequestParams = {}) =>
-    this.request<TipModel, ProblemDetails>({
-      path: `/api/Tips/Materials`,
-      method: "PUT",
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      format: "json",
-      ...params,
-    });
+  export namespace TipsMaterialsUpdate {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = UpdateTipModel;
+    export type RequestHeaders = {};
+    export type ResponseBody = TipModel;
+  }
+
   /**
    * No description
-   *
    * @tags Tips
    * @name TipsMaterialsFilesCreate
    * @request POST:/api/Tips/Materials/Files/{id}
    * @secure
    */
-  tipsMaterialsFilesCreate = (id: string, data: FileModel, params: RequestParams = {}) =>
-    this.request<TipModel, ProblemDetails>({
-      path: `/api/Tips/Materials/Files/${id}`,
-      method: "POST",
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      format: "json",
-      ...params,
-    });
+  export namespace TipsMaterialsFilesCreate {
+    export type RequestParams = {
+      /** @format uuid */
+      id: string;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = FileModel;
+    export type RequestHeaders = {};
+    export type ResponseBody = TipModel;
+  }
+
   /**
    * No description
-   *
    * @tags Tips
    * @name TipsMaterialsFilesDelete
    * @summary Удалить файл совета по материалу
    * @request DELETE:/api/Tips/Materials/Files
    * @secure
    */
-  tipsMaterialsFilesDelete = (
-    query?: {
+  export namespace TipsMaterialsFilesDelete {
+    export type RequestParams = {};
+    export type RequestQuery = {
       /**
        * ИД
        * @format uuid
        */
       id?: string;
-    },
-    params: RequestParams = {},
-  ) =>
-    this.request<void, ProblemDetails>({
-      path: `/api/Tips/Materials/Files`,
-      method: "DELETE",
-      query: query,
-      secure: true,
-      ...params,
-    });
+    };
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = void;
+  }
+
   /**
    * No description
-   *
    * @tags Users
    * @name UsersDetail
    * @summary Получить юзера по ИД
    * @request GET:/api/Users/{id}
    * @secure
    */
-  usersDetail = (id: string, params: RequestParams = {}) =>
-    this.request<UserModel, ProblemDetails>({
-      path: `/api/Users/${id}`,
-      method: "GET",
-      secure: true,
-      format: "json",
-      ...params,
-    });
+  export namespace UsersDetail {
+    export type RequestParams = {
+      /**
+       * ИД
+       * @format uuid
+       */
+      id: string;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = UserModel;
+  }
+
   /**
    * No description
-   *
    * @tags Users
    * @name UsersDelete
    * @summary Удалить пользователя
    * @request DELETE:/api/Users/{id}
    * @secure
    */
-  usersDelete = (id: string, params: RequestParams = {}) =>
-    this.request<void, ProblemDetails>({
-      path: `/api/Users/${id}`,
-      method: "DELETE",
-      secure: true,
-      ...params,
-    });
+  export namespace UsersDelete {
+    export type RequestParams = {
+      /**
+       * ИД
+       * @format uuid
+       */
+      id: string;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = void;
+  }
+
   /**
    * No description
-   *
    * @tags Users
    * @name UsersList
    * @summary Получить юзеров по фильтру
    * @request GET:/api/Users
    * @secure
    */
-  usersList = (
-    query?: {
+  export namespace UsersList {
+    export type RequestParams = {};
+    export type RequestQuery = {
       /** login */
       Username?: string;
       /** Имя */
@@ -3906,86 +3853,79 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
       updateDtEnd?: string;
       /** Отметка удаления */
       IsDeleted?: boolean;
-    },
-    params: RequestParams = {},
-  ) =>
-    this.request<UserModelDataResult, ProblemDetails>({
-      path: `/api/Users`,
-      method: "GET",
-      query: query,
-      secure: true,
-      format: "json",
-      ...params,
-    });
+    };
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = UserModelDataResult;
+  }
+
   /**
    * No description
-   *
    * @tags Users
    * @name UsersCreate
    * @summary Создать нового пользователя
    * @request POST:/api/Users
    * @secure
    */
-  usersCreate = (data: CreateUserModel, params: RequestParams = {}) =>
-    this.request<UserModel, any>({
-      path: `/api/Users`,
-      method: "POST",
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      format: "json",
-      ...params,
-    });
+  export namespace UsersCreate {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = CreateUserModel;
+    export type RequestHeaders = {};
+    export type ResponseBody = UserModel;
+  }
+
   /**
  * No description
- *
  * @tags Users
  * @name UsersUpdate
  * @summary Редактирование пользователя
 Адммин бренда может назначать обычных пользователей своими сотрудниками, а так же уволить существующих
  * @request PUT:/api/Users
  * @secure
- */
-  usersUpdate = (data: UpdateUserModel, params: RequestParams = {}) =>
-    this.request<UserModel, ProblemDetails>({
-      path: `/api/Users`,
-      method: "PUT",
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      format: "json",
-      ...params,
-    });
+*/
+  export namespace UsersUpdate {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = UpdateUserModel;
+    export type RequestHeaders = {};
+    export type ResponseBody = UserModel;
+  }
+
   /**
    * No description
-   *
    * @tags Users
    * @name UsersCheckDetail
    * @summary Проверка свободен ли никнейм
    * @request GET:/api/Users/Check/{username}
    * @secure
    */
-  usersCheckDetail = (username: string, params: RequestParams = {}) =>
-    this.request<boolean, any>({
-      path: `/api/Users/Check/${username}`,
-      method: "GET",
-      secure: true,
-      format: "json",
-      ...params,
-    });
+  export namespace UsersCheckDetail {
+    export type RequestParams = {
+      /** Проверяемый никнейм */
+      username: string;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = boolean;
+  }
+
   /**
    * No description
-   *
    * @tags Views
    * @name ViewsDetail
    * @summary Запрос просмотров для сущностей
    * @request GET:/api/Views/{entity}/{id}
    * @secure
    */
-  viewsDetail = (
-    entity: EnitityViewType,
-    id: string,
-    query?: {
+  export namespace ViewsDetail {
+    export type RequestParams = {
+      entity: EnitityViewType;
+      /** @format uuid */
+      id: string;
+    };
+    export type RequestQuery = {
       /**
        * Номер страницы (по умолчанию = 1).
        * @format int32
@@ -4000,48 +3940,48 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
       SortMember?: string;
       /** Направление сортировки - по возрастанию */
       Ascending?: boolean;
-    },
-    params: RequestParams = {},
-  ) =>
-    this.request<EntityViewModelDataResult, ProblemDetails>({
-      path: `/api/Views/${entity}/${id}`,
-      method: "GET",
-      query: query,
-      secure: true,
-      format: "json",
-      ...params,
-    });
+    };
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = EntityViewModelDataResult;
+  }
+
   /**
    * No description
-   *
    * @tags Views
    * @name ViewsCreate
    * @request POST:/api/Views/{entity}/{id}
    * @secure
    */
-  viewsCreate = (entity: EnitityViewType, id: string, params: RequestParams = {}) =>
-    this.request<EntityViewModelDataResult, ProblemDetails>({
-      path: `/api/Views/${entity}/${id}`,
-      method: "POST",
-      secure: true,
-      format: "json",
-      ...params,
-    });
+  export namespace ViewsCreate {
+    export type RequestParams = {
+      entity: EnitityViewType;
+      /** @format uuid */
+      id: string;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = EntityViewModelDataResult;
+  }
+
   /**
    * No description
-   *
    * @tags Views
    * @name ViewsCountDetail
    * @summary Запрос количества просмотров для сущностей
    * @request GET:/api/Views/{entity}/{id}/Count
    * @secure
    */
-  viewsCountDetail = (entity: EnitityViewType, id: string, params: RequestParams = {}) =>
-    this.request<number, ProblemDetails>({
-      path: `/api/Views/${entity}/${id}/Count`,
-      method: "GET",
-      secure: true,
-      format: "json",
-      ...params,
-    });
+  export namespace ViewsCountDetail {
+    export type RequestParams = {
+      entity: EnitityViewType;
+      /** @format uuid */
+      id: string;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = number;
+  }
 }
