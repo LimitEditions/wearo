@@ -24,11 +24,7 @@ export const Confirm = ({
     const isAuth = useAuth(true);
     // создание уникального id запроса и внесение его в LS
     useEffect(() => {
-        const key = `${mode}-guid`;
-        if (!localStorage.getItem(key)) {
-            const newGuid = uuidv4();
-            encrypt(key, newGuid);
-        }
+        encrypt(`${mode}-guid`, uuidv4());
     }, [mode]);
 
     const [text, setText] = useState<string>("");
