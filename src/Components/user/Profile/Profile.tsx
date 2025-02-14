@@ -57,21 +57,21 @@ export const Profile = () => {
         <div className="w-full px-3">
             <h2 className="text-xl font-bold my-4">Профиль</h2>
             <div className="flex items-center" onClick={() => setModal(true)}>
-                <div className="m-4">
+                <div className="rounded-full mr-3 bg-[#84848466] bg-opacity-50 p-5">
                     <Photo
                         id={profileInfo.mainAvatarGuid || null}
-                        styles="w-14 h-14 rounded-full"
-                        alt="фото профиля"
+                        styles="w-11 h-11"
+                        alt={"foto"}
                     />
                 </div>
                 <p>{profileInfo.username}</p>
             </div>
             <Button
                 showButton={true}
-                styles="flex w-full rounded-xl my-3  py-4 pl-16 bg-violet items-center justify-start gap-3 hover:bg-[#948DFE]"
+                styles="flex w-full rounded-xl my-3 py-4 pl-16 bg-violet items-center justify-start gap-3 hover:bg-[#948DFE]"
                 onClick={() => navigate("./scan")}
             >
-                <img src="/images/scan.svg" alt="значок сканирования изделия"/>
+                <img src="/images/scan.svg" />
                 Отсканировать изделие
             </Button>
             <Button
@@ -79,7 +79,7 @@ export const Profile = () => {
                 styles="flex w-full rounded-xl mb-3  py-4 pl-16 bg-violet items-center justify-start gap-3 hover:bg-[#948DFE]"
                 onClick={() => navigate("./scan")}
             >
-                <img src="/images/check.svg" alt="значок проверки оригинальности изделия"/>
+                <img src="/images/check.svg" />
                 Проверить оригинальность
             </Button>
 

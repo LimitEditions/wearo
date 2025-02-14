@@ -53,13 +53,12 @@ import {
   CreatePromotionModel,
   CreatePushSubscribtionModel,
   CreateScanModel,
-  CreateSizeChartModel,
   CreateStoryModel,
   CreateSubscriptionModel,
   CreateTipModel,
   CreateUserModel,
-  EnitityLikeType,
   EnitityViewType,
+  EntityType,
   EntityViewModelDataResult,
   FavoriteModel,
   FavoriteModelDataResult,
@@ -68,20 +67,16 @@ import {
   FileType,
   FilterType,
   ForwardMessagesModel,
-  GetPushSubscribtionsModel,
   HighlightModel,
   HighlightModelDataResult,
   ImportResult,
-  LikeModel,
-  LikeModelDataResult,
+  Int32DataResult,
   LookModel,
   LookModelDataResult,
   MaterialModel,
   MessageModel,
   MessageModelDataResult,
   NotificationData,
-  NotificationSubscriptionModel,
-  NotificationSubscriptionModelDataResult,
   PostFileModel,
   PostModel,
   PostModelDataResult,
@@ -104,8 +99,6 @@ import {
   ScanModel,
   ScanModelDataResult,
   Season,
-  SizeChartModel,
-  SizeChartModelDataResult,
   StoryModel,
   StoryModelDataResult,
   StringDataResult,
@@ -1096,92 +1089,6 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
   /**
    * No description
    *
-   * @tags Likes
-   * @name LikesDetail
-   * @summary Запрос лайков для сущностей
-   * @request GET:/api/Likes/{entity}/{id}
-   * @secure
-   */
-  likesDetail = (
-    id: string,
-    entity: EnitityLikeType,
-    query?: {
-      /**
-       * Номер страницы (по умолчанию = 1).
-       * @format int32
-       */
-      Page?: number;
-      /**
-       * Размер страницы (по умолчанию = 25).
-       * @format int32
-       */
-      PageSize?: number;
-    },
-    params: RequestParams = {},
-  ) =>
-    this.request<LikeModelDataResult, ProblemDetails>({
-      path: `/api/Likes/${entity}/${id}`,
-      method: "GET",
-      query: query,
-      secure: true,
-      format: "json",
-      ...params,
-    });
-  /**
-   * No description
-   *
-   * @tags Likes
-   * @name LikesDelete
-   * @summary Удалить лайк.
-   * @request DELETE:/api/Likes/{entity}/{id}
-   * @secure
-   */
-  likesDelete = (id: string, entity: EnitityLikeType, params: RequestParams = {}) =>
-    this.request<void, ProblemDetails>({
-      path: `/api/Likes/${entity}/${id}`,
-      method: "DELETE",
-      secure: true,
-      ...params,
-    });
-  /**
-   * No description
-   *
-   * @tags Likes
-   * @name LikesCountDetail
-   * @summary Запрос кол-ва лайков для сущностей
-   * @request GET:/api/Likes/{entity}/{id}/Count
-   * @secure
-   */
-  likesCountDetail = (id: string, entity: EnitityLikeType, params: RequestParams = {}) =>
-    this.request<number, ProblemDetails>({
-      path: `/api/Likes/${entity}/${id}/Count`,
-      method: "GET",
-      secure: true,
-      format: "json",
-      ...params,
-    });
-  /**
-   * No description
-   *
-   * @tags Likes
-   * @name LikesCreate
-   * @summary Запрос лайков для сущностей
-   * @request POST:/api/Likes/{entity}
-   * @secure
-   */
-  likesCreate = (entity: EnitityLikeType, data: CreateLikeModel, params: RequestParams = {}) =>
-    this.request<LikeModel, ProblemDetails>({
-      path: `/api/Likes/${entity}`,
-      method: "POST",
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      format: "json",
-      ...params,
-    });
-  /**
-   * No description
-   *
    * @tags Looks
    * @name LooksDetail
    * @summary Получить образ по ИД
@@ -1354,16 +1261,18 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
  * No description
  *
  * @tags Looks
- * @name LooksFileDelete
+ * @name LooksFileCreate2
  * @summary Удаление продукта от лука
 Так же у других файлов лука будет изменена позиция
- * @request DELETE:/api/Looks/File/{guid}
+ * @request POST:/api/Looks/File/{guid}
+ * @originalName looksFileCreate
+ * @duplicate
  * @secure
  */
-  looksFileDelete = (guid: string, params: RequestParams = {}) =>
+  looksFileCreate2 = (guid: string, params: RequestParams = {}) =>
     this.request<void, ProblemDetails>({
       path: `/api/Looks/File/${guid}`,
-      method: "DELETE",
+      method: "POST",
       secure: true,
       ...params,
     });
@@ -1390,15 +1299,17 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * No description
    *
    * @tags Looks
-   * @name LooksProductDelete
+   * @name LooksProductCreate2
    * @summary Удаление продукта от лука
-   * @request DELETE:/api/Looks/Product/{guid}
+   * @request POST:/api/Looks/Product/{guid}
+   * @originalName looksProductCreate
+   * @duplicate
    * @secure
    */
-  looksProductDelete = (guid: string, params: RequestParams = {}) =>
+  looksProductCreate2 = (guid: string, params: RequestParams = {}) =>
     this.request<void, ProblemDetails>({
       path: `/api/Looks/Product/${guid}`,
-      method: "DELETE",
+      method: "POST",
       secure: true,
       ...params,
     });
@@ -1425,15 +1336,17 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * No description
    *
    * @tags Looks
-   * @name LooksTagDelete
+   * @name LooksTagCreate2
    * @summary Удаление тега от лука
-   * @request DELETE:/api/Looks/Tag/{guid}
+   * @request POST:/api/Looks/Tag/{guid}
+   * @originalName looksTagCreate
+   * @duplicate
    * @secure
    */
-  looksTagDelete = (guid: string, params: RequestParams = {}) =>
+  looksTagCreate2 = (guid: string, params: RequestParams = {}) =>
     this.request<void, ProblemDetails>({
       path: `/api/Looks/Tag/${guid}`,
-      method: "DELETE",
+      method: "POST",
       secure: true,
       ...params,
     });
@@ -1785,19 +1698,10 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
       UserGuid?: string;
       /** @format uuid */
       EntityGuid?: string;
-      /** @format uuid */
-      ReplyAtGuid?: string;
-      IgnoreReplies?: boolean;
       Text?: string;
-      /**
-       * Номер страницы (по умолчанию = 1).
-       * @format int32
-       */
+      /** @format int32 */
       Page?: number;
-      /**
-       * Размер страницы (по умолчанию = 25).
-       * @format int32
-       */
+      /** @format int32 */
       PageSize?: number;
     },
     params: RequestParams = {},
@@ -2155,23 +2059,6 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * No description
    *
    * @tags ProductItems
-   * @name ProductItemsByCodeCheckDetail
-   * @summary Проверка оригинальности вещи
-   * @request GET:/api/ProductItems/ByCode/{code}/Check/{tagUid}
-   * @secure
-   */
-  productItemsByCodeCheckDetail = (code: string, tagUid: string, params: RequestParams = {}) =>
-    this.request<boolean, ProblemDetails>({
-      path: `/api/ProductItems/ByCode/${code}/Check/${tagUid}`,
-      method: "GET",
-      secure: true,
-      format: "json",
-      ...params,
-    });
-  /**
-   * No description
-   *
-   * @tags ProductItems
    * @name ProductItemsList
    * @summary Поиск едениц изделий
    * @request GET:/api/ProductItems
@@ -2268,133 +2155,6 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
   /**
    * No description
    *
-   * @tags ProductReviews
-   * @name ProductReviewsDetail
-   * @summary Получить по ид
-   * @request GET:/api/ProductReviews/{id}
-   * @secure
-   */
-  productReviewsDetail = (id: string, params: RequestParams = {}) =>
-    this.request<CommentModel, ProblemDetails>({
-      path: `/api/ProductReviews/${id}`,
-      method: "GET",
-      secure: true,
-      format: "json",
-      ...params,
-    });
-  /**
-   * No description
-   *
-   * @tags ProductReviews
-   * @name ProductReviewsDelete
-   * @request DELETE:/api/ProductReviews/{id}
-   * @secure
-   */
-  productReviewsDelete = (id: string, params: RequestParams = {}) =>
-    this.request<void, ProblemDetails>({
-      path: `/api/ProductReviews/${id}`,
-      method: "DELETE",
-      secure: true,
-      ...params,
-    });
-  /**
-   * No description
-   *
-   * @tags ProductReviews
-   * @name ProductReviewsLikesDetail
-   * @summary Получить количество лайков на обзоре
-   * @request GET:/api/ProductReviews/{id}/likes
-   * @secure
-   */
-  productReviewsLikesDetail = (id: string, params: RequestParams = {}) =>
-    this.request<number, ProblemDetails>({
-      path: `/api/ProductReviews/${id}/likes`,
-      method: "GET",
-      secure: true,
-      format: "json",
-      ...params,
-    });
-  /**
-   * No description
-   *
-   * @tags ProductReviews
-   * @name ProductReviewsList
-   * @summary Поиск коментов
-   * @request GET:/api/ProductReviews
-   * @secure
-   */
-  productReviewsList = (
-    query?: {
-      /** @format uuid */
-      UserGuid?: string;
-      /** @format uuid */
-      EntityGuid?: string;
-      /** @format uuid */
-      ReplyAtGuid?: string;
-      IgnoreReplies?: boolean;
-      Text?: string;
-      /**
-       * Номер страницы (по умолчанию = 1).
-       * @format int32
-       */
-      Page?: number;
-      /**
-       * Размер страницы (по умолчанию = 25).
-       * @format int32
-       */
-      PageSize?: number;
-    },
-    params: RequestParams = {},
-  ) =>
-    this.request<CommentModelDataResult, any>({
-      path: `/api/ProductReviews`,
-      method: "GET",
-      query: query,
-      secure: true,
-      format: "json",
-      ...params,
-    });
-  /**
-   * No description
-   *
-   * @tags ProductReviews
-   * @name ProductReviewsCreate
-   * @summary Создание комментария
-   * @request POST:/api/ProductReviews
-   * @secure
-   */
-  productReviewsCreate = (data: CreateCommentModel, params: RequestParams = {}) =>
-    this.request<CommentModel, ProblemDetails>({
-      path: `/api/ProductReviews`,
-      method: "POST",
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      format: "json",
-      ...params,
-    });
-  /**
-   * No description
-   *
-   * @tags ProductReviews
-   * @name ProductReviewsUpdate
-   * @summary Модель редактирования коммента
-   * @request PUT:/api/ProductReviews
-   * @secure
-   */
-  productReviewsUpdate = (data: UpdateCommentModel, params: RequestParams = {}) =>
-    this.request<CommentModel, ProblemDetails>({
-      path: `/api/ProductReviews`,
-      method: "PUT",
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      format: "json",
-      ...params,
-    });
-  /**
-   * No description
-   *
    * @tags Products
    * @name ProductsDetail
    * @summary Получить конкретный продукт
@@ -2413,22 +2173,6 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * No description
    *
    * @tags Products
-   * @name ProductsDelete
-   * @summary Удалить продукт
-   * @request DELETE:/api/Products/{id}
-   * @secure
-   */
-  productsDelete = (id: string, params: RequestParams = {}) =>
-    this.request<void, ProblemDetails>({
-      path: `/api/Products/${id}`,
-      method: "DELETE",
-      secure: true,
-      ...params,
-    });
-  /**
-   * No description
-   *
-   * @tags Products
    * @name ProductsList
    * @summary Поиск продуктов по фильтрам
    * @request GET:/api/Products
@@ -2436,8 +2180,6 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    */
   productsList = (
     query?: {
-      /** Поиск по тексту */
-      Text?: string;
       /** Бренд */
       BrandsGuid?: string[];
       /** Статус вещи */
@@ -2513,6 +2255,32 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
       secure: true,
       type: ContentType.Json,
       format: "json",
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags Products
+   * @name ProductsDelete
+   * @summary Удалить продукт
+   * @request DELETE:/api/Products
+   * @secure
+   */
+  productsDelete = (
+    query?: {
+      /**
+       * ИД продукта
+       * @format uuid
+       */
+      id?: string;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<void, ProblemDetails>({
+      path: `/api/Products`,
+      method: "DELETE",
+      query: query,
+      secure: true,
       ...params,
     });
   /**
@@ -2837,7 +2605,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags Promotions
    * @name PromotionsUpdate
-   * @summary Модель редактирования промо-акции
+   * @summary Модель редактирования коммента
    * @request PUT:/api/Promotions
    * @secure
    */
@@ -2955,40 +2723,6 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * No description
    *
    * @tags Push
-   * @name PushList
-   * @request GET:/api/Push
-   * @secure
-   */
-  pushList = (data: GetPushSubscribtionsModel, params: RequestParams = {}) =>
-    this.request<NotificationSubscriptionModelDataResult, any>({
-      path: `/api/Push`,
-      method: "GET",
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      format: "json",
-      ...params,
-    });
-  /**
-   * No description
-   *
-   * @tags Push
-   * @name PushMyList
-   * @request GET:/api/Push/My
-   * @secure
-   */
-  pushMyList = (params: RequestParams = {}) =>
-    this.request<NotificationSubscriptionModel, any>({
-      path: `/api/Push/My`,
-      method: "GET",
-      secure: true,
-      format: "json",
-      ...params,
-    });
-  /**
-   * No description
-   *
-   * @tags Push
    * @name PushSendCreate
    * @request POST:/api/Push/Send
    * @secure
@@ -3094,123 +2828,6 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
     this.request<ScanModel, ProblemDetails>({
       path: `/api/Scans`,
       method: "POST",
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      format: "json",
-      ...params,
-    });
-  /**
-   * No description
-   *
-   * @tags SizeCharts
-   * @name SizeChartsDetail
-   * @summary Получение размерной сетки по идентификатору
-   * @request GET:/api/SizeCharts/{id}
-   * @secure
-   */
-  sizeChartsDetail = (id: string, params: RequestParams = {}) =>
-    this.request<SizeChartModel, ProblemDetails>({
-      path: `/api/SizeCharts/${id}`,
-      method: "GET",
-      secure: true,
-      format: "json",
-      ...params,
-    });
-  /**
-   * No description
-   *
-   * @tags SizeCharts
-   * @name SizeChartsDelete
-   * @summary Удаление размерной сетки
-   * @request DELETE:/api/SizeCharts/{id}
-   * @secure
-   */
-  sizeChartsDelete = (id: string, params: RequestParams = {}) =>
-    this.request<void, ProblemDetails>({
-      path: `/api/SizeCharts/${id}`,
-      method: "DELETE",
-      secure: true,
-      ...params,
-    });
-  /**
- * No description
- *
- * @tags SizeCharts
- * @name SizeChartsList
- * @summary Поиск брендов по фильтрам
-Для неадминов возвращает не удалённые записи
- * @request GET:/api/SizeCharts
- * @secure
- */
-  sizeChartsList = (
-    query?: {
-      /**
-       * Бренд.
-       * @format uuid
-       */
-      BrandGuid?: string;
-      /** Список категорий. */
-      Categories?: string[];
-      /** Наименование. */
-      Name?: string;
-      /**
-       * Номер страницы (по умолчанию = 1).
-       * @format int32
-       */
-      Page?: number;
-      /**
-       * Размер страницы (по умолчанию = 25).
-       * @format int32
-       */
-      PageSize?: number;
-      /** Поле, по которому происходит сортировка */
-      SortMember?: string;
-      /** Направление сортировки - по возрастанию */
-      Ascending?: boolean;
-    },
-    params: RequestParams = {},
-  ) =>
-    this.request<SizeChartModelDataResult, any>({
-      path: `/api/SizeCharts`,
-      method: "GET",
-      query: query,
-      secure: true,
-      format: "json",
-      ...params,
-    });
-  /**
-   * No description
-   *
-   * @tags SizeCharts
-   * @name SizeChartsCreate
-   * @summary Создание новой размерной сетки
-   * @request POST:/api/SizeCharts
-   * @secure
-   */
-  sizeChartsCreate = (data: CreateSizeChartModel, params: RequestParams = {}) =>
-    this.request<SizeChartModel, ProblemDetails>({
-      path: `/api/SizeCharts`,
-      method: "POST",
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      format: "json",
-      ...params,
-    });
-  /**
-   * No description
-   *
-   * @tags SizeCharts
-   * @name SizeChartsUpdate
-   * @summary Изменение размерной сетки
-   * @request PUT:/api/SizeCharts
-   * @secure
-   */
-  sizeChartsUpdate = (data: any, params: RequestParams = {}) =>
-    this.request<SizeChartModel, ProblemDetails>({
-      path: `/api/SizeCharts`,
-      method: "PUT",
       body: data,
       secure: true,
       type: ContentType.Json,
@@ -3335,12 +2952,12 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @tags Stories
    * @name StoriesHighlightsDetail
    * @summary Получить хайлайт по ид
-   * @request GET:/api/Stories/Highlights/{id}
+   * @request GET:/api/Stories/{id}
    * @secure
    */
   storiesHighlightsDetail = (id: string, params: RequestParams = {}) =>
     this.request<HighlightModel, ProblemDetails>({
-      path: `/api/Stories/Highlights/${id}`,
+      path: `/api/Stories/${id}`,
       method: "GET",
       secure: true,
       format: "json",
@@ -3564,22 +3181,6 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
       path: `/api/Subscriptions/${id}`,
       method: "DELETE",
       secure: true,
-      ...params,
-    });
-  /**
-   * No description
-   *
-   * @tags Test
-   * @name TestList
-   * @request GET:/api/Test
-   * @secure
-   */
-  testList = (params: RequestParams = {}) =>
-    this.request<string, any>({
-      path: `/api/Test`,
-      method: "GET",
-      secure: true,
-      format: "json",
       ...params,
     });
   /**
@@ -3859,10 +3460,6 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
       FirstName?: string;
       /** Фамилия */
       SecondName?: string;
-      /** Почта */
-      Email?: string;
-      /** Телефон */
-      Phone?: string;
       /** Тип пользователя */
       Types?: UserType[];
       /**
@@ -3942,7 +3539,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
  * @tags Users
  * @name UsersUpdate
  * @summary Редактирование пользователя
-Адммин бренда может назначать обычных пользователей своими сотрудниками, а так же уволить существующих
+Адммин бренда может назначать обычных пользователей своими сотрудниками
  * @request PUT:/api/Users
  * @secure
  */
@@ -4019,10 +3616,18 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @request POST:/api/Views/{entity}/{id}
    * @secure
    */
-  viewsCreate = (entity: EnitityViewType, id: string, params: RequestParams = {}) =>
+  viewsCreate = (
+    id: string,
+    entity: string,
+    query?: {
+      entity?: EnitityViewType;
+    },
+    params: RequestParams = {},
+  ) =>
     this.request<EntityViewModelDataResult, ProblemDetails>({
       path: `/api/Views/${entity}/${id}`,
       method: "POST",
+      query: query,
       secure: true,
       format: "json",
       ...params,
@@ -4036,11 +3641,71 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @request GET:/api/Views/{entity}/{id}/Count
    * @secure
    */
-  viewsCountDetail = (entity: EnitityViewType, id: string, params: RequestParams = {}) =>
-    this.request<number, ProblemDetails>({
+  viewsCountDetail = (
+    entity: EnitityViewType,
+    id: string,
+    query?: {
+      /**
+       * Номер страницы (по умолчанию = 1).
+       * @format int32
+       */
+      Page?: number;
+      /**
+       * Размер страницы (по умолчанию = 25).
+       * @format int32
+       */
+      PageSize?: number;
+      /** Поле, по которому происходит сортировка */
+      SortMember?: string;
+      /** Направление сортировки - по возрастанию */
+      Ascending?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<Int32DataResult, ProblemDetails>({
       path: `/api/Views/${entity}/${id}/Count`,
       method: "GET",
+      query: query,
       secure: true,
+      format: "json",
+      ...params,
+    });
+
+    /**
+   * No description
+   *
+   * @tags Likes
+   * @name addLike
+   * @summary Добавить лайк сущности
+   * @request POST:/api/Likes/{entity}
+   * @secure
+   */
+  addLike = (data: CreateLikeModel, params: RequestParams = {}, pathParams: any = {}) =>
+    this.request<any, ProblemDetails>({
+      path: `/api/Likes/${pathParams['entity'] ?? ""}`,
+      method: "POST",
+      body: data,
+      secure: true,
+      type: ContentType.Json,
+      format: "json",
+      ...params,
+    });
+    
+    /**
+   * No description
+   *
+   * @tags Likes
+   * @name get Likes
+   * @summary получить лайк сущностей
+   * @request GET:/api/Likes/{entity}/{id}/Count
+   * @secure
+   */
+  getLikesCount = (entityId: string, params: RequestParams = {}, pathParams: any = {}) =>
+    this.request<any, ProblemDetails>({
+      path: `/api/Likes/${pathParams['entity'] ?? ""}/${entityId}/Count`,
+      method: "GET",
+      secure: true,
+      type: ContentType.Json,
       format: "json",
       ...params,
     });
