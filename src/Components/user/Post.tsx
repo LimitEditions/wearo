@@ -11,9 +11,11 @@ import {
     readingOnDark,
 } from "../../types/interfaces/IReading";
 import { retrieve } from "../../utils/encryption";
+import { IconLike } from "../common/icons/IconLike";
+import { IconComment } from "../common/icons/IconComment";
+import { IconMenu } from "../common/icons/IconMenu";
 import { CommentsList } from "./CommentsList";
 import { Modal } from "../common/Modal";
-import IconWrapper from "../common/icons/IconWrapper";
 
 export const Post = ({ id }: { id: string }) => {
     const navigate = useNavigate();
@@ -39,7 +41,7 @@ export const Post = ({ id }: { id: string }) => {
     const sendLikeApi = useApiNew('likesCreate', { token: true, immediate: false}, { entity: EnitityLikeType.Post})
     const getLikesApi = useApiNew('likesCountDetail', { token: true, immediate: false}, { entity: EnitityLikeType.Post})
     useEffect(() => {
-        if (postData && postData?.brandGuid) {
+        if (postData) {
             setGetInfo(true);
         }
     }, [postData]);
@@ -162,8 +164,7 @@ export const Post = ({ id }: { id: string }) => {
                                         })
                                     })
                                 }}>
-                                    <IconWrapper iconName="IconLike" params={{defaultColor: "black", hoverable: false, hoverColor: "white"}}/>
-                                
+                                    <IconLike hoverColor="white" hoverable={false} defaultColor="black"/>
                                 </div>
                                 <p style={{margin: "0px"}} className={`text-black ${readingMode.lines}`}>
                                     {postData.likesCount}
@@ -171,14 +172,13 @@ export const Post = ({ id }: { id: string }) => {
                                 <div onClick={() => {
                                     setCommentsOpen((prev) => !prev)
                                 }}>
-                                    <IconWrapper iconName="IconComment" params={{defaultColor: "black", hoverable: false}}/>
-
+                                    <IconComment defaultColor="black"/>
                                 </div>
                                 <p style={{margin: "0px"}} className={`text-black ${readingMode.lines}`}>
                                     {postData.commentsCount}
                                 </p>
                                 <div onClick={() => {/* TODO ADD COMMENTS */}}>
-                                <IconWrapper iconName="IconMenu" params={{defaultColor: "black", hoverable: false}}/>
+                                    <IconMenu strokeColor="black"/>
                                 </div>
                             </div>
 

@@ -23,19 +23,19 @@ const placeholderTips = [
       guid: 'placeholder1',
       name: 'Tip 1',
       text: 'This is a placeholder tip.',
-      files: [{ fileGuid: "/images/defaultPhoto.svg", guid: 'img1' }]
+      files: [{ fileGuid: 'https://via.placeholder.com/150?text=1', guid: 'img1' }]
     },
     {
       guid: 'placeholder2',
       name: 'Tip 2',
       text: 'This is another placeholder tip.',
-      files: [{ fileGuid: "/images/defaultPhoto.svg", guid: 'img2' }]
+      files: [{ fileGuid: 'https://via.placeholder.com/150?text=2', guid: 'img2' }]
     },
     {
       guid: 'placeholder3',
       name: 'Tip 3',
       text: 'Yet another placeholder tip.',
-      files: [{ fileGuid: "/images/defaultPhoto.svg", guid: 'img3' }]
+      files: [{ fileGuid: 'https://via.placeholder.com/150?text=3', guid: 'img3' }]
     }
   ];
 
@@ -45,14 +45,14 @@ const placeholderTips = [
     <>
       <Slider {...settings}>
         {displayTips.map(tip => (
-          <div key={tip.guid} className={'w-full'}>
+          <div key={tip.guid} className={getStyles(tipStyle)}>
             <h3>{tip.name}</h3>
             {tip.files?.map(file => (
                 <img 
                 key={file.fileGuid}
                 src={file.fileGuid}
                 alt="file"
-                className={'w-full h-auto object-contain p-1'} 
+                className={getStyles(imgStyle)} 
                 />
             ))}
             <p>{tip.text}</p>
@@ -61,4 +61,13 @@ const placeholderTips = [
       </Slider>
     </>
   );
+};
+
+
+const tipStyle: BlockStyle = {
+  container: 'w-full',
+};
+
+const imgStyle: BlockStyle = {
+  container: 'w-full h-auto object-contain p-1',
 };
