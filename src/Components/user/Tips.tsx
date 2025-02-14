@@ -23,17 +23,20 @@ const placeholderTips = [
       name: 'Tip 1',
       text: 'This is a placeholder tip.',
       files: [{ fileGuid: 'https://via.placeholder.com/150?text=1', guid: 'img1' }]
+      files: [{ fileGuid: 'https://via.placeholder.com/150?text=1', guid: 'img1' }]
     },
     {
       guid: 'placeholder2',
       name: 'Tip 2',
       text: 'This is another placeholder tip.',
       files: [{ fileGuid: 'https://via.placeholder.com/150?text=2', guid: 'img2' }]
+      files: [{ fileGuid: 'https://via.placeholder.com/150?text=2', guid: 'img2' }]
     },
     {
       guid: 'placeholder3',
       name: 'Tip 3',
       text: 'Yet another placeholder tip.',
+      files: [{ fileGuid: 'https://via.placeholder.com/150?text=3', guid: 'img3' }]
       files: [{ fileGuid: 'https://via.placeholder.com/150?text=3', guid: 'img3' }]
     }
   ];
