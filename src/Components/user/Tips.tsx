@@ -3,8 +3,7 @@ import { TipModel } from '../../api/data-contracts';
 import Slider from 'react-slick';
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css";
-import { BlockStyle } from '../../types/interfaces/IStyles';
-import getStyles from '../../utils/getStyles';
+
 
 export const Tips = ({ tips }: {tips: TipModel[] }) => {
   // Настройки для слайдера
@@ -45,14 +44,14 @@ const placeholderTips = [
     <>
       <Slider {...settings}>
         {displayTips.map(tip => (
-          <div key={tip.guid} className={getStyles(tipStyle)}>
+          <div key={tip.guid} className={'w-full'}>
             <h3>{tip.name}</h3>
             {tip.files?.map(file => (
                 <img 
                 key={file.fileGuid}
                 src={file.fileGuid}
                 alt="file"
-                className={getStyles(imgStyle)} 
+                className={'w-full h-auto object-contain p-1'} 
                 />
             ))}
             <p>{tip.text}</p>
@@ -61,13 +60,4 @@ const placeholderTips = [
       </Slider>
     </>
   );
-};
-
-
-const tipStyle: BlockStyle = {
-  container: 'w-full',
-};
-
-const imgStyle: BlockStyle = {
-  container: 'w-full h-auto object-contain p-1',
 };
