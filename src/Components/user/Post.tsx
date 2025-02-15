@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import useApi, { useApiNew } from "../../hooks/useApi";
-import { BrandModel, EntityType, PostModel } from "../../api/data-contracts";
+import { BrandModel, PostModel } from "../../api/data-contracts";
 import { Photo } from "../common/Photo";
 import { useNavigate } from "react-router-dom";
 import { Switcher } from "../common/Switcher";
@@ -20,13 +20,12 @@ import { Modal } from "../common/Modal";
 export const Post = ({ id }: { id: string }) => {
     const navigate = useNavigate();
     // данные по посту
-    const getPostDataApi = useApiNew<PostModel>("postsDetail", { token: true, immediate: false})
+    const getPostDataApi = useApiNew<PostModel>("postsDetail", { token: true, immediate: true, body: id })
+    
     const [postData, setPostData] = useState<PostModel>({})
     useEffect(() => {
-        getPostDataApi.execute(id).then((data) => {
-            setPostData(data)
-        })
-    }, [])
+        if (!getPostDataApi.error && getPostDataApi.data) setPostData(getPostDataApi.data);
+    }, [getPostDataApi])
 
     // данные по бренду
     const [getInfo, setGetInfo] = useState<boolean>(false);
@@ -38,8 +37,8 @@ export const Post = ({ id }: { id: string }) => {
     );
     const userId = retrieve('guid');
     
-    const sendLikeApi = useApiNew('addLike', { token: true, immediate: false}, { entity: EntityType.Post})
-    const getLikesApi = useApiNew('getLikesCount', { token: true, immediate: false}, { entity: EntityType.Post})
+    // const sendLikeApi = useApiNew('likesCreate', { token: true, immediate: false, body: { data: {entity: 'Post'}}})
+    // const getLikesApi = useApiNew('likesDetail', { token: true, immediate: false, body: { data: {entity: 'Post'}}})
     useEffect(() => {
         if (postData) {
             setGetInfo(true);
@@ -153,16 +152,16 @@ export const Post = ({ id }: { id: string }) => {
 
                             <div style={{justifyContent: "center", alignItems: "center"}}>
                                 <div onClick={() => {
-                                    sendLikeApi.execute({fromGuid: userId, entityGuid: id}).then(() => {
-                                        getLikesApi.execute(id).then((newLikes) => {
-                                            setPostData(
-                                                {
-                                                    ...postData,
-                                                    likesCount: newLikes
-                                                }
-                                            )
-                                        })
-                                    })
+                                    // sendLikeApi.execute({fromGuid: userId, entityGuid: id}).then(() => {
+                                    //     getLikesApi.execute(id).then((newLikes) => {
+                                    //         setPostData(
+                                    //             {
+                                    //                 ...postData,
+                                    //                 likesCount: newLikes
+                                    //             }
+                                    //         )
+                                    //     })
+                                    // })
                                 }}>
                                     <IconLike hoverColor="white" hoverable={false} defaultColor="black"/>
                                 </div>
