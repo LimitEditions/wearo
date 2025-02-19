@@ -1,11 +1,12 @@
 import Icons from "../../../assets/icons";
-import { IconNameEnum, IconNameLiteral, iconParams } from "./IconWrapper";
+import { IWrapperIconProps } from "../../../types/interfaces/componentsProps/IWrapperIconProps";
+import { IconNameEnum, IconNameLiteral } from "./IconWrapper";
 
 type props = {
   name: IconNameLiteral;
   onMouseEnter: () => void;
   onMouseLeave: () => void;
-  iconParams: iconParams;
+  iconParams: IWrapperIconProps;
 };
 
 const IconSvgSelector = ({
