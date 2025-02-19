@@ -1,8 +1,8 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { Api } from '../api/Api';
 import { IApiResponse } from '../types/interfaces/ApiResponses/IApiResponse';
 import { IApiError } from "../types/interfaces/IApiError";
-import axios, { AxiosResponse, Method } from "axios";
+import axios from "axios";
 import { retrieve } from "../utils/encryption";
 import { useNavigate } from "react-router-dom";
 const api = new Api({ baseURL: process.env.REACT_APP_URL_REQUEST });
@@ -131,7 +131,7 @@ const buildParams = (params: Params, config: Config): Params => {
 //     return { data, error, isLoading, execute: worker };
 // }
 
-export function useApiNew<Answer>(method: keyof Api, config: Config = {}, pathParams = {}){
+export function useApiNew<Answer>(method: keyof Api, config: Config = {}){
     const navigator = useNavigate();
     const [data, setData] = useState<Answer | null>(null);
     const [isLoading, setIsLoading] = useState(false);
@@ -148,9 +148,8 @@ export function useApiNew<Answer>(method: keyof Api, config: Config = {}, pathPa
             setError(null);
 
             try {
-                const res = await request(body, _params, pathParams);
+                const res = await request(body, _params);
                 setData(res.data);
-                return res.data
             } catch (error) {
                 if(axios.isAxiosError(error)){
                     if (!config.skipAuthCheck) {

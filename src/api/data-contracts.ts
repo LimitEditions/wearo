@@ -1013,7 +1013,6 @@ export interface CreateScanModel {
 export interface CreateSizeChartModel {
   /** Наименование. */
   name?: string;
-  /** Массив гуидов категорий */
   categories?: string[];
   /**
    * Бренд ИД
@@ -2434,6 +2433,40 @@ export enum Season {
   Demiseason = "Demiseason",
 }
 
+export interface SizeChartCategoryModel {
+  /**
+   * Идентификатор
+   * @format uuid
+   */
+  guid?: string;
+  /** Отметка удаления */
+  isDeleted?: boolean;
+  /**
+   * Дата создания
+   * @format date-time
+   */
+  createDT?: string | null;
+  /**
+   * Дата обнавления
+   * @format date-time
+   */
+  updateDT?: string | null;
+  /** Тип одежды */
+  category?: ProductCategoryModel;
+  /** Размерная сетка. */
+  sizeChart?: SizeChartModel;
+  /**
+   * Ид Размерной сетки.
+   * @format uuid
+   */
+  sizeChartGuid?: string;
+  /**
+   * Ид категории.
+   * @format uuid
+   */
+  categoryGuid?: string;
+}
+
 /** Измерение */
 export interface SizeChartMeasureModel {
   /**
@@ -2489,8 +2522,6 @@ export interface SizeChartModel {
   updateDT?: string | null;
   /** Наименование. */
   name?: string;
-  /** Массив гуидов категорий */
-  categories?: string[];
   /**
    * Бренд ИД
    * @format uuid
@@ -2501,6 +2532,8 @@ export interface SizeChartModel {
   measures?: SizeChartMeasureModel[] | null;
   /** Бренд */
   brand?: BrandModel;
+  /** Список категорий. */
+  categories?: SizeChartCategoryModel[] | null;
 }
 
 /** Результат чтения данных. */

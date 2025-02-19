@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import useApi, { useApiNew } from "../../hooks/useApi";
-import { BrandModel, EnitityLikeType, PostModel } from "../../api/data-contracts";
+import { BrandModel, PostModel } from "../../api/data-contracts";
 import { Photo } from "../common/Photo";
 import { useNavigate } from "react-router-dom";
 import { Switcher } from "../common/Switcher";
@@ -11,20 +11,21 @@ import {
     readingOnDark,
 } from "../../types/interfaces/IReading";
 import { retrieve } from "../../utils/encryption";
+import { IconLike } from "../common/icons/IconLike";
+import { IconComment } from "../common/icons/IconComment";
+import { IconMenu } from "../common/icons/IconMenu";
 import { CommentsList } from "./CommentsList";
 import { Modal } from "../common/Modal";
-import IconWrapper from "../common/icons/IconWrapper";
 
 export const Post = ({ id }: { id: string }) => {
     const navigate = useNavigate();
     // данные по посту
-    const getPostDataApi = useApiNew<PostModel>("postsDetail", { token: true, immediate: false})
+    const getPostDataApi = useApiNew<PostModel>("postsDetail", { token: true, immediate: true, body: id })
+    
     const [postData, setPostData] = useState<PostModel>({})
     useEffect(() => {
-        getPostDataApi.execute(id).then((data) => {
-            setPostData(data)
-        })
-    }, [])
+        if (!getPostDataApi.error && getPostDataApi.data) setPostData(getPostDataApi.data);
+    }, [getPostDataApi])
 
     // данные по бренду
     const [getInfo, setGetInfo] = useState<boolean>(false);
@@ -36,10 +37,10 @@ export const Post = ({ id }: { id: string }) => {
     );
     const userId = retrieve('guid');
     
-    const sendLikeApi = useApiNew('likesCreate', { token: true, immediate: false}, { entity: EnitityLikeType.Post})
-    const getLikesApi = useApiNew('likesCountDetail', { token: true, immediate: false}, { entity: EnitityLikeType.Post})
+    // const sendLikeApi = useApiNew('likesCreate', { token: true, immediate: false, body: { data: {entity: 'Post'}}})
+    // const getLikesApi = useApiNew('likesDetail', { token: true, immediate: false, body: { data: {entity: 'Post'}}})
     useEffect(() => {
-        if (postData && postData?.brandGuid) {
+        if (postData) {
             setGetInfo(true);
         }
     }, [postData]);
@@ -151,19 +152,18 @@ export const Post = ({ id }: { id: string }) => {
 
                             <div style={{justifyContent: "center", alignItems: "center"}}>
                                 <div onClick={() => {
-                                    sendLikeApi.execute({fromGuid: userId, entityGuid: id}).then(() => {
-                                        getLikesApi.execute(id).then((newLikes) => {
-                                            setPostData(
-                                                {
-                                                    ...postData,
-                                                    likesCount: newLikes
-                                                }
-                                            )
-                                        })
-                                    })
+                                    // sendLikeApi.execute({fromGuid: userId, entityGuid: id}).then(() => {
+                                    //     getLikesApi.execute(id).then((newLikes) => {
+                                    //         setPostData(
+                                    //             {
+                                    //                 ...postData,
+                                    //                 likesCount: newLikes
+                                    //             }
+                                    //         )
+                                    //     })
+                                    // })
                                 }}>
-                                    <IconWrapper iconName="IconLike" params={{defaultColor: "black", hoverable: false, hoverColor: "white"}}/>
-                                
+                                    <IconLike hoverColor="white" hoverable={false} defaultColor="black"/>
                                 </div>
                                 <p style={{margin: "0px"}} className={`text-black ${readingMode.lines}`}>
                                     {postData.likesCount}
@@ -171,14 +171,13 @@ export const Post = ({ id }: { id: string }) => {
                                 <div onClick={() => {
                                     setCommentsOpen((prev) => !prev)
                                 }}>
-                                    <IconWrapper iconName="IconComment" params={{defaultColor: "black", hoverable: false}}/>
-
+                                    <IconComment defaultColor="black"/>
                                 </div>
                                 <p style={{margin: "0px"}} className={`text-black ${readingMode.lines}`}>
                                     {postData.commentsCount}
                                 </p>
                                 <div onClick={() => {/* TODO ADD COMMENTS */}}>
-                                <IconWrapper iconName="IconMenu" params={{defaultColor: "black", hoverable: false}}/>
+                                    <IconMenu strokeColor="black"/>
                                 </div>
                             </div>
 

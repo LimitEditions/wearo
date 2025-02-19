@@ -3781,7 +3781,7 @@
             {
               "name": "id",
               "in": "path",
-              "description": "Ид цвета",
+              "description": "Ид лайка либо сущности.",
               "required": true,
               "schema": {
                 "type": "string",
@@ -3791,6 +3791,7 @@
             {
               "name": "entity",
               "in": "path",
+              "description": "Тип сущности, к которой установлен лайк.",
               "required": true,
               "schema": {
                 "$ref": "#/components/schemas/EnitityLikeType"
@@ -13939,35 +13940,6 @@
           }
         }
       },
-      "/api/Test": {
-        "get": {
-          "tags": [
-            "Test"
-          ],
-          "responses": {
-            "200": {
-              "description": "Success",
-              "content": {
-                "text/plain": {
-                  "schema": {
-                    "type": "string"
-                  }
-                },
-                "application/json": {
-                  "schema": {
-                    "type": "string"
-                  }
-                },
-                "text/json": {
-                  "schema": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
       "/api/Tips/Products/{id}": {
         "get": {
           "tags": [
@@ -17746,8 +17718,7 @@
               "items": {
                 "type": "string",
                 "format": "uuid"
-              },
-              "description": "Массив гуидов категорий"
+              }
             },
             "brandGuid": {
               "type": "string",
@@ -19863,6 +19834,49 @@
           ],
           "type": "string"
         },
+        "SizeChartCategoryModel": {
+          "type": "object",
+          "properties": {
+            "guid": {
+              "type": "string",
+              "description": "Идентификатор",
+              "format": "uuid"
+            },
+            "isDeleted": {
+              "type": "boolean",
+              "description": "Отметка удаления"
+            },
+            "createDT": {
+              "type": "string",
+              "description": "Дата создания",
+              "format": "date-time",
+              "nullable": true
+            },
+            "updateDT": {
+              "type": "string",
+              "description": "Дата обнавления",
+              "format": "date-time",
+              "nullable": true
+            },
+            "category": {
+              "$ref": "#/components/schemas/ProductCategoryModel"
+            },
+            "sizeChart": {
+              "$ref": "#/components/schemas/SizeChartModel"
+            },
+            "sizeChartGuid": {
+              "type": "string",
+              "description": "Ид Размерной сетки.",
+              "format": "uuid"
+            },
+            "categoryGuid": {
+              "type": "string",
+              "description": "Ид категории.",
+              "format": "uuid"
+            }
+          },
+          "additionalProperties": false
+        },
         "SizeChartMeasureModel": {
           "type": "object",
           "properties": {
@@ -19936,14 +19950,6 @@
               "type": "string",
               "description": "Наименование."
             },
-            "categories": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "format": "uuid"
-              },
-              "description": "Массив гуидов категорий"
-            },
             "brandGuid": {
               "type": "string",
               "description": "Бренд ИД",
@@ -19962,6 +19968,14 @@
             },
             "brand": {
               "$ref": "#/components/schemas/BrandModel"
+            },
+            "categories": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/SizeChartCategoryModel"
+              },
+              "description": "Список категорий.",
+              "nullable": true
             }
           },
           "additionalProperties": false,

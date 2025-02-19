@@ -13,13 +13,10 @@ import { HttpClient, RequestParams } from "./http-client";
 
 export class Id<SecurityDataType = unknown> extends HttpClient<SecurityDataType> {
   /**
-   * No description
-   *
-   * @tags Push
+   * No description * * @tags Push
    * @name DeleteId
    * @request DELETE:/{id}
-   * @secure
-   */
+   * @secure */
   deleteId = (id: string, params: RequestParams = {}) =>
     this.request<void, any>({
       path: `/${id}`,

@@ -28,7 +28,7 @@ swagger:
 	npx swagger-typescript-api -p https://vne.su:8081/swagger/v1/swagger.json -o ./src/api -n wearApi.ts --route-types --modular --axios
 
 swagger-local: 
-	npx swagger-typescript-api -p ./swagger-api.json -o ./src/api -n wearApi.ts --route-types --modular --axios
+	npx swagger-typescript-api -p ./swagger/swagger-api.json -o ./src/api -n wearApi.ts --route-types --modular --axios --templates ./swagger/templates
 
 cleanCache:
 	rm -rf node_modules/.cache

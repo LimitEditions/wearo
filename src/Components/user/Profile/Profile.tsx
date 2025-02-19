@@ -68,7 +68,7 @@ export const Profile = () => {
             </div>
             <Button
                 showButton={true}
-                styles="flex w-full rounded-xl my-3  py-4 pl-16 bg-violet items-center justify-start gap-3 hover:bg-[#948DFE]"
+                styles="flex w-full rounded-xl my-3 py-4 pl-16 bg-violet items-center justify-start gap-3 hover:bg-[#948DFE]"
                 onClick={() => navigate("./scan")}
             >
                 <img src="/images/scan.svg" alt="значок сканирования изделия"/>

@@ -1105,10 +1105,11 @@ export namespace Api {
   export namespace LikesDelete {
     export type RequestParams = {
       /**
-       * Ид цвета
+       * Ид лайка либо сущности.
        * @format uuid
        */
       id: string;
+      /** Тип сущности, к которой установлен лайк. */
       entity: EnitityLikeType;
     };
     export type RequestQuery = {};
@@ -3496,21 +3497,6 @@ export namespace Api {
     export type RequestBody = never;
     export type RequestHeaders = {};
     export type ResponseBody = void;
-  }
-
-  /**
-   * No description
-   * @tags Test
-   * @name TestList
-   * @request GET:/api/Test
-   * @secure
-   */
-  export namespace TestList {
-    export type RequestParams = {};
-    export type RequestQuery = {};
-    export type RequestBody = never;
-    export type RequestHeaders = {};
-    export type ResponseBody = string;
   }
 
   /**

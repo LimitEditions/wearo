@@ -1,40 +1,45 @@
 import { NavContentType } from "../types/NavContentType";
-
-import IconWrapper from "../Components/common/icons/IconWrapper";
+import { IconPosts } from "../Components/common/icons/IconPosts";
+import { IconPromo } from "../Components/common/icons/IconPromo";
+import { IconWardrobe } from "../Components/common/icons/IconWardrobe";
+import { IconGoods } from "../Components/common/icons/IconGoods";
+import { IconSettings } from "../Components/common/icons/IconSettings";
+import { IconAnalytic } from "../Components/common/icons/IconAnalytic";
+import { IconManage } from "../Components/common/icons/IconManage";
 
 export const navContent: NavContentType = {
     Admin: [
         {
             path: "/settings",
             name: "Настройки",
-            component:  <IconWrapper iconName="IconSettings" params={{hoverColor: "#3447BC"}}/>,
+            component: <IconSettings hoverColor="#3447BC" />,
         },
         {
             path: "/control",
             name: "Управление",
-            component: <IconWrapper iconName="IconManage" params={{hoverColor: "#3447BC"}}/>,
+            component: <IconManage hoverColor="#3447BC" />,
         },
         {
             path: "/analytics",
             name: "Аналитика",
-            component: <IconWrapper iconName="IconAnalytic" params={{hoverColor: "#3447BC"}}/>,
+            component: <IconAnalytic hoverColor="#3447BC" />,
         },
     ],
     BrandAdmin: [
         {
             path: "/products",
             name: "Изделия",
-            component:  <IconWrapper iconName="IconGoods" params={{hoverColor: "#3447BC"}}/>,
+            component: <IconGoods hoverColor="#3447BC" />,
         },
         {
             path: "/posts",
             name: "Лента",
-            component: <IconWrapper iconName="IconPosts" params={{hoverColor: "#3447BC"}}/>,
+            component: <IconPosts hoverColor="#3447BC" />,
         },
         {
             path: "/brand",
             name: "Мой бренд",
-            component: <IconWrapper iconName="IconWardrobe" params={{hoverColor: "#3447BC"}}/>,
+            component: <IconWardrobe hoverColor="#3447BC" />,
         },
     ],
     User: [
@@ -42,17 +47,17 @@ export const navContent: NavContentType = {
             path: "/promotions",
             name: "Промокоды",
             image: "/images/nav/promo.svg",
-            component: <IconWrapper iconName="IconPromo" params={{hoverColor: "#3447BC"}}/>,
+            component: <IconPromo hoverColor="#3447BC" />,
         },
         {
             path: "/posts",
             name: "Лента",
-            component: <IconWrapper iconName="IconPosts" params={{hoverColor: "#3447BC"}}/>,
+            component: <IconPosts hoverColor="#3447BC" />,
         },
         {
             path: "/wardrobe",
             name: "Мой гардероб",
-            component: <IconWrapper iconName="IconWardrobe" params={{hoverColor: "#3447BC"}}/>,
+            component: <IconWardrobe hoverColor="#3447BC" />,
         },
     ],
 };
