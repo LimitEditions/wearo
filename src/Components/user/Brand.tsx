@@ -100,60 +100,63 @@ export const Brand = ({ brandInfo }: { brandInfo: BrandModel }) => {
                 additionalStyles={{
                     container:
                         "fixed inset-0 overflow-hidden flex items-end justify-center",
-                    panel: "w-full h-[42%] transform overflow-hidden rounded-t-2xl bg-white p-4",
+                    panel: "w-full h-[42%] transform overflow-hidden rounded-t-2xl bg-white p-4 mb-[70px]",
                 }}
             >
                 <h3 className="p-4 uppercase">Служба поддержки</h3>
 
-                <Item path={`https://t.me/${brandInfo.telegramId}`}>
-                    <div className="flex flex-row justify-center items-center gap-2">
-                        <Link
-                            to={`https://t.me/${brandInfo.telegramId}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        >
+                <Link
+                    to={`https://t.me/${brandInfo.telegramId}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <Item>
+                        <div className="flex flex-row justify-center items-center gap-2">
                             <PiTelegramLogo className="text-gray-500 w-6 h-6 hover:text-gray-900 transition-all duration-300" />
-                        </Link>
-                        Telegram
-                    </div>
-                </Item>
+                            Telegram
+                        </div>
+                    </Item>
+                </Link>
 
-                <Item path={`https://wa.me/${brandInfo.whatsappId || ""}`}>
-                    <div className="flex flex-row justify-center items-center gap-2">
-                        <Link
-                            to={`https://wa.me/${brandInfo.whatsappId || ""}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        >
+                <Link
+                    to={`https://wa.me/${brandInfo.whatsappId || ""}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <Item>
+                        <div className="flex flex-row justify-center items-center gap-2">
                             <PiWhatsappLogo className="text-gray-500 w-6 h-6 hover:text-gray-900 transition-all duration-300" />
-                        </Link>
-                        WhatsApp
-                    </div>
-                </Item>
-                <Item path={brandInfo.email || ""}>
-                    <div className="flex flex-row justify-center items-center gap-2">
-                        <Link
-                            to={brandInfo.email || ""}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        >
+                            WhatsApp
+                        </div>
+                    </Item>
+                </Link>
+
+                <Link
+                    to={`mailto:${brandInfo.email || ""}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <Item>
+                        <div className="flex flex-row justify-center items-center gap-2">
                             <SlEnvolope className="text-gray-500 w-6 h-6 hover:text-gray-900 transition-all duration-300" />
-                        </Link>
-                        E-mail
-                    </div>
-                </Item>
-                <Item path={`tel:${"+78005558607"}`}>
-                    <div className="flex flex-row justify-center items-center gap-2">
-                        <Link
-                            to={`tel:${"+78005558607"}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        >
+                            E-mail
+                        </div>
+                    </Item>
+                </Link>
+
+                <Link
+                    to={`tel:${"+78005558607"}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <Item>
+                        <div className="flex flex-row justify-center items-center gap-2">
                             <SlPhone className="text-gray-500 w-6 h-6 hover:text-gray-900 transition-all duration-300" />
-                        </Link>
-                        +78005558607
-                    </div>
-                </Item>
+                            +78005558607
+                        </div>
+                    </Item>
+                </Link>
+
             </Modal>
         </>
     );
