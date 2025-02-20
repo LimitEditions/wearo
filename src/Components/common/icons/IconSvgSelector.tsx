@@ -1,121 +1,36 @@
-import Icons from "../../../assets/icons";
+import { lazy, useEffect, useState } from "react";
 import { IWrapperIconProps } from "../../../types/interfaces/componentsProps/IWrapperIconProps";
 import { IconNameEnum, IconNameLiteral } from "./IconWrapper";
 
-type props = {
-  name: IconNameLiteral;
+interface  IIconProps  {
   onMouseEnter: () => void;
   onMouseLeave: () => void;
   iconParams: IWrapperIconProps;
+} 
+
+interface props extends IIconProps {
+  name: IconNameLiteral;
 };
 
-const IconSvgSelector = ({
+const IconSvgSelector =  ({
   name,
   iconParams,
   onMouseEnter,
   onMouseLeave,
 }: props) => {
-  switch (name) {
-    case IconNameEnum.IconLike:
-      return (
-        <Icons.IconLike
-          onMouseEnter={onMouseEnter}
-          onMouseLeave={onMouseLeave}
-          iconParams={iconParams}
-        />
-      );
-      break;
+  const [Icon, setIcon] = useState<React.FC<IIconProps> | null>(null)
+  
+  useEffect(() => {
+        const IconRecived = lazy(() => import(`../../../assets/icons/${name}`));       
+        setIcon(IconRecived)
+  }, [name])
 
-    case IconNameEnum.IconComment:
-      return (
-        <Icons.IconComment
-          onMouseEnter={onMouseEnter}
-          onMouseLeave={onMouseLeave}
-          iconParams={iconParams}
-        />
-      );
-      break;
-    case IconNameEnum.IconMenu:
-      return (
-        <Icons.IconMenu
-          onMouseEnter={onMouseEnter}
-          onMouseLeave={onMouseLeave}
-          iconParams={iconParams}
-        />
-      );
-      break;
-    case IconNameEnum.IconSettings:
-      return (
-        <Icons.IconSettings
-          onMouseEnter={onMouseEnter}
-          onMouseLeave={onMouseLeave}
-          iconParams={iconParams}
-        />
-      );
-      break;
-
-    case IconNameEnum.IconManage:
-      return (
-        <Icons.IconManage
-          onMouseEnter={onMouseEnter}
-          onMouseLeave={onMouseLeave}
-          iconParams={iconParams}
-        />
-      );
-      break;
-
-    case IconNameEnum.IconAnalytic:
-      return (
-        <Icons.IconAnalytic
-          onMouseEnter={onMouseEnter}
-          onMouseLeave={onMouseLeave}
-          iconParams={iconParams}
-        />
-      );
-      break;
-
-    case IconNameEnum.IconPromo:
-      return (
-        <Icons.IconPromo
-          onMouseEnter={onMouseEnter}
-          onMouseLeave={onMouseLeave}
-          iconParams={iconParams}
-        />
-      );
-      break;
-
-    case IconNameEnum.IconGoods:
-      return (
-        <Icons.IconGoods
-          onMouseEnter={onMouseEnter}
-          onMouseLeave={onMouseLeave}
-          iconParams={iconParams}
-        />
-      );
-      break;
-
-    case IconNameEnum.IconPosts:
-      return (
-        <Icons.IconPosts
-          onMouseEnter={onMouseEnter}
-          onMouseLeave={onMouseLeave}
-          iconParams={iconParams}
-        />
-      );
-      break;
-
-    case IconNameEnum.IconWardrobe:
-      return (
-        <Icons.IconWardrobe
-          onMouseEnter={onMouseEnter}
-          onMouseLeave={onMouseLeave}
-          iconParams={iconParams}
-        />
-      );
-      break;
-
-    default:
-      return <></>;
+  if(Icon) {
+    return <Icon onMouseEnter={onMouseEnter}
+  onMouseLeave={onMouseLeave}
+  iconParams={iconParams}/>
   }
-};
+  return null;
+}
+
 export default IconSvgSelector;

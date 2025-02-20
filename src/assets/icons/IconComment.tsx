@@ -1,11 +1,6 @@
-import { iconParams } from "../../Components/common/icons/IconWrapper";
+import { IIconProps } from "../../types/interfaces/componentsProps/IIconProps";
 
-interface props {
-  onMouseEnter: () => void;
-  onMouseLeave: () => void;
-  iconParams: iconParams;
-}
-const IconComment = ({ iconParams, onMouseEnter, onMouseLeave }: props) => {
+const IconComment = ({ iconParams, onMouseEnter, onMouseLeave }: IIconProps) => {
   return (
     <svg
       width="22"
