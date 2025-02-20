@@ -1,4 +1,4 @@
-import { Fragment, memo, useState } from "react";
+import { useState } from "react";
 import IconSvgSelector from "./IconSvgSelector";
 import { IWrapperIconProps } from "../../../types/interfaces/componentsProps/IWrapperIconProps";
 

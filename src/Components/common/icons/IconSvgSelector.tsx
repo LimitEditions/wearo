@@ -1,6 +1,6 @@
-import { lazy, useEffect, useState } from "react";
+import { lazy, Suspense } from "react";
 import { IWrapperIconProps } from "../../../types/interfaces/componentsProps/IWrapperIconProps";
-import { IconNameEnum, IconNameLiteral } from "./IconWrapper";
+import {  IconNameLiteral } from "./IconWrapper";
 
 interface  IIconProps  {
   onMouseEnter: () => void;
@@ -18,19 +18,16 @@ const IconSvgSelector =  ({
   onMouseEnter,
   onMouseLeave,
 }: props) => {
-  const [Icon, setIcon] = useState<React.FC<IIconProps> | null>(null)
-  
-  useEffect(() => {
-        const IconRecived = lazy(() => import(`../../../assets/icons/${name}`));       
-        setIcon(IconRecived)
-  }, [name])
+ 
+    const IconDynamic = lazy(() => import(`../../../assets/icons/${name}`));       
+   
+    return <Suspense fallback={null}>
+      <IconDynamic onMouseEnter={onMouseEnter}
+            onMouseLeave={onMouseLeave}
+            iconParams={iconParams}/>
+  </Suspense>
 
-  if(Icon) {
-    return <Icon onMouseEnter={onMouseEnter}
-  onMouseLeave={onMouseLeave}
-  iconParams={iconParams}/>
-  }
-  return null;
 }
+
 
 export default IconSvgSelector;
