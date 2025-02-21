@@ -11,9 +11,6 @@ import {
     readingOnDark,
 } from "../../types/interfaces/IReading";
 import { retrieve } from "../../utils/encryption";
-import { IconLike } from "../common/icons/IconLike";
-import { IconComment } from "../common/icons/IconComment";
-import { IconMenu } from "../common/icons/IconMenu";
 import { CommentsList } from "./CommentsList";
 import { Modal } from "../common/Modal";
 
@@ -40,7 +37,7 @@ export const Post = ({ id }: { id: string }) => {
     // const sendLikeApi = useApiNew('likesCreate', { token: true, immediate: false, body: { data: {entity: 'Post'}}})
     // const getLikesApi = useApiNew('likesDetail', { token: true, immediate: false, body: { data: {entity: 'Post'}}})
     useEffect(() => {
-        if (postData) {
+        if (postData && postData?.brandGuid) {
             setGetInfo(true);
         }
     }, [postData]);
@@ -163,7 +160,7 @@ export const Post = ({ id }: { id: string }) => {
                                     //     })
                                     // })
                                 }}>
-                                    <IconLike hoverColor="white" hoverable={false} defaultColor="black"/>
+                                    <img src="/images/like.svg" alt="лайк" />
                                 </div>
                                 <p style={{margin: "0px"}} className={`text-black ${readingMode.lines}`}>
                                     {postData.likesCount}
@@ -171,13 +168,13 @@ export const Post = ({ id }: { id: string }) => {
                                 <div onClick={() => {
                                     setCommentsOpen((prev) => !prev)
                                 }}>
-                                    <IconComment defaultColor="black"/>
+                                    <img src="/images/comment.svg" alt="коммент" />
                                 </div>
                                 <p style={{margin: "0px"}} className={`text-black ${readingMode.lines}`}>
                                     {postData.commentsCount}
                                 </p>
                                 <div onClick={() => {/* TODO ADD COMMENTS */}}>
-                                    <IconMenu strokeColor="black"/>
+                                    <img src="/images/menu.svg" alt="меню" />
                                 </div>
                             </div>
 
