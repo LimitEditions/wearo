@@ -11,7 +11,6 @@ import {
     DisclosurePanel,
 } from "@headlessui/react";
 import { Arrow } from "../common/Arrow";
-import { Modal } from "../common/Modal";
 import Item from "../common/ItemGroup/Item";
 import { SlPhone, SlEnvolope } from "react-icons/sl";
 import { PiWhatsappLogo, PiTelegramLogo } from "react-icons/pi";
@@ -19,17 +18,8 @@ import { PiWhatsappLogo, PiTelegramLogo } from "react-icons/pi";
 export const Brand = ({ brandInfo }: { brandInfo: BrandModel }) => {
     // статус подписки с возможностью подписаться/отписаться
     const [subStatus, handlerSub] = useSubscribe(brandInfo.guid as string);
-    const [modal, setModal] = useState<boolean>(false);
     const handleClick = (event: any) => {
         handlerSub();
-        // отключаем кнопку и выводим модальное на передний план
-        setModal(true);
-        event.target.disabled = true;
-        const timer = setTimeout(() => {
-            setModal(false);
-            event.target.disabled = false;
-        }, 5000);
-        return () => clearTimeout(timer);
     };
 
     // Cтейт и колбек на разворот стрелки вниз и обратно
@@ -38,6 +28,17 @@ export const Brand = ({ brandInfo }: { brandInfo: BrandModel }) => {
         setIsRotated(!isRotated);
     };
     console.log(brandInfo)
+
+    type Contact = {
+        href: string;
+        Icon: React.ElementType;
+    };      
+
+    const contacts: Array<Contact> = [
+        { href: `https://wa.me/${brandInfo.whatsappId}`, Icon: PiWhatsappLogo },
+        { href: `https://t.me/${brandInfo.telegramId}`, Icon: PiTelegramLogo },
+        { href: `mailto:${brandInfo.email}`, Icon: SlEnvolope }
+    ]
     return (
         <>
             <Photo
@@ -54,9 +55,6 @@ export const Brand = ({ brandInfo }: { brandInfo: BrandModel }) => {
                     {brandInfo?.name}
                 </Link>
                 <div className="flex flex-row w-full gap-3 pt-5">
-                    <Button showButton={true} onClick={() => setModal(true)}>
-                        Поддержка
-                    </Button>
 
                     <Button showButton={true} onClick={handleClick}>
                         {subStatus ? "Вы подписаны" : "Подписаться"}
@@ -92,72 +90,18 @@ export const Brand = ({ brandInfo }: { brandInfo: BrandModel }) => {
             </Disclosure>
             <Item path={`/products/${brandInfo.guid}`}>Изделия</Item>
             <div className="uppercase px-2">Публикации</div>
-            
-            <Modal
-                isOpen={modal}
-                setIsOpen={setModal}
-                swipeable={false}
-                additionalStyles={{
-                    container:
-                        "fixed inset-0 overflow-hidden flex items-end justify-center",
-                    panel: "w-full h-[42%] transform overflow-hidden rounded-t-2xl bg-white p-4 mb-[70px]",
-                }}
-            >
-                <h3 className="p-4 uppercase">Служба поддержки</h3>
 
-                <Link
-                    to={`https://t.me/${brandInfo.telegramId}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    <Item>
-                        <div className="flex flex-row justify-center items-center gap-2">
-                            <PiTelegramLogo className="text-gray-500 w-6 h-6 hover:text-gray-900 transition-all duration-300" />
-                            Telegram
-                        </div>
-                    </Item>
-                </Link>
+            <div className="flex items-center justify-between px-20 pt-7">
+                {contacts.map(({href, Icon}) => {
+                    return (
+                        <Link to={href} target="_blank" rel="noopener noreferrer">
+                            <Icon className="text-gray-500 w-6 h-6 hover:text-gray-900 transition-all duration-300" />
+                        </Link>
+                    );
+               })}
+            </div>
 
-                <Link
-                    to={`https://wa.me/${brandInfo.whatsappId || ""}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    <Item>
-                        <div className="flex flex-row justify-center items-center gap-2">
-                            <PiWhatsappLogo className="text-gray-500 w-6 h-6 hover:text-gray-900 transition-all duration-300" />
-                            WhatsApp
-                        </div>
-                    </Item>
-                </Link>
 
-                <Link
-                    to={`mailto:${brandInfo.email || ""}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    <Item>
-                        <div className="flex flex-row justify-center items-center gap-2">
-                            <SlEnvolope className="text-gray-500 w-6 h-6 hover:text-gray-900 transition-all duration-300" />
-                            E-mail
-                        </div>
-                    </Item>
-                </Link>
-
-                <Link
-                    to={`tel:${"+78005558607"}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    <Item>
-                        <div className="flex flex-row justify-center items-center gap-2">
-                            <SlPhone className="text-gray-500 w-6 h-6 hover:text-gray-900 transition-all duration-300" />
-                            +78005558607
-                        </div>
-                    </Item>
-                </Link>
-
-            </Modal>
         </>
     );
 };
