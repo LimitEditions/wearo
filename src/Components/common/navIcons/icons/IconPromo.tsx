@@ -1,16 +1,11 @@
-import { IIconProps } from "../../types/interfaces/componentsProps/IIconProps";
-
-
-const IconPromo = ({ iconParams, onMouseEnter, onMouseLeave }: IIconProps) => {
+export const IconPromo = ({ isHovered }: { isHovered: boolean }) => {
   return (
     <svg
-      onMouseEnter={onMouseEnter}
-      onMouseLeave={onMouseLeave}
       width="24"
       height="24"
       viewBox="0 0 24 24"
       fill="none"
-      stroke={iconParams.isHover ? iconParams.hoverColor : "#9095B5"}
+      stroke={isHovered ? "#3447BC" : "#9095B5"}
       xmlns="http://www.w3.org/2000/svg"
     >
       <path
@@ -27,4 +22,3 @@ const IconPromo = ({ iconParams, onMouseEnter, onMouseLeave }: IIconProps) => {
     </svg>
   );
 };
-export default IconPromo;

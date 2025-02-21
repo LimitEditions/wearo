@@ -35,16 +35,18 @@ export const Nav: React.FC = memo(() => {
     return (
         <>
             {showNav && (
-                <nav className="fixed bottom-0 left-1/2 w-full h-auto z-20 flex justify-between py-4 box-border border border-gray-300 rounded-t-md transform -translate-x-1/2 bg-white-fon shadow-md">
+                <nav className="fixed bottom-0 left-1/2 w-full h-auto z-20 
+                                flex justify-between py-4 box-border border 
+                                border-gray-300 rounded-t-md transform -translate-x-1/2 
+                                bg-white-fon shadow-md">
                     {data.map((e) => {
                         return (
                             <Link
                                 key={e.path}
                                 to={e.path}
-                                className="w-1/3 flex flex-col items-center justify-between space-y-2 text-xs text-[#9095B5] opacity-50 hover:opacity-100 hover:text-[#3447BC]"
+                                className="w-1/3"
                             >
-                                <div className="w-5">{e.component}</div>
-                                <div>{e.name}</div>
+                                {e.icon}
                             </Link>
                         );
                     })}

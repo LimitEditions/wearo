@@ -13,7 +13,6 @@ import {
 import { retrieve } from "../../utils/encryption";
 import { CommentsList } from "./CommentsList";
 import { Modal } from "../common/Modal";
-import IconWrapper from "../common/icons/IconWrapper";
 
 export const Post = ({ id }: { id: string }) => {
     const navigate = useNavigate();
@@ -161,8 +160,7 @@ export const Post = ({ id }: { id: string }) => {
                                     //     })
                                     // })
                                 }}>
-                                    <IconWrapper iconName="IconLike" params={{defaultColor: "black", hoverable: false, hoverColor: "white"}}/>
-                                
+                                    <img src="/images/like.svg" alt="лайк" />
                                 </div>
                                 <p style={{margin: "0px"}} className={`text-black ${readingMode.lines}`}>
                                     {postData.likesCount}
@@ -170,14 +168,13 @@ export const Post = ({ id }: { id: string }) => {
                                 <div onClick={() => {
                                     setCommentsOpen((prev) => !prev)
                                 }}>
-                                    <IconWrapper iconName="IconComment" params={{defaultColor: "black", hoverable: false}}/>
-
+                                    <img src="/images/comment.svg" alt="коммент" />
                                 </div>
                                 <p style={{margin: "0px"}} className={`text-black ${readingMode.lines}`}>
                                     {postData.commentsCount}
                                 </p>
                                 <div onClick={() => {/* TODO ADD COMMENTS */}}>
-                                <IconWrapper iconName="IconMenu" params={{defaultColor: "black", hoverable: false}}/>
+                                    <img src="/images/menu.svg" alt="меню" />
                                 </div>
                             </div>
 
