@@ -42,7 +42,6 @@ export const Pin = ({ navigate }: { navigate: NavigateFunction }) => {
     useEffect(() => {
         if (isLoading) {
             setShouldExecute(false);
-            localStorage.removeItem("email-guid");
         }
     }, [isLoading]);
 
