@@ -34,11 +34,18 @@ export const Brand = ({ brandInfo }: { brandInfo: BrandModel }) => {
         Icon: React.ElementType;
     };      
 
-    const contacts: Array<Contact> = [
-        { href: `https://wa.me/${brandInfo.whatsappId}`, Icon: PiWhatsappLogo },
-        { href: `https://t.me/${brandInfo.telegramId}`, Icon: PiTelegramLogo },
-        { href: `mailto:${brandInfo.email}`, Icon: SlEnvolope }
-    ]
+    const brandInfoWithOptionalFields = brandInfo as BrandModel & Partial<{ phone: string }>;
+
+    const potentialContacts: Array<Contact | null> = [
+        brandInfoWithOptionalFields.whatsappId ? { href: `https://wa.me/${brandInfoWithOptionalFields.whatsappId}`, Icon: PiWhatsappLogo } : null,
+        brandInfoWithOptionalFields.telegramId ? { href: `https://t.me/${brandInfoWithOptionalFields.telegramId}`, Icon: PiTelegramLogo } : null,
+        brandInfoWithOptionalFields.email ? { href: `mailto:${brandInfoWithOptionalFields.email}`, Icon: SlEnvolope } : null,
+        brandInfoWithOptionalFields.phone ? { href: `tel:${brandInfoWithOptionalFields.phone}`, Icon: SlPhone } : null
+    ];
+
+    // Фильтруем null-значения
+    const contacts: Array<Contact> = potentialContacts.filter((contact): contact is Contact => contact !== null);
+
     return (
         <>
             <Photo
