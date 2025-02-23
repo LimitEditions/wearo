@@ -53,10 +53,12 @@ export const Profile = () => {
         }
     }, [data]);
 
-    if(localStorage.getItem("email-guid") || localStorage.getItem("phone-guid")){
-        localStorage.removeItem("email-guid");
-        localStorage.removeItem("phone-guid");
-    }
+    useEffect(() => {
+        if (localStorage.getItem("email-guid") || localStorage.getItem("phone-guid")) {
+            localStorage.removeItem("email-guid");
+            localStorage.removeItem("phone-guid");
+        }
+    }, []);
 
     return (
         <div className="w-full px-3">
