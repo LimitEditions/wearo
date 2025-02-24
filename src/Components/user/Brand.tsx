@@ -15,6 +15,11 @@ import Item from "../common/ItemGroup/Item";
 import { SlPhone, SlEnvolope } from "react-icons/sl";
 import { PiWhatsappLogo, PiTelegramLogo } from "react-icons/pi";
 
+type Contact = {
+    href: string;
+    Icon: React.ElementType;
+};  
+
 export const Brand = ({ brandInfo }: { brandInfo: BrandModel }) => {
     // статус подписки с возможностью подписаться/отписаться
     const [subStatus, handlerSub] = useSubscribe(brandInfo.guid as string);
@@ -26,14 +31,9 @@ export const Brand = ({ brandInfo }: { brandInfo: BrandModel }) => {
     const [isRotated, setIsRotated] = useState<boolean>(false);
     const handleRotate = () => {
         setIsRotated(!isRotated);
-    };
-    console.log(brandInfo)
+    };    
 
-    type Contact = {
-        href: string;
-        Icon: React.ElementType;
-    };      
-
+    // Добавляет phone как необязательное поле (после его добовления ошибок не будет)
     const brandInfoWithOptionalFields = brandInfo as BrandModel & Partial<{ phone: string }>;
 
     const potentialContacts: Array<Contact | null> = [
@@ -45,7 +45,7 @@ export const Brand = ({ brandInfo }: { brandInfo: BrandModel }) => {
 
     // Фильтруем null-значения
     const contacts: Array<Contact> = potentialContacts.filter((contact): contact is Contact => contact !== null);
-
+    
     return (
         <>
             <Photo
@@ -99,16 +99,14 @@ export const Brand = ({ brandInfo }: { brandInfo: BrandModel }) => {
             <div className="uppercase px-2">Публикации</div>
 
             <div className="flex items-center justify-between px-20 pt-7">
-                {contacts.map(({href, Icon}) => {
+                {contacts.map(({href, Icon}, ind) => {
                     return (
-                        <Link to={href} target="_blank" rel="noopener noreferrer">
+                        <Link key={ind} to={href} target="_blank" rel="noopener noreferrer">
                             <Icon className="text-gray-500 w-6 h-6 hover:text-gray-900 transition-all duration-300" />
                         </Link>
                     );
                })}
             </div>
-
-
         </>
     );
 };
