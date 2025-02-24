@@ -53,6 +53,13 @@ export const Profile = () => {
         }
     }, [data]);
 
+    useEffect(() => {
+        if (localStorage.getItem("email-guid") || localStorage.getItem("phone-guid")) {
+            localStorage.removeItem("email-guid");
+            localStorage.removeItem("phone-guid");
+        }
+    }, []);
+
     return (
         <div className="w-full px-3">
             <h2 className="text-xl font-bold my-4">Профиль</h2>
