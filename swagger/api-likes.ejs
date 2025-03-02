@@ -1,0 +1,31 @@
+<% if (path.includes('/api/Likes/')) { %>
+    <%= name %> = (
+        data: {
+            <%- parameters.filter(param => param.in === 'path' || param.in === 'query').map(param => `${param.name}: ${param.type};`).join('\n') %>
+        },
+        params: params = {},
+    ) =>
+        this.request<<%= response.type %>, <%= error.type %>>({
+            path: '<%= path %>'
+                .replace('{entity}', 'data.entity')
+                .replace('{id}', 'data.id'),
+            method: '<%= method %>',
+            <%- if (hasQueryParams) { %>query: data.query,<%- } %>
+            <%- if (hasBody) { %>body: data.data,<%- } %>
+            secure: true,
+            ...params,
+        });
+    <% } else { %>
+    <%= name %> = (
+        <%- parameters.map(param => `${param.name}: ${param.type}`).join(', ') %>,
+        params: params = {},
+    ) =>
+        this.request<<%= response.type %>, <%= error.type %>>({
+            path: '<%= path %>'<% for (const param of parameters) { %> .replace('{<%= param.name %>', '<%= param.name %>')<% } %>,
+            method: '<%= method %>',
+            <%- if (hasQueryParams) { %>query: query,<%- } %>
+            <%- if (hasBody) { %>body: body,<%- } %>
+            secure: true,
+            ...params,
+        });
+<% } %>

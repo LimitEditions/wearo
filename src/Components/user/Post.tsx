@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react";
 import useApi, { useApiNew } from "../../hooks/useApi";
-import { PostModel, BrandModel, EntityType } from "../../api/data-contracts";
+import { PostModel, BrandModel } from "../../api/data-contracts";
 import { useNavigate } from "react-router-dom";
 import { Switcher } from "../common/Switcher";
-import { Photo } from "../common/Photo";
 import { IReading, readingOff, readingOn, readingOnDark } from "../../types/interfaces/IReading";
 import { retrieve } from "../../utils/encryption";
 import { CommentsList } from "./CommentsList";
 import { Modal } from "../common/Modal";
 import { IconLike } from "../common/icons/IconLike";
 import { IconComment } from "../common/icons/IconComment";
-import { IconMenu } from "../common/icons/IconMenu";
+import { Photo } from "../common/Photo";
+import menu from '../../../public/images/menu.svg'
 
 export const Post = ({ id }: { id: string }) => {
     const navigate = useNavigate();
@@ -33,14 +33,14 @@ export const Post = ({ id }: { id: string }) => {
         getInfo
     );
     useEffect(() => {
-        if (postData) {
+        if (postData && postData?.brandGuid) {
             setGetInfo(true);
         }
     }, [postData]);
 
     const userId = retrieve("guid");
-    const sendLikeApi = useApiNew("addLike", { token: true, immediate: false }, { entity: EntityType.Post });
-    const getLikesApi = useApiNew("getLikesCount", { token: true, immediate: false }, { entity: EntityType.Post });
+    // const sendLikeApi = useApiNew("addLike", { token: true, immediate: false }, { entity: EntityType.Post });
+    // const getLikesApi = useApiNew("getLikesCount", { token: true, immediate: false }, { entity: EntityType.Post });
 
     // Режим чтения и переключатель яркости
     const [readingMode, setReadingMode] = useState<IReading>(readingOff);
@@ -181,13 +181,14 @@ export const Post = ({ id }: { id: string }) => {
                         </div>
                     </div>
                     <div className="flex flex-col align-center items-center absolute top-2 right-2 gap-1"
-                        onClick={() => {
-                            sendLikeApi.execute({ fromGuid: userId, entityGuid: id }).then(() => {
-                                getLikesApi.execute(id).then((newLikes: number) => {
-                                    setPostData((prev) => (prev ? { ...prev, likesCount: newLikes } : prev));
-                                });
-                            });
-                        }}>
+                        // onClick={() => {
+                        //     sendLikeApi.execute({ fromGuid: userId, entityGuid: id }).then(() => {
+                        //         getLikesApi.execute(id).then((newLikes: number) => {
+                        //             setPostData((prev) => (prev ? { ...prev, likesCount: newLikes } : prev));
+                        //         });
+                        //     });
+                        // }}
+                        >
                         <IconLike hoverColor="white" hoverable={false} defaultColor="white" />
                         <p className={`text-white font-medium text-[10px] ${readingMode.lines}`}>{postData.likesCount}</p>
                         <div onClick={() => setCommentsOpen((prev) => !prev)}>
@@ -200,7 +201,7 @@ export const Post = ({ id }: { id: string }) => {
                             }}
                         >
                         </div>
-                        <IconMenu strokeColor="white" />
+                        <img src="/images/menu.svg" alt="Menu" />
                     </div>
                 </div>
             </div>

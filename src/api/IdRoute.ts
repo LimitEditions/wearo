@@ -9,19 +9,22 @@
  * ---------------------------------------------------------------
  */
 
-import { HttpClient, RequestParams } from "./http-client";
-
-export class Id<SecurityDataType = unknown> extends HttpClient<SecurityDataType> {
+export namespace Id {
   /**
-   * No description * * @tags Push
+   * No description
+   * @tags Push
    * @name DeleteId
    * @request DELETE:/{id}
-   * @secure */
-  deleteId = (id: string, params: RequestParams = {}) =>
-    this.request<void, any>({
-      path: `/${id}`,
-      method: "DELETE",
-      secure: true,
-      ...params,
-    });
+   * @secure
+   */
+  export namespace DeleteId {
+    export type RequestParams = {
+      /** @format uuid */
+      id: string;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = void;
+  }
 }
