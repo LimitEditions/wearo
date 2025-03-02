@@ -16,8 +16,8 @@ export const IconLike = ({ hoverColor, hoverable = true, defaultColor = "#9095B5
         <svg
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
-            width="22"
-            height="20"
+            width="24"
+            height="24"
             viewBox="0 0 22 20"
             fill="none"
             stroke={isHovered && hoverable ? hoverColor : defaultColor}

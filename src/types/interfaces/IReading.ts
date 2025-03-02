@@ -8,7 +8,7 @@ export interface IReading {
 
 export const readingOn: IReading = {
     state: 'on',
-    opacity: 'opacity-40',
+    opacity: 'opacity-30',
     lines: 'max-h-80 overflow-scroll',
     slide: 'animate-slide-up',
     z_index: 'z-0',
@@ -24,7 +24,7 @@ export const readingOff: IReading = {
 
 export const readingOnDark: IReading = {
     state: 'incr_dark',
-    opacity: 'opacity-70',
+    opacity: 'opacity-50',
     lines: 'max-h-80 overflow-scroll',
     slide: 'animate-slide-up',
     z_index: 'z-0',

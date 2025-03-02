@@ -23,7 +23,7 @@ function App() {
     return (
         <div className="relative overflow-hidden min-h-screen font-sf-pro bg-white-fon pb-20 flex flex-col max-h-screen">
             <Logo />
-            <div className='h-screen flex flex-col justify-between overflow-auto pt-2'>
+            <div className='h-screen flex flex-col justify-between overflow-auto'>
                 <AnimatePresence mode="wait">
                     <Routes location={location} key={location.pathname}>
                         {endPoints.map((endPoint) => {

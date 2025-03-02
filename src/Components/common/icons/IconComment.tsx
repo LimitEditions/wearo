@@ -8,8 +8,8 @@ export const IconComment = ({ defaultColor }: IconProps) => {
 
     return (
         <svg
-            width="22"
-            height="20"
+            width="24"
+            height="24"
             viewBox="0 0 22 20"
             fill="none"
             stroke={defaultColor}
