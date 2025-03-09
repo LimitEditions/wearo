@@ -79,7 +79,6 @@ export const Brand = ({ brandInfo }: { brandInfo: BrandModel }) => {
         body: { BrandGuid: brandInfo.guid }
     });
     const hilates = hilatesData?.data ?? [];
-    console.log(hilates);
     
     // Сторисы бренда
     const { data: storiesData } = useApiNew<StoryModelDataResult>("storiesList", {
