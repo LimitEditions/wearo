@@ -22,17 +22,9 @@ type Contact = {
 
 export const Brand = ({ brandInfo }: { brandInfo: BrandModel }) => {
     // статус подписки с возможностью подписаться/отписаться
-    const [disabled, setDisabled] = useState(false);
     const [subStatus, handlerSub] = useSubscribe(brandInfo.guid as string);
     const handleClick = (event: any) => {
-        if (disabled) return; // Если кнопка уже отключена, ничего не делаем
-
-        setDisabled(true); // Делаем кнопку неактивной
         handlerSub();
-
-        setTimeout(() => {
-            setDisabled(false); // Включаем кнопку обратно через 500 мс
-        }, 500);
     };
 
     // Cтейт и колбек на разворот стрелки вниз и обратно
@@ -61,7 +53,7 @@ export const Brand = ({ brandInfo }: { brandInfo: BrandModel }) => {
                 styles={"border-4"}
                 alt={"фото бренда"}
             />
-            <div className="flex items-center gap-[40px] justify-between pb-[20px]">
+            <div className="flex flex-col justify-between">
                 <Link
                     to={`${brandInfo.link}`}
                     target="_blank"
@@ -69,9 +61,12 @@ export const Brand = ({ brandInfo }: { brandInfo: BrandModel }) => {
                 >
                     {brandInfo?.name}
                 </Link>
-                <Button style={{width: "150px", margin: "0px"}} showButton={true} disabled={disabled} onClick={handleClick}>
-                    {subStatus ? "Вы подписаны" : "Подписаться"}
-                </Button>
+                <div className="flex flex-row w-full gap-3 pt-5">
+
+                    <Button showButton={true} onClick={handleClick}>
+                        {subStatus ? "Вы подписаны" : "Подписаться"}
+                    </Button>
+                </div>
             </div>
             <Highlights brandId={brandInfo.guid || null} />
             <div className="text-center">{brandInfo?.description}</div>
