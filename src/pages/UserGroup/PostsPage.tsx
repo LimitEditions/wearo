@@ -29,7 +29,7 @@ export const PostsPage = () => {
                         <ErrorReq show={!!error} error={error} />
                         { 
                             posts?.map(post => {
-                                return <Post key={post.guid} id={post.guid as string}/>
+                                return <Post key={post.guid} entity="post" id={post.guid as string}/>
                             })
                         }
                     </>

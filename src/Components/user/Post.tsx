@@ -10,14 +10,19 @@ import { Modal } from "../common/Modal";
 import { IconLike } from "../common/icons/IconLike";
 import { IconComment } from "../common/icons/IconComment";
 import { Photo } from "../common/Photo";
-import menu from '../../../public/images/menu.svg'
 
-export const Post = ({ id }: { id: string }) => {
+export const Post = ({ entity, id }: { entity: string; id: string }) => {
     const navigate = useNavigate();
     const [postData, setPostData] = useState<PostModel | null>(null);
-    const getPostDataApi = useApiNew<PostModel>("postsDetail", { token: true, immediate: false });
+    const [getInfo, setGetInfo] = useState<boolean>(false);
+    const [readingMode, setReadingMode] = useState<IReading>(readingOff);
+    const [enabledSwitch, setEnabledSwitch] = useState<boolean>(false);
+    const [commentsOpen, setCommentsOpen] = useState(false);
+    const [activeImageIndex, setActiveImageIndex] = useState(0);
 
     // Загружаем данные поста
+    const getPostDataApi = useApiNew<PostModel>("postsDetail", { token: true, immediate: false });
+
     useEffect(() => {
         getPostDataApi.execute(id).then((data) => {
             setPostData(data);
@@ -25,7 +30,6 @@ export const Post = ({ id }: { id: string }) => {
     }, [id]);
 
     // Загружаем данные бренда, когда появится идентификатор бренда
-    const [getInfo, setGetInfo] = useState<boolean>(false);
     const [brandInfo] = useApi<"brandsDetail", BrandModel>(
         "brandsDetail",
         postData?.brandGuid || "",
@@ -39,14 +43,45 @@ export const Post = ({ id }: { id: string }) => {
     }, [postData]);
 
     const userId = retrieve("guid");
-    // const sendLikeApi = useApiNew("addLike", { token: true, immediate: false }, { entity: EntityType.Post });
-    // const getLikesApi = useApiNew("getLikesCount", { token: true, immediate: false }, { entity: EntityType.Post });
+
+    // получение лайков
+    const getLikesApi = useApiNew("likesCountDetail", { token: true, immediate: false }, { entity: "post" });
+
+    useEffect(() => {
+        if (!id) return;
+
+        getLikesApi.execute(id).then((likesCount) => {
+            setPostData((prev) => (prev ? { ...prev, likesCount: likesCount ?? 0 } : prev));
+        });
+    }, [id]);
+
+    const toggleLike = () => {
+        if (!postData) return;
+
+        setPostData((prev) => prev ? {
+            ...prev,
+            isLikedByCurrentUser: !prev.isLikedByCurrentUser,
+            likesCount: prev.isLikedByCurrentUser ? (prev.likesCount ?? 0) - 1 : (prev.likesCount ?? 0) + 1,
+        } : null);
+    };
+
+    if (!postData) return <p>Загрузка...</p>;
 
     // Режим чтения и переключатель яркости
-    const [readingMode, setReadingMode] = useState<IReading>(readingOff);
-
     // Раскрытие в режиме чтения
     const isExpanded = readingMode.state !== "off";
+
+    // переключатель яркости фона
+    useEffect(() => {
+        if (enabledSwitch) {
+            setReadingMode(readingOnDark);
+        } else {
+            setReadingMode(readingOff);
+        }
+
+        setEnabledSwitch(readingMode.state === "incr_dark");
+    }, [enabledSwitch, readingMode.state]);
+
 
     // колбек на изменение вышеуказанных стейтов
     const handleReadingMode = () => {
@@ -57,29 +92,12 @@ export const Post = ({ id }: { id: string }) => {
         }
     };
 
-    // переключатель яркости фона
-    const [enabledSwitch, setEnabledSwitch] = useState<boolean>(false);
-    useEffect(() => {
-        enabledSwitch
-            ? setReadingMode(readingOnDark)
-            : setReadingMode(readingOff);
-    }, [enabledSwitch]);
-    useEffect(() => {
-        readingMode.state === "incr_dark"
-            ? setEnabledSwitch(true)
-            : setEnabledSwitch(false);
-    }, [readingMode]);
-
     const handleProdsBag = () => {
         const prods = postData?.products?.map((prod) => prod.productGuid);
         if (prods && prods.length > 0) {
             navigate("./post_products", { state: { prodsData: prods } });
         }
     };
-
-    const [commentsOpen, setCommentsOpen] = useState(false);
-    const [activeImageIndex, setActiveImageIndex] = useState(0);
-
 
     if (!postData) return null;
 
@@ -116,9 +134,11 @@ export const Post = ({ id }: { id: string }) => {
             </Modal>
 
             <div className="relative w-full bg-light-gray" style={{ paddingBottom: "175%" }}>
-                <div className="absolute top-2 left-7 z-20">
-                    <Switcher enabledSwitch={enabledSwitch} setEnabledSwitch={setEnabledSwitch} />
-                </div>
+                {isExpanded && (
+                    <div className="absolute top-2 left-7 z-20">
+                        <Switcher enabledSwitch={enabledSwitch} setEnabledSwitch={setEnabledSwitch} />
+                    </div>
+                )}
                 <div className="absolute top-3 right-4 z-20 w-6 h-6" onClick={handleProdsBag}>
                     <img src="/images/bag.svg" alt="отмеченные изделия" />
                 </div>
@@ -151,7 +171,7 @@ export const Post = ({ id }: { id: string }) => {
                 </div>
 
                 {/* Оверлей с информацией о бренде, текстом поста и панелью с лайками/комментариями */}
-                <div className="min-h-40 flex items-end gap-4 absolute bottom-1 left-0 z-30 w-full p-[10px] animate-fade-in">
+                <div className="min-h-40 flex items-end justify-space-between gap-4 absolute bottom-1 left-0 z-30 w-full p-[10px] animate-fade-in">
                     <div className="w-80">
                         <div className="flex space-x-3 mb-3 cursor-pointer">
                             <Photo
@@ -172,7 +192,7 @@ export const Post = ({ id }: { id: string }) => {
                                 style={{
                                     display: "-webkit-box",
                                     WebkitBoxOrient: "vertical",
-                                    WebkitLineClamp: isExpanded ? 'unset': 2,
+                                    WebkitLineClamp: isExpanded ? 'unset' : 2,
                                 }}
                                 onClick={handleReadingMode}
                             >
@@ -180,26 +200,20 @@ export const Post = ({ id }: { id: string }) => {
                             </p>
                         </div>
                     </div>
-                    <div className="flex flex-col align-center items-center absolute top-2 right-2 gap-1"
-                        // onClick={() => {
-                        //     sendLikeApi.execute({ fromGuid: userId, entityGuid: id }).then(() => {
-                        //         getLikesApi.execute(id).then((newLikes: number) => {
-                        //             setPostData((prev) => (prev ? { ...prev, likesCount: newLikes } : prev));
-                        //         });
-                        //     });
-                        // }}
-                        >
-                        <IconLike hoverColor="white" hoverable={false} defaultColor="white" />
-                        <p className={`text-white font-medium text-[10px] ${readingMode.lines}`}>{postData.likesCount}</p>
-                        <div onClick={() => setCommentsOpen((prev) => !prev)}>
+                    <div className="flex flex-col gap-[11px]">
+                        <div className="flex flex-col align-center items-center" onClick={toggleLike}>
+                            <IconLike hoverColor="white" hoverable={false} defaultColor="white" />
+                            <p className={`text-white font-medium text-[10px] ${readingMode.lines}`}>{postData.likesCount}</p>
                         </div>
-                        <IconComment defaultColor="white" />
-                        <p className={`text-white font-medium text-[10px] ${readingMode.lines}`}>{postData.commentsCount}</p>
-                        <div
-                            onClick={() => {
-                                // TODO: добавить логику для меню или дополнительных действий
-                            }}
-                        >
+                        <div className="flex flex-col align-center items-center">
+                            <IconComment defaultColor="white" />
+                            <p className={`text-white font-medium text-[10px] ${readingMode.lines}`}>{postData.commentsCount}</p>
+                            <div
+                                onClick={() => {
+                                    // TODO: добавить логику для меню или дополнительных действий
+                                }}
+                            >
+                            </div>
                         </div>
                         <img src="/images/menu.svg" alt="Menu" />
                     </div>
