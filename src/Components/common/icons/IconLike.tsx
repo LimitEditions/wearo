@@ -1,26 +1,32 @@
 import { useState } from "react";
 
-type IconProps = {
+export type IconProps = {
     hoverColor: string;
-    hoverable: boolean;
-    defaultColor: string;
+    hoverable?: boolean;
+    defaultColor?: string;
+    color?: string;
+    isLiked?: boolean;
 };
 
-export const IconLike = ({ hoverColor, hoverable = true, defaultColor = "#9095B5"}: IconProps) => {
+export const IconLike = ({ hoverColor, hoverable = true, defaultColor = "white", color, isLiked = false }: IconProps) => {
+    
     const [isHovered, setIsHovered] = useState(false);
 
-    const handleMouseEnter = () => setIsHovered(true);
-    const handleMouseLeave = () => setIsHovered(false);
+    const toggleHover = (value: boolean) => () => setIsHovered(value);
+
+    const fillColor = isLiked ? color : isHovered && hoverable ? hoverColor : 'none';
+    const strokeColor = isLiked ? color : defaultColor;
 
     return (
         <svg
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
+            onMouseEnter={toggleHover(true)}
+            onMouseLeave={toggleHover(false)}
             width="24"
             height="24"
             viewBox="0 0 24 24"
-            fill="none"
-            stroke={isHovered && hoverable ? hoverColor : defaultColor}
+            fill={fillColor}
+            stroke={strokeColor}
+            style={{ cursor: "pointer", transition: "fill 0.2s ease-in-out, stroke 0.2s ease-in-out" }}
             xmlns="http://www.w3.org/2000/svg"
         >
             <path

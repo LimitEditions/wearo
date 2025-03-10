@@ -65,8 +65,6 @@ export const Post = ({ entity, id }: { entity: string; id: string }) => {
         } : null);
     };
 
-    if (!postData) return <p>Загрузка...</p>;
-
     // Режим чтения и переключатель яркости
     // Раскрытие в режиме чтения
     const isExpanded = readingMode.state !== "off";
@@ -171,7 +169,7 @@ export const Post = ({ entity, id }: { entity: string; id: string }) => {
                 </div>
 
                 {/* Оверлей с информацией о бренде, текстом поста и панелью с лайками/комментариями */}
-                <div className="min-h-40 flex items-end justify-space-between gap-4 absolute bottom-1 left-0 z-30 w-full p-[10px] animate-fade-in">
+                <div className="min-h-40 flex items-end justify-between gap-4 absolute bottom-1 left-0 z-30 w-full p-[10px] animate-fade-in">
                     <div className="w-80">
                         <div className="flex space-x-3 mb-3 cursor-pointer">
                             <Photo
@@ -201,19 +199,23 @@ export const Post = ({ entity, id }: { entity: string; id: string }) => {
                         </div>
                     </div>
                     <div className="flex flex-col gap-[11px]">
-                        <div className="flex flex-col align-center items-center" onClick={toggleLike}>
-                            <IconLike hoverColor="white" hoverable={false} defaultColor="white" />
+                        <div className="flex flex-col align-center items-center gap-1" onClick={toggleLike}>
+                            <IconLike hoverColor="white" 
+                            color="#3447BC"
+                            isLiked={postData?.isLikedByCurrentUser}  />
                             <p className={`text-white font-medium text-[10px] ${readingMode.lines}`}>{postData.likesCount}</p>
                         </div>
-                        <div className="flex flex-col align-center items-center">
-                            <IconComment defaultColor="white" />
+                        <div className="flex flex-col items-center justify-center text-center gap-1">
+                            <IconComment 
+                            hoverColor="white"
+                            defaultColor="white" />
                             <p className={`text-white font-medium text-[10px] ${readingMode.lines}`}>{postData.commentsCount}</p>
-                            <div
+                            {/* <div
                                 onClick={() => {
                                     // TODO: добавить логику для меню или дополнительных действий
                                 }}
                             >
-                            </div>
+                            </div> */}
                         </div>
                         <img src="/images/menu.svg" alt="Menu" />
                     </div>
