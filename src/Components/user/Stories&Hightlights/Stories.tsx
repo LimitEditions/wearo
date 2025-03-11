@@ -6,7 +6,7 @@ import { Progress } from './Stories/Progress'
 import { Controll } from './Stories/Control';
 import { useSwipeable } from 'react-swipeable';
 import { useApiNew } from '../../../hooks/useApi'
-import { HighlightModel } from '../../../api/data-contracts'
+import { StoryModel } from '../../../api/data-contracts'
 
 interface StoriesProps {
     close: React.Dispatch<React.SetStateAction<boolean>>;
@@ -18,7 +18,7 @@ export const Stories = ({ close, stories }: StoriesProps) => {
     const [showMore, setShowMore] = useState(false);
     const [pressedScreen, setPressedScreen] = useState(false);
 
-    const { data, isLoading, execute } = useApiNew<HighlightModel>('storiesHighlightsDetail', {
+    const { data, isLoading, execute } = useApiNew<StoryModel>('storiesDetail', {
         token: true,
         immediate: false,
     })

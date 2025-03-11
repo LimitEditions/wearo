@@ -4,7 +4,6 @@ import useSubscribe from "../../hooks/useSubscribe";
 import { Link } from "react-router-dom";
 import { Photo } from "../common/Photo";
 import { Button } from "../common/Button";
-import { Highlights } from "./Stories&Hightlights/Highlights";
 import {
     Disclosure,
     DisclosureButton,
@@ -18,6 +17,9 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css";
 import { useApiNew } from "../../hooks/useApi";
+import { Stories } from "./Stories&Hightlights/Stories";
+import { Post } from "./Post";
+import { Modal } from "flowbite-react";
 
 type Contact = {
     href: string;
@@ -66,28 +68,21 @@ export const Brand = ({ brandInfo }: { brandInfo: BrandModel }) => {
         slidesToShow: 1,
         slidesToScroll: 1,
     },{
-        infinite: true,
+        infinite: false,
         speed: 500,
         slidesToShow: 2,
         slidesToScroll: 1
     }];
 
     // Хайлайты бренда
-    const { data: hilatesData } = useApiNew<HighlightModelDataResult>("storiesHighlightsList", {
+    const [activeHighlight, setActiveHighlight] = useState<string | null>(null);
+    const { data: highlightsData } = useApiNew<HighlightModelDataResult>("storiesHighlightsList", {
         token: true, 
         immediate: true, 
         body: { BrandGuid: brandInfo.guid }
     });
-    const hilates = hilatesData?.data ?? [];
+    const highlights = highlightsData?.data ?? [];
     
-    // Сторисы бренда
-    const { data: storiesData } = useApiNew<StoryModelDataResult>("storiesList", {
-        token: true, 
-        immediate: true, 
-        body: { BrandGuid: brandInfo.guid }
-    });
-    const stories = storiesData?.data ?? [];
-
     // Публикации бренда
     const { data: postsData } = useApiNew<PostModelDataResult>("postsList", {
         token: true, 
@@ -147,24 +142,28 @@ export const Brand = ({ brandInfo }: { brandInfo: BrandModel }) => {
 
             <div className="w-full pt-[10px]">
                 <Slider {...settingsSlider[1]}>
-                    {hilates?.map((elem, ind) => (
-                        <Link key={ind} to={""} className="p-[4px]">
-                            <div className="">
-                                <Photo
-                                    id={elem.mainPhotoGuid || null}
-                                    styles="w-[150px] h-[180px] rounded-[10px] object-cover"
-                                    alt="Хайлайт бренда"
+                    {highlights?.map((elem, ind) => (
+                        <div onClick={() => setActiveHighlight(elem?.mainPhotoGuid || null)} key={ind} className="p-[4px]">
+                            <Photo
+                                id={elem.mainPhotoGuid || null}
+                                styles="w-[150px] h-[180px] rounded-[10px] object-cover"
+                                alt="Хайлайт бренда"
+                            />
+                            <p className="text-[12px]">{elem.name}</p>
+                            {activeHighlight === elem.mainPhotoGuid && (
+                                <Stories
+                                    close={() => setActiveHighlight(null)}
+                                    stories={elem.storiesGuids as string[]}
                                 />
-                                <p className="text-[12px]">{elem.name}</p>
-                            </div>
-                        </Link>
+                            )}
+                        </div>
                     ))}
                 </Slider>
             </div>
 
             <div className="uppercase pt-[40px]">Публикации</div>
 
-            <div className="flex flex-wrap justify-between gap-x-[9px] gap-y-[20px]">
+            <div className="flex flex-wrap justify-between gap-x-[12px] gap-y-[20px]">
                 {posts?.map((elem, ind) => {
                     if (ind > 3) return null; // Остановка рендеринга после 4 элементов
                     return (
