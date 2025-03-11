@@ -125,7 +125,7 @@ export const Post = ({ entity, id }: { entity: string; id: string }) => {
                 swipeable={false}
                 additionalStyles={{
                     container: "fixed inset-0 overflow-hidden flex items-end justify-center",
-                    panel: "w-full h-[80%] transform overflow-hidden rounded-t-2xl bg-white px-16 py-10",
+                    panel: "w-full h-[70vh] transform overflow-hidden rounded-t-2xl bg-white px-16 py-10 flex flex-col",
                 }}
             >
                 <CommentsList
@@ -142,11 +142,11 @@ export const Post = ({ entity, id }: { entity: string; id: string }) => {
                         <Switcher enabledSwitch={enabledSwitch} setEnabledSwitch={setEnabledSwitch} />
                     </div>
                 )}
-                <div className="absolute top-3 right-4 z-20 w-6 h-6 bg-white rounded-[50px] flex justify-center items-center shadow-lg" onClick={handleProdsBag}
+                <div className="absolute top-3 right-4 z-10 w-6 h-6 bg-white rounded-[50px] flex justify-center items-center shadow-lg" onClick={handleProdsBag}
                     onMouseEnter={toggleHover(true)}
                     onMouseLeave={toggleHover(false)}
                     style={{
-                        display: "inline-block",
+                        cursor: "pointer",
                         transition: "box-shadow 0.3s ease-in-out",
                         boxShadow: isHovered ? "0 0 10px rgba(255, 255, 255, 1)" : "none"
                     }}>
@@ -181,7 +181,7 @@ export const Post = ({ entity, id }: { entity: string; id: string }) => {
                 </div>
 
                 {/* Оверлей с информацией о бренде, текстом поста и панелью с лайками/комментариями */}
-                <div className="min-h-40 flex items-end justify-between gap-4 absolute bottom-1 left-0 z-30 w-full p-[10px] animate-fade-in">
+                <div className="min-h-40 flex items-end justify-between gap-4 absolute bottom-1 left-0 z-10 w-full p-[10px] animate-fade-in">
                     <div className="w-80">
                         <div className="flex space-x-3 mb-3 cursor-pointer">
                             <Photo
@@ -217,17 +217,12 @@ export const Post = ({ entity, id }: { entity: string; id: string }) => {
                                 isLiked={postData?.isLikedByCurrentUser} />
                             <p className={`text-white font-medium text-[10px] ${readingMode.lines}`}>{postData.likesCount}</p>
                         </div>
-                        <div className="flex flex-col items-center justify-center text-center gap-1">
+                        <div className="flex flex-col items-center justify-center text-center gap-1"
+                        onClick={() => setCommentsOpen(true)}>
                             <IconComment
                                 hoverColor="white"
                                 defaultColor="white" />
                             <p className={`text-white font-medium text-[10px] ${readingMode.lines}`}>{postData.commentsCount}</p>
-                            {/* <div
-                                onClick={() => {
-                                    // TODO: добавить логику для меню или дополнительных действий
-                                }}
-                            >
-                            </div> */}
                         </div>
                         <div className="flex flex-col items-center justify-center text-center gap-1">
                             <IconEdit
