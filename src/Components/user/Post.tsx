@@ -9,6 +9,7 @@ import { CommentsList } from "./CommentsList";
 import { Modal } from "../common/Modal";
 import { IconLike } from "../common/icons/IconLike";
 import { IconComment } from "../common/icons/IconComment";
+import { IconEdit } from "../common/icons/IconEdit";
 import { Photo } from "../common/Photo";
 
 export const Post = ({ entity, id }: { entity: string; id: string }) => {
@@ -19,6 +20,10 @@ export const Post = ({ entity, id }: { entity: string; id: string }) => {
     const [enabledSwitch, setEnabledSwitch] = useState<boolean>(false);
     const [commentsOpen, setCommentsOpen] = useState(false);
     const [activeImageIndex, setActiveImageIndex] = useState(0);
+
+    //свечение отмеченных вещей
+    const [isHovered, setIsHovered] = useState(false);
+    const toggleHover = (value: boolean) => () => setIsHovered(value);
 
     // Загружаем данные поста
     const getPostDataApi = useApiNew<PostModel>("postsDetail", { token: true, immediate: false });
@@ -137,7 +142,14 @@ export const Post = ({ entity, id }: { entity: string; id: string }) => {
                         <Switcher enabledSwitch={enabledSwitch} setEnabledSwitch={setEnabledSwitch} />
                     </div>
                 )}
-                <div className="absolute top-3 right-4 z-20 w-6 h-6" onClick={handleProdsBag}>
+                <div className="absolute top-3 right-4 z-20 w-6 h-6 bg-white rounded-[50px] flex justify-center items-center shadow-lg" onClick={handleProdsBag}
+                    onMouseEnter={toggleHover(true)}
+                    onMouseLeave={toggleHover(false)}
+                    style={{
+                        display: "inline-block",
+                        transition: "box-shadow 0.3s ease-in-out",
+                        boxShadow: isHovered ? "0 0 10px rgba(255, 255, 255, 1)" : "none"
+                    }}>
                     <img src="/images/bag.svg" alt="отмеченные изделия" />
                 </div>
 
@@ -200,15 +212,15 @@ export const Post = ({ entity, id }: { entity: string; id: string }) => {
                     </div>
                     <div className="flex flex-col gap-[11px]">
                         <div className="flex flex-col align-center items-center gap-1" onClick={toggleLike}>
-                            <IconLike hoverColor="white" 
-                            color="#3447BC"
-                            isLiked={postData?.isLikedByCurrentUser}  />
+                            <IconLike hoverColor="white"
+                                color="#3447BC"
+                                isLiked={postData?.isLikedByCurrentUser} />
                             <p className={`text-white font-medium text-[10px] ${readingMode.lines}`}>{postData.likesCount}</p>
                         </div>
                         <div className="flex flex-col items-center justify-center text-center gap-1">
-                            <IconComment 
-                            hoverColor="white"
-                            defaultColor="white" />
+                            <IconComment
+                                hoverColor="white"
+                                defaultColor="white" />
                             <p className={`text-white font-medium text-[10px] ${readingMode.lines}`}>{postData.commentsCount}</p>
                             {/* <div
                                 onClick={() => {
@@ -217,7 +229,11 @@ export const Post = ({ entity, id }: { entity: string; id: string }) => {
                             >
                             </div> */}
                         </div>
-                        <img src="/images/menu.svg" alt="Menu" />
+                        <div className="flex flex-col items-center justify-center text-center gap-1">
+                            <IconEdit
+                                hoverColor="white"
+                                defaultColor="white" />
+                        </div>
                     </div>
                 </div>
             </div>

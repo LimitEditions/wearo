@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { IconProps } from "./IconLike";
 
-export const IconComment = ({ hoverColor, hoverable = true, defaultColor = "white", color }: IconProps) => {
+export const IconComment = ({ hoverColor, hoverable = true, defaultColor = "white" }: IconProps) => {
 
     const [isHovered, setIsHovered] = useState(false);
 
