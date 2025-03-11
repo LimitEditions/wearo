@@ -76,14 +76,16 @@ export const Post = ({ entity, id }: { entity: string; id: string }) => {
 
     // переключатель яркости фона
     useEffect(() => {
-        if (enabledSwitch) {
-            setReadingMode(readingOnDark);
-        } else {
-            setReadingMode(readingOff);
-        }
-
-        setEnabledSwitch(readingMode.state === "incr_dark");
-    }, [enabledSwitch, readingMode.state]);
+        enabledSwitch
+            ? setReadingMode(readingOnDark)
+            : setReadingMode(readingOff);
+    }, [enabledSwitch]);
+    
+    useEffect(() => {
+        readingMode.state === "incr_dark"
+            ? setEnabledSwitch(true)
+            : setEnabledSwitch(false);
+    }, [readingMode]);
 
 
     // колбек на изменение вышеуказанных стейтов
