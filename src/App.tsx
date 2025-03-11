@@ -9,6 +9,7 @@ import { Page404 } from "./Components/common/Page404";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { FooterApp } from './Components/common/FooterApp';
+import { CommentsPage } from "./pages/UserGroup/CommentsPage";
 
 function App() {
     const location = useLocation();

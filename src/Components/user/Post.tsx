@@ -80,7 +80,7 @@ export const Post = ({ entity, id }: { entity: string; id: string }) => {
             ? setReadingMode(readingOnDark)
             : setReadingMode(readingOff);
     }, [enabledSwitch]);
-    
+
     useEffect(() => {
         readingMode.state === "incr_dark"
             ? setEnabledSwitch(true)
@@ -104,6 +104,12 @@ export const Post = ({ entity, id }: { entity: string; id: string }) => {
         }
     };
 
+    const handleGoComments = () => {
+        if (postData?.guid) {
+            navigate(`/posts/${postData.guid}/comments`);
+        }
+    };
+
     if (!postData) return null;
 
     // Формируем массив изображений для слайдера.
@@ -121,7 +127,7 @@ export const Post = ({ entity, id }: { entity: string; id: string }) => {
 
     return (
         <div className="w-full pb-2">
-            <Modal
+            {/* <Modal
                 isOpen={commentsOpen}
                 setIsOpen={setCommentsOpen}
                 swipeable={false}
@@ -136,7 +142,7 @@ export const Post = ({ entity, id }: { entity: string; id: string }) => {
                         setPostData((prev) => (prev ? { ...prev, commentsCount: newCount } : prev))
                     }
                 />
-            </Modal>
+            </Modal> */}
 
             <div className="relative w-full bg-light-gray" style={{ paddingBottom: "175%" }}>
                 {isExpanded && (
@@ -220,7 +226,7 @@ export const Post = ({ entity, id }: { entity: string; id: string }) => {
                             <p className={`text-white font-medium text-[10px] ${readingMode.lines}`}>{postData.likesCount}</p>
                         </div>
                         <div className="flex flex-col items-center justify-center text-center gap-1"
-                        onClick={() => setCommentsOpen(true)}>
+                            onClick={handleGoComments}>
                             <IconComment
                                 hoverColor="white"
                                 defaultColor="white" />

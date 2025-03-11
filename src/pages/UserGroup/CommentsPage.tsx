@@ -1,8 +1,9 @@
 import React from 'react'
+import { useParams } from 'react-router-dom';
 import { CommentModel } from '../../api/data-contracts'
 import { CommentComponent } from '../../Components/user/CommentComponent';
 
-export const CommentsPage = ({ comments }: { comments: CommentModel[] }) => {
+export const CommentsPage = ({ comments = [] }: { comments?: CommentModel[] }) => {
 
   const mock: CommentModel[] = [
     {
@@ -41,6 +42,7 @@ export const CommentsPage = ({ comments }: { comments: CommentModel[] }) => {
 
   return (
     <div className='pt-1'>
+      <h1>Комментарии</h1>
       {
         toRender.map(el => { return <CommentComponent comment={el} key={el.guid}/> })
       }
