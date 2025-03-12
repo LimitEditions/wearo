@@ -167,19 +167,21 @@ export const Brand = ({ brandInfo }: { brandInfo: BrandModel }) => {
                 {posts?.map((elem, ind) => {
                     if (ind > 3) return null; // Остановка рендеринга после 4 элементов
                     return (
-                        <div key={ind} className="flex flex-col items-center">
-                            <Photo
-                                id={elem.fileGuid || null}
-                                styles="w-[150px] h-[150px] object-cover"
-                                alt="Публикация бренда"
-                            />
-                            <p className="text-[12px] pt-[8px] truncate w-[150px] overflow-hidden whitespace-nowrap text-ellipsis">{elem.text}</p>
-                        </div>
+                        <Link to={""}>
+                            <div key={ind} className="flex flex-col items-center">
+                                <Photo
+                                    id={elem.fileGuid || null}
+                                    styles="w-[150px] h-[150px] object-cover"
+                                    alt="Публикация бренда"
+                                />
+                                <p className="text-[12px] pt-[8px] truncate w-[150px] overflow-hidden whitespace-nowrap text-ellipsis">{elem.text}</p>
+                            </div>
+                        </Link>  
                     );
                 })}
             </div>
 
-            <Link className="flex justify-between items-center" to={""}>
+            <Link className="flex justify-between items-center" to={`/brand/${brandInfo.guid}/posts`}>
                 <p className="text-[15px]">Смотреть все публикации</p>
                 <Arrow direct={"right"} />
             </Link>
