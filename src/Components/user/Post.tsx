@@ -11,6 +11,7 @@ import { IconLike } from "../common/icons/IconLike";
 import { IconComment } from "../common/icons/IconComment";
 import { IconEdit } from "../common/icons/IconEdit";
 import { Photo } from "../common/Photo";
+import { Likes } from "./Likes";
 
 export const Post = ({ entity, id }: { entity: string; id: string }) => {
     const navigate = useNavigate();
@@ -50,25 +51,25 @@ export const Post = ({ entity, id }: { entity: string; id: string }) => {
     const userId = retrieve("guid");
 
     // получение лайков
-    const getLikesApi = useApiNew("likesCountDetail", { token: true, immediate: false }, { entity: "post" });
+    // const getLikesApi = useApiNew("likesCountDetail", { token: true, immediate: false }, { entity: "post" });
 
-    useEffect(() => {
-        if (!id) return;
+    // useEffect(() => {
+    //     if (!id) return;
 
-        getLikesApi.execute(id).then((likesCount) => {
-            setPostData((prev) => (prev ? { ...prev, likesCount: likesCount ?? 0 } : prev));
-        });
-    }, [id]);
+    //     getLikesApi.execute(id).then((likesCount) => {
+    //         setPostData((prev) => (prev ? { ...prev, likesCount: likesCount ?? 0 } : prev));
+    //     });
+    // }, [id]);
 
-    const toggleLike = () => {
-        if (!postData) return;
+    // const toggleLike = () => {
+    //     if (!postData) return;
 
-        setPostData((prev) => prev ? {
-            ...prev,
-            isLikedByCurrentUser: !prev.isLikedByCurrentUser,
-            likesCount: prev.isLikedByCurrentUser ? (prev.likesCount ?? 0) - 1 : (prev.likesCount ?? 0) + 1,
-        } : null);
-    };
+    //     setPostData((prev) => prev ? {
+    //         ...prev,
+    //         isLikedByCurrentUser: !prev.isLikedByCurrentUser,
+    //         likesCount: prev.isLikedByCurrentUser ? (prev.likesCount ?? 0) - 1 : (prev.likesCount ?? 0) + 1,
+    //     } : null);
+    // };
 
     // Режим чтения и переключатель яркости
     // Раскрытие в режиме чтения
@@ -123,7 +124,6 @@ export const Post = ({ entity, id }: { entity: string; id: string }) => {
             ...postData.extraFiles.filter((file) => file.guid !== undefined).map((file) => ({ guid: file.guid! }))
         );
     }
-
 
     return (
         <div className="w-full pb-2">
@@ -219,23 +219,20 @@ export const Post = ({ entity, id }: { entity: string; id: string }) => {
                         </div>
                     </div>
                     <div className="flex flex-col gap-[11px]">
-                        <div className="flex flex-col align-center items-center gap-1" onClick={toggleLike}>
-                            <IconLike hoverColor="white"
-                                color="#3447BC"
-                                isLiked={postData?.isLikedByCurrentUser} />
-                            <p className={`text-white font-medium text-[10px] ${readingMode.lines}`}>{postData.likesCount}</p>
-                        </div>
+                        {postData.guid && <Likes id={postData.guid} entityType="post" />}
                         <div className="flex flex-col items-center justify-center text-center gap-1"
                             onClick={handleGoComments}>
                             <IconComment
                                 hoverColor="white"
-                                defaultColor="white" />
+                                defaultColor="white"
+                                entityType="post" />
                             <p className={`text-white font-medium text-[10px] ${readingMode.lines}`}>{postData.commentsCount}</p>
                         </div>
                         <div className="flex flex-col items-center justify-center text-center gap-1">
                             <IconEdit
                                 hoverColor="white"
-                                defaultColor="white" />
+                                defaultColor="white"
+                                entityType="post" />
                         </div>
                     </div>
                 </div>

@@ -6,16 +6,17 @@ export type IconProps = {
     defaultColor?: string;
     color?: string;
     isLiked?: boolean;
+    entityType: "post" | "postComment";
 };
 
-export const IconLike = ({ hoverColor, hoverable = true, defaultColor = "white", color, isLiked = false }: IconProps) => {
-    
+export const IconLike = ({ hoverColor, hoverable = true, defaultColor = "white", color, isLiked = false, entityType }: IconProps) => {
+
     const [isHovered, setIsHovered] = useState(false);
 
     const toggleHover = (value: boolean) => () => setIsHovered(value);
 
     const fillColor = isLiked ? color : isHovered && hoverable ? hoverColor : 'none';
-    const strokeColor = isLiked ? color : defaultColor;
+    const strokeColor = isLiked ? color : entityType === 'post' ? '#FFFFFF' : '#121212';
 
     return (
         <svg

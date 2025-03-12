@@ -1,10 +1,9 @@
 import React from 'react'
-import { useParams } from 'react-router-dom';
 import { CommentModel } from '../../api/data-contracts'
 import { CommentComponent } from '../../Components/user/CommentComponent';
-
+import { useNavigate } from "react-router-dom";
 export const CommentsPage = ({ comments = [] }: { comments?: CommentModel[] }) => {
-
+    const navigate = useNavigate();
   const mock: CommentModel[] = [
     {
       guid: 'e4d1b691-e07f-4ab7-af81-7518268f4857',
@@ -37,14 +36,21 @@ export const CommentsPage = ({ comments = [] }: { comments?: CommentModel[] }) =
       entityGuid: 'e6e7b1a6b2c8-f8a5-4b3f-9d8f-c9e7d2b6f8a5'
     }
   ];
-  
-  const toRender = comments.length > 0 ? comments: mock;
+
+  const toRender = comments.length > 0 ? comments : mock;
+
+  const closeComment = () => {
+      navigate('/posts/');
+  }
 
   return (
     <div className='pt-1'>
-      <h1>Комментарии</h1>
+      <div className='flex justify-between px-[10px] py-[18px]'>
+        <h1 className='uppercase'>Комментарии</h1>
+        <img src="./images/closeBtn.png" alt="close" onClick={closeComment}/>
+      </div>
       {
-        toRender.map(el => { return <CommentComponent comment={el} key={el.guid}/> })
+        toRender.map(el => { return <CommentComponent comment={el} key={el.guid} /> })
       }
     </div>
   )
