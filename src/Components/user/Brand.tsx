@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { BrandModel, HighlightModelDataResult, PostModelDataResult, StoryModelDataResult } from "../../api/data-contracts";
+import { BrandModel, ClothingCollectionModelDataResult, HighlightModelDataResult, PostModelDataResult } from "../../api/data-contracts";
 import useSubscribe from "../../hooks/useSubscribe";
 import { Link } from "react-router-dom";
 import { Photo } from "../common/Photo";
@@ -167,8 +167,8 @@ export const Brand = ({ brandInfo }: { brandInfo: BrandModel }) => {
                 {posts?.map((elem, ind) => {
                     if (ind > 3) return null; // Остановка рендеринга после 4 элементов
                     return (
-                        <Link to={""}>
-                            <div key={ind} className="flex flex-col items-center">
+                        <Link key={ind} to={`/post/${elem.guid}`}>
+                            <div className="flex flex-col items-center">
                                 <Photo
                                     id={elem.fileGuid || null}
                                     styles="w-[150px] h-[150px] object-cover"

@@ -11,7 +11,8 @@ import { PromotionsPage } from "../pages/UserGroup/PromotionsPage";
 import { UserPage } from "../pages/UserGroup/UserPage";
 import { WardrobePage } from "../pages/UserGroup/WardrobePage";
 import { CreateBrandPage } from "../pages/UserGroup/CreateBrandPage";
-import { BrandPostsPage } from "../pages/UserGroup/BrandPostPages";
+import { BrandPostsPage } from "../pages/UserGroup/BrandPostsPage";
+import { PostPage } from "../pages/UserGroup/PostPage";
 
 export const endPoints = [
     //user
@@ -30,6 +31,10 @@ export const endPoints = [
     {
         path: "/posts/*",
         component: PostsPage,
+    },
+    {
+        path: "/post/:id",
+        component: PostPage
     },
     {
         path: "/brand/:id/*",
