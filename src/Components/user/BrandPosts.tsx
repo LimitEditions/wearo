@@ -3,13 +3,12 @@ import { PostModel } from "../../api/data-contracts";
 import { Photo } from "../common/Photo";
 
 export const BrandPosts = ({ brandPosts }: { brandPosts: PostModel[] }) => {
-    console.log(brandPosts);
     return (
         <div className="flex flex-wrap justify-between gap-x-[12px] gap-y-[20px]">
             {brandPosts?.map((elem, ind) => {
                 return (
-                    <Link to={`/post/${elem.guid}`} >
-                        <div key={ind} className="flex flex-col items-center">
+                    <Link key={ind} to={`/post/${elem.guid}`} >
+                        <div className="flex flex-col items-center">
                             <Photo
                                 id={elem.fileGuid || null}
                                 styles="w-[150px] h-[150px] object-cover"

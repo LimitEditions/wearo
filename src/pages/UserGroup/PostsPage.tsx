@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import useApi from '../../hooks/useApi';
 import { PostModel, PostModelDataResult } from '../../api/data-contracts';
 import { Post } from '../../Components/user/Post';

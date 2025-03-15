@@ -108,9 +108,6 @@ export const ProductsPage = () => {
         traverse(filterCategories);
         setCheckedCategories(checked);
     };
-
-    console.log(checkedCategories);
-
     return (
         <div>
             <h1 className="font-lg uppercase px-4 py-5 space-y-3">Изделия</h1>

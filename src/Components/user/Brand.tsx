@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { BrandModel, ClothingCollectionModelDataResult, HighlightModelDataResult, PostModelDataResult } from "../../api/data-contracts";
+import { BrandModel, HighlightModelDataResult, PostModelDataResult } from "../../api/data-contracts";
 import useSubscribe from "../../hooks/useSubscribe";
 import { Link } from "react-router-dom";
 import { Photo } from "../common/Photo";
@@ -17,14 +17,10 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css";
 import { useApiNew } from "../../hooks/useApi";
-import { Stories } from "./Stories&Hightlights/Stories";
-import { Post } from "./Post";
-import { Modal } from "flowbite-react";
-
-type Contact = {
-    href: string;
-    Icon: React.ElementType;
-};  
+import { Stories } from "./Stories&Hightlights/Stories"; 
+import { SupportContactsType } from "../../types/SupportContactsType";
+import { SingleSlideSlider } from "./SingleSlideSlider";
+import { MultiSlideSlider } from "./MultiSlideSlider";
 
 export const Brand = ({ brandInfo }: { brandInfo: BrandModel }) => {
     // статус подписки с возможностью подписаться/отписаться
@@ -50,7 +46,7 @@ export const Brand = ({ brandInfo }: { brandInfo: BrandModel }) => {
     // Добавляет phone как необязательное поле (после его добовления ошибок не будет)
     const brandInfoWithOptionalFields = brandInfo as BrandModel & Partial<{ phone: string }>;
 
-    const potentialContacts: Array<Contact | null> = [
+    const potentialContacts: Array<SupportContactsType | null> = [
         brandInfoWithOptionalFields.whatsappId ? { href: `https://wa.me/${brandInfoWithOptionalFields.whatsappId}`, Icon: PiWhatsappLogo } : null,
         brandInfoWithOptionalFields.telegramId ? { href: `https://t.me/${brandInfoWithOptionalFields.telegramId}`, Icon: PiTelegramLogo } : null,
         brandInfoWithOptionalFields.email ? { href: `mailto:${brandInfoWithOptionalFields.email}`, Icon: SlEnvolope } : null,
@@ -58,30 +54,7 @@ export const Brand = ({ brandInfo }: { brandInfo: BrandModel }) => {
     ];
 
     // Фильтруем null-значения
-    const contacts: Array<Contact> = potentialContacts.filter((contact): contact is Contact => contact !== null);
-    
-    // Параметры для слайдеров
-    const settingsSlider = [{
-        dots: true,
-        infinite: true,
-        speed: 800,
-        slidesToShow: 1,
-        slidesToScroll: 1,
-    },{
-        infinite: false,
-        speed: 500,
-        slidesToShow: 2,
-        slidesToScroll: 1
-    }];
-
-    // Хайлайты бренда
-    const [activeHighlight, setActiveHighlight] = useState<string | null>(null);
-    const { data: highlightsData } = useApiNew<HighlightModelDataResult>("storiesHighlightsList", {
-        token: true, 
-        immediate: true, 
-        body: { BrandGuid: brandInfo.guid }
-    });
-    const highlights = highlightsData?.data ?? [];
+    const contacts: Array<SupportContactsType> = potentialContacts.filter((contact): contact is SupportContactsType => contact !== null);
     
     // Публикации бренда
     const { data: postsData } = useApiNew<PostModelDataResult>("postsList", {
@@ -123,42 +96,14 @@ export const Brand = ({ brandInfo }: { brandInfo: BrandModel }) => {
                     </div>
                 </DisclosureButton>
                 <DisclosurePanel style={{paddingBottom: "16px"}}>
-                    {<Slider {...settingsSlider[0]}>
-                        {brandInfo.collections?.map((col) => {
-                            return (
-                                <Item
-                                    path={`../../collection/${col.guid}`}
-                                    key={col.guid}
-                                >
-                                    {col.name}
-                                </Item>
-                            );
-                        })}
-                    </Slider>}
+                    <SingleSlideSlider collections={brandInfo?.collections || []}/>
                 </DisclosurePanel>
             </Disclosure>
             
             <Item path={`/products/${brandInfo.guid}`}>Изделия</Item>
 
             <div className="w-full pt-[10px]">
-                <Slider {...settingsSlider[1]}>
-                    {highlights?.map((elem, ind) => (
-                        <div onClick={() => setActiveHighlight(elem?.mainPhotoGuid || null)} key={ind} className="p-[4px]">
-                            <Photo
-                                id={elem.mainPhotoGuid || null}
-                                styles="w-[150px] h-[180px] rounded-[10px] object-cover"
-                                alt="Хайлайт бренда"
-                            />
-                            <p className="text-[12px]">{elem.name}</p>
-                            {activeHighlight === elem.mainPhotoGuid && (
-                                <Stories
-                                    close={() => setActiveHighlight(null)}
-                                    stories={elem.storiesGuids as string[]}
-                                />
-                            )}
-                        </div>
-                    ))}
-                </Slider>
+                <MultiSlideSlider id={brandInfo?.guid || ""} />
             </div>
 
             <div className="uppercase pt-[40px]">Публикации</div>

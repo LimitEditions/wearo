@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import useApi, { useApiNew } from "../../hooks/useApi";
 import { BrandModel, PostModel } from "../../api/data-contracts";
 import { Photo } from "../common/Photo";
