@@ -1,9 +1,9 @@
 import Slider from 'react-slick';
-import { Photo } from '../common/Photo';
-import { HighlightModel, HighlightModelDataResult } from '../../api/data-contracts';
-import { useApiNew } from '../../hooks/useApi';
+import { Photo } from '../../common/Photo';
+import { HighlightModel, HighlightModelDataResult } from '../../../api/data-contracts';
+import { useApiNew } from '../../../hooks/useApi';
 import { useState } from 'react';
-import { Stories } from './Stories&Hightlights/Stories';
+import { Stories } from '../Stories&Hightlights/Stories';
 
 interface MultiSlideSliderProps {
     id: string;

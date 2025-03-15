@@ -1,7 +1,7 @@
 import Slider from 'react-slick';
 import { Link } from 'react-router-dom';
-import { Photo } from '../common/Photo';
-import { ClothingCollectionModel } from '../../api/data-contracts';
+import { Photo } from '../../common/Photo';
+import { ClothingCollectionModel } from '../../../api/data-contracts';
 
 export const SingleSlideSlider = ({ collections }: {collections: ClothingCollectionModel[]}) => {
     const settingsSlider = {
