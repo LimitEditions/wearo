@@ -106,9 +106,7 @@ export const Post = ({ entity, id }: { entity: string; id: string }) => {
     };
 
     const handleGoComments = () => {
-        if (postData?.guid) {
-            navigate(`/posts/${postData.guid}/comments`);
-        }
+        setCommentsOpen(true)
     };
 
     if (!postData) return null;
@@ -127,12 +125,12 @@ export const Post = ({ entity, id }: { entity: string; id: string }) => {
 
     return (
         <div className="w-full pb-2">
-            {/* <Modal
+            <Modal
                 isOpen={commentsOpen}
                 setIsOpen={setCommentsOpen}
                 swipeable={false}
                 additionalStyles={{
-                    container: "fixed inset-0 overflow-hidden flex items-end justify-center",
+                    container: "fixed inset-0 overflow-hidden flex items-end justify-center z-999",
                     panel: "w-full h-[70vh] transform overflow-hidden rounded-t-2xl bg-white px-16 py-10 flex flex-col",
                 }}
             >
@@ -141,8 +139,9 @@ export const Post = ({ entity, id }: { entity: string; id: string }) => {
                     updateCommentsCount={(newCount: number) =>
                         setPostData((prev) => (prev ? { ...prev, commentsCount: newCount } : prev))
                     }
+                    onClose={() => setCommentsOpen(false)}
                 />
-            </Modal> */}
+            </Modal>
 
             <div className="relative w-full bg-light-gray" style={{ paddingBottom: "175%" }}>
                 {isExpanded && (
