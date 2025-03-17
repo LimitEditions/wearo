@@ -32,6 +32,8 @@ export const Post = ({ entity, id }: { entity: string; id: string }) => {
     useEffect(() => {
         getPostDataApi.execute(id).then((data) => {
             setPostData(data);
+        }).catch((error) => {
+            console.error("Error fetching post data:", error);
         });
     }, [id]);
 

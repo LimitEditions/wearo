@@ -13,6 +13,8 @@ export const CommentComponent = ({ comment }: { comment: CommentModel }) => {
     const navigate = useNavigate();
     const [user, setUser] = useState<string>('');
     const [userPhoto, setUserPhoto] = useState<string>('');
+    const [image, setImage] = useState<File | null>(null);
+    const [newComment, setNewComment] = useState<string>('');
     const date = comment.updateDT ? comment.updateDT : comment.createDT;
 
 
@@ -22,6 +24,7 @@ export const CommentComponent = ({ comment }: { comment: CommentModel }) => {
         { headers: { Authorization: `Bearer ${retrieve("token")}` } },
         true
     );
+
     useEffect(() => {
         setUser(data?.username as string);
     }, [data]);

@@ -939,7 +939,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @secure */
   likesDetail = (data: { id: any; entity: any; query: any }, params: RequestParams = {}) =>
     this.request<LikeModelDataResult, ProblemDetails>({
-      path: `/api/Likes/$${data.entity}/$${data.id}`,
+      path: `/api/Likes/${data.entity}/${data.id}`,
       method: "GET",
       query: data.query,
       secure: true,
@@ -953,7 +953,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @secure */
   likesDelete = (data: { id: any; entity: any }, params: RequestParams = {}) =>
     this.request<void, ProblemDetails>({
-      path: `/api/Likes/$${data.entity}/$${data.id}`,
+      path: `/api/Likes/${data.entity}/${data.id}`,
       method: "DELETE",
       secure: true,
       ...params,
@@ -965,7 +965,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @secure */
   likesCountDetail = (data: { id: any; entity: any }, params: RequestParams = {}) =>
     this.request<number, ProblemDetails>({
-      path: `/api/Likes/$${data.entity}/$${data.id}/Count`,
+      path: `/api/Likes/${data.entity}/${data.id}/Count`,
       method: "GET",
       secure: true,
       format: "json",
@@ -978,7 +978,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @secure */
   likesCreate = (data: { entity: any; body: any }, params: RequestParams = {}) =>
     this.request<LikeModel, ProblemDetails>({
-      path: `/api/Likes/$${data.entity}`,
+      path: `/api/Likes/${data.entity}`,
       method: "POST",
       body: data,
       secure: true,
