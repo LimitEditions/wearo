@@ -3,6 +3,7 @@ import useApi from "../../hooks/useApi";
 import {
     ProductCategoryModel,
     ProductCategoryModelDataResult,
+    ProductModel,
     ProductModelDataResult,
 } from "../../api/data-contracts";
 import { useParams } from "react-router-dom";
@@ -35,6 +36,23 @@ export const ProductsPage = () => {
     // отмеченные категории (сет уникальных значений)
     const [checkedCategories, setCheckedCategories] =
         useState<Set<{ name: string; id: string }>>();
+
+    // фильтрация данных если есть checkedCategories
+    const [filterData, setFilterData] = useState<ProductModel[]>([]);
+    useEffect(() => {
+        if (data && data.data) {
+            setFilterData(data.data);
+        }
+    }, [data]); // Обновляет filterData, когда data изменяется
+    
+    useEffect(() => {
+        if (checkedCategories) {
+            // Преобразуем Set в массив и извлекаем только id
+            const checkedCategoriesId: string[] = Array.from(checkedCategories).map(item => item.id);
+            const filteredData = (data?.data || []).filter(item => checkedCategoriesId.includes(item["categoryGuid"] || ""));
+            setFilterData(filteredData);
+        }
+    }, [checkedCategories]);
 
     // все полученные категории с сервера преобразовываем в единый стейт с иерархической структурой
     // и сохраняем в соответствующую переменную
