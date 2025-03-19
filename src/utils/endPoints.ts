@@ -59,10 +59,7 @@ export const endPoints = [
         path: "/pi/:code",
         component: ProductItemPage,
     },
-    {
-        path: "/posts/:postId/comments",
-        component: CommentsList,
-    },
+
 
     //admin
     {

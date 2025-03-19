@@ -62,10 +62,10 @@ export const CommentsPage = ({ comments = [] }: { comments?: CommentModel[] }) =
             isDeleted: false,
             createDT: new Date().toISOString(),
             updateDT: new Date().toISOString(),
-            userGuid: 'some-user-guid', // замените на актуальное значение
+            userGuid: 'some-user-guid',
             text: newComment,
             isLike: null,
-            entityGuid: 'some-entity-guid' // замените на актуальное значение
+            entityGuid: 'some-entity-guid'
         };
 
         setCommentsState([...commentsState, newCommentData]);

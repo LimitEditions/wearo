@@ -5,12 +5,18 @@ import { Input } from '../common/InputGroup/Input';
 import { Button } from '../common/Button';
 import { retrieve } from '../../utils/encryption';
 import moment from 'moment';
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Photo } from '../common/Photo';
 import { Likes } from './Likes';
 
-export const CommentsList: React.FC = () => {
-    const { postId } = useParams();
+interface CommentsListProps {
+    entityId: string;
+    updateCommentsCount: (newCount: number) => void;
+    onClose: () => void;
+}
+
+export const CommentsList: React.FC<CommentsListProps> = ({ entityId, updateCommentsCount, onClose }) => {
+
     const navigate = useNavigate();
     const commentsListApi = useApiNew<CommentModelDataResult>('postCommentsList', { token: true, immediate: false })
     const createCommentApi = useApiNew('postCommentsCreate', { token: true, immediate: false })
@@ -21,12 +27,14 @@ export const CommentsList: React.FC = () => {
     const inputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
-        if (postId) {
-            commentsListApi.execute({ EntityGuid: postId });
-        }
-    }, [postId]);
+        commentsListApi.execute({ EntityGuid: entityId });
+    }, []);
 
     const comments = commentsListApi.data
+
+    useEffect(() => {
+        updateCommentsCount(comments?.data?.length ?? 0)
+    }, [comments, updateCommentsCount])
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setComment(e.target.value);
@@ -44,23 +52,16 @@ export const CommentsList: React.FC = () => {
             userGuid: userId,
             text: comment,
             isLike: true,
-            entityGuid: postId,
+            entityGuid: entityId,
             replyAtGuid: replyTo?.commentId ?? null
         })
         setComment("");
         setReplyTo(null);
         commentsListApi.execute({
-            EntityGuid: postId,
+            EntityGuid: entityId,
         })
     }
 
-    const onClose = () => {
-        navigate('/posts')
-    }
-
-    const mainComments = comments?.data?.filter((c) => !c.replyAtGuid);
-
-    console.log('комментпри', mainComments);
     return (
         <div className='flex flex-col'>
             <div className='h-screen overflow-y-auto scrollbar-hide'>
@@ -68,9 +69,9 @@ export const CommentsList: React.FC = () => {
                     <h1 className='uppercase size-4 text-black'>Комментарии</h1>
                     <img src="./images/closeBtn.png" alt="close" onClick={onClose} className='cursor-pointer w-4 h-4' />
                 </div>
-                <div className='px-3'>
+                <div className='px-3 bg-white-fon'>
                     {
-                        mainComments && mainComments.map((el) => (
+                        comments?.data && comments.data.map((el) => (
                             <div key={el.guid} className='min-h-[50px]'>
                                 <div className='py-4'>
                                     <div className='flex justify-between'>
@@ -94,7 +95,7 @@ export const CommentsList: React.FC = () => {
                                     <Button showButton={true} onClick={() => handleReplyClick(el.user?.firstName || "Пользователь", el.guid ?? "")} className='sm text-normal-gray'>Ответить</Button>
                                 </div>
                                 {/* ответы */}
-                                {mainComments
+                                {/* {mainComments
                                     .filter((comment) => comment.replyAtGuid === el.guid)
                                     .map((reply) => (
                                         <div key={reply.guid} className="ml-10 border-l-2 pl-4 py-2">
@@ -106,29 +107,28 @@ export const CommentsList: React.FC = () => {
                                                 {reply.text}
                                             </p>
                                         </div>
-                                    ))}
+                                    ))} */}
                                 <hr />
                             </div>
                         ))
                     }
                 </div>
-            <div className='h-14 sticky bottom-0 bg-white px-3 py-2 flex mt-5 gap-5'>
-                <Input
-                    reflink={inputRef}
-                    value={comment}
-                    onChange={handleChange}
-                    placeholder="Ваш комментарий"
-                />
-                <Button
-                    onClick={createComment}
-                    showButton={true}
-                    disabled={createCommentApi.isLoading}
-                    style={{ all: "unset" }}>
-                    <img src="./images/sendComment.svg" alt="send comment" className='w-6 h-6' />
-                </Button>
+                <div className='h-14 sticky bottom-0 bg-white px-3 py-2 flex mt-5 gap-5'>
+                    <Input
+                        reflink={inputRef}
+                        value={comment}
+                        onChange={handleChange}
+                        placeholder="Ваш комментарий"
+                    />
+                    <Button
+                        onClick={createComment}
+                        showButton={true}
+                        disabled={createCommentApi.isLoading}
+                        style={{ all: "unset" }}>
+                        <img src="./images/sendComment.svg" alt="send comment" className='w-6 h-6' />
+                    </Button>
+                </div>
             </div>
-            </div>
-
         </div>
     )
 }

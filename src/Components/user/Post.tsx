@@ -55,10 +55,9 @@ export const Post = ({ entity, id }: { entity: string; id: string }) => {
 
     // переключатель яркости фона
     useEffect(() => {
-        enabledSwitch
-            ? setReadingMode(readingOnDark)
-            : setReadingMode(readingOn);
-    }, [enabledSwitch]);
+        if (!isExpanded) return; 
+        setReadingMode(enabledSwitch ? readingOnDark : readingOn);
+    }, [enabledSwitch, isExpanded]);
 
     // колбек на изменение вышеуказанных стейтов
     const handleReadingMode = () => {
@@ -78,7 +77,7 @@ export const Post = ({ entity, id }: { entity: string; id: string }) => {
     };
 
     const handleGoComments = () => {
-        navigate(`/posts/${postData?.guid}/comments`)
+        setCommentsOpen(true);
     };
 
     if (!postData) return null;
@@ -96,13 +95,13 @@ export const Post = ({ entity, id }: { entity: string; id: string }) => {
 
     return (
         <div className="w-full pb-2">
-            {/* <Modal
+            <Modal
                 isOpen={commentsOpen}
                 setIsOpen={setCommentsOpen}
                 swipeable={false}
                 additionalStyles={{
-                    container: "fixed inset-0 flex items-end justify-center z-21",
-                    panel: "w-full h-screen transform overflow-hidden scrollbar-hide bg-white flex flex-col",
+                    container: "fixed inset-0 flex overflow-hidden items-end justify-center",
+                    panel: "w-full h-[70vh] transform overflow-hidden scrollbar-hide bg-white flex flex-col rounded-t-[18px]",
                 }}
             >
                 <CommentsList
@@ -115,7 +114,7 @@ export const Post = ({ entity, id }: { entity: string; id: string }) => {
                     }
                     onClose={() => setCommentsOpen(false)}
                 />
-            </Modal> */}
+            </Modal>
 
             <div className="relative w-full bg-light-gray" style={{ paddingBottom: "175%" }}>
                 {isExpanded && (
@@ -179,11 +178,10 @@ export const Post = ({ entity, id }: { entity: string; id: string }) => {
                         </div>
                         <div className="flex justify-between items-center mb-[10px]">
                             <p
-                                className={`text-white text-xs`}
+                                className={'text-white text-xs overflow-hidden transition-[max-height] duration-600 ease-in-out cursor-pointer'}
                                 style={{
-                                    display: "-webkit-box",
-                                    WebkitBoxOrient: "vertical",
-                                    WebkitLineClamp: isExpanded ? 'unset' : 2,
+                                    maxHeight: isExpanded ? "1000px" : "3em", // 3em ≈ 2 строки текста
+                                    lineHeight: "1.5em", // Чтобы каждая строка была четкой
                                 }}
                                 onClick={handleReadingMode}
                             >

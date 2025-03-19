@@ -21,59 +21,38 @@ function App() {
         }
     }, [location.pathname, nav]);
 
-    const isCommentsList = location.pathname.includes('/posts/') && location.pathname.includes('/comments');
-
-
     return (
         <div className="relative overflow-hidden min-h-screen font-sf-pro bg-white-fon flex flex-col max-h-screen">
-            {!isCommentsList && (
-                <>
-                    <Logo />
-                    <div className='h-screen flex flex-col justify-between overflow-y-auto scrollbar-hide'>
-                        <AnimatePresence mode="wait">
-                            <Routes location={location} key={location.pathname}>
-                                {endPoints.map((endPoint) => {
-                                    return (
-                                        <Route
-                                            key={endPoint.path}
-                                            path={endPoint.path}
-                                            element={
-                                                <AnimatedWrapper>
-                                                    <endPoint.component />
-                                                </AnimatedWrapper>
-                                            }
-                                        />
-                                    );
-                                })}
+            <Logo />
+            <div className='h-screen flex flex-col justify-between overflow-y-auto scrollbar-hide'>
+                <AnimatePresence mode="wait">
+                    <Routes location={location} key={location.pathname}>
+                        {endPoints.map((endPoint) => {
+                            return (
                                 <Route
-                                    path="*"
+                                    key={endPoint.path}
+                                    path={endPoint.path}
                                     element={
                                         <AnimatedWrapper>
-                                            <Page404 />
+                                            <endPoint.component />
                                         </AnimatedWrapper>
                                     }
                                 />
-                            </Routes>
-                        </AnimatePresence>
-                        <FooterApp />
-                    </div>
-                    <Nav />
-                </>
-            )}
-             {isCommentsList && (
-                <AnimatePresence mode="wait">
-                    <Routes location={location} key={location.pathname}>
-                        <Route
-                            path="/posts/:postId/comments"
-                            element={<CommentsList />}
-                        />
+                            );
+                        })}
                         <Route
                             path="*"
-                            element={<Page404 />}
+                            element={
+                                <AnimatedWrapper>
+                                    <Page404 />
+                                </AnimatedWrapper>
+                            }
                         />
                     </Routes>
                 </AnimatePresence>
-            )}
+                <FooterApp />
+            </div>
+            <Nav />
         </div>
     );
 }
