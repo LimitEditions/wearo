@@ -5,11 +5,7 @@ import { useApiNew } from '../../../hooks/useApi';
 import { useState } from 'react';
 import { Stories } from '../Stories&Hightlights/Stories';
 
-interface MultiSlideSliderProps {
-    id: string;
-}
-
-export const MultiSlideSlider = (id: MultiSlideSliderProps) => {
+export const MultiSlideSlider = (id: {id: string}) => {
     const settingsSlider = {
         infinite: false,
         speed: 500,

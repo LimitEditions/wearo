@@ -49,7 +49,7 @@ export const Brand = ({ brandInfo }: { brandInfo: BrandModel }) => {
     return (
         <>
             <Photo
-                id={brandInfo?.photo || null}
+                id={brandInfo?.photo ?? null}
                 styles={"border-4"}
                 alt={"фото бренда"}
             />
@@ -61,7 +61,11 @@ export const Brand = ({ brandInfo }: { brandInfo: BrandModel }) => {
                 >
                     {brandInfo?.name}
                 </Link>
-                <Button style={{width: "130px", height: "36px", fontSize: "13px", margin: "0px", padding: "0px"}} showButton={true} disabled={disabled} onClick={handleClick}>
+                <Button 
+                    styles={
+                        "w-[130px] h-[36px] bg-custom-blue hover:bg-navy-blue disabled:bg-light-gray p-0 m-0 text-white text-[13px] rounded-full shadow-lg transition-all duration-300"
+                    } showButton={true} disabled={disabled} onClick={handleClick}
+                >
                     {subStatus ? "Вы подписаны" : "Подписаться"}
                 </Button>
             </div>
@@ -79,14 +83,14 @@ export const Brand = ({ brandInfo }: { brandInfo: BrandModel }) => {
                     </div>
                 </DisclosureButton>
                 <DisclosurePanel style={{paddingBottom: "16px"}}>
-                    <SingleSlideSlider collections={brandInfo?.collections || []}/>
+                    <SingleSlideSlider collections={brandInfo?.collections?? []}/>
                 </DisclosurePanel>
             </Disclosure>
             
             <Item path={`/products/${brandInfo.guid}`}>Изделия</Item>
 
             <div className="w-full pt-[10px]">
-                <MultiSlideSlider id={brandInfo?.guid || ""} />
+                <MultiSlideSlider id={brandInfo?.guid?? ""} />
             </div>
 
             <div className="uppercase pt-[40px]">Публикации</div>
@@ -98,7 +102,7 @@ export const Brand = ({ brandInfo }: { brandInfo: BrandModel }) => {
                         <Link key={ind} to={`/post/${elem.guid}`}>
                             <div className="flex flex-col items-center">
                                 <Photo
-                                    id={elem.fileGuid || null}
+                                    id={elem.fileGuid?? null}
                                     styles="w-[150px] h-[150px] object-cover"
                                     alt="Публикация бренда"
                                 />
