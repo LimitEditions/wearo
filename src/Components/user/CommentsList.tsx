@@ -34,7 +34,7 @@ export const CommentsList: React.FC<CommentsListProps> = ({ entityId, updateComm
 
     const comments = commentsListApi.data
 
-
+console.log(comments)
     useEffect(() => {
         updateCommentsCount(comments?.data?.length ?? 0)
     }, [comments, updateCommentsCount])
