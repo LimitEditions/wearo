@@ -60,7 +60,7 @@ export const Likes = ({ id, entityType }: LikesProps) => {
   const textColor = entityType === 'post' ? 'text-white' : 'text-black';
 
   return (
-    <div className="flex flex-col items-center justify-end gap-1" onClick={toggleLike}>
+    <div className="flex flex-col items-center justify-end" onClick={toggleLike}>
       <IconLike
         hoverColor="white"
         isLiked={isLiked}

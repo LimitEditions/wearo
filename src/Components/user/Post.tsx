@@ -7,7 +7,6 @@ import { IReading, readingOff, readingOn, readingOnDark } from "../../types/inte
 import { retrieve } from "../../utils/encryption";
 import { CommentsList } from "./CommentsList";
 import { Modal } from "../common/Modal";
-import { IconLike } from "../common/icons/IconLike";
 import { IconComment } from "../common/icons/IconComment";
 import { IconEdit } from "../common/icons/IconEdit";
 import { Photo } from "../common/Photo";
@@ -50,46 +49,15 @@ export const Post = ({ entity, id }: { entity: string; id: string }) => {
         }
     }, [postData]);
 
-    const userId = retrieve("guid");
-
-    // получение лайков
-    // const getLikesApi = useApiNew("likesCountDetail", { token: true, immediate: false }, { entity: "post" });
-
-    // useEffect(() => {
-    //     if (!id) return;
-
-    //     getLikesApi.execute(id).then((likesCount) => {
-    //         setPostData((prev) => (prev ? { ...prev, likesCount: likesCount ?? 0 } : prev));
-    //     });
-    // }, [id]);
-
-    // const toggleLike = () => {
-    //     if (!postData) return;
-
-    //     setPostData((prev) => prev ? {
-    //         ...prev,
-    //         isLikedByCurrentUser: !prev.isLikedByCurrentUser,
-    //         likesCount: prev.isLikedByCurrentUser ? (prev.likesCount ?? 0) - 1 : (prev.likesCount ?? 0) + 1,
-    //     } : null);
-    // };
-
     // Режим чтения и переключатель яркости
     // Раскрытие в режиме чтения
     const isExpanded = readingMode.state !== "off";
 
     // переключатель яркости фона
     useEffect(() => {
-        enabledSwitch
-            ? setReadingMode(readingOnDark)
-            : setReadingMode(readingOff);
-    }, [enabledSwitch]);
-
-    useEffect(() => {
-        readingMode.state === "incr_dark"
-            ? setEnabledSwitch(true)
-            : setEnabledSwitch(false);
-    }, [readingMode]);
-
+        if (!isExpanded) return; 
+        setReadingMode(enabledSwitch ? readingOnDark : readingOn);
+    }, [enabledSwitch, isExpanded]);
 
     // колбек на изменение вышеуказанных стейтов
     const handleReadingMode = () => {
@@ -97,6 +65,7 @@ export const Post = ({ entity, id }: { entity: string; id: string }) => {
             setReadingMode(readingOn);
         } else {
             setReadingMode(readingOff);
+            setEnabledSwitch(false);
         }
     };
 
@@ -108,11 +77,10 @@ export const Post = ({ entity, id }: { entity: string; id: string }) => {
     };
 
     const handleGoComments = () => {
-        setCommentsOpen(true)
+        setCommentsOpen(true);
     };
 
     if (!postData) return null;
-
     // Формируем массив изображений для слайдера.
     // Добавляем основной файл, если он существует, и затем дополнительные файлы (только те, у которых определён guid).
     const images: { guid: string }[] = [];
@@ -132,14 +100,17 @@ export const Post = ({ entity, id }: { entity: string; id: string }) => {
                 setIsOpen={setCommentsOpen}
                 swipeable={false}
                 additionalStyles={{
-                    container: "fixed inset-0 overflow-hidden flex items-end justify-center z-999",
-                    panel: "w-full h-[70vh] transform overflow-hidden rounded-t-2xl bg-white px-16 py-10 flex flex-col",
+                    container: "fixed inset-0 flex overflow-hidden items-end justify-center",
+                    panel: "w-full h-[70vh] transform overflow-hidden scrollbar-hide bg-white flex flex-col rounded-t-[18px]",
                 }}
             >
                 <CommentsList
                     entityId={id}
                     updateCommentsCount={(newCount: number) =>
-                        setPostData((prev) => (prev ? { ...prev, commentsCount: newCount } : prev))
+                        setPostData((prev) => {
+                            if (!prev || prev.commentsCount === newCount) return prev;
+                            return { ...prev, commentsCount: newCount };
+                        })
                     }
                     onClose={() => setCommentsOpen(false)}
                 />
@@ -207,11 +178,10 @@ export const Post = ({ entity, id }: { entity: string; id: string }) => {
                         </div>
                         <div className="flex justify-between items-center mb-[10px]">
                             <p
-                                className={`text-white text-xs overflow-hidden ${readingMode.lines}`}
+                                className={'text-white text-xs overflow-hidden transition-[max-height] duration-600 ease-in-out cursor-pointer'}
                                 style={{
-                                    display: "-webkit-box",
-                                    WebkitBoxOrient: "vertical",
-                                    WebkitLineClamp: isExpanded ? 'unset' : 2,
+                                    maxHeight: isExpanded ? "1000px" : "3em", // 3em ≈ 2 строки текста
+                                    lineHeight: "1.5em", // Чтобы каждая строка была четкой
                                 }}
                                 onClick={handleReadingMode}
                             >
