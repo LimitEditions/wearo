@@ -90,7 +90,6 @@ import {
   ProductItemModel,
   ProductItemModelDataResult,
   ProductMaterialModel,
-  ProductMeasurementModel,
   ProductModel,
   ProductModelDataResult,
   ProductStatus,
@@ -2586,44 +2585,6 @@ export namespace Api {
   /**
    * No description
    * @tags Products
-   * @name ProductsMeasurementsCreate
-   * @summary Добавить к продукту измерение
-   * @request POST:/api/Products/Measurements
-   * @secure
-   */
-  export namespace ProductsMeasurementsCreate {
-    export type RequestParams = {};
-    export type RequestQuery = {};
-    export type RequestBody = ProductMeasurementModel;
-    export type RequestHeaders = {};
-    export type ResponseBody = ProductMeasurementModel;
-  }
-
-  /**
-   * No description
-   * @tags Products
-   * @name ProductsMeasurementsDelete
-   * @summary Удалить измерение вещи
-   * @request DELETE:/api/Products/Measurements/{productMeasurementId}
-   * @secure
-   */
-  export namespace ProductsMeasurementsDelete {
-    export type RequestParams = {
-      /**
-       * Ид связки
-       * @format uuid
-       */
-      productMeasurementId: string;
-    };
-    export type RequestQuery = {};
-    export type RequestBody = never;
-    export type RequestHeaders = {};
-    export type ResponseBody = void;
-  }
-
-  /**
-   * No description
-   * @tags Products
    * @name ProductsExportList
    * @request GET:/api/Products/Export
    * @secure
@@ -3077,14 +3038,13 @@ export namespace Api {
   }
 
   /**
- * No description
- * @tags SizeCharts
- * @name SizeChartsList
- * @summary Поиск брендов по фильтрам
-Для неадминов возвращает не удалённые записи
- * @request GET:/api/SizeCharts
- * @secure
-*/
+   * No description
+   * @tags SizeCharts
+   * @name SizeChartsList
+   * @summary Поиск размерных сеткам
+   * @request GET:/api/SizeCharts
+   * @secure
+   */
   export namespace SizeChartsList {
     export type RequestParams = {};
     export type RequestQuery = {

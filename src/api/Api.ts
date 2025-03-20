@@ -90,7 +90,6 @@ import {
   ProductItemModel,
   ProductItemModelDataResult,
   ProductMaterialModel,
-  ProductMeasurementModel,
   ProductModel,
   ProductModelDataResult,
   ProductStatus,
@@ -939,7 +938,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @secure */
   likesDetail = (data: { id: any; entity: any; query: any }, params: RequestParams = {}) =>
     this.request<LikeModelDataResult, ProblemDetails>({
-      path: `/api/Likes/$${data.entity}/$${data.id}`,
+      path: `/api/Likes/${data.entity}/${data.id}`,
       method: "GET",
       query: data.query,
       secure: true,
@@ -953,7 +952,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @secure */
   likesDelete = (data: { id: any; entity: any }, params: RequestParams = {}) =>
     this.request<void, ProblemDetails>({
-      path: `/api/Likes/$${data.entity}/$${data.id}`,
+      path: `/api/Likes/${data.entity}/${data.id}`,
       method: "DELETE",
       secure: true,
       ...params,
@@ -965,7 +964,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @secure */
   likesCountDetail = (data: { id: any; entity: any }, params: RequestParams = {}) =>
     this.request<number, ProblemDetails>({
-      path: `/api/Likes/$${data.entity}/$${data.id}/Count`,
+      path: `/api/Likes/${data.entity}/${data.id}/Count`,
       method: "GET",
       secure: true,
       format: "json",
@@ -978,7 +977,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @secure */
   likesCreate = (data: { entity: any; body: any }, params: RequestParams = {}) =>
     this.request<LikeModel, ProblemDetails>({
-      path: `/api/Likes/$${data.entity}`,
+      path: `/api/Likes/${data.entity}`,
       method: "POST",
       body: data,
       secure: true,
@@ -2172,33 +2171,6 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
       ...params,
     }); /**
    * No description * * @tags Products
-   * @name ProductsMeasurementsCreate
-   * @summary Добавить к продукту измерение
-   * @request POST:/api/Products/Measurements
-   * @secure */
-  productsMeasurementsCreate = (data: ProductMeasurementModel, params: RequestParams = {}) =>
-    this.request<ProductMeasurementModel, ProblemDetails>({
-      path: `/api/Products/Measurements`,
-      method: "POST",
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      format: "json",
-      ...params,
-    }); /**
-   * No description * * @tags Products
-   * @name ProductsMeasurementsDelete
-   * @summary Удалить измерение вещи
-   * @request DELETE:/api/Products/Measurements/{productMeasurementId}
-   * @secure */
-  productsMeasurementsDelete = (productMeasurementId: string, params: RequestParams = {}) =>
-    this.request<void, ProblemDetails>({
-      path: `/api/Products/Measurements/${productMeasurementId}`,
-      method: "DELETE",
-      secure: true,
-      ...params,
-    }); /**
-   * No description * * @tags Products
    * @name ProductsExportList
    * @request GET:/api/Products/Export
    * @secure */
@@ -2600,12 +2572,11 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
       secure: true,
       ...params,
     }); /**
- * No description * * @tags SizeCharts
- * @name SizeChartsList
- * @summary Поиск брендов по фильтрам
-Для неадминов возвращает не удалённые записи
- * @request GET:/api/SizeCharts
- * @secure */
+   * No description * * @tags SizeCharts
+   * @name SizeChartsList
+   * @summary Поиск размерных сеткам
+   * @request GET:/api/SizeCharts
+   * @secure */
   sizeChartsList = (
     query?: {
       /**
