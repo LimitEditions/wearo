@@ -28,7 +28,6 @@ export const Controll = ({ changeIndex, currentStoryIndex, showMoreClick, change
   }, [changePressed])
 
   const pressEvent = (e: React.MouseEvent<HTMLDivElement, MouseEvent> | React.TouchEvent<HTMLDivElement>, operation: () => void) => {
-    console.log(e);
     operation();
   }
 

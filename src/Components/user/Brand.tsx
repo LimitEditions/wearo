@@ -1,10 +1,9 @@
-import React, { useState } from "react";
-import { BrandModel } from "../../api/data-contracts";
+import { useState } from "react";
+import { BrandModel, PostModelDataResult } from "../../api/data-contracts";
 import useSubscribe from "../../hooks/useSubscribe";
 import { Link } from "react-router-dom";
 import { Photo } from "../common/Photo";
 import { Button } from "../common/Button";
-import { Highlights } from "./Stories&Hightlights/Highlights";
 import {
     Disclosure,
     DisclosureButton,
@@ -12,13 +11,12 @@ import {
 } from "@headlessui/react";
 import { Arrow } from "../common/Arrow";
 import Item from "../common/ItemGroup/Item";
-import { SlPhone, SlEnvolope } from "react-icons/sl";
-import { PiWhatsappLogo, PiTelegramLogo } from "react-icons/pi";
-
-type Contact = {
-    href: string;
-    Icon: React.ElementType;
-};  
+import "slick-carousel/slick/slick.css"; 
+import "slick-carousel/slick/slick-theme.css";
+import { useApiNew } from "../../hooks/useApi";
+import { SingleSlideSlider } from "./Slider/SingleSlideSlider";
+import { MultiSlideSlider } from "./Slider/MultiSlideSlider";
+import { Support } from "./Support";
 
 export const Brand = ({ brandInfo }: { brandInfo: BrandModel }) => {
     // статус подписки с возможностью подписаться/отписаться
@@ -39,25 +37,19 @@ export const Brand = ({ brandInfo }: { brandInfo: BrandModel }) => {
     const [isRotated, setIsRotated] = useState<boolean>(false);
     const handleRotate = () => {
         setIsRotated(!isRotated);
-    };    
-
-    // Добавляет phone как необязательное поле (после его добовления ошибок не будет)
-    const brandInfoWithOptionalFields = brandInfo as BrandModel & Partial<{ phone: string }>;
-
-    const potentialContacts: Array<Contact | null> = [
-        brandInfoWithOptionalFields.whatsappId ? { href: `https://wa.me/${brandInfoWithOptionalFields.whatsappId}`, Icon: PiWhatsappLogo } : null,
-        brandInfoWithOptionalFields.telegramId ? { href: `https://t.me/${brandInfoWithOptionalFields.telegramId}`, Icon: PiTelegramLogo } : null,
-        brandInfoWithOptionalFields.email ? { href: `mailto:${brandInfoWithOptionalFields.email}`, Icon: SlEnvolope } : null,
-        brandInfoWithOptionalFields.phone ? { href: `tel:${brandInfoWithOptionalFields.phone}`, Icon: SlPhone } : null
-    ];
-
-    // Фильтруем null-значения
-    const contacts: Array<Contact> = potentialContacts.filter((contact): contact is Contact => contact !== null);
+    };
     
+    // Публикации бренда
+    const { data: postsData } = useApiNew<PostModelDataResult>("postsList", {
+        token: true, 
+        immediate: true, 
+        body: { BrandGuid: brandInfo.guid }
+    });
+    const posts = postsData?.data ?? [];
     return (
         <>
             <Photo
-                id={brandInfo?.photo || null}
+                id={brandInfo?.photo ?? null}
                 styles={"border-4"}
                 alt={"фото бренда"}
             />
@@ -69,12 +61,15 @@ export const Brand = ({ brandInfo }: { brandInfo: BrandModel }) => {
                 >
                     {brandInfo?.name}
                 </Link>
-                <Button style={{width: "150px", margin: "0px"}} showButton={true} disabled={disabled} onClick={handleClick}>
+                <Button 
+                    styles={
+                        "w-[130px] h-[36px] bg-custom-blue hover:bg-navy-blue disabled:bg-light-gray p-0 m-0 text-white text-[13px] rounded-full shadow-lg transition-all duration-300"
+                    } showButton={true} disabled={disabled} onClick={handleClick}
+                >
                     {subStatus ? "Вы подписаны" : "Подписаться"}
                 </Button>
             </div>
-            <Highlights brandId={brandInfo.guid || null} />
-            <div className="text-center">{brandInfo?.description}</div>
+
             <Disclosure>
                 <DisclosureButton
                     className="w-full flex justify-between relative"
@@ -87,30 +82,45 @@ export const Brand = ({ brandInfo }: { brandInfo: BrandModel }) => {
                         <Arrow direct={"right"} />
                     </div>
                 </DisclosureButton>
-                <DisclosurePanel>
-                    {brandInfo.collections?.map((col) => {
-                        return (
-                            <Item
-                                path={`../../collection/${col.guid}`}
-                                key={col.guid}
-                            >
-                                {col.name}
-                            </Item>
-                        );
-                    })}
+                <DisclosurePanel style={{paddingBottom: "16px"}}>
+                    <SingleSlideSlider collections={brandInfo?.collections?? []}/>
                 </DisclosurePanel>
             </Disclosure>
+            
             <Item path={`/products/${brandInfo.guid}`}>Изделия</Item>
-            <div className="uppercase px-2">Публикации</div>
 
-            <div className="flex items-center justify-between px-20 pt-7">
-                {contacts.map(({href, Icon}, ind) => {
+            <div className="w-full pt-[10px]">
+                <MultiSlideSlider id={brandInfo?.guid?? ""} />
+            </div>
+
+            <div className="uppercase pt-[40px]">Публикации</div>
+
+            <div className="flex flex-wrap justify-between gap-x-[12px] gap-y-[20px]">
+                {posts?.map((elem, ind) => {
+                    if (ind > 3) return null; // Остановка рендеринга после 4 элементов
                     return (
-                        <Link key={ind} to={href} target="_blank" rel="noopener noreferrer">
-                            <Icon className="text-gray-500 w-6 h-6 hover:text-gray-900 transition-all duration-300" />
-                        </Link>
+                        <Link key={ind} to={`/post/${elem.guid}`}>
+                            <div className="flex flex-col items-center">
+                                <Photo
+                                    id={elem.fileGuid?? null}
+                                    styles="w-[150px] h-[150px] object-cover"
+                                    alt="Публикация бренда"
+                                />
+                                <p className="text-[12px] pt-[8px] truncate w-[150px] overflow-hidden whitespace-nowrap text-ellipsis">{elem.text}</p>
+                            </div>
+                        </Link>  
                     );
-               })}
+                })}
+            </div>
+
+            <Link className="flex justify-between items-center" to={`/brand/${brandInfo.guid}/posts`}>
+                <p className="text-[15px]">Смотреть все публикации</p>
+                <Arrow direct={"right"} />
+            </Link>
+
+            <div className="pt-[50px] text-center">
+                <p>Служба поддержки</p>
+                <Support brandInfo={brandInfo}/>
             </div>
         </>
     );
