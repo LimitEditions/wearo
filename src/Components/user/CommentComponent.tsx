@@ -3,19 +3,22 @@ import { Button } from '../common/Button';
 import { useNavigate } from 'react-router-dom';
 import { retrieve } from '../../utils/encryption';
 import useApi from '../../hooks/useApi';
-import { RatingStars } from '../common/RatingStars';
+import { Photo } from '../common/Photo';
+import { IconLike } from '../common/icons/IconLike';
 import { CommentModel, UserModel } from '../../api/data-contracts';
 import moment from 'moment';
-import getStyles from '../../utils/getStyles';
-import { BlockStyle } from '../../types/interfaces/IStyles';
+import { Likes } from './Likes';
 
 export const CommentComponent = ({ comment }: { comment: CommentModel }) => {
     const navigate = useNavigate();
     const [user, setUser] = useState<string>('');
+    const [userPhoto, setUserPhoto] = useState<string>('');
+    const [image, setImage] = useState<File | null>(null);
+    const [newComment, setNewComment] = useState<string>('');
     const date = comment.updateDT ? comment.updateDT : comment.createDT;
-    
 
-    const [data, , ] = useApi<'usersDetail', UserModel>(
+
+    const [data] = useApi<'usersDetail', UserModel>(
         'usersDetail',
         comment.userGuid,
         { headers: { Authorization: `Bearer ${retrieve("token")}` } },
@@ -26,42 +29,34 @@ export const CommentComponent = ({ comment }: { comment: CommentModel }) => {
         setUser(data?.username as string);
     }, [data]);
 
+    useEffect(() => {
+        setUserPhoto(data?.mainAvatarGuid as string);
+    }, [data]);
+
     if (!comment || comment.isDeleted) return null;
 
     return (
-        <div className={getStyles(containerStyle)}>
-            <RatingStars value={4} />
-            <div className={getStyles(pairStyle)}>
-                <span>{user}</span>
-                <span>{moment(date).format('DD.MM.YYYY')}</span>
+        <div className='flex flex-col space-y-5 mt-5 mx-[10px] pb-2 border-b'>
+            {/* <RatingStars value={4} /> */}
+            <div className='flex justify-between mx-2'>
+                <div className="flex items-center gap-1">
+                    <Photo
+                        id={userPhoto || null}
+                        styles="w-4 h-4 rounded-full"
+                        alt={`photo ${user}`}
+                    />
+                    <span>{user}</span>
+                </div>
+                <span className='text-normal-gray'>{moment(date).format('DD.MM.YYYY')}</span>
             </div>
-            <p className={getStyles(textStyle)}>{comment.text}</p>
-            <div className={getStyles(pairStyle)}>
-                <Button showButton={true} onClick={() => navigate('/reply')} className={getStyles(btnStyle)}>Ответить</Button>
-                <span>Ответы</span>
+            <div className='flex justify-between'>
+                <p className='p-3 mx-2 border rounded-md text-black'>{comment.text}</p>
+                {comment.guid && <Likes id={comment.guid} entityType="postComment" />}
+            </div>
+            <div className='flex justify-between mx-2'>
+                <span className='text-normal-gray'>Ответы</span>
+                <Button showButton={true} onClick={() => navigate('/reply')} className='sm text-normal-gray'>Ответить</Button>
             </div>
         </div>
     );
-};
-
-
-const containerStyle: BlockStyle = {
-    container: 'flex flex-col',
-    spacing: 'space-y-5 mt-8 mx-1 pb-2',
-    border: 'border-b'
-};
-
-const pairStyle: BlockStyle = {
-    container: 'flex justify-between',
-    spacing: 'mx-2'
-};
-
-const textStyle: BlockStyle = {
-    spacing: 'p-3 mx-2',
-    border: 'border rounded-md',
-    text: 'text-gray-500'
-};
-
-const btnStyle: BlockStyle = {
-    text: 'sm'
 };

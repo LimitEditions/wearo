@@ -1,187 +1,215 @@
 import React, { useEffect, useState } from "react";
 import useApi, { useApiNew } from "../../hooks/useApi";
-import { BrandModel, PostModel } from "../../api/data-contracts";
-import { Photo } from "../common/Photo";
+import { PostModel, BrandModel } from "../../api/data-contracts";
 import { useNavigate } from "react-router-dom";
 import { Switcher } from "../common/Switcher";
-import {
-    IReading,
-    readingOff,
-    readingOn,
-    readingOnDark,
-} from "../../types/interfaces/IReading";
+import { IReading, readingOff, readingOn, readingOnDark } from "../../types/interfaces/IReading";
 import { retrieve } from "../../utils/encryption";
 import { CommentsList } from "./CommentsList";
 import { Modal } from "../common/Modal";
+import { IconComment } from "../common/icons/IconComment";
+import { IconEdit } from "../common/icons/IconEdit";
+import { Photo } from "../common/Photo";
+import { Likes } from "./Likes";
 
-export const Post = ({ id }: { id: string }) => {
+export const Post = ({ entity, id }: { entity: string; id: string }) => {
     const navigate = useNavigate();
-    // данные по посту
-    const getPostDataApi = useApiNew<PostModel>("postsDetail", { token: true, immediate: true, body: id })
-    
-    const [postData, setPostData] = useState<PostModel>({})
-    useEffect(() => {
-        if (!getPostDataApi.error && getPostDataApi.data) setPostData(getPostDataApi.data);
-    }, [getPostDataApi])
-
-    // данные по бренду
+    const [postData, setPostData] = useState<PostModel | null>(null);
     const [getInfo, setGetInfo] = useState<boolean>(false);
-    const [brandInfo, ,] = useApi<"brandsDetail", BrandModel>(
+    const [readingMode, setReadingMode] = useState<IReading>(readingOff);
+    const [enabledSwitch, setEnabledSwitch] = useState<boolean>(false);
+    const [commentsOpen, setCommentsOpen] = useState(false);
+    const [activeImageIndex, setActiveImageIndex] = useState(0);
+
+    //свечение отмеченных вещей
+    const [isHovered, setIsHovered] = useState(false);
+    const toggleHover = (value: boolean) => () => setIsHovered(value);
+
+    // Загружаем данные поста
+    const getPostDataApi = useApiNew<PostModel>("postsDetail", { token: true, immediate: false });
+
+    useEffect(() => {
+        getPostDataApi.execute(id).then((data) => {
+            setPostData(data);
+        }).catch((error) => {
+            console.error("Error fetching post data:", error);
+        });
+    }, [id]);
+
+    // Загружаем данные бренда, когда появится идентификатор бренда
+    const [brandInfo] = useApi<"brandsDetail", BrandModel>(
         "brandsDetail",
-        postData?.brandGuid,
+        postData?.brandGuid || "",
         {},
         getInfo
     );
-    const userId = retrieve('guid');
-    
-    // const sendLikeApi = useApiNew('likesCreate', { token: true, immediate: false, body: { data: {entity: 'Post'}}})
-    // const getLikesApi = useApiNew('likesDetail', { token: true, immediate: false, body: { data: {entity: 'Post'}}})
     useEffect(() => {
         if (postData && postData?.brandGuid) {
             setGetInfo(true);
         }
     }, [postData]);
 
-    const [readingMode, setReadingMode] = useState<IReading>(readingOff);
+    // Режим чтения и переключатель яркости
+    // Раскрытие в режиме чтения
+    const isExpanded = readingMode.state !== "off";
+
+    // переключатель яркости фона
+    useEffect(() => {
+        if (!isExpanded) return; 
+        setReadingMode(enabledSwitch ? readingOnDark : readingOn);
+    }, [enabledSwitch, isExpanded]);
 
     // колбек на изменение вышеуказанных стейтов
-    const hanldeReadingMode = () => {
+    const handleReadingMode = () => {
         if (readingMode.state === "off") {
             setReadingMode(readingOn);
         } else {
             setReadingMode(readingOff);
+            setEnabledSwitch(false);
         }
     };
 
-    // переключатель яркости фона
-    const [enabledSwitch, setEnabledSwitch] = useState<boolean>(false);
-    useEffect(() => {
-        enabledSwitch
-            ? setReadingMode(readingOnDark)
-            : setReadingMode(readingOff);
-    }, [enabledSwitch]);
-    useEffect(() => {
-        readingMode.state === "incr_dark"
-            ? setEnabledSwitch(true)
-            : setEnabledSwitch(false);
-    }, [readingMode]);
-
-    // переход к отмеченным изделиям
     const handleProdsBag = () => {
         const prods = postData?.products?.map((prod) => prod.productGuid);
-        return (
-            prods &&
-            prods.length > 0 &&
-            navigate("./post_products", { state: { prodsData: prods } })
-        );
+        if (prods && prods.length > 0) {
+            navigate("./post_products", { state: { prodsData: prods } });
+        }
     };
 
-    const [commentsOpen, setCommentsOpen] = useState(false)
+    const handleGoComments = () => {
+        setCommentsOpen(true);
+    };
+
+    if (!postData) return null;
+    // Формируем массив изображений для слайдера.
+    // Добавляем основной файл, если он существует, и затем дополнительные файлы (только те, у которых определён guid).
+    const images: { guid: string }[] = [];
+    if (postData.file && postData.file.guid) {
+        images.push({ guid: postData.file.guid });
+    }
+    if (postData.extraFiles && postData.extraFiles.length > 0) {
+        images.push(
+            ...postData.extraFiles.filter((file) => file.guid !== undefined).map((file) => ({ guid: file.guid! }))
+        );
+    }
 
     return (
         <div className="w-full pb-2">
             <Modal
-                isOpen={commentsOpen} 
-                setIsOpen={setCommentsOpen} 
+                isOpen={commentsOpen}
+                setIsOpen={setCommentsOpen}
                 swipeable={false}
                 additionalStyles={{
-                    container:
-                        "fixed inset-0 overflow-hidden flex items-end justify-center",
-                    panel: "w-full h-[80%] transform overflow-hidden rounded-t-2xl bg-white px-16 py-10",
+                    container: "fixed inset-0 flex overflow-hidden items-end justify-center",
+                    panel: "w-full h-[70vh] transform overflow-hidden scrollbar-hide bg-white flex flex-col rounded-t-[18px]",
                 }}
             >
-                <CommentsList entityId={id} updateCommentsCount={(newCount: number) => setPostData({...postData, commentsCount: newCount})}/>
+                <CommentsList
+                    entityId={id}
+                    updateCommentsCount={(newCount: number) =>
+                        setPostData((prev) => {
+                            if (!prev || prev.commentsCount === newCount) return prev;
+                            return { ...prev, commentsCount: newCount };
+                        })
+                    }
+                    onClose={() => setCommentsOpen(false)}
+                />
             </Modal>
-            {!getPostDataApi.error && postData && (
-                <div
-                    className="relative w-full bg-light-gray"
-                    style={{ paddingBottom: "175%" }}
-                >
-                    <div className="absolute top-2 left-7 z-10">
-                        <Switcher
-                            enabledSwitch={enabledSwitch}
-                            setEnabledSwitch={setEnabledSwitch}
-                        />
+
+            <div className="relative w-full bg-light-gray" style={{ paddingBottom: "175%" }}>
+                {isExpanded && (
+                    <div className="absolute top-2 left-7 z-20">
+                        <Switcher enabledSwitch={enabledSwitch} setEnabledSwitch={setEnabledSwitch} />
                     </div>
-                    <div
-                        className={`absolute top-3 right-4 w-6 h-6 ${readingMode.z_index}`}
-                        onClick={handleProdsBag}
-                    >
-                        <img src="/images/bag.svg" alt="отмеченные изделия" />
-                    </div>
-                    <div className="absolute inset-0 flex items-center justify-center z-0">
-                        <Photo
-                            id={postData.file?.guid ?? null}
-                            styles="object-contain max-h-full"
-                            alt="изображение поста"
-                        />
-                        <div
-                            className={`absolute inset-0 bg-black ${readingMode.opacity}`}
-                        ></div>
-                    </div>
-                    <div
-                        className={`absolute bottom-4 left-8 animate-fade-in ${readingMode.slide}`}
-                    >
+                )}
+                <div className="absolute top-3 right-4 z-10 w-6 h-6 bg-white rounded-[50px] flex justify-center items-center shadow-lg" onClick={handleProdsBag}
+                    onMouseEnter={toggleHover(true)}
+                    onMouseLeave={toggleHover(false)}
+                    style={{
+                        cursor: "pointer",
+                        transition: "box-shadow 0.3s ease-in-out",
+                        boxShadow: isHovered ? "0 0 10px rgba(255, 255, 255, 1)" : "none"
+                    }}>
+                    <img src="/images/bag.svg" alt="отмеченные изделия" />
+                </div>
+
+                {/* Фоновый слайдер: изображение меняется при нажатии на точки пагинации */}
+                <div className="absolute inset-0 z-0">
+                    {images.length > 0 && (
+                        <div className="relative w-full h-full">
+                            <Photo
+                                id={images[activeImageIndex].guid}
+                                styles="w-full h-full object-cover"
+                                alt={`Изображение ${activeImageIndex + 1}`}
+                            />
+                            {/* Точки пагинации */}
+                            <div className="absolute bottom-2 left-0 right-0 flex justify-center space-x-2">
+                                {images.map((_, index) => (
+                                    <span
+                                        key={index}
+                                        onClick={() => setActiveImageIndex(index)}
+                                        className={`cursor-pointer text-[6px] ${activeImageIndex === index ? "text-custom-blue" : "text-white-fon"}`}
+                                    >
+                                        ●
+                                    </span>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+                    {/* Затемнение фона согласно режиму чтения */}
+                    <div className={`absolute inset-0 bg-black ${readingMode.opacity}`}></div>
+                </div>
+
+                {/* Оверлей с информацией о бренде, текстом поста и панелью с лайками/комментариями */}
+                <div className="min-h-40 flex items-end justify-between gap-4 absolute bottom-1 left-0 z-10 w-full p-[10px] animate-fade-in">
+                    <div className="w-80">
                         <div className="flex space-x-3 mb-3 cursor-pointer">
                             <Photo
-                                id={brandInfo?.photo ?? null}
+                                id={brandInfo?.photo || null}
                                 styles="rounded-full w-16"
-                                alt="изображение логотипа бренда"
+                                alt="логотип бренда"
                             />
                             <div
-                                onClick={() =>
-                                    navigate(`.././brand/${postData.brandGuid}`)
-                                }
-                                className="text-white text-sm my-auto"
+                                onClick={() => navigate(`.././brand/${postData.brandGuid}`)}
+                                className="text-white text-xs my-auto"
                             >
                                 {brandInfo?.name}
                             </div>
                         </div>
-                        <div style={{display:"flex",justifyContent: "space-between", marginRight: "32px", marginLeft: "10px"}}>
-                            <div>
-                                <p
-                                    className={`text-white text-sm overflow-hidden ${readingMode.lines}`}
-                                    onClick={hanldeReadingMode}
-                                >
-                                    {postData.text}
-                                </p>
-                            </div>
-
-                            <div style={{justifyContent: "center", alignItems: "center"}}>
-                                <div onClick={() => {
-                                    // sendLikeApi.execute({fromGuid: userId, entityGuid: id}).then(() => {
-                                    //     getLikesApi.execute(id).then((newLikes) => {
-                                    //         setPostData(
-                                    //             {
-                                    //                 ...postData,
-                                    //                 likesCount: newLikes
-                                    //             }
-                                    //         )
-                                    //     })
-                                    // })
-                                }}>
-                                    <img src="/images/like.svg" alt="лайк" />
-                                </div>
-                                <p style={{margin: "0px"}} className={`text-black ${readingMode.lines}`}>
-                                    {postData.likesCount}
-                                </p>
-                                <div onClick={() => {
-                                    setCommentsOpen((prev) => !prev)
-                                }}>
-                                    <img src="/images/comment.svg" alt="коммент" />
-                                </div>
-                                <p style={{margin: "0px"}} className={`text-black ${readingMode.lines}`}>
-                                    {postData.commentsCount}
-                                </p>
-                                <div onClick={() => {/* TODO ADD COMMENTS */}}>
-                                    <img src="/images/menu.svg" alt="меню" />
-                                </div>
-                            </div>
-
+                        <div className="flex justify-between items-center mb-[10px]">
+                            <p
+                                className={'text-white text-xs overflow-hidden transition-[max-height] duration-600 ease-in-out cursor-pointer'}
+                                style={{
+                                    maxHeight: isExpanded ? "1000px" : "3em", // 3em ≈ 2 строки текста
+                                    lineHeight: "1.5em", // Чтобы каждая строка была четкой
+                                }}
+                                onClick={handleReadingMode}
+                            >
+                                {postData.text}
+                            </p>
+                        </div>
+                    </div>
+                    <div className="flex flex-col gap-[11px]">
+                        {postData.guid && <Likes id={postData.guid} entityType="post" />}
+                        <div className="flex flex-col items-center justify-center text-center gap-1"
+                            onClick={handleGoComments}>
+                            <IconComment
+                                hoverColor="white"
+                                defaultColor="white"
+                                entityType="post" />
+                            <p className={`text-white font-medium text-[10px] ${readingMode.lines}`}>{postData.commentsCount}</p>
+                        </div>
+                        <div className="flex flex-col items-center justify-center text-center gap-1">
+                            <IconEdit
+                                hoverColor="white"
+                                defaultColor="white"
+                                entityType="post" />
                         </div>
                     </div>
                 </div>
-            )}
+            </div>
         </div>
     );
 };
+
+export default Post;

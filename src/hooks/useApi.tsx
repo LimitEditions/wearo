@@ -7,11 +7,11 @@ import { retrieve } from "../utils/encryption";
 import { useNavigate } from "react-router-dom";
 const api = new Api({ baseURL: process.env.REACT_APP_URL_REQUEST });
 
-const useApi = <T extends keyof Api, Data >(
-  method: T, 
-  params?: any, 
-  config?: any,
-  execute: boolean = false // Флаг выполннеия запроса, по умолчанию false
+const useApi = <T extends keyof Api, Data>(
+    method: T,
+    params?: any,
+    config?: any,
+    execute: boolean = false // Флаг выполннеия запроса, по умолчанию false
 ): [Data | null, boolean, IApiError | null] => {
     const navigator = useNavigate();
     const [data, setData] = useState<Data | null>(null);
@@ -32,15 +32,15 @@ const useApi = <T extends keyof Api, Data >(
                     // Типизировать параметры и конфиг на данном этапе не представляется возможным из-за большого разнообразия методов
                     const apiMethod = api[method] as unknown as (paramsString?: any, configString?: any) => Promise<IApiResponse<Data>>;
                     // Парсим строки обратно в объекты для выполнения запроса
-                    const result = await apiMethod(paramsString ? JSON.parse(paramsString): undefined, 
-                                                   configString ? JSON.parse(configString): undefined);
+                    const result = await apiMethod(paramsString ? JSON.parse(paramsString) : undefined,
+                        configString ? JSON.parse(configString) : undefined);
                     if (isMounted) {
                         setData(result.data);
                         setError(null);
                     };
                 } catch (e) {
                     if (isMounted) {
-                        if(axios.isAxiosError(e)){
+                        if (axios.isAxiosError(e)) {
                             if (e.response?.status === 401) {
                                 navigator('/auth')
                             }
@@ -50,7 +50,7 @@ const useApi = <T extends keyof Api, Data >(
                                 status: e.response?.status,
                             });
                         } else {
-                            setError({error: e});
+                            setError({ error: e });
                         };
                     };
                 } finally {
@@ -75,11 +75,11 @@ export default useApi;
 type Body = Record<string, unknown> | FormData | string | number;
 type Params = {
     headers?: Record<string, string | number>,
-    [x : string] : unknown
+    [x: string]: unknown
 };
 type Config = {
-    token ?: boolean // Необходимо ли подставить токен авторизации
-    immediate ?: boolean // При объявление хука, запустит запрос. 
+    token?: boolean // Необходимо ли подставить токен авторизации
+    immediate?: boolean // При объявление хука, запустит запрос. 
     params?: Params,
     body?: Body,
     skipAuthCheck?: boolean // Если true, не будет переадрисовывать на страницу авторизацииы
@@ -92,7 +92,7 @@ const buildParams = (params: Params, config: Config): Params => {
         if (params.headers) {
             params.headers.Authorization = `Bearer ${token}`;
         } else {
-            params.headers = { Authorization: `Bearer ${token}` } 
+            params.headers = { Authorization: `Bearer ${token}` }
         }
     }
 
@@ -131,7 +131,7 @@ const buildParams = (params: Params, config: Config): Params => {
 //     return { data, error, isLoading, execute: worker };
 // }
 
-export function useApiNew<Answer>(method: keyof Api, config: Config = {}){
+export function useApiNew<Answer>(method: keyof Api, config: Config = {}, pathParams = {}){
     const navigator = useNavigate();
     const [data, setData] = useState<Answer | null>(null);
     const [isLoading, setIsLoading] = useState(false);
@@ -150,8 +150,9 @@ export function useApiNew<Answer>(method: keyof Api, config: Config = {}){
             try {
                 const res = await request(body, _params);
                 setData(res.data);
+                return res.data
             } catch (error) {
-                if(axios.isAxiosError(error)){
+                if (axios.isAxiosError(error)) {
                     if (!config.skipAuthCheck) {
                         if (error.response?.status === 401) {
                             try {
@@ -167,7 +168,7 @@ export function useApiNew<Answer>(method: keyof Api, config: Config = {}){
                         status: error.response?.status,
                     });
                 } else {
-                    setError({error: error});
+                    setError({ error: error });
                 };
             } finally {
                 setIsLoading(false);
@@ -183,7 +184,7 @@ export function useApiNew<Answer>(method: keyof Api, config: Config = {}){
                 execute(config.body);
             }
         }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return {

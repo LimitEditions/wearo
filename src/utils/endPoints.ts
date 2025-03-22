@@ -11,8 +11,7 @@ import { PromotionsPage } from "../pages/UserGroup/PromotionsPage";
 import { UserPage } from "../pages/UserGroup/UserPage";
 import { WardrobePage } from "../pages/UserGroup/WardrobePage";
 import { CreateBrandPage } from "../pages/UserGroup/CreateBrandPage";
-import { BrandPostsPage } from "../pages/UserGroup/BrandPostsPage";
-import { PostPage } from "../pages/UserGroup/PostPage";
+import { CommentsList } from "../Components/user/CommentsList";
 
 export const endPoints = [
     //user
@@ -68,6 +67,7 @@ export const endPoints = [
         path: "/pi/:code",
         component: ProductItemPage,
     },
+
 
     //admin
     {

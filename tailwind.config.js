@@ -8,6 +8,7 @@ export const content = [
 export const theme = {
     extend: {
         colors: {
+            'black' : '#121212',
             'custom-blue': '#3447BC',
             'navy-blue': '#24316B',
             'medium-gray': '#797C8E',
@@ -50,5 +51,6 @@ export const theme = {
     },
 };
 export const plugins = [
-    flowbite
+    flowbite,
+    require('tailwind-scrollbar-hide') 
 ];

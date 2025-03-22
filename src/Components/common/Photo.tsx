@@ -1,14 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 
-export const Photo = ({
-    id,
-    styles,
-    alt,
-}: {
+interface PhotoProps {
     id: string | null;
     styles: string;
     alt: string;
-}) => {
+}
+
+export const Photo: React.FC<PhotoProps> = ({ id, styles, alt }) => {
     // Если id не пришел, то устанавливаем дефолтное фото
     const [src, setSrc] = useState(
         id

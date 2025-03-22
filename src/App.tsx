@@ -9,6 +9,7 @@ import { Page404 } from "./Components/common/Page404";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { FooterApp } from './Components/common/FooterApp';
+import { CommentsList } from "./Components/user/CommentsList";
 
 function App() {
     const location = useLocation();
@@ -18,12 +19,12 @@ function App() {
         if (location.pathname === "/") {
             nav("/posts");
         }
-    }, []);
+    }, [location.pathname, nav]);
 
     return (
-        <div className="relative overflow-hidden min-h-screen font-sf-pro bg-white-fon pb-20 flex flex-col max-h-screen">
+        <div className="relative overflow-hidden min-h-screen font-sf-pro bg-white-fon flex flex-col max-h-screen">
             <Logo />
-            <div className='h-screen flex flex-col justify-between overflow-auto pt-2'>
+            <div className='h-screen flex flex-col justify-between overflow-y-auto scrollbar-hide'>
                 <AnimatePresence mode="wait">
                     <Routes location={location} key={location.pathname}>
                         {endPoints.map((endPoint) => {
