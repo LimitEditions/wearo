@@ -29,6 +29,7 @@ export const Likes = ({ id, entityType }: LikesProps) => {
         console.error("Ошибка загрузки лайков:", error);
       });
   }, [id, entityType]);
+  console.log(id);
 
   // Функция переключения лайка
   const toggleLike = async () => {

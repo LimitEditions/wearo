@@ -64,7 +64,7 @@ export const CommentsList: React.FC<CommentsListProps> = ({ entityId, updateComm
 
     return (
         <div className='flex flex-col'>
-            <div className='h-screen overflow-y-auto scrollbar-hide'>
+            <div className='h-[70vh] overflow-y-auto scrollbar-hide'>
                 <div className='flex justify-between px-[10px] py-[18px] sticky top-0 bg-white'>
                     <h1 className='uppercase size-4 text-black'>Комментарии</h1>
                     <img src="./images/closeBtn.png" alt="close" onClick={onClose} className='cursor-pointer w-4 h-4' />
