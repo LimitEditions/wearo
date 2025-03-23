@@ -11,7 +11,8 @@ import { PromotionsPage } from "../pages/UserGroup/PromotionsPage";
 import { UserPage } from "../pages/UserGroup/UserPage";
 import { WardrobePage } from "../pages/UserGroup/WardrobePage";
 import { CreateBrandPage } from "../pages/UserGroup/CreateBrandPage";
-import { CommentsList } from "../Components/user/CommentsList";
+import { PostPage } from "../pages/UserGroup/PostPage";
+import { BrandPostsPage } from "../pages/UserGroup/BrandPostsPage";
 
 export const endPoints = [
     //user
