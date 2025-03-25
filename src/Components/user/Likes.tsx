@@ -11,25 +11,32 @@ export const Likes = ({ id, entityType }: LikesProps) => {
   const [likesCount, setLikesCount] = useState<number>(0);
   const [isLiked, setIsLiked] = useState<boolean>(false);
 
-  const getLikesApi = useApiNew('likesCountDetail', { token: true, immediate: false });
-  const createLikeApi = useApiNew('likesCreate', { token: true });
-  const deleteLikeApi = useApiNew('likesDelete', { token: true });
+  const { data, isLoading, error, execute: getLikes } = useApiNew<{
+    likesCount: number;
+    isLikedByCurrentUser: boolean;
+  }>('likesCountDetail', { token: true, immediate: false });
+  const { execute: createLike } = useApiNew('likesCreate', { token: true });
+const { execute: deleteLike } = useApiNew('likesDelete', { token: true });
 
   useEffect(() => {
     if (!id) return;
-
-    // Выполняем запрос для получения количества лайков и текущего статуса лайка
-    getLikesApi.execute({ id, entity: entityType, query: {} })
-      .then((data) => {
-        if (!data) return;
-        setLikesCount(data.likesCount ?? 0);
-        setIsLiked(data.isLikedByCurrentUser ?? false);
-      })
-      .catch((error) => {
-        console.error("Ошибка загрузки лайков:", error);
-      });
-  }, [id, entityType]);
-  console.log(id);
+  
+    // Запускаем запрос при изменении id или entityType
+    getLikes({ id, entity: entityType, query: {} });
+  }, [id, entityType, getLikes]);
+  
+  useEffect(() => {
+    if (data) {
+      setLikesCount(data.likesCount ?? 0);
+      setIsLiked(data.isLikedByCurrentUser ?? false);
+    }
+  }, [data]); // Обновляем состояние, когда data изменяется
+  
+  useEffect(() => {
+    if (error) {
+      console.error("Ошибка загрузки лайков:", error);
+    }
+  }, [error]);
 
   // Функция переключения лайка
   const toggleLike = async () => {
@@ -41,13 +48,13 @@ export const Likes = ({ id, entityType }: LikesProps) => {
       if (isLiked) {
         // Если лайк уже установлен, удаляем его
         console.log("Удаляем лайк, передаем в API:", { id, entity: entityType });
-        await deleteLikeApi.execute({ id, entity: entityType });
+        await deleteLike({ id, entity: entityType });
         setLikesCount((prev) => Math.max(prev - 1, 0));
       } else {
         // Если лайк не установлен, создаем лайк
         const requestBody = { id };
         console.log("Создаем лайк, передаем в API:", { entity: entityType, body: requestBody });
-        const response = await createLikeApi.execute({ entity: entityType, body: requestBody });
+        const response = await createLike({ entity: entityType, body: requestBody });
         console.log("Ответ от сервера после создания лайка:", response);
         setLikesCount((prev) => prev + 1);
       }
