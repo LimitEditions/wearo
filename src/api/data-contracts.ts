@@ -147,6 +147,13 @@ export interface BrandModel {
   telegramId?: string | null;
   /** Логин WhatsApp */
   whatsappId?: string | null;
+  /** Номер телефона. */
+  phoneNumber?: string | null;
+  /**
+   * Происхождение бренда.
+   * Страна. Город.
+   */
+  origin?: string | null;
 }
 
 /** Результат чтения данных. */
@@ -227,6 +234,11 @@ export interface BrandRequestModel {
   ogrn?: string;
   /** Номер телефона. */
   phoneNumber?: string;
+  /**
+   * Происхождение бренда.
+   * Страна. Город.
+   */
+  origin?: string | null;
 }
 
 /** Результат чтения данных. */
@@ -486,6 +498,13 @@ export interface CreateBrandModel {
   telegramId?: string | null;
   /** Логин WhatsApp */
   whatsappId?: string | null;
+  /** Номер телефона. */
+  phoneNumber?: string | null;
+  /**
+   * Происхождение бренда.
+   * Страна. Город.
+   */
+  origin?: string | null;
 }
 
 /** Бренд */
@@ -525,6 +544,11 @@ export interface CreateBrandRequestModel {
   ogrn?: string;
   /** Номер телефона. */
   phoneNumber?: string;
+  /**
+   * Происхождение бренда.
+   * Страна. Город.
+   */
+  origin?: string | null;
 }
 
 /** Коллекция одежды */
@@ -931,6 +955,11 @@ export interface CreateProductModel {
   uri?: string | null;
   /** Код изделия */
   code?: string | null;
+  /**
+   * Размерная сетка.
+   * @format uuid
+   */
+  sizeChartGuid?: string;
 }
 
 export interface CreatePromotionCodeModel {
@@ -2110,41 +2139,6 @@ export interface ProductMaterialModel {
   material?: MaterialModel;
 }
 
-/** Размер продукта */
-export interface ProductMeasurementModel {
-  /**
-   * Идентификатор
-   * @format uuid
-   */
-  guid?: string;
-  /** Отметка удаления */
-  isDeleted?: boolean;
-  /**
-   * Дата создания
-   * @format date-time
-   */
-  createDT?: string | null;
-  /**
-   * Дата обнавления
-   * @format date-time
-   */
-  updateDT?: string | null;
-  /** Размер, по которому будет произведена группировка */
-  size?: string;
-  /**
-   * Продукт
-   * @format uuid
-   */
-  productGuid?: string;
-  /**
-   * Измерение
-   * @format double
-   */
-  measurement?: number;
-  part?: BodyPart;
-  unit?: MeasurementUnits;
-}
-
 /** Продукт */
 export interface ProductModel {
   /**
@@ -2209,8 +2203,6 @@ export interface ProductModel {
   comments?: CommentModel[] | null;
   /** Состав вещи */
   composition?: ProductMaterialModel[] | null;
-  /** Измерения вещи */
-  measurement?: ProductMeasurementModel[] | null;
   /** Пол */
   gender?: Gender;
   /** Код изделия */
@@ -2225,6 +2217,13 @@ export interface ProductModel {
    * @format double
    */
   likePercent?: number | null;
+  /** Размерная сетка. */
+  sizeChart?: SizeChartModel;
+  /**
+   * Размерная сетка.
+   * @format uuid
+   */
+  sizeChartGuid?: string;
 }
 
 /** Результат чтения данных. */
@@ -2709,6 +2708,13 @@ export interface UpdateBrandModel {
   telegramId?: string | null;
   /** Логин WhatsApp */
   whatsappId?: string | null;
+  /** Номер телефона. */
+  phoneNumber?: string | null;
+  /**
+   * Происхождение бренда.
+   * Страна. Город.
+   */
+  origin?: string | null;
 }
 
 /** Коллекция одежды */
@@ -2966,6 +2972,11 @@ export interface UpdateProductModel {
   uri?: string | null;
   /** Код изделия */
   code?: string | null;
+  /**
+   * Размерная сетка.
+   * @format uuid
+   */
+  sizeChartGuid?: string;
 }
 
 /** Модель редактирования промо */
