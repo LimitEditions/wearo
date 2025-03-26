@@ -1,36 +1,35 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button } from '../common/Button';
 import { useNavigate } from 'react-router-dom';
 import { retrieve } from '../../utils/encryption';
-import useApi from '../../hooks/useApi';
+import { useApiNew } from '../../hooks/useApi';
 import { Photo } from '../common/Photo';
-import { IconLike } from '../common/icons/IconLike';
 import { CommentModel, UserModel } from '../../api/data-contracts';
 import moment from 'moment';
 import { Likes } from './Likes';
 
 export const CommentComponent = ({ comment }: { comment: CommentModel }) => {
     const navigate = useNavigate();
-    const [user, setUser] = useState<string>('');
-    const [userPhoto, setUserPhoto] = useState<string>('');
-    const [image, setImage] = useState<File | null>(null);
-    const [newComment, setNewComment] = useState<string>('');
+    const [userData, setUserData] = useState<UserModel>({ username: '', mainAvatarGuid: '' });
     const date = comment.updateDT ? comment.updateDT : comment.createDT;
 
 
-    const [data] = useApi<'usersDetail', UserModel>(
-        'usersDetail',
-        comment.userGuid,
-        { headers: { Authorization: `Bearer ${retrieve("token")}` } },
-        true
-    );
+    const { data } = useApiNew('usersDetail', {
+        token: true,
+        immediate: true,
+        body: { userGuid: comment.userGuid },
+    });
+
+    console.log(data);
 
     useEffect(() => {
-        setUser(data?.username as string);
-    }, [data]);
-
-    useEffect(() => {
-        setUserPhoto(data?.mainAvatarGuid as string);
+        if (data) {
+            const userData = data as UserModel;
+            setUserData({
+                username: userData.username,
+                mainAvatarGuid: userData.mainAvatarGuid
+            });
+        }
     }, [data]);
 
     if (!comment || comment.isDeleted) return null;
@@ -41,11 +40,11 @@ export const CommentComponent = ({ comment }: { comment: CommentModel }) => {
             <div className='flex justify-between mx-2'>
                 <div className="flex items-center gap-1">
                     <Photo
-                        id={userPhoto || null}
+                        id={userData.mainAvatarGuid || null}
                         styles="w-4 h-4 rounded-full"
-                        alt={`photo ${user}`}
+                        alt={`photo ${userData.mainAvatarGuid}`}
                     />
-                    <span>{user}</span>
+                    <span>{userData.username}</span>
                 </div>
                 <span className='text-normal-gray'>{moment(date).format('DD.MM.YYYY')}</span>
             </div>

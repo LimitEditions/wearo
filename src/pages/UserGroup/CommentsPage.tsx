@@ -3,12 +3,19 @@ import { v4 as uuidv4 } from 'uuid';
 import { CommentModel } from '../../api/data-contracts'
 import { CommentComponent } from '../../Components/user/CommentComponent';
 import { useNavigate } from "react-router-dom";
+import { ErrorReq } from "../../Components/common/InfoGroup/ErrorReq"
+import { IApiError } from '../../types/interfaces/IApiError';
 
-export const CommentsPage = ({ comments = [] }: { comments?: CommentModel[] }) => {
+export const CommentsPage = ({ comments }: { comments: CommentModel[] }) => {
     const navigate = useNavigate();
-    const [newComment, setNewComment] = useState<string>('');
-    const [error, setError] = useState<string | null>(null);
-    const [commentsState, setCommentsState] = useState<CommentModel[]>(comments);
+    const [commentData, setCommentData] = useState<{
+        newComment: string;
+        commentsState: CommentModel[];
+    }>({
+        newComment: '',
+        commentsState: comments,
+    });
+    const [error, setError] = useState<IApiError| null>(null);
 
     const mock: CommentModel[] = [
         {
@@ -43,7 +50,7 @@ export const CommentsPage = ({ comments = [] }: { comments?: CommentModel[] }) =
         }
     ];
 
-    const toRender = commentsState.length > 0 ? commentsState : mock;
+    const toRender = commentData.commentsState.length > 0 ? commentData.commentsState : mock;
 
     const closeComment = () => {
         navigate('/posts/');
@@ -51,11 +58,14 @@ export const CommentsPage = ({ comments = [] }: { comments?: CommentModel[] }) =
 
     const handleCommentSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        if (!newComment) {
-            setError('Комментарий не может быть пустым');
+        if (!commentData.newComment) {
+            setError({message: 'Комментарий не может быть пустым'});
             return;
         }
-        
+
+        // Очищаем ошибку, если комментарий валиден
+        setError(null);
+
         // Создаем новый комментарий
         const newCommentData: CommentModel = {
             guid: uuidv4(),
@@ -63,13 +73,15 @@ export const CommentsPage = ({ comments = [] }: { comments?: CommentModel[] }) =
             createDT: new Date().toISOString(),
             updateDT: new Date().toISOString(),
             userGuid: 'some-user-guid',
-            text: newComment,
+            text: commentData.newComment,
             isLike: null,
             entityGuid: 'some-entity-guid'
         };
 
-        setCommentsState([...commentsState, newCommentData]);
-        setNewComment('');
+        setCommentData(prev => ({
+            newComment: '',
+            commentsState: [...prev.commentsState, newCommentData],
+        }));
     };
 
     return (
@@ -83,14 +95,14 @@ export const CommentsPage = ({ comments = [] }: { comments?: CommentModel[] }) =
             ))}
             <div className='flex items-center h-14 m-3 gap-6'>
                 <input
-                    value={newComment}
-                    onChange={(e) => setNewComment(e.target.value)}
+                    value={commentData.newComment}
+                    onChange={(e) => setCommentData(prev => ({ ...prev, newComment: e.target.value }))}
                     className="w-full h-8 p-1 pl-4 bg-light-gray rounded-xl border-none flex align-center"
                     placeholder="Ваш комментарий"
                 />
-                {error && <div className="text-red-500 mt-2">{error}</div>}
+                {error && <ErrorReq show={!!error} error={error}/>}
                 <button onClick={handleCommentSubmit}>
-                    <img src="./images/sendComment.svg" alt="send comment" className='w-6 h-6'/>
+                    <img src="./images/sendComment.svg" alt="send comment" className='w-6 h-6' />
                 </button>
             </div>
         </div>

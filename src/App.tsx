@@ -9,7 +9,6 @@ import { Page404 } from "./Components/common/Page404";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { FooterApp } from './Components/common/FooterApp';
-import { CommentsList } from "./Components/user/CommentsList";
 
 function App() {
     const location = useLocation();
@@ -19,7 +18,7 @@ function App() {
         if (location.pathname === "/") {
             nav("/posts");
         }
-    }, [location.pathname, nav]);
+    }, []);
 
     return (
         <div className="relative overflow-hidden min-h-screen font-sf-pro bg-white-fon flex flex-col max-h-screen">

@@ -1,11 +1,8 @@
 import { useState, useEffect } from "react";
 import { useApiNew } from "../../hooks/useApi";
 import { IconLike } from "../common/icons/IconLike";
+import { LikesProps } from "../../types/interfaces/componentsProps/ILikesProps";
 
-interface LikesProps {
-  id: string;
-  entityType: "post" | "postComment";
-}
 
 export const Likes = ({ id, entityType }: LikesProps) => {
   const [likesCount, setLikesCount] = useState<number>(0);
@@ -16,22 +13,22 @@ export const Likes = ({ id, entityType }: LikesProps) => {
     isLikedByCurrentUser: boolean;
   }>('likesCountDetail', { token: true, immediate: false });
   const { execute: createLike } = useApiNew('likesCreate', { token: true });
-const { execute: deleteLike } = useApiNew('likesDelete', { token: true });
+  const { execute: deleteLike } = useApiNew('likesDelete', { token: true });
 
   useEffect(() => {
     if (!id) return;
-  
+
     // Запускаем запрос при изменении id или entityType
     getLikes({ id, entity: entityType, query: {} });
-  }, [id, entityType, getLikes]);
-  
+  }, [id, entityType]);
+
   useEffect(() => {
     if (data) {
       setLikesCount(data.likesCount ?? 0);
       setIsLiked(data.isLikedByCurrentUser ?? false);
     }
   }, [data]); // Обновляем состояние, когда data изменяется
-  
+
   useEffect(() => {
     if (error) {
       console.error("Ошибка загрузки лайков:", error);
@@ -52,7 +49,7 @@ const { execute: deleteLike } = useApiNew('likesDelete', { token: true });
         setLikesCount((prev) => Math.max(prev - 1, 0));
       } else {
         // Если лайк не установлен, создаем лайк
-        const requestBody = { id };
+        const requestBody = { entityGuid: id, fromGuid: "9cbd314a-9c35-4bb5-9412-8d3cf555505a" };
         console.log("Создаем лайк, передаем в API:", { entity: entityType, body: requestBody });
         const response = await createLike({ entity: entityType, body: requestBody });
         console.log("Ответ от сервера после создания лайка:", response);

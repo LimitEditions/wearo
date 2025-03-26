@@ -26,7 +26,7 @@ export const Nav: React.FC = memo(() => {
 
         setShowNav(
             !showEl(
-                ["/auth", "/auth/login", "/auth/registration", '/posts/:id/comments'],
+                ["/auth", "/auth/login", "/auth/registration"],
                 location.pathname
             )
         );

@@ -1,10 +1,6 @@
 import React from "react";
 import { Switch } from "@headlessui/react";
-
-interface SwitcherProps {
-    enabledSwitch: boolean;
-    setEnabledSwitch: React.Dispatch<React.SetStateAction<boolean>>;
-  }
+import {SwitcherProps} from "../../types/interfaces/componentsProps/ISwitcherProps"
 
 export const Switcher: React.FC<SwitcherProps> = ({ enabledSwitch, setEnabledSwitch}) => {
     return (
@@ -14,7 +10,7 @@ export const Switcher: React.FC<SwitcherProps> = ({ enabledSwitch, setEnabledSwi
             className={`group relative flex h-7 w-14 cursor-pointer rounded-full p-1 transition-colors duration-200 ease-in-out focus:outline-none ${
                 enabledSwitch
                     ? "bg-violet border-white-fon"
-                    : "bg-white-fon border-white"
+                    : "bg-white-fon border-violet"
             } border-2`}
         >
             {/* Иконка Солнца слева при включенной теме (темная тема) */}

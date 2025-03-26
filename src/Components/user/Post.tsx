@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import useApi, { useApiNew } from "../../hooks/useApi";
 import { PostModel, BrandModel } from "../../api/data-contracts";
 import { useNavigate } from "react-router-dom";
 import { Switcher } from "../common/Switcher";
 import { IReading, readingOff, readingOn, readingOnDark } from "../../types/interfaces/IReading";
-import { retrieve } from "../../utils/encryption";
 import { CommentsList } from "./CommentsList";
 import { Modal } from "../common/Modal";
 import { IconComment } from "../common/icons/IconComment";
@@ -14,7 +13,7 @@ import { Likes } from "./Likes";
 
 export const Post = ({ entity, id }: { entity: string; id: string }) => {
     const navigate = useNavigate();
-    const [postData, setPostData] = useState<PostModel | null>(null);
+
     const [getInfo, setGetInfo] = useState<boolean>(false);
     const [readingMode, setReadingMode] = useState<IReading>(readingOff);
     const [enabledSwitch, setEnabledSwitch] = useState<boolean>(false);
@@ -26,28 +25,24 @@ export const Post = ({ entity, id }: { entity: string; id: string }) => {
     const toggleHover = (value: boolean) => () => setIsHovered(value);
 
     // Загружаем данные поста
-    const getPostDataApi = useApiNew<PostModel>("postsDetail", { token: true, immediate: false });
+    const { data, execute: getPostData } = useApiNew<PostModel>("postsDetail", { token: true, immediate: false });
 
     useEffect(() => {
-        getPostDataApi.execute(id).then((data) => {
-            setPostData(data);
-        }).catch((error) => {
-            console.error("Error fetching post data:", error);
-        });
+        getPostData(id)
     }, [id]);
 
     // Загружаем данные бренда, когда появится идентификатор бренда
     const [brandInfo] = useApi<"brandsDetail", BrandModel>(
         "brandsDetail",
-        postData?.brandGuid || "",
+        data?.brandGuid || "",
         {},
         getInfo
     );
     useEffect(() => {
-        if (postData && postData?.brandGuid) {
+        if (data && data?.brandGuid) {
             setGetInfo(true);
         }
-    }, [postData]);
+    }, [data]);
 
     // Режим чтения и переключатель яркости
     // Раскрытие в режиме чтения
@@ -55,7 +50,7 @@ export const Post = ({ entity, id }: { entity: string; id: string }) => {
 
     // переключатель яркости фона
     useEffect(() => {
-        if (!isExpanded) return; 
+        if (!isExpanded) return;
         setReadingMode(enabledSwitch ? readingOnDark : readingOn);
     }, [enabledSwitch, isExpanded]);
 
@@ -70,7 +65,7 @@ export const Post = ({ entity, id }: { entity: string; id: string }) => {
     };
 
     const handleProdsBag = () => {
-        const prods = postData?.products?.map((prod) => prod.productGuid);
+        const prods = data?.products?.map((prod) => prod.productGuid);
         if (prods && prods.length > 0) {
             navigate("./post_products", { state: { prodsData: prods } });
         }
@@ -80,16 +75,16 @@ export const Post = ({ entity, id }: { entity: string; id: string }) => {
         setCommentsOpen(true);
     };
 
-    if (!postData) return null;
+    if (!data) return null;
     // Формируем массив изображений для слайдера.
     // Добавляем основной файл, если он существует, и затем дополнительные файлы (только те, у которых определён guid).
     const images: { guid: string }[] = [];
-    if (postData.file && postData.file.guid) {
-        images.push({ guid: postData.file.guid });
+    if (data.file && data.file.guid) {
+        images.push({ guid: data.file.guid });
     }
-    if (postData.extraFiles && postData.extraFiles.length > 0) {
+    if (data.extraFiles && data.extraFiles.length > 0) {
         images.push(
-            ...postData.extraFiles.filter((file) => file.guid !== undefined).map((file) => ({ guid: file.guid! }))
+            ...data.extraFiles.filter((file) => file.guid !== undefined).map((file) => ({ guid: file.guid! }))
         );
     }
 
@@ -106,12 +101,10 @@ export const Post = ({ entity, id }: { entity: string; id: string }) => {
             >
                 <CommentsList
                     entityId={id}
-                    updateCommentsCount={(newCount: number) =>
-                        setPostData((prev) => {
-                            if (!prev || prev.commentsCount === newCount) return prev;
-                            return { ...prev, commentsCount: newCount };
-                        })
-                    }
+                    updateCommentsCount={(newCount: number) => {
+                        if (!data || data.commentsCount === newCount) return;
+                        data.commentsCount = newCount;
+                    }}
                     onClose={() => setCommentsOpen(false)}
                 />
             </Modal>
@@ -170,7 +163,7 @@ export const Post = ({ entity, id }: { entity: string; id: string }) => {
                                 alt="логотип бренда"
                             />
                             <div
-                                onClick={() => navigate(`.././brand/${postData.brandGuid}`)}
+                                onClick={() => navigate(`.././brand/${data.brandGuid}`)}
                                 className="text-white text-xs my-auto"
                             >
                                 {brandInfo?.name}
@@ -180,24 +173,24 @@ export const Post = ({ entity, id }: { entity: string; id: string }) => {
                             <p
                                 className={'text-white text-xs overflow-hidden transition-[max-height] duration-600 ease-in-out cursor-pointer'}
                                 style={{
-                                    maxHeight: isExpanded ? "1000px" : "3em", // 3em ≈ 2 строки текста
-                                    lineHeight: "1.5em", // Чтобы каждая строка была четкой
+                                    maxHeight: isExpanded ? "1000px" : "3em",
+                                    lineHeight: "1.5em",
                                 }}
                                 onClick={handleReadingMode}
                             >
-                                {postData.text}
+                                {data.text}
                             </p>
                         </div>
                     </div>
                     <div className="flex flex-col gap-[11px]">
-                        {postData.guid && <Likes id={postData.guid} entityType="post" />}
+                        {data.guid && <Likes id={data.guid} entityType="post" />}
                         <div className="flex flex-col items-center justify-center text-center gap-1"
                             onClick={handleGoComments}>
                             <IconComment
                                 hoverColor="white"
                                 defaultColor="white"
                                 entityType="post" />
-                            <p className={`text-white font-medium text-[10px] ${readingMode.lines}`}>{postData.commentsCount}</p>
+                            <p className={`text-white font-medium text-[10px] ${readingMode.lines}`}>{data.commentsCount}</p>
                         </div>
                         <div className="flex flex-col items-center justify-center text-center gap-1">
                             <IconEdit
