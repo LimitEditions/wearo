@@ -25,7 +25,7 @@ export const Post = ({ entity, id }: { entity: string; id: string }) => {
     const toggleHover = (value: boolean) => () => setIsHovered(value);
 
     // Загружаем данные поста
-    const { data, execute: getPostData } = useApiNew<PostModel>("postsDetail", { token: true, immediate: false });
+    const { data, execute: getPostData } = useApiNew<PostModel>("postsDetail", { token: true, immediate: false, body: id });
 
     useEffect(() => {
         getPostData(id)

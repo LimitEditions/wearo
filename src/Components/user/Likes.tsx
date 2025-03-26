@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useApiNew } from "../../hooks/useApi";
 import { IconLike } from "../common/icons/IconLike";
 import { LikesProps } from "../../types/interfaces/componentsProps/ILikesProps";
+import { retrieve } from "../../utils/encryption";
 
 
 export const Likes = ({ id, entityType }: LikesProps) => {
@@ -14,6 +15,8 @@ export const Likes = ({ id, entityType }: LikesProps) => {
   }>('likesCountDetail', { token: true, immediate: false });
   const { execute: createLike } = useApiNew('likesCreate', { token: true });
   const { execute: deleteLike } = useApiNew('likesDelete', { token: true });
+
+  const userID = retrieve('guid');
 
   useEffect(() => {
     if (!id) return;
@@ -49,7 +52,7 @@ export const Likes = ({ id, entityType }: LikesProps) => {
         setLikesCount((prev) => Math.max(prev - 1, 0));
       } else {
         // Если лайк не установлен, создаем лайк
-        const requestBody = { entityGuid: id, fromGuid: "9cbd314a-9c35-4bb5-9412-8d3cf555505a" };
+        const requestBody = { entityGuid: id, fromGuid: userID };
         console.log("Создаем лайк, передаем в API:", { entity: entityType, body: requestBody });
         const response = await createLike({ entity: entityType, body: requestBody });
         console.log("Ответ от сервера после создания лайка:", response);
