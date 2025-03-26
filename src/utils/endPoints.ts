@@ -31,8 +31,16 @@ export const endPoints = [
         component: PostsPage,
     },
     {
+        path: "/post/:id",
+        component: PostPage
+    },
+    {
         path: "/brand/:id/*",
         component: BrandPage,
+    },
+    {
+        path: "/brand/:id/posts",
+        component: BrandPostsPage
     },
     {
         path: "/brand/create/",

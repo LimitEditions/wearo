@@ -11,7 +11,7 @@ import { IconEdit } from "../common/icons/IconEdit";
 import { Photo } from "../common/Photo";
 import { Likes } from "./Likes";
 
-export const Post = ({ entity, id }: { entity: string; id: string }) => {
+export const Post = ({ id }: { id: string }) => {
     const navigate = useNavigate();
 
     const [getInfo, setGetInfo] = useState<boolean>(false);

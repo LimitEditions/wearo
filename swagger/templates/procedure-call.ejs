@@ -94,7 +94,7 @@ const describeReturnType = () => {
 
 // Для путей api/Likes корректируем path и query
 const correctedPath = isLikesRoute
-    ? path.replace(/\{(\w+)\}/g, (_, paramName) => `\${data.${paramName}}`)
+    ? path.replace(/\{(\w+)\}/g, (_, paramName) => `\${data.${paramName}}`).replace(/\$\{/g, "{")
     : path;
 
 const correctedQuery = isLikesRoute && queryTmpl ? `data.${queryTmpl}` : queryTmpl;
