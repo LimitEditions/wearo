@@ -1,4 +1,4 @@
 export interface LikesProps {
   id: string;
-  entityType: "post" | "postComment";
+  entityType: "Post" | "PostComment";
 }

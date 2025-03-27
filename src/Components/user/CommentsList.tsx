@@ -92,7 +92,7 @@ export const CommentsList: React.FC<CommentsListProps> = ({ entityId, updateComm
                                     </div>
                                     <div className='mt-[10px] flex gap-10'>
                                         <p className='w-full min-h-7 ml-5 p-2 border rounded-md text-black flex items-center'>{comment.text}</p>
-                                        {comment.guid && <Likes id={comment.guid} entityType="postComment" />}
+                                        {comment.guid && <Likes id={comment.guid} entityType="PostComment" />}
                                     </div>
                                 </div>
                                 <div className='flex justify-between mb-5'>
@@ -119,7 +119,7 @@ export const CommentsList: React.FC<CommentsListProps> = ({ entityId, updateComm
                                             </div>
                                             <div className='mt-[10px] flex gap-10'>
                                                 <p className='w-full min-h-7 ml-5 p-2 border rounded-md text-black flex items-center'>{reply.text}</p>
-                                                {reply.guid && <Likes id={reply.guid} entityType="postComment" />}
+                                                {reply.guid && <Likes id={reply.guid} entityType="PostComment" />}
                                             </div>
                                         </div>
                                         <div className='flex justify-between mb-5'>

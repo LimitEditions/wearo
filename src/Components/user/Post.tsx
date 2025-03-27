@@ -10,6 +10,7 @@ import { IconComment } from "../common/icons/IconComment";
 import { IconEdit } from "../common/icons/IconEdit";
 import { Photo } from "../common/Photo";
 import { Likes } from "./Likes";
+import PostSlider from "../user/Slider/PostSlider"
 
 export const Post = ({ id }: { id: string }) => {
     const navigate = useNavigate();
@@ -25,7 +26,7 @@ export const Post = ({ id }: { id: string }) => {
     const toggleHover = (value: boolean) => () => setIsHovered(value);
 
     // Загружаем данные поста
-    const { data, execute: getPostData } = useApiNew<PostModel>("postsDetail", { token: true, immediate: false, body: id });
+    const { data, execute: getPostData } = useApiNew<PostModel>("postsDetail", { token: true, immediate: false });
 
     useEffect(() => {
         getPostData(id)
@@ -42,7 +43,19 @@ export const Post = ({ id }: { id: string }) => {
         if (data && data?.brandGuid) {
             setGetInfo(true);
         }
-    }, [data]);
+    }, [data?.brandGuid]);
+
+    // Загружаем данные отмеченных вещей
+    // const { data, execute: getFileData } = useApiNew<FileModel>("filesModel", { 
+    //     token: true, 
+    //     immediate: false 
+    // });
+    
+    // // Вызываем запрос с нужным id
+    // useEffect(() => {
+    //     getFileData("d0290abb-4c63-46d9-b9b1-f7cc78013553");
+    // }, []);
+    
 
     // Режим чтения и переключатель яркости
     // Раскрытие в режиме чтения
@@ -127,31 +140,9 @@ export const Post = ({ id }: { id: string }) => {
                 </div>
 
                 {/* Фоновый слайдер: изображение меняется при нажатии на точки пагинации */}
-                <div className="absolute inset-0 z-0">
-                    {images.length > 0 && (
-                        <div className="relative w-full h-full">
-                            <Photo
-                                id={images[activeImageIndex].guid}
-                                styles="w-full h-full object-cover"
-                                alt={`Изображение ${activeImageIndex + 1}`}
-                            />
-                            {/* Точки пагинации */}
-                            <div className="absolute bottom-2 left-0 right-0 flex justify-center space-x-2">
-                                {images.map((_, index) => (
-                                    <span
-                                        key={index}
-                                        onClick={() => setActiveImageIndex(index)}
-                                        className={`cursor-pointer text-[6px] ${activeImageIndex === index ? "text-custom-blue" : "text-white-fon"}`}
-                                    >
-                                        ●
-                                    </span>
-                                ))}
-                            </div>
-                        </div>
-                    )}
+                    <PostSlider images={images} />
                     {/* Затемнение фона согласно режиму чтения */}
                     <div className={`absolute inset-0 bg-black ${readingMode.opacity}`}></div>
-                </div>
 
                 {/* Оверлей с информацией о бренде, текстом поста и панелью с лайками/комментариями */}
                 <div className="min-h-40 flex items-end justify-between gap-4 absolute bottom-1 left-0 z-10 w-full p-[10px] animate-fade-in">
@@ -183,20 +174,20 @@ export const Post = ({ id }: { id: string }) => {
                         </div>
                     </div>
                     <div className="flex flex-col gap-[11px]">
-                        {data.guid && <Likes id={data.guid} entityType="post" />}
+                        {data.guid && <Likes id={data.guid} entityType="Post" />}
                         <div className="flex flex-col items-center justify-center text-center gap-1"
                             onClick={handleGoComments}>
                             <IconComment
                                 hoverColor="white"
                                 defaultColor="white"
-                                entityType="post" />
+                                entityType="Post" />
                             <p className={`text-white font-medium text-[10px] ${readingMode.lines}`}>{data.commentsCount}</p>
                         </div>
                         <div className="flex flex-col items-center justify-center text-center gap-1">
                             <IconEdit
                                 hoverColor="white"
                                 defaultColor="white"
-                                entityType="post" />
+                                entityType="Post" />
                         </div>
                     </div>
                 </div>

@@ -50,7 +50,7 @@ export const CommentComponent = ({ comment }: { comment: CommentModel }) => {
             </div>
             <div className='flex justify-between'>
                 <p className='p-3 mx-2 border rounded-md text-black'>{comment.text}</p>
-                {comment.guid && <Likes id={comment.guid} entityType="postComment" />}
+                {comment.guid && <Likes id={comment.guid} entityType="PostComment" />}
             </div>
             <div className='flex justify-between mx-2'>
                 <span className='text-normal-gray'>Ответы</span>

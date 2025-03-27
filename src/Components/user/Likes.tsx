@@ -17,6 +17,9 @@ export const Likes = ({ id, entityType }: LikesProps) => {
   const { execute: deleteLike } = useApiNew('likesDelete', { token: true });
 
   const userID = retrieve('guid');
+  console.log(`userID: ${userID}`)
+  console.log(`ID: ${id}`)
+  console.log(`entityType: ${entityType}`)
 
   useEffect(() => {
     if (!id) return;
@@ -65,7 +68,7 @@ export const Likes = ({ id, entityType }: LikesProps) => {
   };
 
   // Указываем цвет текста в зависимости от типа сущности
-  const textColor = entityType === 'post' ? 'text-white' : 'text-black';
+  const textColor = entityType === 'Post' ? 'text-white' : 'text-black';
 
   return (
     <div className="flex flex-col items-center justify-end" onClick={toggleLike}>
