@@ -1,60 +1,56 @@
 import { useEffect, useState } from "react";
-import useApi, { useApiNew } from "../../hooks/useApi";
-import { PostModel, BrandModel } from "../../api/data-contracts";
+import { useApiNew } from "../../../hooks/useApi";
+import { PostModel, BrandModel, FileProductModel } from "../../../api/data-contracts";
 import { useNavigate } from "react-router-dom";
-import { Switcher } from "../common/Switcher";
-import { IReading, readingOff, readingOn, readingOnDark } from "../../types/interfaces/IReading";
+import { Switcher } from "../../common/Switcher";
+import { IReading, readingOff, readingOn, readingOnDark } from "../../../types/interfaces/IReading";
 import { CommentsList } from "./CommentsList";
-import { Modal } from "../common/Modal";
-import { IconComment } from "../common/icons/IconComment";
-import { IconEdit } from "../common/icons/IconEdit";
-import { Photo } from "../common/Photo";
+import { Modal } from "../../common/Modal";
+import { IconComment } from "../../common/icons/IconComment";
+import { IconEdit } from "../../common/icons/IconEdit";
+import { Photo } from "../../common/Photo";
 import { Likes } from "./Likes";
-import PostSlider from "../user/Slider/PostSlider"
+import PostSlider from "../Slider/PostSlider"
+import HighlightedProducts from "./HighlightedProducts";
 
 export const Post = ({ id }: { id: string }) => {
     const navigate = useNavigate();
 
-    const [getInfo, setGetInfo] = useState<boolean>(false);
     const [readingMode, setReadingMode] = useState<IReading>(readingOff);
     const [enabledSwitch, setEnabledSwitch] = useState<boolean>(false);
     const [commentsOpen, setCommentsOpen] = useState(false);
-    const [activeImageIndex, setActiveImageIndex] = useState(0);
+    const [highlightedProds, setHighlightedProds] = useState<string[]>([]);
 
-    //свечение отмеченных вещей
-    const [isHovered, setIsHovered] = useState(false);
-    const toggleHover = (value: boolean) => () => setIsHovered(value);
+    // //свечение отмеченных вещей
+    // const [isHovered, setIsHovered] = useState(false);
+    // const toggleHover = (value: boolean) => () => setIsHovered(value);
 
     // Загружаем данные поста
-    const { data, execute: getPostData } = useApiNew<PostModel>("postsDetail", { token: true, immediate: false });
+    const { data: postData, execute: getPostData } = useApiNew<PostModel>("postsDetail", { token: true, immediate: false });
 
     useEffect(() => {
         getPostData(id)
     }, [id]);
 
     // Загружаем данные бренда, когда появится идентификатор бренда
-    const [brandInfo] = useApi<"brandsDetail", BrandModel>(
-        "brandsDetail",
-        data?.brandGuid || "",
-        {},
-        getInfo
-    );
+    const { data: brandInfo, execute: getBrandData } = useApiNew<BrandModel>("brandsDetail", { token: true, immediate: false });
+    
     useEffect(() => {
-        if (data && data?.brandGuid) {
-            setGetInfo(true);
+        if (postData?.brandGuid) {
+            getBrandData(postData.brandGuid);
         }
-    }, [data?.brandGuid]);
+    }, [postData?.brandGuid, getBrandData]);
 
     // Загружаем данные отмеченных вещей
-    // const { data, execute: getFileData } = useApiNew<FileModel>("filesModel", { 
-    //     token: true, 
-    //     immediate: false 
-    // });
+    const { data: FileData, execute: getFileData } = useApiNew<FileProductModel>("filesModelDetail", { 
+        token: true, 
+        immediate: false 
+    });
     
-    // // Вызываем запрос с нужным id
-    // useEffect(() => {
-    //     getFileData("d0290abb-4c63-46d9-b9b1-f7cc78013553");
-    // }, []);
+    // Вызываем запрос с нужным id
+    useEffect(() => {
+        getFileData("d0290abb-4c63-46d9-b9b1-f7cc78013553");
+    }, []);
     
 
     // Режим чтения и переключатель яркости
@@ -77,29 +73,21 @@ export const Post = ({ id }: { id: string }) => {
         }
     };
 
-    const handleProdsBag = () => {
-        const prods = data?.products?.map((prod) => prod.productGuid);
-        if (prods && prods.length > 0) {
-            navigate("./post_products", { state: { prodsData: prods } });
-        }
-    };
+    // const handleProdsBag = () => {
+    //     if (!FileData?.productGuid) return;
+    //     const prods = FileData.productGuid.map((prod) => prod.productGuid);
+    //         if (prods.length > 0) {
+    //         setHighlightedProds(prods);
+    //     }
+    // };
 
     const handleGoComments = () => {
         setCommentsOpen(true);
     };
 
-    if (!data) return null;
     // Формируем массив изображений для слайдера.
     // Добавляем основной файл, если он существует, и затем дополнительные файлы (только те, у которых определён guid).
-    const images: { guid: string }[] = [];
-    if (data.file && data.file.guid) {
-        images.push({ guid: data.file.guid });
-    }
-    if (data.extraFiles && data.extraFiles.length > 0) {
-        images.push(
-            ...data.extraFiles.filter((file) => file.guid !== undefined).map((file) => ({ guid: file.guid! }))
-        );
-    }
+    const images = [postData?.file?.guid, ...(postData?.extraFiles?.map(file => file.guid) || [])].filter(Boolean);
 
     return (
         <div className="w-full pb-2">
@@ -114,9 +102,8 @@ export const Post = ({ id }: { id: string }) => {
             >
                 <CommentsList
                     entityId={id}
-                    updateCommentsCount={(newCount: number) => {
-                        if (!data || data.commentsCount === newCount) return;
-                        data.commentsCount = newCount;
+                    updateCommentsCount={(count) => {
+                        if (postData) postData.commentsCount = count;
                     }}
                     onClose={() => setCommentsOpen(false)}
                 />
@@ -128,7 +115,7 @@ export const Post = ({ id }: { id: string }) => {
                         <Switcher enabledSwitch={enabledSwitch} setEnabledSwitch={setEnabledSwitch} />
                     </div>
                 )}
-                <div className="absolute top-3 right-4 z-10 w-6 h-6 bg-white rounded-[50px] flex justify-center items-center shadow-lg" onClick={handleProdsBag}
+                {/* <div className="absolute top-3 right-4 z-10 w-6 h-6 bg-white rounded-[50px] flex justify-center items-center shadow-lg" onClick={handleProdsBag}
                     onMouseEnter={toggleHover(true)}
                     onMouseLeave={toggleHover(false)}
                     style={{
@@ -137,10 +124,10 @@ export const Post = ({ id }: { id: string }) => {
                         boxShadow: isHovered ? "0 0 10px rgba(255, 255, 255, 1)" : "none"
                     }}>
                     <img src="/images/bag.svg" alt="отмеченные изделия" />
-                </div>
-
+                </div> */}
+                {FileData?.productGuid && <HighlightedProducts products={FileData.productGuid} />}
                 {/* Фоновый слайдер: изображение меняется при нажатии на точки пагинации */}
-                    <PostSlider images={images} />
+                    <PostSlider images={images.map(guid => ({ guid }))} />
                     {/* Затемнение фона согласно режиму чтения */}
                     <div className={`absolute inset-0 bg-black ${readingMode.opacity}`}></div>
 
@@ -154,7 +141,7 @@ export const Post = ({ id }: { id: string }) => {
                                 alt="логотип бренда"
                             />
                             <div
-                                onClick={() => navigate(`.././brand/${data.brandGuid}`)}
+                                onClick={() => navigate(`.././brand/${brandInfo?.guid}`)}
                                 className="text-white text-xs my-auto"
                             >
                                 {brandInfo?.name}
@@ -169,19 +156,19 @@ export const Post = ({ id }: { id: string }) => {
                                 }}
                                 onClick={handleReadingMode}
                             >
-                                {data.text}
+                                {brandInfo?.description}
                             </p>
                         </div>
                     </div>
                     <div className="flex flex-col gap-[11px]">
-                        {data.guid && <Likes id={data.guid} entityType="Post" />}
+                        {postData?.guid && <Likes id={postData.guid} entityType="Post" />}
                         <div className="flex flex-col items-center justify-center text-center gap-1"
                             onClick={handleGoComments}>
                             <IconComment
                                 hoverColor="white"
                                 defaultColor="white"
                                 entityType="Post" />
-                            <p className={`text-white font-medium text-[10px] ${readingMode.lines}`}>{data.commentsCount}</p>
+                            <p className={`text-white font-medium text-[10px] ${readingMode.lines}`}>{postData?.commentsCount}</p>
                         </div>
                         <div className="flex flex-col items-center justify-center text-center gap-1">
                             <IconEdit

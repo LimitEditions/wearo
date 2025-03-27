@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
-import { Button } from '../common/Button';
+import { Button } from '../../common/Button';
 import { useNavigate } from 'react-router-dom';
-import { retrieve } from '../../utils/encryption';
-import { useApiNew } from '../../hooks/useApi';
-import { Photo } from '../common/Photo';
-import { CommentModel, UserModel } from '../../api/data-contracts';
+import { retrieve } from '../../../utils/encryption';
+import { useApiNew } from '../../../hooks/useApi';
+import { Photo } from '../../common/Photo';
+import { CommentModel, UserModel } from '../../../api/data-contracts';
 import moment from 'moment';
 import { Likes } from './Likes';
 

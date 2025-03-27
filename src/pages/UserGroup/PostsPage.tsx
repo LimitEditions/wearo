@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import useApi from '../../hooks/useApi';
 import { PostModel, PostModelDataResult } from '../../api/data-contracts';
-import { Post } from '../../Components/user/Post';
+import { Post } from '../../Components/user/Post/Post';
 import { IsLoading } from '../../Components/common/InfoGroup/IsLoading';
 import { ErrorReq } from '../../Components/common/InfoGroup/ErrorReq';
 import { Route, Routes } from 'react-router-dom';

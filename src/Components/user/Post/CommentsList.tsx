@@ -1,13 +1,13 @@
 import React, { useEffect, useState, useRef } from 'react'
-import { CommentModel, CommentModelDataResult } from '../../api/data-contracts'
-import { useApiNew } from '../../hooks/useApi';
-import { Input } from '../common/InputGroup/Input';
-import { Button } from '../common/Button';
-import { retrieve } from '../../utils/encryption';
+import { CommentModel, CommentModelDataResult } from '../../../api/data-contracts'
+import { useApiNew } from '../../../hooks/useApi';
+import { Input } from '../../common/InputGroup/Input';
+import { Button } from '../../common/Button';
+import { retrieve } from '../../../utils/encryption';
 import moment from 'moment';
-import { Photo } from '../common/Photo';
+import { Photo } from '../../common/Photo';
 import { Likes } from './Likes';
-import { CommentsListProps } from '../../types/interfaces/componentsProps/ICommentListProps';
+import { CommentsListProps } from '../../../types/interfaces/componentsProps/ICommentListProps';
 
 export const CommentsList: React.FC<CommentsListProps> = ({ entityId, updateCommentsCount, onClose }) => {
     const { data, execute: fetchComments } = useApiNew<CommentModelDataResult>('postCommentsList', { token: true, immediate: false });
@@ -96,9 +96,7 @@ export const CommentsList: React.FC<CommentsListProps> = ({ entityId, updateComm
                                     </div>
                                 </div>
                                 <div className='flex justify-between mb-5'>
-                                    {(comment.repliesCount ?? 0) > 0 && (
-                                        <Button showButton={true} onClick={() => loadReplies(comment.guid ?? "")} className='text-normal-gray ml-5'>Ответы ({comment.repliesCount})</Button>
-                                    )}
+                                    <Button showButton={true} onClick={() => loadReplies(comment.guid ?? "")} className='text-normal-gray ml-5'>Ответы ({comment.repliesCount})</Button>
                                     <Button showButton={true} onClick={() => handleReplyClick(comment.user?.firstName || "Пользователь", comment.guid ?? "")} className='sm text-normal-gray'>Ответить</Button>
                                 </div>
 

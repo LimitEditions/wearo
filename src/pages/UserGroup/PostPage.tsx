@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom'
-import { Post } from '../../Components/user/Post';
+import { Post } from '../../Components/user/Post/Post';
 
 
 export const PostPage = () => {

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { v4 as uuidv4 } from 'uuid';
 import { CommentModel } from '../../api/data-contracts'
-import { CommentComponent } from '../../Components/user/CommentComponent';
+import { CommentComponent } from '../../Components/user/Post/CommentComponent';
 import { useNavigate } from "react-router-dom";
 import { ErrorReq } from "../../Components/common/InfoGroup/ErrorReq"
 import { IApiError } from '../../types/interfaces/IApiError';
