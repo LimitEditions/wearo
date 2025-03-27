@@ -27,8 +27,9 @@ const SliderComponent: React.FC<SliderProps> = ({ images }) => {
                 {images.length > 0 && activeSlide < images.length &&
                     images.map((image, index) => (
                             <img
+                            key={image.guid}
                                 src={`/api/Files/${image.guid}`}
-                                className="w-full h-full object-cover"
+                                className="w-full h-full object-contain"
                                 alt={`Изображение ${index + 1}`}
                             />
                     ))}

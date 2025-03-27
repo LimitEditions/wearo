@@ -122,7 +122,7 @@ export const Post = ({ id }: { id: string }) => {
                 />
             </Modal>
 
-            <div className="relative w-full bg-light-gray" style={{ paddingBottom: "175%" }}>
+            <div className="relative w-full bg-light-gray" style={{ paddingBottom: "155%" }}>
                 {isExpanded && (
                     <div className="absolute top-2 left-7 z-20">
                         <Switcher enabledSwitch={enabledSwitch} setEnabledSwitch={setEnabledSwitch} />
