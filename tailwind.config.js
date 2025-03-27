@@ -51,6 +51,5 @@ export const theme = {
     },
 };
 export const plugins = [
-    flowbite,
-    require('tailwind-scrollbar-hide') 
+    flowbite
 ];

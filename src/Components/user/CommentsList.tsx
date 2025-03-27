@@ -44,7 +44,7 @@ export const CommentsList: React.FC<CommentsListProps> = ({ entityId, updateComm
 
     const createComment = async () => {
         if (!comment.trim()) return;
-        
+
         await createCommentPost({
             userGuid: userId,
             text: comment,
@@ -82,7 +82,7 @@ export const CommentsList: React.FC<CommentsListProps> = ({ entityId, updateComm
                                     <div className='flex justify-between'>
                                         <div className="flex items-center gap-1">
                                             <Photo
-                                                id={comment.user?.mainAvatarGuid || null}
+                                                id={comment.user?.mainAvatarGuid ?? null}
                                                 styles="w-4 h-4 rounded-full"
                                                 alt={`photo ${comment.user?.mainAvatarGuid}`}
                                             />
@@ -96,14 +96,14 @@ export const CommentsList: React.FC<CommentsListProps> = ({ entityId, updateComm
                                     </div>
                                 </div>
                                 <div className='flex justify-between mb-5'>
-                                {(comment.repliesCount ?? 0) > 0 && (
-                                    <Button showButton={true} onClick={() => loadReplies(comment.guid ?? "")} className='text-normal-gray ml-5'>Ответы ({comment.repliesCount})</Button>
-                                )}
+                                    {(comment.repliesCount ?? 0) > 0 && (
+                                        <Button showButton={true} onClick={() => loadReplies(comment.guid ?? "")} className='text-normal-gray ml-5'>Ответы ({comment.repliesCount})</Button>
+                                    )}
                                     <Button showButton={true} onClick={() => handleReplyClick(comment.user?.firstName || "Пользователь", comment.guid ?? "")} className='sm text-normal-gray'>Ответить</Button>
                                 </div>
 
                                 {/* Рендерим ответы */}
-                                { comment.guid && replies[comment.guid] && replies[comment.guid].map((reply) => (
+                                {comment.guid && replies[comment.guid] && replies[comment.guid].map((reply) => (
                                     <div key={reply.guid} className='ml-8 border-l-2 pl-4'>
                                         <div className='py-4'>
                                             <div className='flex justify-between'>
@@ -123,9 +123,7 @@ export const CommentsList: React.FC<CommentsListProps> = ({ entityId, updateComm
                                             </div>
                                         </div>
                                         <div className='flex justify-between mb-5'>
-                                        {(comment.repliesCount ?? 0) > 0 && (
-                                    <Button showButton={true} onClick={() => loadReplies(comment.guid ?? "")} className='text-normal-gray ml-5'>Ответы ({comment.repliesCount})</Button>
-                                )}
+                                            <Button showButton={true} onClick={() => loadReplies(comment.guid ?? "")} className='text-normal-gray ml-5'>Ответы ({comment.repliesCount})</Button>
                                             <Button showButton={true} onClick={() => handleReplyClick(reply.user?.firstName || "Пользователь", reply.guid ?? "")} className='sm text-normal-gray'>Ответить</Button>
                                         </div>
                                     </div>

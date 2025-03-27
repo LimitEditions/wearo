@@ -17,12 +17,9 @@ export const Likes = ({ id, entityType }: LikesProps) => {
   const { execute: deleteLike } = useApiNew('likesDelete', { token: true });
 
   const userID = retrieve('guid');
-  console.log(`userID: ${userID}`)
-  console.log(`ID: ${id}`)
-  console.log(`entityType: ${entityType}`)
 
   useEffect(() => {
-    if (!id) return;
+    // if (!id) return;
 
     // Запускаем запрос при изменении id или entityType
     getLikes({ id, entity: entityType, query: {} });

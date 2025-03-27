@@ -2,9 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@import "~slick-carousel/slick/slick.css";
-@import "~slick-carousel/slick/slick-theme.css";
-
 @font-face {
     font-family: "SF Pro Text";
     src: url("./fonts/SFProText-Regular.ttf") format("truetype");

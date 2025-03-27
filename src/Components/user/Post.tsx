@@ -149,7 +149,7 @@ export const Post = ({ id }: { id: string }) => {
                     <div className="w-80">
                         <div className="flex space-x-3 mb-3 cursor-pointer">
                             <Photo
-                                id={brandInfo?.photo || null}
+                                id={brandInfo?.photo ?? null}
                                 styles="rounded-full w-16"
                                 alt="логотип бренда"
                             />
