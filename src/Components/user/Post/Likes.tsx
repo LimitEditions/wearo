@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import { useApiNew } from "../../hooks/useApi";
-import { IconLike } from "../common/icons/IconLike";
-import { LikesProps } from "../../types/interfaces/componentsProps/ILikesProps";
-import { retrieve } from "../../utils/encryption";
+import { useApiNew } from "../../../hooks/useApi";
+import { IconLike } from "../../common/icons/IconLike";
+import { LikesProps } from "../../../types/interfaces/componentsProps/ILikesProps";
+import { retrieve } from "../../../utils/encryption";
 
 
 export const Likes = ({ id, entityType }: LikesProps) => {

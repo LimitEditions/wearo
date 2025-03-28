@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useApiNew } from "../../../hooks/useApi";
-import { PostModel, BrandModel, FileProductModel } from "../../../api/data-contracts";
+import { PostModel, BrandModel, FileModel } from "../../../api/data-contracts";
 import { useNavigate } from "react-router-dom";
 import { Switcher } from "../../common/Switcher";
 import { IReading, readingOff, readingOn, readingOnDark } from "../../../types/interfaces/IReading";
@@ -29,7 +29,9 @@ export const Post = ({ id }: { id: string }) => {
     const { data: postData, execute: getPostData } = useApiNew<PostModel>("postsDetail", { token: true, immediate: false });
 
     useEffect(() => {
-        getPostData(id)
+        if (id) {
+            getPostData(id);
+          }
     }, [id]);
 
     // Загружаем данные бренда, когда появится идентификатор бренда
@@ -39,21 +41,25 @@ export const Post = ({ id }: { id: string }) => {
         if (postData?.brandGuid) {
             getBrandData(postData.brandGuid);
         }
-    }, [postData?.brandGuid, getBrandData]);
+    }, [postData?.brandGuid]);
 
     // Загружаем данные отмеченных вещей
-    const { data: FileData, execute: getFileData } = useApiNew<FileProductModel>("filesModelDetail", { 
+    const { data: fileData, execute: getFileData } = useApiNew<FileModel>("filesModelDetail", { 
         token: true, 
-        immediate: false 
+        immediate: false,
+        params: { includeProducts: true }
     });
-    
-    // Вызываем запрос с нужным id
-    useEffect(() => {
-        getFileData("d0290abb-4c63-46d9-b9b1-f7cc78013553");
-    }, []);
-    
 
-    // Режим чтения и переключатель яркости
+    useEffect(() => {
+        if (postData?.fileGuid) {
+            getFileData(postData.fileGuid);
+        }
+    }, [postData?.fileGuid]);
+
+    console.log(postData)
+    console.log(postData?.fileGuid)
+
+
     // Раскрытие в режиме чтения
     const isExpanded = readingMode.state !== "off";
 
@@ -85,9 +91,8 @@ export const Post = ({ id }: { id: string }) => {
         setCommentsOpen(true);
     };
 
-    // Формируем массив изображений для слайдера.
     // Добавляем основной файл, если он существует, и затем дополнительные файлы (только те, у которых определён guid).
-    const images = [postData?.file?.guid, ...(postData?.extraFiles?.map(file => file.guid) || [])].filter(Boolean);
+    const images = [postData?.file?.guid, ...(postData?.extraFiles?.map(file => file.guid) || [])].filter((guid): guid is string => Boolean(guid));
 
     return (
         <div className="w-full pb-2">
@@ -115,6 +120,7 @@ export const Post = ({ id }: { id: string }) => {
                         <Switcher enabledSwitch={enabledSwitch} setEnabledSwitch={setEnabledSwitch} />
                     </div>
                 )}
+                {/* <HighlightedProducts fileData={fileData}/> */}
                 {/* <div className="absolute top-3 right-4 z-10 w-6 h-6 bg-white rounded-[50px] flex justify-center items-center shadow-lg" onClick={handleProdsBag}
                     onMouseEnter={toggleHover(true)}
                     onMouseLeave={toggleHover(false)}
@@ -125,7 +131,7 @@ export const Post = ({ id }: { id: string }) => {
                     }}>
                     <img src="/images/bag.svg" alt="отмеченные изделия" />
                 </div> */}
-                {FileData?.productGuid && <HighlightedProducts products={FileData.productGuid} />}
+                {fileData && <HighlightedProducts fileData ={fileData} />}
                 {/* Фоновый слайдер: изображение меняется при нажатии на точки пагинации */}
                     <PostSlider images={images.map(guid => ({ guid }))} />
                     {/* Затемнение фона согласно режиму чтения */}
